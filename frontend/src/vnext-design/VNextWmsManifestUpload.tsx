@@ -25,6 +25,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface ManifestField {
   label: string;
   required: boolean;
@@ -135,8 +137,10 @@ export default function VNextWmsManifestUpload() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Manifest Upload</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Upload a CSV to create a receiving task with pre-populated expected items</p>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Manifest Upload')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t(
+          'Upload a CSV to create a receiving task with pre-populated expected items'
+        )}</p>
       </div>
 
       {error && (
@@ -150,11 +154,11 @@ export default function VNextWmsManifestUpload() {
         <div className="flex items-center gap-3 rounded-md border border-success/30 bg-success/10 p-4 text-sm text-success">
           <CheckCircle2 className="h-5 w-5" />
           <span className="flex-1">
-            Manifest processed: {processResult.processedRows} items imported into receiving task.
+            {t('Manifest processed:')} {processResult.processedRows} {t('items imported into receiving task.')}
             {processResult.errorRows > 0 && ` ${processResult.errorRows} rows had errors.`}
           </span>
           <Button variant="outline" size="sm" onClick={() => navigate(`/wms/receiving/${processResult.receivingTaskId}`)}>
-            View Receiving Task
+            {t('View Receiving Task')}
           </Button>
         </div>
       )}
@@ -162,23 +166,23 @@ export default function VNextWmsManifestUpload() {
       {!uploadResult && !processResult && (
         <Card className="max-w-3xl">
           <CardHeader>
-            <CardTitle>Step 1: Upload File</CardTitle>
+            <CardTitle>{t('Step 1: Upload File')}</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <Label>Facility *</Label>
+              <Label>{t('Facility *')}</Label>
               <FacilitySelect facilities={facilities} value={facilityId} onChange={setFacilityId} loading={facilitiesLoading} error={facilitiesError} className="w-full" />
             </div>
             <div className="space-y-2">
-              <Label>Supplier Name</Label>
-              <Input value={supplierName} onChange={e => setSupplierName(e.target.value)} placeholder="Optional" />
+              <Label>{t('Supplier Name')}</Label>
+              <Input value={supplierName} onChange={e => setSupplierName(e.target.value)} placeholder={t('Optional')} />
             </div>
             <div className="space-y-2">
-              <Label>Reference (PO/BOL)</Label>
-              <Input value={reference} onChange={e => setReference(e.target.value)} placeholder="Optional" />
+              <Label>{t('Reference (PO/BOL)')}</Label>
+              <Input value={reference} onChange={e => setReference(e.target.value)} placeholder={t('Optional')} />
             </div>
             <div className="space-y-2 md:col-span-2">
-              <Label>CSV File *</Label>
+              <Label>{t('CSV File *')}</Label>
               <input
                 type="file"
                 accept=".csv,.txt,.tsv"
@@ -188,9 +192,9 @@ export default function VNextWmsManifestUpload() {
               {fileName && <p className="text-sm text-muted-foreground">{fileName}</p>}
             </div>
             <div className="flex flex-wrap items-center justify-end gap-2 md:col-span-2">
-              <Button variant="outline" onClick={() => navigate('/wms/receiving')}>Cancel</Button>
+              <Button variant="outline" onClick={() => navigate('/wms/receiving')}>{t('Cancel')}</Button>
               <Button variant="gradient" onClick={handleUpload} disabled={uploading || !csvContent || !facilityId}>
-                {uploading ? 'Uploading...' : 'Upload & Detect'}
+                {uploading ? t('Uploading...') : t('Upload & Detect')}
               </Button>
             </div>
           </CardContent>
@@ -201,17 +205,19 @@ export default function VNextWmsManifestUpload() {
         <div className="grid gap-6 lg:grid-cols-2">
           <Card>
             <CardHeader>
-              <CardTitle>Step 2: Map Columns</CardTitle>
+              <CardTitle>{t('Step 2: Map Columns')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {uploadResult.matchedTemplate && (
                 <div className="flex items-center gap-3 rounded-md border border-info/30 bg-info/10 p-3 text-sm text-info">
                   <Info className="h-4 w-4" />
-                  Auto-matched template: <strong>{uploadResult.matchedTemplate.name}</strong>. Verify mapping below.
+                  {t('Auto-matched template:')} <strong>{uploadResult.matchedTemplate.name}</strong>{t('. Verify mapping below.')}
                 </div>
               )}
               <p className="text-sm text-muted-foreground">
-                Map your CSV columns to the system fields. SKU and Quantity are required.
+                {t(
+                  'Map your CSV columns to the system fields. SKU and Quantity are required.'
+                )}
               </p>
 
               <div className="flex flex-col gap-3">
@@ -227,7 +233,7 @@ export default function VNextWmsManifestUpload() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="unmapped">-- Not mapped --</SelectItem>
+                          <SelectItem value="unmapped">{t('-- Not mapped --')}</SelectItem>
                           {uploadResult.headers.map(h => (
                             <SelectItem key={h} value={h}>{h}</SelectItem>
                           ))}
@@ -246,22 +252,22 @@ export default function VNextWmsManifestUpload() {
                     onChange={e => setSaveTemplate(e.target.checked)}
                     className="h-4 w-4 rounded border border-input bg-background accent-primary"
                   />
-                  Save as template for future uploads
+                  {t('Save as template for future uploads')}
                 </label>
                 {saveTemplate && (
                   <Input
                     className="mt-2"
                     value={templateName}
                     onChange={e => setTemplateName(e.target.value)}
-                    placeholder="Template name (e.g. Supplier X format)"
+                    placeholder={t('Template name (e.g. Supplier X format)')}
                   />
                 )}
               </div>
 
               <div className="flex flex-wrap items-center justify-end gap-2">
-                <Button variant="outline" onClick={() => { setUploadResult(null); setMapping({}); }}>Back</Button>
+                <Button variant="outline" onClick={() => { setUploadResult(null); setMapping({}); }}>{t('Back')}</Button>
                 <Button variant="gradient" onClick={handleProcess} disabled={processing || !mapping.sku || !mapping.quantity}>
-                  {processing ? 'Processing...' : `Process ${uploadResult.totalRows} Rows`}
+                  {processing ? t('Processing...') : `Process ${uploadResult.totalRows} Rows`}
                 </Button>
               </div>
             </CardContent>
@@ -269,11 +275,11 @@ export default function VNextWmsManifestUpload() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Data Preview</CardTitle>
+              <CardTitle>{t('Data Preview')}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="mb-3 text-sm text-muted-foreground">
-                Showing first {Math.min(5, uploadResult.sampleRows.length)} of {uploadResult.totalRows} rows
+                {t('Showing first')} {Math.min(5, uploadResult.sampleRows.length)} {t('of')} {uploadResult.totalRows} {t('rows')}
               </p>
               <div className="max-h-[500px] overflow-auto">
                 <Table>

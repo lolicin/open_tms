@@ -14,6 +14,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { t } from '@/i18n';
+
 export default function VNextEdiImport() {
   const [content, setContent] = useState('');
   const [fileName, setFileName] = useState('');
@@ -111,9 +113,11 @@ export default function VNextEdiImport() {
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Import EDI document</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Import EDI document')}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Upload or paste any X12 EDI document. The system will auto-detect the transaction type and process it.
+          {t(
+            'Upload or paste any X12 EDI document. The system will auto-detect the transaction type and process it.'
+          )}
         </p>
       </div>
 
@@ -127,9 +131,9 @@ export default function VNextEdiImport() {
         <div className="flex items-center gap-3 rounded-md border border-success/30 bg-success/10 p-4 text-sm text-success">
           <CheckCircle2 className="h-5 w-5" />
           <div>
-            Processed successfully. Type: {result.transactionType}, Action: {result.action || 'processed'}
+            {t('Processed successfully. Type:')} {result.transactionType}{t(', Action:')} {result.action || t('processed')}
             {result.ack997Sent && ' (997 acknowledgment sent)'}
-            {result.logId && <span className="ml-2 text-xs text-muted-foreground">Log: {result.logId.slice(0, 8)}...</span>}
+            {result.logId && <span className="ml-2 text-xs text-muted-foreground">{t('Log:')} {result.logId.slice(0, 8)}...</span>}
           </div>
         </div>
       )}
@@ -138,7 +142,7 @@ export default function VNextEdiImport() {
         <div className="flex flex-wrap items-center gap-3">
           <Button onClick={() => fileInputRef.current?.click()}>
             <Upload className="h-4 w-4" />
-            Upload file
+            {t('Upload file')}
           </Button>
           <input
             ref={fileInputRef}
@@ -147,35 +151,37 @@ export default function VNextEdiImport() {
             className="hidden"
             onChange={handleFileUpload}
           />
-          <span className="text-sm text-muted-foreground">{fileName || 'No file selected'}</span>
+          <span className="text-sm text-muted-foreground">{fileName || t('No file selected')}</span>
           {detectedType && (
             <Badge variant="info">
-              Detected: {detectedType} ({TYPE_NAMES[detectedType] || 'Unknown'})
-            </Badge>
+              {t('Detected:')} {detectedType}({TYPE_NAMES[detectedType] || t('Unknown')})
+                          </Badge>
           )}
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="edi-content">Or paste EDI content</Label>
+          <Label htmlFor="edi-content">{t('Or paste EDI content')}</Label>
           <textarea
             id="edi-content"
             rows={10}
             value={content}
             onChange={e => handlePaste(e.target.value)}
-            placeholder="ISA*00*          *00*          *ZZ*SENDER         *ZZ*RECEIVER       *..."
+            placeholder={t(
+              'ISA*00*          *00*          *ZZ*SENDER         *ZZ*RECEIVER       *...'
+            )}
             className="w-full rounded-md border border-input bg-background px-3 py-2 font-mono text-xs ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           />
         </div>
 
         <div className="flex flex-wrap items-end gap-3">
           <div className="flex-1 min-w-[240px] space-y-2">
-            <Label htmlFor="edi-partner">Trading partner (optional)</Label>
+            <Label htmlFor="edi-partner">{t('Trading partner (optional)')}</Label>
             <Select value={partnerId} onValueChange={setPartnerId} onOpenChange={open => { if (open) loadPartners(); }}>
               <SelectTrigger id="edi-partner">
-                <SelectValue placeholder="None - manual import" />
+                <SelectValue placeholder={t('None - manual import')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={NO_PARTNER}>None - manual import</SelectItem>
+                <SelectItem value={NO_PARTNER}>{t('None - manual import')}</SelectItem>
                 {partners.map(p => (
                   <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
                 ))}
@@ -183,14 +189,14 @@ export default function VNextEdiImport() {
             </Select>
           </div>
           <Button variant="gradient" onClick={submit} disabled={loading || !content.trim()}>
-            {loading ? 'Processing...' : 'Import'}
+            {loading ? t('Processing...') : t('Import')}
           </Button>
         </div>
       </Card>
 
       {result?.details && (
         <Card className="p-4">
-          <h3 className="mb-3 text-base font-semibold">Processing result</h3>
+          <h3 className="mb-3 text-base font-semibold">{t('Processing result')}</h3>
           <pre className="max-h-[300px] overflow-auto rounded-md bg-muted p-3 font-mono text-xs">
             {JSON.stringify(result.details, null, 2)}
           </pre>

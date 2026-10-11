@@ -31,6 +31,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
+import { t } from '@/i18n';
+
 interface LockoutStatus {
   isLocked: boolean;
   lockedUntil: string | null;
@@ -161,11 +163,11 @@ export default function CarrierUserManagement({ carrierId, carrierName }: Props)
       <div className="mb-3 flex items-center justify-between">
         <h3 className="m-0 flex items-center gap-2 text-lg font-semibold">
           <Users className="h-5 w-5" />
-          Portal users
+          {t('Portal users')}
         </h3>
         <Button size="sm" onClick={() => setShowCreate(true)}>
           <Plus className="h-4 w-4" />
-          Add user
+          {t('Add user')}
         </Button>
       </div>
 
@@ -183,13 +185,15 @@ export default function CarrierUserManagement({ carrierId, carrierName }: Props)
       {loading ? (
         <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
           <Loader2 className="h-6 w-6 animate-spin" />
-          <span className="text-sm">Loading...</span>
+          <span className="text-sm">{t('Loading...')}</span>
         </div>
       ) : users.length === 0 ? (
         <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
           <UserX className="h-10 w-10 opacity-50" />
           <p className="max-w-md text-center text-sm">
-            No portal users yet. Create one so the carrier can log in and respond to tenders.
+            {t(
+              'No portal users yet. Create one so the carrier can log in and respond to tenders.'
+            )}
           </p>
         </div>
       ) : (
@@ -197,11 +201,11 @@ export default function CarrierUserManagement({ carrierId, carrierName }: Props)
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Last login</TableHead>
+                <TableHead>{t('Name')}</TableHead>
+                <TableHead>{t('Email')}</TableHead>
+                <TableHead>{t('Role')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead>{t('Last login')}</TableHead>
                 <TableHead className="w-[120px]"></TableHead>
               </TableRow>
             </TableHeader>
@@ -216,23 +220,23 @@ export default function CarrierUserManagement({ carrierId, carrierName }: Props)
                   <TableCell>
                     <div className="flex flex-wrap items-center gap-1">
                       <Badge variant={u.active ? 'success' : 'destructive'}>
-                        {u.active ? 'Active' : 'Inactive'}
+                        {u.active ? t('Active') : t('Inactive')}
                       </Badge>
                       {u.lockoutStatus?.isLocked && (
                         <Badge variant="destructive" className="gap-1">
                           <Lock className="h-3 w-3" />
-                          Locked
+                          {t('Locked')}
                         </Badge>
                       )}
                       {!u.lockoutStatus?.isLocked && (u.lockoutStatus?.failedAttempts ?? 0) > 0 && (
                         <Badge variant="warning" title={`${u.lockoutStatus?.failedAttempts} failed attempt(s) since last success`}>
-                          {u.lockoutStatus?.failedAttempts} failed
+                          {u.lockoutStatus?.failedAttempts} {t('failed')}
                         </Badge>
                       )}
                     </div>
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">
-                    {u.lastLoginAt ? new Date(u.lastLoginAt).toLocaleString() : 'Never'}
+                    {u.lastLoginAt ? new Date(u.lastLoginAt).toLocaleString() : t('Never')}
                   </TableCell>
                   <TableCell>
                     <div className="flex gap-1">
@@ -240,7 +244,7 @@ export default function CarrierUserManagement({ carrierId, carrierName }: Props)
                         <Button
                           variant="ghost"
                           size="icon"
-                          title="Unlock account"
+                          title={t('Unlock account')}
                           onClick={() => handleUnlock(u)}
                         >
                           <LockOpen className="h-4 w-4 text-success" />
@@ -257,7 +261,7 @@ export default function CarrierUserManagement({ carrierId, carrierName }: Props)
                       <Button
                         variant="ghost"
                         size="icon"
-                        title="Reset password"
+                        title={t('Reset password')}
                         onClick={() => {
                           setShowResetPassword(u.id);
                           setResetPassword('');
@@ -278,36 +282,37 @@ export default function CarrierUserManagement({ carrierId, carrierName }: Props)
       <Dialog open={showCreate} onOpenChange={setShowCreate}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Create portal user</DialogTitle>
+            <DialogTitle>{t('Create portal user')}</DialogTitle>
             <DialogDescription>
-              Create a login for <strong>{carrierName}</strong> so they can access the carrier portal
-              and respond to tenders.
+              {t('Create a login for')} <strong>{carrierName}</strong> {t(
+                'so they can access the carrier portal\n              and respond to tenders.'
+              )}
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleCreate} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="cu-name">Full name *</Label>
+              <Label htmlFor="cu-name">{t('Full name *')}</Label>
               <Input
                 id="cu-name"
                 value={newName}
                 onChange={e => setNewName(e.target.value)}
                 required
-                placeholder="John Doe"
+                placeholder={t('John Doe')}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="cu-email">Email *</Label>
+              <Label htmlFor="cu-email">{t('Email *')}</Label>
               <Input
                 id="cu-email"
                 type="email"
                 value={newEmail}
                 onChange={e => setNewEmail(e.target.value)}
                 required
-                placeholder="user@carrier.com"
+                placeholder={t('user@carrier.com')}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="cu-password">Password *</Label>
+              <Label htmlFor="cu-password">{t('Password *')}</Label>
               <Input
                 id="cu-password"
                 type="password"
@@ -315,29 +320,29 @@ export default function CarrierUserManagement({ carrierId, carrierName }: Props)
                 onChange={e => setNewPassword(e.target.value)}
                 required
                 minLength={8}
-                placeholder="Min 8 chars, upper, lower, number"
+                placeholder={t('Min 8 chars, upper, lower, number')}
               />
               <p className="text-xs text-muted-foreground">
-                Must contain uppercase, lowercase, and a number
+                {t('Must contain uppercase, lowercase, and a number')}
               </p>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="cu-role">Role</Label>
+              <Label htmlFor="cu-role">{t('Role')}</Label>
               <Select value={newRole} onValueChange={setNewRole}>
                 <SelectTrigger id="cu-role">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="dispatcher">Dispatcher</SelectItem>
-                  <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="dispatcher">{t('Dispatcher')}</SelectItem>
+                  <SelectItem value="admin">{t('Admin')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setShowCreate(false)}>
-                Cancel
+                {t('Cancel')}
               </Button>
-              <Button type="submit" variant="gradient">Create user</Button>
+              <Button type="submit" variant="gradient">{t('Create user')}</Button>
             </DialogFooter>
           </form>
         </DialogContent>
@@ -346,9 +351,9 @@ export default function CarrierUserManagement({ carrierId, carrierName }: Props)
       <Dialog open={showResetPassword !== null} onOpenChange={open => !open && setShowResetPassword(null)}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Reset password</DialogTitle>
+            <DialogTitle>{t('Reset password')}</DialogTitle>
             <DialogDescription>
-              Set a new password for <strong>{users.find(u => u.id === showResetPassword)?.email}</strong>
+              {t('Set a new password for')} <strong>{users.find(u => u.id === showResetPassword)?.email}</strong>
             </DialogDescription>
           </DialogHeader>
           {error && (
@@ -357,29 +362,29 @@ export default function CarrierUserManagement({ carrierId, carrierName }: Props)
             </div>
           )}
           <div className="space-y-2">
-            <Label htmlFor="cu-reset">New password</Label>
+            <Label htmlFor="cu-reset">{t('New password')}</Label>
             <Input
               id="cu-reset"
               type="password"
               value={resetPassword}
               onChange={e => setResetPassword(e.target.value)}
               minLength={8}
-              placeholder="Min 8 chars, upper, lower, number"
+              placeholder={t('Min 8 chars, upper, lower, number')}
             />
             <p className="text-xs text-muted-foreground">
-              Must contain uppercase, lowercase, and a number
+              {t('Must contain uppercase, lowercase, and a number')}
             </p>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowResetPassword(null)}>
-              Cancel
+              {t('Cancel')}
             </Button>
             <Button
               variant="gradient"
               onClick={() => showResetPassword && handleResetPassword(showResetPassword)}
               disabled={resetPassword.length < 8}
             >
-              Reset password
+              {t('Reset password')}
             </Button>
           </DialogFooter>
         </DialogContent>

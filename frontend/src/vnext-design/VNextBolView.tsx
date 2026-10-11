@@ -18,6 +18,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { stopTypeLabel } from '@open-tms/shared';
 
+import { t } from '@/i18n';
+
 /**
  * Online Bill of Lading view.
  *
@@ -103,7 +105,7 @@ export default function VNextBolView() {
     return (
       <div className="m-6 flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
         <XCircle className="h-5 w-5" />
-        {error || 'Document not found'}
+        {error || t('Document not found')}
       </div>
     );
   }
@@ -130,20 +132,20 @@ export default function VNextBolView() {
           <Button asChild variant="ghost" size="sm">
             <Link to={doc.shipmentId ? `/shipments/${doc.shipmentId}` : '/documents'}>
               <ArrowLeft className="h-4 w-4" />
-              Back
+              {t('Back')}
             </Link>
           </Button>
-          <h1 className="text-xl font-bold tracking-tight">Bill of Lading</h1>
-          <Badge variant="info">Immutable Document</Badge>
+          <h1 className="text-xl font-bold tracking-tight">{t('Bill of Lading')}</h1>
+          <Badge variant="info">{t('Immutable Document')}</Badge>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={() => window.print()}>
             <Printer className="h-4 w-4" />
-            Print
+            {t('Print')}
           </Button>
           <Button variant="gradient" size="sm" onClick={handleDownload} disabled={downloading}>
             {downloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
-            {downloading ? 'Downloading...' : 'Download PDF'}
+            {downloading ? t('Downloading...') : t('Download PDF')}
           </Button>
         </div>
       </div>
@@ -155,22 +157,22 @@ export default function VNextBolView() {
           {branding.orgName && (
             <div className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{branding.orgName}</div>
           )}
-          <h1 className="mt-1 text-3xl font-bold tracking-tight">BILL OF LADING</h1>
+          <h1 className="mt-1 text-3xl font-bold tracking-tight">{t('BILL OF LADING')}</h1>
           <div className="mt-3 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm">
             <div>
-              <span className="text-xs uppercase text-muted-foreground">BOL Number</span>
+              <span className="text-xs uppercase text-muted-foreground">{t('BOL Number')}</span>
               <span className="ml-2 font-mono font-semibold">{meta.bolNumber}</span>
             </div>
             <div>
-              <span className="text-xs uppercase text-muted-foreground">Date</span>
+              <span className="text-xs uppercase text-muted-foreground">{t('Date')}</span>
               <span className="ml-2 font-semibold">{meta.date}</span>
             </div>
             <div>
-              <span className="text-xs uppercase text-muted-foreground">Shipment Ref</span>
+              <span className="text-xs uppercase text-muted-foreground">{t('Shipment Ref')}</span>
               <span className="ml-2 font-semibold">{shipment.reference}</span>
             </div>
             <div>
-              <span className="text-xs uppercase text-muted-foreground">Status</span>
+              <span className="text-xs uppercase text-muted-foreground">{t('Status')}</span>
               <span className="ml-2 font-semibold">{shipment.status}</span>
             </div>
           </div>
@@ -181,7 +183,7 @@ export default function VNextBolView() {
           <div className="rounded-md border border-border p-4">
             <h2 className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wider">
               <Warehouse className="h-4 w-4 print:hidden" />
-              Shipper (Origin)
+              {t('Shipper (Origin)')}
             </h2>
             <div className="text-sm leading-6">
               <strong>{origin.name}</strong>
@@ -197,7 +199,7 @@ export default function VNextBolView() {
           <div className="rounded-md border border-border p-4">
             <h2 className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wider">
               <Truck className="h-4 w-4 print:hidden" />
-              Consignee (Destination)
+              {t('Consignee (Destination)')}
             </h2>
             <div className="text-sm leading-6">
               <strong>{destination.name}</strong>
@@ -213,7 +215,7 @@ export default function VNextBolView() {
         </div>
 
         {/* Carrier info */}
-        <Section title="Carrier" icon={<Truck className="h-4 w-4 print:hidden" />}>
+        <Section title={t('Carrier')} icon={<Truck className="h-4 w-4 print:hidden" />}>
           <InfoGrid
             items={[
               ['Carrier', carrier.name],
@@ -228,7 +230,7 @@ export default function VNextBolView() {
 
         {/* Vehicle & Driver */}
         {vehicle && (
-          <Section title="Vehicle & Driver">
+          <Section title={t('Vehicle & Driver')}>
             <InfoGrid
               items={[
                 ['Vehicle', `${vehicle.plate} (${vehicle.type})`],
@@ -240,7 +242,7 @@ export default function VNextBolView() {
         )}
 
         {/* Customer & Dates */}
-        <Section title="Shipment Details">
+        <Section title={t('Shipment Details')}>
           <InfoGrid
             items={[
               ['Customer', customer.name],
@@ -252,16 +254,16 @@ export default function VNextBolView() {
 
         {/* Stops */}
         {stops.length > 0 && (
-          <Section title="Stops">
+          <Section title={t('Stops')}>
             <table className="w-full border-collapse text-sm">
               <thead>
                 <tr className="border-b-2 border-foreground">
                   <th className="px-2 py-1 text-left">#</th>
-                  <th className="px-2 py-1 text-left">Type</th>
-                  <th className="px-2 py-1 text-left">Location</th>
-                  <th className="px-2 py-1 text-left">City / State</th>
-                  <th className="px-2 py-1 text-left">Est. Arrival</th>
-                  <th className="px-2 py-1 text-left">Instructions</th>
+                  <th className="px-2 py-1 text-left">{t('Type')}</th>
+                  <th className="px-2 py-1 text-left">{t('Location')}</th>
+                  <th className="px-2 py-1 text-left">{t('City / State')}</th>
+                  <th className="px-2 py-1 text-left">{t('Est. Arrival')}</th>
+                  <th className="px-2 py-1 text-left">{t('Instructions')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -282,16 +284,16 @@ export default function VNextBolView() {
 
         {/* Orders & Items */}
         {orders.length > 0 && (
-          <Section title="Orders & Items">
+          <Section title={t('Orders & Items')}>
             {orders.map((order: any, oi: number) => (
               <div key={oi} className="mb-4 rounded-md border border-border p-3">
                 <div className="mb-2 flex flex-wrap items-center gap-2">
-                  <strong>Order: {order.orderNumber}</strong>
-                  {order.poNumber && <span className="text-muted-foreground">(PO: {order.poNumber})</span>}
+                  <strong>{t('Order:')} {order.orderNumber}</strong>
+                  {order.poNumber && <span className="text-muted-foreground">{t('(PO:')} {order.poNumber})</span>}
                   <div className="ml-auto flex flex-wrap gap-1">
                     {order.serviceLevel && <Badge variant="muted">{order.serviceLevel}</Badge>}
-                    {order.temperatureControl && <Badge variant="muted">Temp: {order.temperatureControl}</Badge>}
-                    {order.requiresHazmat && <Badge variant="destructive">HAZMAT</Badge>}
+                    {order.temperatureControl && <Badge variant="muted">{t('Temp:')} {order.temperatureControl}</Badge>}
+                    {order.requiresHazmat && <Badge variant="destructive">{t('HAZMAT')}</Badge>}
                   </div>
                 </div>
 
@@ -299,9 +301,9 @@ export default function VNextBolView() {
                   <table className="mb-2 w-full border-collapse text-sm">
                     <thead>
                       <tr className="border-b border-border">
-                        <th className="px-2 py-1 text-left">Unit ID</th>
-                        <th className="px-2 py-1 text-left">Type</th>
-                        <th className="px-2 py-1 text-left">Barcode</th>
+                        <th className="px-2 py-1 text-left">{t('Unit ID')}</th>
+                        <th className="px-2 py-1 text-left">{t('Type')}</th>
+                        <th className="px-2 py-1 text-left">{t('Barcode')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -320,12 +322,12 @@ export default function VNextBolView() {
                   <table className="w-full border-collapse text-sm">
                     <thead>
                       <tr className="border-b border-border">
-                        <th className="px-2 py-1 text-left">SKU</th>
-                        <th className="px-2 py-1 text-left">Description</th>
-                        <th className="px-2 py-1 text-left">Qty</th>
-                        <th className="px-2 py-1 text-left">Weight</th>
-                        <th className="px-2 py-1 text-left">Dimensions</th>
-                        <th className="px-2 py-1 text-left">Hazmat</th>
+                        <th className="px-2 py-1 text-left">{t('SKU')}</th>
+                        <th className="px-2 py-1 text-left">{t('Description')}</th>
+                        <th className="px-2 py-1 text-left">{t('Qty')}</th>
+                        <th className="px-2 py-1 text-left">{t('Weight')}</th>
+                        <th className="px-2 py-1 text-left">{t('Dimensions')}</th>
+                        <th className="px-2 py-1 text-left">{t('Hazmat')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -335,8 +337,8 @@ export default function VNextBolView() {
                           <td className="px-2 py-1">{li.description}</td>
                           <td className="px-2 py-1">{li.quantity}</td>
                           <td className="px-2 py-1">{li.weight} {li.weightUnit}</td>
-                          <td className="px-2 py-1">{li.length}x{li.width}x{li.height} {li.dimUnit}</td>
-                          <td className="px-2 py-1">{li.hazmat ? <span className="font-bold text-destructive">YES</span> : '-'}</td>
+                          <td className="px-2 py-1">{li.length}{t('x')}{li.width}{t('x')}{li.height} {li.dimUnit}</td>
+                          <td className="px-2 py-1">{li.hazmat ? <span className="font-bold text-destructive">{t('YES')}</span> : '-'}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -349,16 +351,16 @@ export default function VNextBolView() {
 
         {/* Totals */}
         <div className="mt-6 grid grid-cols-4 gap-3 rounded-md border-2 border-border bg-muted/30 p-4">
-          <Total label="Orders" value={totals.orderCount ?? 0} />
-          <Total label="Units" value={totals.unitCount ?? 0} />
-          <Total label="Items" value={totals.itemCount ?? 0} />
-          <Total label="Total Weight" value={`${totals.totalWeight ?? 0} kg`} />
+          <Total label={t('Orders')} value={totals.orderCount ?? 0} />
+          <Total label={t('Units')} value={totals.unitCount ?? 0} />
+          <Total label={t('Items')} value={totals.itemCount ?? 0} />
+          <Total label={t('Total Weight')} value={`${totals.totalWeight ?? 0} kg`} />
         </div>
 
         {/* Special Instructions */}
         {specialInstructions && (
           <Section
-            title="Special Instructions"
+            title={t('Special Instructions')}
             icon={<AlertTriangle className="h-4 w-4 print:hidden" />}
           >
             <p className="rounded-md bg-warning/10 p-3 text-sm">{specialInstructions}</p>
@@ -371,16 +373,16 @@ export default function VNextBolView() {
             <div key={role}>
               <div className="mb-1 text-xs font-bold uppercase tracking-wider">{role}</div>
               <div className="mb-1 h-12 border-b-2 border-foreground" />
-              <div className="text-xs text-muted-foreground">Signature / Date</div>
+              <div className="text-xs text-muted-foreground">{t('Signature / Date')}</div>
             </div>
           ))}
         </div>
 
         {/* Footer */}
         <div className="mt-8 border-t border-border pt-4 text-center text-xs text-muted-foreground">
-          <div>Generated by {branding.orgName || 'Open TMS'}</div>
-          <div>Document ID: {doc.id}</div>
-          <div>Created: {new Date(doc.createdAt).toLocaleString()}</div>
+          <div>{t('Generated by')} {branding.orgName || t('Open TMS')}</div>
+          <div>{t('Document ID:')} {doc.id}</div>
+          <div>{t('Created:')} {new Date(doc.createdAt).toLocaleString()}</div>
         </div>
       </div>
     </div>

@@ -30,6 +30,8 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 
+import { t as translate } from '@/i18n';
+
 interface EmailTemplate {
   id: string;
   name: string;
@@ -85,7 +87,7 @@ function Banner({ variant, message, onClose }: { variant: 'success' | 'error'; m
     <div className={`flex items-start justify-between gap-3 rounded-md border p-3 text-sm ${tone}`}>
       <span>{message}</span>
       {onClose && (
-        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">Dismiss</button>
+        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">{translate('Dismiss')}</button>
       )}
     </div>
   );
@@ -181,7 +183,7 @@ export default function VNextEmailTemplates() {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm('Are you sure you want to delete this template?')) return;
+    if (!confirm(translate('Are you sure you want to delete this template?'))) return;
     setAlert(null);
     try {
       const res = await fetch(`${API_URL}/api/v1/email/templates/${id}`, { method: 'DELETE' });
@@ -228,12 +230,12 @@ export default function VNextEmailTemplates() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Email templates</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Manage email templates for system notifications</p>
+          <h1 className="text-3xl font-bold tracking-tight">{translate('Email templates')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{translate('Manage email templates for system notifications')}</p>
         </div>
         <Button variant="gradient" onClick={openCreate}>
           <Plus className="h-4 w-4" />
-          New template
+          {translate('New template')}
         </Button>
       </div>
 
@@ -244,19 +246,19 @@ export default function VNextEmailTemplates() {
           {templates.length === 0 ? (
             <div className="flex flex-col items-center gap-2 py-12 text-center text-muted-foreground">
               <Mail className="h-8 w-8" />
-              <h3 className="text-base font-medium">No email templates</h3>
-              <p className="text-sm">Create your first email template to get started.</p>
+              <h3 className="text-base font-medium">{translate('No email templates')}</h3>
+              <p className="text-sm">{translate('Create your first email template to get started.')}</p>
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Event type</TableHead>
-                  <TableHead>Subject</TableHead>
-                  <TableHead>Active</TableHead>
-                  <TableHead>Default</TableHead>
-                  <TableHead className="w-32">Actions</TableHead>
+                  <TableHead>{translate('Name')}</TableHead>
+                  <TableHead>{translate('Event type')}</TableHead>
+                  <TableHead>{translate('Subject')}</TableHead>
+                  <TableHead>{translate('Active')}</TableHead>
+                  <TableHead>{translate('Default')}</TableHead>
+                  <TableHead className="w-32">{translate('Actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -266,10 +268,10 @@ export default function VNextEmailTemplates() {
                     <TableCell className="text-sm text-muted-foreground">{t.eventType}</TableCell>
                     <TableCell className="max-w-[200px] truncate text-sm">{t.subject}</TableCell>
                     <TableCell>
-                      <Badge variant={t.active ? 'success' : 'secondary'}>{t.active ? 'Active' : 'Inactive'}</Badge>
+                      <Badge variant={t.active ? 'success' : 'secondary'}>{t.active ? translate('Active') : translate('Inactive')}</Badge>
                     </TableCell>
                     <TableCell>
-                      {t.isDefault ? <Badge variant="info">Default</Badge> : <span className="text-muted-foreground">--</span>}
+                      {t.isDefault ? <Badge variant="info">{translate('Default')}</Badge> : <span className="text-muted-foreground">--</span>}
                     </TableCell>
                     <TableCell>
                       <div className="flex gap-1">
@@ -292,20 +294,20 @@ export default function VNextEmailTemplates() {
       <Dialog open={showModal} onOpenChange={open => !open && closeModal()}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>
-            <DialogTitle>{editingId ? 'Edit template' : 'New template'}</DialogTitle>
+            <DialogTitle>{editingId ? translate('Edit template') : translate('New template')}</DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>Name</Label>
-                <Input value={form.name} onChange={e => handleFormChange('name', e.target.value)} placeholder="e.g. Shipment Confirmation" />
+                <Label>{translate('Name')}</Label>
+                <Input value={form.name} onChange={e => handleFormChange('name', e.target.value)} placeholder={translate('e.g. Shipment Confirmation')} />
               </div>
               <div className="space-y-2">
-                <Label>Event type</Label>
+                <Label>{translate('Event type')}</Label>
                 <Select value={form.eventType} onValueChange={v => handleFormChange('eventType', v)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select event type..." />
+                    <SelectValue placeholder={translate('Select event type...')} />
                   </SelectTrigger>
                   <SelectContent>
                     {supportedEventTypes.map(et => (
@@ -317,52 +319,52 @@ export default function VNextEmailTemplates() {
             </div>
 
             <div className="space-y-2">
-              <Label>Description</Label>
-              <Input value={form.description} onChange={e => handleFormChange('description', e.target.value)} placeholder="Brief description of when this template is used" />
+              <Label>{translate('Description')}</Label>
+              <Input value={form.description} onChange={e => handleFormChange('description', e.target.value)} placeholder={translate('Brief description of when this template is used')} />
             </div>
 
             <div className="space-y-2">
-              <Label>Subject</Label>
-              <Input value={form.subject} onChange={e => handleFormChange('subject', e.target.value)} placeholder="Email subject line" />
+              <Label>{translate('Subject')}</Label>
+              <Input value={form.subject} onChange={e => handleFormChange('subject', e.target.value)} placeholder={translate('Email subject line')} />
             </div>
 
             <div className="space-y-2">
-              <Label>HTML body</Label>
+              <Label>{translate('HTML body')}</Label>
               <textarea
                 value={form.htmlBody}
                 onChange={e => handleFormChange('htmlBody', e.target.value)}
-                placeholder="<html>...</html>"
+                placeholder={translate('<html>...</html>')}
                 rows={10}
                 className="flex w-full rounded-md border border-input bg-background px-3 py-2 font-mono text-xs ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               />
             </div>
 
             <div className="space-y-2">
-              <Label>Text body</Label>
+              <Label>{translate('Text body')}</Label>
               <textarea
                 value={form.textBody}
                 onChange={e => handleFormChange('textBody', e.target.value)}
-                placeholder="Plain text version of the email"
+                placeholder={translate('Plain text version of the email')}
                 rows={5}
                 className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               />
             </div>
 
             <div className="space-y-2">
-              <Label>Status</Label>
-              <Switch label="Template is active" checked={form.active} onChange={v => handleFormChange('active', v)} />
+              <Label>{translate('Status')}</Label>
+              <Switch label={translate('Template is active')} checked={form.active} onChange={v => handleFormChange('active', v)} />
             </div>
           </div>
 
           <DialogFooter>
             <Button variant="outline" onClick={handlePreview} disabled={previewing || !form.htmlBody}>
               <Eye className="h-4 w-4" />
-              {previewing ? 'Loading...' : 'Preview'}
+              {previewing ? translate('Loading...') : translate('Preview')}
             </Button>
-            <Button variant="outline" onClick={closeModal}>Cancel</Button>
+            <Button variant="outline" onClick={closeModal}>{translate('Cancel')}</Button>
             <Button variant="gradient" onClick={handleSave} disabled={saving}>
               <Save className="h-4 w-4" />
-              {saving ? 'Saving...' : editingId ? 'Update' : 'Create'}
+              {saving ? translate('Saving...') : editingId ? 'Update' : 'Create'}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -371,7 +373,7 @@ export default function VNextEmailTemplates() {
       <Dialog open={showPreview} onOpenChange={setShowPreview}>
         <DialogContent className="max-w-4xl">
           <DialogHeader>
-            <DialogTitle>Email preview</DialogTitle>
+            <DialogTitle>{translate('Email preview')}</DialogTitle>
           </DialogHeader>
           <div
             className="min-h-[300px] rounded-md border bg-background p-4"

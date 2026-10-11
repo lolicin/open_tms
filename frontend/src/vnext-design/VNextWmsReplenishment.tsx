@@ -32,6 +32,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface ReplenishmentRule {
   id: string;
   sku: string;
@@ -125,17 +127,19 @@ export default function VNextWmsReplenishment() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Replenishment</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Auto-replenish pick faces from bulk storage when stock drops below minimum</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Replenishment')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t(
+            'Auto-replenish pick faces from bulk storage when stock drops below minimum'
+          )}</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={handleCheck} disabled={checking}>
             <RefreshCw className={`h-4 w-4 ${checking ? 'animate-spin' : ''}`} />
-            {checking ? 'Checking...' : 'Run Check'}
+            {checking ? t('Checking...') : t('Run Check')}
           </Button>
           <Button variant="gradient" onClick={() => setShowCreate(true)}>
             <Plus className="h-4 w-4" />
-            Add Rule
+            {t('Add Rule')}
           </Button>
         </div>
       </div>
@@ -152,25 +156,25 @@ export default function VNextWmsReplenishment() {
           {checkResult.tasksCreated > 0 ? <CheckCircle2 className="h-5 w-5" /> : <Info className="h-5 w-5" />}
           {checkResult.tasksCreated > 0
             ? `Created ${checkResult.tasksCreated} replenishment task(s): ${checkResult.details.map((d: any) => `${d.sku} to ${d.pickFaceBin} (qty ${d.quantity})`).join(', ')}`
-            : 'All pick faces are above minimum levels. No replenishment needed.'}
+            : t('All pick faces are above minimum levels. No replenishment needed.')}
         </div>
       )}
 
       <Dialog open={showCreate} onOpenChange={setShowCreate}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>New Replenishment Rule</DialogTitle>
+            <DialogTitle>{t('New Replenishment Rule')}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleCreate} className="space-y-4">
             <div className="space-y-2">
-              <Label>SKU *</Label>
+              <Label>{t('SKU *')}</Label>
               <Input value={createForm.sku} onChange={e => setCreateForm({ ...createForm, sku: e.target.value })} required />
             </div>
             <div className="space-y-2">
-              <Label>Pick Face Bin *</Label>
+              <Label>{t('Pick Face Bin *')}</Label>
               <Select value={createForm.pickFaceBinId} onValueChange={v => setCreateForm({ ...createForm, pickFaceBinId: v })}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select bin..." />
+                  <SelectValue placeholder={t('Select bin...')} />
                 </SelectTrigger>
                 <SelectContent>
                   {pickFaceBins.map(b => (
@@ -180,10 +184,10 @@ export default function VNextWmsReplenishment() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>Bulk Zone (pull from) *</Label>
+              <Label>{t('Bulk Zone (pull from) *')}</Label>
               <Select value={createForm.bulkZoneId} onValueChange={v => setCreateForm({ ...createForm, bulkZoneId: v })}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select zone..." />
+                  <SelectValue placeholder={t('Select zone...')} />
                 </SelectTrigger>
                 <SelectContent>
                   {zones.map(z => (
@@ -194,17 +198,17 @@ export default function VNextWmsReplenishment() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Min Qty (trigger) *</Label>
+                <Label>{t('Min Qty (trigger) *')}</Label>
                 <Input type="number" min="1" value={createForm.minQuantity} onChange={e => setCreateForm({ ...createForm, minQuantity: e.target.value })} required />
               </div>
               <div className="space-y-2">
-                <Label>Max Qty (replenish to) *</Label>
+                <Label>{t('Max Qty (replenish to) *')}</Label>
                 <Input type="number" min="1" value={createForm.maxQuantity} onChange={e => setCreateForm({ ...createForm, maxQuantity: e.target.value })} required />
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" type="button" onClick={() => setShowCreate(false)}>Cancel</Button>
-              <Button variant="gradient" type="submit" disabled={creating}>{creating ? 'Creating...' : 'Create Rule'}</Button>
+              <Button variant="outline" type="button" onClick={() => setShowCreate(false)}>{t('Cancel')}</Button>
+              <Button variant="gradient" type="submit" disabled={creating}>{creating ? t('Creating...') : t('Create Rule')}</Button>
             </DialogFooter>
           </form>
         </DialogContent>
@@ -222,8 +226,10 @@ export default function VNextWmsReplenishment() {
         <Card>
           <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
             <RotateCw className="h-12 w-12 text-muted-foreground" />
-            <h3 className="text-base font-medium">No replenishment rules</h3>
-            <p className="text-sm text-muted-foreground">Set up rules to auto-replenish pick faces when stock drops below a threshold.</p>
+            <h3 className="text-base font-medium">{t('No replenishment rules')}</h3>
+            <p className="text-sm text-muted-foreground">{t(
+              'Set up rules to auto-replenish pick faces when stock drops below a threshold.'
+            )}</p>
           </CardContent>
         </Card>
       ) : (
@@ -231,13 +237,13 @@ export default function VNextWmsReplenishment() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>SKU</TableHead>
-                <TableHead>Pick Face Bin</TableHead>
-                <TableHead>Bulk Zone</TableHead>
-                <TableHead>Min Qty</TableHead>
-                <TableHead>Max Qty</TableHead>
-                <TableHead>Active</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t('SKU')}</TableHead>
+                <TableHead>{t('Pick Face Bin')}</TableHead>
+                <TableHead>{t('Bulk Zone')}</TableHead>
+                <TableHead>{t('Min Qty')}</TableHead>
+                <TableHead>{t('Max Qty')}</TableHead>
+                <TableHead>{t('Active')}</TableHead>
+                <TableHead>{t('Actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -251,12 +257,12 @@ export default function VNextWmsReplenishment() {
                   <TableCell>
                     <button type="button" onClick={() => handleToggle(r.id, r.active)}>
                       <Badge variant={r.active ? 'success' : 'muted'} className="cursor-pointer">
-                        {r.active ? 'Active' : 'Inactive'}
+                        {r.active ? t('Active') : t('Inactive')}
                       </Badge>
                     </button>
                   </TableCell>
                   <TableCell>
-                    <Button variant="outline" size="sm" className="text-destructive" onClick={() => handleDelete(r.id)}>Delete</Button>
+                    <Button variant="outline" size="sm" className="text-destructive" onClick={() => handleDelete(r.id)}>{t('Delete')}</Button>
                   </TableCell>
                 </TableRow>
               ))}

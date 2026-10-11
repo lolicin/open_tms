@@ -30,6 +30,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t as translate } from '@/i18n';
+
 interface DashboardData {
   issues: {
     total: number;
@@ -174,7 +176,7 @@ export default function VNextQualityDashboard() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{translate('Loading...')}</h3>
       </div>
     );
   }
@@ -218,7 +220,7 @@ export default function VNextQualityDashboard() {
       return (
         <div className="flex flex-col items-center gap-2 py-8 text-muted-foreground">
           <BarChart3 className="h-10 w-10 opacity-50" />
-          No trend data available
+          {translate('No trend data available')}
         </div>
       );
     }
@@ -242,34 +244,34 @@ export default function VNextQualityDashboard() {
   };
 
   const issueStats = [
-    { label: 'Open issues', value: d.issues.open, icon: AlertTriangle, tone: 'bg-warning/15 text-warning', onClick: () => navigate('/issues') },
-    { label: 'Critical issues', value: d.issues.critical, icon: CircleAlert, tone: 'bg-destructive/10 text-destructive', onClick: () => navigate('/issues') },
-    { label: 'CAPA reports open', value: d.capa.open, icon: ClipboardList, tone: 'bg-primary/10 text-primary', onClick: () => navigate('/quality/capa') },
-    { label: 'Overdue follow-ups', value: d.capa.overdueFollowUps, icon: AlertTriangle, tone: 'bg-destructive/10 text-destructive', onClick: () => navigate('/quality/capa') },
+    { label: translate('Open issues'), value: d.issues.open, icon: AlertTriangle, tone: 'bg-warning/15 text-warning', onClick: () => navigate('/issues') },
+    { label: translate('Critical issues'), value: d.issues.critical, icon: CircleAlert, tone: 'bg-destructive/10 text-destructive', onClick: () => navigate('/issues') },
+    { label: translate('CAPA reports open'), value: d.capa.open, icon: ClipboardList, tone: 'bg-primary/10 text-primary', onClick: () => navigate('/quality/capa') },
+    { label: translate('Overdue follow-ups'), value: d.capa.overdueFollowUps, icon: AlertTriangle, tone: 'bg-destructive/10 text-destructive', onClick: () => navigate('/quality/capa') },
   ];
 
   const sopStats = [
-    { label: 'Active checklists', value: d.sop.activeChecklists, icon: ListChecks, tone: 'bg-success/15 text-success' },
-    { label: 'Overdue checklists', value: d.sop.overdueChecklists, icon: AlertTriangle, tone: 'bg-warning/15 text-warning' },
-    { label: 'Recent audits', value: d.sop.recentAudits, icon: FileCheck, tone: 'bg-info/15 text-info' },
-    { label: 'Failed audits', value: d.sop.failedAudits, icon: XCircle, tone: 'bg-destructive/10 text-destructive' },
+    { label: translate('Active checklists'), value: d.sop.activeChecklists, icon: ListChecks, tone: 'bg-success/15 text-success' },
+    { label: translate('Overdue checklists'), value: d.sop.overdueChecklists, icon: AlertTriangle, tone: 'bg-warning/15 text-warning' },
+    { label: translate('Recent audits'), value: d.sop.recentAudits, icon: FileCheck, tone: 'bg-info/15 text-info' },
+    { label: translate('Failed audits'), value: d.sop.failedAudits, icon: XCircle, tone: 'bg-destructive/10 text-destructive' },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Quality centre</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Quality management, CAPA tracking, and GDP compliance</p>
+          <h1 className="text-3xl font-bold tracking-tight">{translate('Quality centre')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{translate('Quality management, CAPA tracking, and GDP compliance')}</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={() => navigate('/quality/summaries')}>
             <BarChart3 className="h-4 w-4" />
-            Summaries
+            {translate('Summaries')}
           </Button>
           <Button variant="gradient" onClick={() => navigate('/issues')}>
             <Bug className="h-4 w-4" />
-            View issues
+            {translate('View issues')}
           </Button>
         </div>
       </div>
@@ -293,7 +295,7 @@ export default function VNextQualityDashboard() {
 
       {d.issues.byCategory.length > 0 && (
         <Card className="p-5">
-          <h3 className="mb-3 text-base font-semibold">Issues by category</h3>
+          <h3 className="mb-3 text-base font-semibold">{translate('Issues by category')}</h3>
           <div className="flex flex-wrap gap-2">
             {d.issues.byCategory.map(({ category, count }) => (
               <Badge key={category} variant={categoryVariant(category)}>
@@ -305,7 +307,7 @@ export default function VNextQualityDashboard() {
       )}
 
       <div>
-        <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">SOP compliance</h3>
+        <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{translate('SOP compliance')}</h3>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {sopStats.map(stat => {
             const Icon = stat.icon;
@@ -328,7 +330,7 @@ export default function VNextQualityDashboard() {
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-2">
             <BarChart3 className="h-5 w-5 text-primary" />
-            <h2 className="text-base font-semibold">Issues over time</h2>
+            <h2 className="text-base font-semibold">{translate('Issues over time')}</h2>
           </div>
           <div className="flex gap-1">
             {(['7d', '30d', '90d'] as Period[]).map(p => (
@@ -351,22 +353,22 @@ export default function VNextQualityDashboard() {
         <Card>
           <div className="flex items-center gap-2 p-4">
             <Truck className="h-5 w-5 text-destructive" />
-            <h2 className="text-base font-semibold">Top problem carriers</h2>
+            <h2 className="text-base font-semibold">{translate('Top problem carriers')}</h2>
           </div>
           <Separator />
           {topCarriers.length === 0 ? (
             <div className="flex flex-col items-center gap-2 py-8 text-muted-foreground">
               <CheckCircle2 className="h-10 w-10 opacity-50" />
-              No carrier issues found
+              {translate('No carrier issues found')}
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Carrier</TableHead>
-                  <TableHead className="text-right">Issues</TableHead>
-                  <TableHead className="text-right">Critical</TableHead>
-                  <TableHead className="text-right">Avg resolution</TableHead>
+                  <TableHead>{translate('Carrier')}</TableHead>
+                  <TableHead className="text-right">{translate('Issues')}</TableHead>
+                  <TableHead className="text-right">{translate('Critical')}</TableHead>
+                  <TableHead className="text-right">{translate('Avg resolution')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -374,7 +376,7 @@ export default function VNextQualityDashboard() {
                   <TableRow key={c.dimensionId} onClick={() => navigate(`/carriers/${c.dimensionId}`)} className="cursor-pointer">
                     <TableCell>
                       <div className="font-medium">{c.dimensionName}</div>
-                      <div className="text-xs text-muted-foreground">Last issue: {formatDate(c.lastIssueAt)}</div>
+                      <div className="text-xs text-muted-foreground">{translate('Last issue:')} {formatDate(c.lastIssueAt)}</div>
                     </TableCell>
                     <TableCell className="text-right font-semibold">{c.totalIssues}</TableCell>
                     <TableCell className="text-right">
@@ -395,22 +397,22 @@ export default function VNextQualityDashboard() {
         <Card>
           <div className="flex items-center gap-2 p-4">
             <Route className="h-5 w-5 text-warning" />
-            <h2 className="text-base font-semibold">Top problem lanes</h2>
+            <h2 className="text-base font-semibold">{translate('Top problem lanes')}</h2>
           </div>
           <Separator />
           {topLanes.length === 0 ? (
             <div className="flex flex-col items-center gap-2 py-8 text-muted-foreground">
               <CheckCircle2 className="h-10 w-10 opacity-50" />
-              No lane issues found
+              {translate('No lane issues found')}
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Lane</TableHead>
-                  <TableHead className="text-right">Issues</TableHead>
-                  <TableHead className="text-right">Critical</TableHead>
-                  <TableHead className="text-right">Avg resolution</TableHead>
+                  <TableHead>{translate('Lane')}</TableHead>
+                  <TableHead className="text-right">{translate('Issues')}</TableHead>
+                  <TableHead className="text-right">{translate('Critical')}</TableHead>
+                  <TableHead className="text-right">{translate('Avg resolution')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -418,7 +420,7 @@ export default function VNextQualityDashboard() {
                   <TableRow key={l.dimensionId} onClick={() => navigate(`/lanes/${l.dimensionId}`)} className="cursor-pointer">
                     <TableCell>
                       <div className="font-medium">{l.dimensionName}</div>
-                      <div className="text-xs text-muted-foreground">Last issue: {formatDate(l.lastIssueAt)}</div>
+                      <div className="text-xs text-muted-foreground">{translate('Last issue:')} {formatDate(l.lastIssueAt)}</div>
                     </TableCell>
                     <TableCell className="text-right font-semibold">{l.totalIssues}</TableCell>
                     <TableCell className="text-right">
@@ -441,58 +443,58 @@ export default function VNextQualityDashboard() {
         <Card className="cursor-pointer p-5 transition-colors hover:border-primary/40" onClick={() => navigate('/quality/capa')}>
           <div className="flex items-center gap-3">
             <ClipboardList className="h-7 w-7 text-primary" />
-            <h3 className="text-base font-semibold">CAPA reports</h3>
+            <h3 className="text-base font-semibold">{translate('CAPA reports')}</h3>
           </div>
-          <p className="mt-2 text-sm text-muted-foreground">Corrective and Preventive Action reports for quality events.</p>
+          <p className="mt-2 text-sm text-muted-foreground">{translate('Corrective and Preventive Action reports for quality events.')}</p>
           <div className="mt-3 flex gap-6">
             <div>
               <div className="text-xl font-bold">{d.capa.total}</div>
-              <div className="text-xs text-muted-foreground">Total</div>
+              <div className="text-xs text-muted-foreground">{translate('Total')}</div>
             </div>
             <div>
               <div className="text-xl font-bold">{d.capa.open}</div>
-              <div className="text-xs text-muted-foreground">Open</div>
+              <div className="text-xs text-muted-foreground">{translate('Open')}</div>
             </div>
           </div>
-          <Button variant="secondary" className="mt-4 w-full">View CAPA reports</Button>
+          <Button variant="secondary" className="mt-4 w-full">{translate('View CAPA reports')}</Button>
         </Card>
 
         <Card className="cursor-pointer p-5 transition-colors hover:border-primary/40" onClick={() => navigate('/quality/sop-audits')}>
           <div className="flex items-center gap-3">
             <FileCheck className="h-7 w-7 text-primary" />
-            <h3 className="text-base font-semibold">SOP audits</h3>
+            <h3 className="text-base font-semibold">{translate('SOP audits')}</h3>
           </div>
-          <p className="mt-2 text-sm text-muted-foreground">Standard operating procedure checklists and audit records.</p>
+          <p className="mt-2 text-sm text-muted-foreground">{translate('Standard operating procedure checklists and audit records.')}</p>
           <div className="mt-3 flex gap-6">
             <div>
               <div className="text-xl font-bold">{d.sop.recentAudits}</div>
-              <div className="text-xs text-muted-foreground">Recent</div>
+              <div className="text-xs text-muted-foreground">{translate('Recent')}</div>
             </div>
             <div>
               <div className="text-xl font-bold">{d.sop.failedAudits}</div>
-              <div className="text-xs text-muted-foreground">Failed</div>
+              <div className="text-xs text-muted-foreground">{translate('Failed')}</div>
             </div>
           </div>
-          <Button variant="secondary" className="mt-4 w-full">View SOP audits</Button>
+          <Button variant="secondary" className="mt-4 w-full">{translate('View SOP audits')}</Button>
         </Card>
 
         <Card className="cursor-pointer p-5 transition-colors hover:border-primary/40" onClick={() => navigate('/quality/summaries')}>
           <div className="flex items-center gap-3">
             <BarChart3 className="h-7 w-7 text-primary" />
-            <h3 className="text-base font-semibold">Issue summaries</h3>
+            <h3 className="text-base font-semibold">{translate('Issue summaries')}</h3>
           </div>
-          <p className="mt-2 text-sm text-muted-foreground">Aggregated quality metrics by carrier, lane, and customer.</p>
+          <p className="mt-2 text-sm text-muted-foreground">{translate('Aggregated quality metrics by carrier, lane, and customer.')}</p>
           <div className="mt-3 flex gap-6">
             <div>
               <div className="text-xl font-bold">{d.issues.total}</div>
-              <div className="text-xs text-muted-foreground">Total issues</div>
+              <div className="text-xs text-muted-foreground">{translate('Total issues')}</div>
             </div>
             <div>
               <div className="text-xl font-bold">{d.issues.needsCapa}</div>
-              <div className="text-xs text-muted-foreground">Needs CAPA</div>
+              <div className="text-xs text-muted-foreground">{translate('Needs CAPA')}</div>
             </div>
           </div>
-          <Button variant="secondary" className="mt-4 w-full">View summaries</Button>
+          <Button variant="secondary" className="mt-4 w-full">{translate('View summaries')}</Button>
         </Card>
       </div>
     </div>

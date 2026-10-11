@@ -15,6 +15,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { t } from '@/i18n';
+
 interface LlmConfig {
   llmProvider: string | null;
   llmModel: string | null;
@@ -35,7 +37,7 @@ function Banner({ variant, message, onClose }: { variant: 'success' | 'error' | 
     <div className={`flex items-start justify-between gap-3 rounded-md border p-3 text-sm ${tones[variant]}`}>
       <div>{message}</div>
       {onClose && (
-        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">Dismiss</button>
+        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">{t('Dismiss')}</button>
       )}
     </div>
   );
@@ -112,8 +114,8 @@ export default function VNextLlmSettings() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">AI / LLM settings</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Configure the AI provider for agent features</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('AI / LLM settings')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Configure the AI provider for agent features')}</p>
         </div>
       </div>
 
@@ -122,41 +124,41 @@ export default function VNextLlmSettings() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Current status</CardTitle>
+          <CardTitle>{t('Current status')}</CardTitle>
         </CardHeader>
         <CardContent>
           <dl className="grid gap-4 md:grid-cols-2">
             <div>
-              <dt className="text-xs uppercase tracking-wide text-muted-foreground">AI agents</dt>
+              <dt className="text-xs uppercase tracking-wide text-muted-foreground">{t('AI agents')}</dt>
               <dd className="mt-1">
                 <Badge variant={config?.llmEnabled ? 'success' : 'secondary'}>
-                  {config?.llmEnabled ? 'Enabled' : 'Disabled'}
+                  {config?.llmEnabled ? t('Enabled') : t('Disabled')}
                 </Badge>
               </dd>
             </div>
             <div>
-              <dt className="text-xs uppercase tracking-wide text-muted-foreground">API key</dt>
+              <dt className="text-xs uppercase tracking-wide text-muted-foreground">{t('API key')}</dt>
               <dd className="mt-1 text-sm">
                 {config?.hasApiKey
                   ? <span className="font-mono text-xs">{config.apiKeyMasked}</span>
-                  : <span className="text-muted-foreground">Not configured</span>}
+                  : <span className="text-muted-foreground">{t('Not configured')}</span>}
               </dd>
             </div>
             <div>
-              <dt className="text-xs uppercase tracking-wide text-muted-foreground">Environment override</dt>
+              <dt className="text-xs uppercase tracking-wide text-muted-foreground">{t('Environment override')}</dt>
               <dd className="mt-1">
                 {config?.envConfigured
-                  ? <Badge variant="info">ANTHROPIC_API_KEY set</Badge>
-                  : <span className="text-sm text-muted-foreground">Not set</span>}
+                  ? <Badge variant="info">{t('ANTHROPIC_API_KEY set')}</Badge>
+                  : <span className="text-sm text-muted-foreground">{t('Not set')}</span>}
               </dd>
             </div>
             <div>
-              <dt className="text-xs uppercase tracking-wide text-muted-foreground">Provider</dt>
+              <dt className="text-xs uppercase tracking-wide text-muted-foreground">{t('Provider')}</dt>
               <dd className="mt-1 text-sm capitalize">{config?.llmProvider || '-'}</dd>
             </div>
             <div className="md:col-span-2">
-              <dt className="text-xs uppercase tracking-wide text-muted-foreground">Model</dt>
-              <dd className="mt-1 text-sm">{config?.llmModel || 'Default (claude-sonnet-4-20250514)'}</dd>
+              <dt className="text-xs uppercase tracking-wide text-muted-foreground">{t('Model')}</dt>
+              <dd className="mt-1 text-sm">{config?.llmModel || t('Default (claude-sonnet-4-20250514)')}</dd>
             </div>
           </dl>
         </CardContent>
@@ -169,7 +171,9 @@ export default function VNextLlmSettings() {
             <span className="flex items-start gap-2">
               <Info className="h-4 w-4 shrink-0" />
               <span>
-                The <code className="rounded bg-muted px-1 py-0.5 text-xs">ANTHROPIC_API_KEY</code> environment variable is set. The agent will use the env var unless you configure a key here, which takes priority.
+                {t('The')} <code className="rounded bg-muted px-1 py-0.5 text-xs">{t('ANTHROPIC_API_KEY')}</code> {t(
+                  'environment variable is set. The agent will use the env var unless you configure a key here, which takes priority.'
+                )}
               </span>
             </span>
           }
@@ -180,32 +184,32 @@ export default function VNextLlmSettings() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Bot className="h-4 w-4 text-primary" />
-            Configuration
+            {t('Configuration')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <Label>Provider</Label>
+              <Label>{t('Provider')}</Label>
               <Select value={provider} onValueChange={setProvider}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="anthropic">Anthropic (Claude)</SelectItem>
+                  <SelectItem value="anthropic">{t('Anthropic (Claude)')}</SelectItem>
                 </SelectContent>
               </Select>
-              <p className="text-xs text-muted-foreground">More providers coming soon</p>
+              <p className="text-xs text-muted-foreground">{t('More providers coming soon')}</p>
             </div>
             <div className="space-y-2">
-              <Label>Model override (optional)</Label>
-              <Input value={model} onChange={e => setModel(e.target.value)} placeholder="claude-sonnet-4-20250514" />
-              <p className="text-xs text-muted-foreground">Leave blank for default model</p>
+              <Label>{t('Model override (optional)')}</Label>
+              <Input value={model} onChange={e => setModel(e.target.value)} placeholder={t('claude-sonnet-4-20250514')} />
+              <p className="text-xs text-muted-foreground">{t('Leave blank for default model')}</p>
             </div>
             <div className="space-y-2 md:col-span-2">
               <Label className="flex items-center gap-1">
                 <KeyRound className="h-4 w-4" />
-                API key
+                {t('API key')}
               </Label>
               <Input
                 type="password"
@@ -214,7 +218,9 @@ export default function VNextLlmSettings() {
                 placeholder={config?.hasApiKey ? 'Key is set - enter new key to replace' : 'sk-ant-...'}
               />
               <p className="text-xs text-muted-foreground">
-                Your API key is stored securely and never exposed in API responses. You are responsible for your own API costs.
+                {t(
+                  'Your API key is stored securely and never exposed in API responses. You are responsible for your own API costs.'
+                )}
               </p>
             </div>
             <div className="space-y-2 md:col-span-2">
@@ -226,9 +232,11 @@ export default function VNextLlmSettings() {
                   className="mt-1 h-5 w-5 rounded border border-input bg-background accent-primary"
                 />
                 <div>
-                  <div className="font-medium">Enable AI agents</div>
+                  <div className="font-medium">{t('Enable AI agents')}</div>
                   <div className="text-xs text-muted-foreground">
-                    When enabled, the triage agent will process shipment exceptions, SLA breaches, and other events
+                    {t(
+                      'When enabled, the triage agent will process shipment exceptions, SLA breaches, and other events'
+                    )}
                   </div>
                 </div>
               </label>
@@ -238,7 +246,7 @@ export default function VNextLlmSettings() {
           <div className="flex justify-end">
             <Button variant="gradient" onClick={handleSave} disabled={saving}>
               <Save className="h-4 w-4" />
-              {saving ? 'Saving...' : 'Save settings'}
+              {saving ? t('Saving...') : t('Save settings')}
             </Button>
           </div>
         </CardContent>
@@ -250,7 +258,9 @@ export default function VNextLlmSettings() {
           <span className="flex items-start gap-2">
             <DollarSign className="h-4 w-4 shrink-0" />
             <span>
-              <strong>Cost awareness:</strong> AI agents make LLM API calls that cost money. Each invocation typically uses 500-2,000 tokens. Monitor usage on the Agent Decisions page and set appropriate event filters to control volume.
+              <strong>{t('Cost awareness:')}</strong> {t(
+                'AI agents make LLM API calls that cost money. Each invocation typically uses 500-2,000 tokens. Monitor usage on the Agent Decisions page and set appropriate event filters to control volume.'
+              )}
             </span>
           </span>
         }

@@ -14,6 +14,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 
+import { t } from '@/i18n';
+
 interface PutawayTaskDetail {
   id: string;
   status: string;
@@ -70,7 +72,7 @@ export default function WarehousePutawayTask() {
   if (!task) {
     return (
       <Card className="mx-auto mt-4 max-w-2xl p-6 text-center">
-        <p className="text-base text-destructive">{error || 'Not found'}</p>
+        <p className="text-base text-destructive">{error || t('Not found')}</p>
       </Card>
     );
   }
@@ -84,7 +86,7 @@ export default function WarehousePutawayTask() {
           size="icon"
           className="h-12 w-12 shrink-0"
           onClick={() => navigate('/warehouse/tasks')}
-          aria-label="Back to tasks"
+          aria-label={t('Back to tasks')}
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
@@ -106,10 +108,10 @@ export default function WarehousePutawayTask() {
               <CheckCircle2 className="h-14 w-14 text-success" />
             )}
             <p className="text-lg font-semibold">
-              {result.deviation ? 'Putaway Complete (Deviation)' : 'Putaway Complete'}
+              {result.deviation ? t('Putaway Complete (Deviation)') : t('Putaway Complete')}
             </p>
             <p className="text-sm text-muted-foreground">
-              Placed at <strong className="text-foreground">{result.actualBinLabel}</strong>
+              {t('Placed at')} <strong className="text-foreground">{result.actualBinLabel}</strong>
             </p>
             {result.deviation && (
               <div className="mt-2 w-full rounded-md border border-warning/30 bg-warning/10 px-3 py-2 text-sm text-warning">
@@ -128,7 +130,7 @@ export default function WarehousePutawayTask() {
               className="mt-4"
               onClick={() => navigate('/warehouse/tasks')}
             >
-              Back to Tasks
+              {t('Back to Tasks')}
             </Button>
           </CardContent>
         </Card>
@@ -138,24 +140,24 @@ export default function WarehousePutawayTask() {
           <Card>
             <CardContent className="pt-6">
               <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                {task.putawayType === 'replenishment' ? 'Replenishment' : 'Putaway'}
+                {task.putawayType === 'replenishment' ? t('Replenishment') : t('Putaway')}
               </div>
               <div className="mt-3 text-center">
-                <div className="text-sm text-muted-foreground">Unit</div>
+                <div className="text-sm text-muted-foreground">{t('Unit')}</div>
                 <div className="mb-4 text-lg font-semibold">
                   {task.trackableUnit.identifier}
                 </div>
 
                 <div className="flex items-center justify-center gap-4">
                   <div>
-                    <div className="text-xs text-muted-foreground">From</div>
+                    <div className="text-xs text-muted-foreground">{t('From')}</div>
                     <div className="text-base font-semibold">
                       {task.sourceBin?.label ?? 'Dock'}
                     </div>
                   </div>
                   <ArrowRight className="h-7 w-7 text-primary" />
                   <div>
-                    <div className="text-xs text-muted-foreground">To</div>
+                    <div className="text-xs text-muted-foreground">{t('To')}</div>
                     <div className="text-2xl font-bold tabular-nums text-primary">
                       {task.targetBin.label}
                     </div>
@@ -172,7 +174,7 @@ export default function WarehousePutawayTask() {
           <Card className="border-2 border-primary">
             <CardContent className="pt-6">
               <div className="text-xs font-semibold uppercase tracking-wider text-primary">
-                Scan Destination Bin
+                {t('Scan Destination Bin')}
               </div>
               <Input
                 value={scannedBin}
@@ -199,7 +201,7 @@ export default function WarehousePutawayTask() {
             disabled={confirming || !scannedBin.trim()}
           >
             {confirming ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
-            {confirming ? 'Confirming...' : 'Confirm putaway'}
+            {confirming ? t('Confirming...') : t('Confirm putaway')}
           </Button>
         </div>
       )}

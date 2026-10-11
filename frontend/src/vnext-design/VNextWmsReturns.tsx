@@ -23,6 +23,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface Rma {
   id: string;
   rmaNumber: string;
@@ -89,17 +91,17 @@ export default function VNextWmsReturns() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Returns</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Manage RMAs from request through disposition to refund</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Returns')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Manage RMAs from request through disposition to refund')}</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={() => navigate('/wms/returns/refund-review')}>
             <Banknote className="h-4 w-4" />
-            Refund Review
+            {t('Refund Review')}
           </Button>
           <Button variant="gradient" onClick={() => navigate('/wms/returns/create')}>
             <Plus className="h-4 w-4" />
-            New RMA
+            {t('New RMA')}
           </Button>
         </div>
       </div>
@@ -110,18 +112,18 @@ export default function VNextWmsReturns() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Statuses</SelectItem>
-            <SelectItem value="requested">Requested</SelectItem>
-            <SelectItem value="authorized">Authorized</SelectItem>
-            <SelectItem value="in_transit">In Transit</SelectItem>
-            <SelectItem value="received">Received</SelectItem>
-            <SelectItem value="inspecting">Inspecting</SelectItem>
-            <SelectItem value="dispositioning">Dispositioning</SelectItem>
-            <SelectItem value="completed">Completed</SelectItem>
-            <SelectItem value="rejected">Rejected</SelectItem>
+            <SelectItem value="all">{t('All Statuses')}</SelectItem>
+            <SelectItem value="requested">{t('Requested')}</SelectItem>
+            <SelectItem value="authorized">{t('Authorized')}</SelectItem>
+            <SelectItem value="in_transit">{t('In Transit')}</SelectItem>
+            <SelectItem value="received">{t('Received')}</SelectItem>
+            <SelectItem value="inspecting">{t('Inspecting')}</SelectItem>
+            <SelectItem value="dispositioning">{t('Dispositioning')}</SelectItem>
+            <SelectItem value="completed">{t('Completed')}</SelectItem>
+            <SelectItem value="rejected">{t('Rejected')}</SelectItem>
           </SelectContent>
         </Select>
-        <Input placeholder="Search RMA number..." value={search} onChange={e => setSearch(e.target.value)} className="max-w-sm" />
+        <Input placeholder={t('Search RMA number...')} value={search} onChange={e => setSearch(e.target.value)} className="max-w-sm" />
       </div>
 
       {loading ? (
@@ -132,8 +134,8 @@ export default function VNextWmsReturns() {
         <Card>
           <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
             <RotateCcw className="h-12 w-12 text-muted-foreground" />
-            <h3 className="text-base font-medium">No RMAs</h3>
-            <p className="text-sm text-muted-foreground">Create an RMA manually or wait for customer portal requests.</p>
+            <h3 className="text-base font-medium">{t('No RMAs')}</h3>
+            <p className="text-sm text-muted-foreground">{t('Create an RMA manually or wait for customer portal requests.')}</p>
           </CardContent>
         </Card>
       ) : (
@@ -141,14 +143,14 @@ export default function VNextWmsReturns() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>RMA #</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Reason</TableHead>
-                <TableHead>Lines</TableHead>
-                <TableHead>Suggested Refund</TableHead>
-                <TableHead>Actual</TableHead>
-                <TableHead>Via</TableHead>
-                <TableHead>Requested</TableHead>
+                <TableHead>{t('RMA #')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead>{t('Reason')}</TableHead>
+                <TableHead>{t('Lines')}</TableHead>
+                <TableHead>{t('Suggested Refund')}</TableHead>
+                <TableHead>{t('Actual')}</TableHead>
+                <TableHead>{t('Via')}</TableHead>
+                <TableHead>{t('Requested')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

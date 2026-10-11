@@ -31,6 +31,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface SlaSummary {
   active: number;
   warning: number;
@@ -142,24 +144,24 @@ export default function VNextSlaDashboard() {
     : 100;
 
   const stats = [
-    { label: 'Compliance rate', value: `${complianceRate}%`, color: 'text-success', border: 'border-l-success' },
-    { label: 'Active SLAs', value: summary.active, color: 'text-info', border: 'border-l-info' },
-    { label: 'At risk', value: summary.warning, color: 'text-warning', border: 'border-l-warning' },
-    { label: 'Breached', value: summary.breached, color: 'text-destructive', border: 'border-l-destructive' },
-    { label: 'Met', value: summary.met, color: 'text-success', border: 'border-l-success' },
+    { label: t('Compliance rate'), value: `${complianceRate}%`, color: 'text-success', border: 'border-l-success' },
+    { label: t('Active SLAs'), value: summary.active, color: 'text-info', border: 'border-l-info' },
+    { label: t('At risk'), value: summary.warning, color: 'text-warning', border: 'border-l-warning' },
+    { label: t('Breached'), value: summary.breached, color: 'text-destructive', border: 'border-l-destructive' },
+    { label: t('Met'), value: summary.met, color: 'text-success', border: 'border-l-success' },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">SLA dashboard</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Service level agreement monitoring</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('SLA dashboard')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Service level agreement monitoring')}</p>
         </div>
         <div className="flex items-center gap-2">
           {lastRefresh && (
             <span className="text-xs text-muted-foreground">
-              Updated {lastRefresh.toLocaleTimeString()}
+              {t('Updated')} {lastRefresh.toLocaleTimeString()}
             </span>
           )}
           <Button
@@ -167,11 +169,11 @@ export default function VNextSlaDashboard() {
             onClick={() => setAutoRefresh(prev => !prev)}
           >
             {autoRefresh ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-            {autoRefresh ? 'Live' : 'Paused'}
+            {autoRefresh ? t('Live') : t('Paused')}
           </Button>
           <Button variant="outline" onClick={fetchAll}>
             <RefreshCw className={cn('h-4 w-4', loading && 'animate-spin')} />
-            Refresh
+            {t('Refresh')}
           </Button>
         </div>
       </div>
@@ -192,23 +194,23 @@ export default function VNextSlaDashboard() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Clock className="h-5 w-5 text-warning" />
-              At risk ({atRisk.length})
-            </CardTitle>
+              {t('At risk (')}{atRisk.length})
+                          </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             {atRisk.length === 0 && !loading ? (
               <div className="flex flex-col items-center gap-2 py-12 text-center text-muted-foreground">
                 <CheckCircle2 className="h-8 w-8" />
-                <p className="text-sm">No SLAs at risk</p>
+                <p className="text-sm">{t('No SLAs at risk')}</p>
               </div>
             ) : (
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Entity</TableHead>
-                    <TableHead>Rule</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Time left</TableHead>
+                    <TableHead>{t('Entity')}</TableHead>
+                    <TableHead>{t('Rule')}</TableHead>
+                    <TableHead>{t('Status')}</TableHead>
+                    <TableHead>{t('Time left')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -247,23 +249,23 @@ export default function VNextSlaDashboard() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TimerOff className="h-5 w-5 text-destructive" />
-              Breached ({breached.length})
-            </CardTitle>
+              {t('Breached (')}{breached.length})
+                          </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             {breached.length === 0 && !loading ? (
               <div className="flex flex-col items-center gap-2 py-12 text-center text-muted-foreground">
                 <ShieldCheck className="h-8 w-8" />
-                <p className="text-sm">No SLA breaches</p>
+                <p className="text-sm">{t('No SLA breaches')}</p>
               </div>
             ) : (
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Entity</TableHead>
-                    <TableHead>Rule</TableHead>
-                    <TableHead>Breached</TableHead>
-                    <TableHead>Overdue</TableHead>
+                    <TableHead>{t('Entity')}</TableHead>
+                    <TableHead>{t('Rule')}</TableHead>
+                    <TableHead>{t('Breached')}</TableHead>
+                    <TableHead>{t('Overdue')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -299,15 +301,17 @@ export default function VNextSlaDashboard() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Export compliance report</CardTitle>
+          <CardTitle>{t('Export compliance report')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <p className="text-sm text-muted-foreground">
-            Download a CSV report of SLA evaluations for sharing with customers or internal review.
+            {t(
+              'Download a CSV report of SLA evaluations for sharing with customers or internal review.'
+            )}
           </p>
           <div className="flex flex-wrap items-end gap-3">
             <div className="space-y-1">
-              <Label>From</Label>
+              <Label>{t('From')}</Label>
               <DatePicker
                 type="date"
                 id="report-from"
@@ -316,7 +320,7 @@ export default function VNextSlaDashboard() {
               />
             </div>
             <div className="space-y-1">
-              <Label>To</Label>
+              <Label>{t('To')}</Label>
               <DatePicker
                 type="date"
                 id="report-to"
@@ -334,7 +338,7 @@ export default function VNextSlaDashboard() {
               }}
             >
               <Download className="h-4 w-4" />
-              Download CSV
+              {t('Download CSV')}
             </Button>
           </div>
         </CardContent>

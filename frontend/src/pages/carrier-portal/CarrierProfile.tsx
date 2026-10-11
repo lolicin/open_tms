@@ -10,6 +10,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
+import { t } from '@/i18n';
+
 export default function CarrierProfile() {
   const navigate = useNavigate();
   const user = getCarrierUser();
@@ -66,25 +68,25 @@ export default function CarrierProfile() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">Profile &amp; settings</h1>
+      <h1 className="text-3xl font-bold tracking-tight">{t('Profile & settings')}</h1>
 
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <User className="h-5 w-5" />
-              Profile
+              {t('Profile')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid gap-3 text-sm">
-              <div><strong>Name:</strong> {user.name}</div>
-              <div><strong>Email:</strong> {user.email}</div>
+              <div><strong>{t('Name:')}</strong> {user.name}</div>
+              <div><strong>{t('Email:')}</strong> {user.email}</div>
               <div className="flex items-center gap-2">
-                <strong>Role:</strong>
+                <strong>{t('Role:')}</strong>
                 <Badge variant={user.role === 'admin' ? 'default' : 'secondary'}>{user.role}</Badge>
               </div>
-              <div><strong>Carrier:</strong> {user.carrierName}</div>
+              <div><strong>{t('Carrier:')}</strong> {user.carrierName}</div>
             </div>
           </CardContent>
         </Card>
@@ -93,7 +95,7 @@ export default function CarrierProfile() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Lock className="h-5 w-5" />
-              Change password
+              {t('Change password')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -110,7 +112,7 @@ export default function CarrierProfile() {
 
             <form onSubmit={handleChangePassword} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="current-password">Current password</Label>
+                <Label htmlFor="current-password">{t('Current password')}</Label>
                 <Input
                   id="current-password"
                   type="password"
@@ -120,7 +122,7 @@ export default function CarrierProfile() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="new-password">New password</Label>
+                <Label htmlFor="new-password">{t('New password')}</Label>
                 <Input
                   id="new-password"
                   type="password"
@@ -130,11 +132,11 @@ export default function CarrierProfile() {
                   minLength={8}
                 />
                 <div className="text-xs text-muted-foreground">
-                  Min 8 chars, must include uppercase, lowercase, and a number
+                  {t('Min 8 chars, must include uppercase, lowercase, and a number')}
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="confirm-password">Confirm new password</Label>
+                <Label htmlFor="confirm-password">{t('Confirm new password')}</Label>
                 <Input
                   id="confirm-password"
                   type="password"
@@ -145,7 +147,7 @@ export default function CarrierProfile() {
                 />
               </div>
               <Button type="submit" variant="gradient" disabled={loading}>
-                {loading ? 'Changing...' : 'Change password'}
+                {loading ? t('Changing...') : t('Change password')}
               </Button>
             </form>
           </CardContent>

@@ -34,12 +34,14 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { t } from '@/i18n';
+
 const EQUIPMENT_TYPES = [
-  { key: 'dryVan', label: 'Dry van' },
-  { key: 'reefer', label: 'Reefer' },
-  { key: 'flatbed', label: 'Flatbed' },
-  { key: 'tanker', label: 'Tanker' },
-  { key: 'intermodal', label: 'Intermodal' },
+  { key: 'dryVan', label: t('Dry van') },
+  { key: 'reefer', label: t('Reefer') },
+  { key: 'flatbed', label: t('Flatbed') },
+  { key: 'tanker', label: t('Tanker') },
+  { key: 'intermodal', label: t('Intermodal') },
 ];
 
 export default function VNextCreateCarrier() {
@@ -123,7 +125,7 @@ export default function VNextCreateCarrier() {
   const handleSubmit = async () => {
     setSubmitError('');
     if (!name.trim()) {
-      setSubmitError('Carrier name is required.');
+      setSubmitError(t('Carrier name is required.'));
       return;
     }
     setSubmitting(true);
@@ -166,7 +168,7 @@ export default function VNextCreateCarrier() {
         toast.success(`Carrier ${label} updated`);
       } else {
         toast.success(`Carrier ${label} created`, {
-          action: newId ? { label: 'View', onClick: () => navigate(`/carriers/${newId}/edit`) } : undefined,
+          action: newId ? { label: t('View'), onClick: () => navigate(`/carriers/${newId}/edit`) } : undefined,
         });
       }
       navigate('/carriers');
@@ -220,9 +222,9 @@ export default function VNextCreateCarrier() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-center text-muted-foreground">
         <CircleAlert className="h-10 w-10 text-destructive" />
-        <h2 className="text-xl font-semibold text-foreground">Carrier not found</h2>
-        <p>This carrier may have been deleted.</p>
-        <Button variant="outline" asChild><Link to="/carriers">Back to carriers</Link></Button>
+        <h2 className="text-xl font-semibold text-foreground">{t('Carrier not found')}</h2>
+        <p>{t('This carrier may have been deleted.')}</p>
+        <Button variant="outline" asChild><Link to="/carriers">{t('Back to carriers')}</Link></Button>
       </div>
     );
   }
@@ -241,28 +243,28 @@ export default function VNextCreateCarrier() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/carriers" className="hover:text-foreground">
-          <ArrowLeft className="inline h-4 w-4" /> Carriers
+          <ArrowLeft className="inline h-4 w-4" /> {t('Carriers')}
         </Link>
         <ChevronRight className="h-3 w-3" />
-        <span>{isEdit ? 'Edit carrier' : 'New carrier'}</span>
+        <span>{isEdit ? t('Edit carrier') : t('New carrier')}</span>
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold tracking-tight">{isEdit ? 'Edit carrier' : 'New carrier'}</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{isEdit ? t('Edit carrier') : t('New carrier')}</h1>
         {isEdit && (canWrite || canDelete) && (
           <div className="flex items-center gap-2">
             {canWrite && (archived ? (
               <Button variant="outline" onClick={handleUnarchive} disabled={actionBusy}>
-                <ArchiveRestore className="h-4 w-4" /> Unarchive
+                <ArchiveRestore className="h-4 w-4" /> {t('Unarchive')}
               </Button>
             ) : (
               <Button variant="outline" onClick={handleArchive} disabled={actionBusy}>
-                <Archive className="h-4 w-4" /> Archive
+                <Archive className="h-4 w-4" /> {t('Archive')}
               </Button>
             ))}
             {canDelete && (
               <Button variant="outline" className="text-destructive hover:text-destructive" onClick={handleDelete} disabled={actionBusy}>
-                <Trash2 className="h-4 w-4" /> Delete
+                <Trash2 className="h-4 w-4" /> {t('Delete')}
               </Button>
             )}
           </div>
@@ -272,7 +274,9 @@ export default function VNextCreateCarrier() {
       {archived && (
         <div className="flex items-center gap-2 rounded-md border border-warning/30 bg-warning/10 p-3 text-sm text-warning">
           <Archive className="h-4 w-4" />
-          This carrier is archived. It can't be selected for new work or used by its portal users until restored.
+          {t(
+            'This carrier is archived. It can\'t be selected for new work or used by its portal users until restored.'
+          )}
         </div>
       )}
 
@@ -280,34 +284,36 @@ export default function VNextCreateCarrier() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Building2 className="h-4 w-4 text-primary" />
-            Company information
+            {t('Company information')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-3">
           <div className="space-y-2 md:col-span-3">
-            <Label>Name <span className="text-destructive">*</span></Label>
-            <Input type="text" placeholder="Carrier name" value={name} onChange={e => setName(e.target.value)} required aria-required />
-            <p className="text-xs text-muted-foreground">Name is the only required field. Everything else is optional.</p>
+            <Label>{t('Name')} <span className="text-destructive">*</span></Label>
+            <Input type="text" placeholder={t('Carrier name')} value={name} onChange={e => setName(e.target.value)} required aria-required />
+            <p className="text-xs text-muted-foreground">{t('Name is the only required field. Everything else is optional.')}</p>
           </div>
           <div className="space-y-2">
-            <Label>MC number</Label>
-            <Input type="text" placeholder="MC-000000" value={mcNumber} onChange={e => setMcNumber(e.target.value)} />
+            <Label>{t('MC number')}</Label>
+            <Input type="text" placeholder={t('MC-000000')} value={mcNumber} onChange={e => setMcNumber(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>DOT number</Label>
+            <Label>{t('DOT number')}</Label>
             <Input type="text" placeholder="0000000" value={dotNumber} onChange={e => setDotNumber(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>SCAC code</Label>
+            <Label>{t('SCAC code')}</Label>
             <Input
               type="text"
-              placeholder="e.g. ODFL"
+              placeholder={t('e.g. ODFL')}
               maxLength={4}
               value={scacCode}
               onChange={e => setScacCode(e.target.value.toUpperCase())}
             />
             <p className="text-xs text-muted-foreground">
-              Standard Carrier Alpha Code — required for EDI 204/214/210 with this carrier.
+              {t(
+                'Standard Carrier Alpha Code — required for EDI 204/214/210 with this carrier.'
+              )}
             </p>
           </div>
         </CardContent>
@@ -317,24 +323,26 @@ export default function VNextCreateCarrier() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Hash className="h-4 w-4 text-primary" />
-            PRO number format
+            {t('PRO number format')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label>Starting characters</Label>
-            <Input type="text" placeholder="e.g. RPL-" value={proNumberPrefix} onChange={e => setProNumberPrefix(e.target.value)} />
+            <Label>{t('Starting characters')}</Label>
+            <Input type="text" placeholder={t('e.g. RPL-')} value={proNumberPrefix} onChange={e => setProNumberPrefix(e.target.value)} />
             <p className="text-xs text-muted-foreground">
-              Pre-fills into the PRO number field when this carrier is assigned to a shipment.
+              {t(
+                'Pre-fills into the PRO number field when this carrier is assigned to a shipment.'
+              )}
             </p>
           </div>
           <div className="space-y-2">
-            <Label>Usual min length</Label>
-            <Input type="number" min={1} placeholder="e.g. 7" value={proNumberMinLength} onChange={e => setProNumberMinLength(e.target.value)} />
+            <Label>{t('Usual min length')}</Label>
+            <Input type="number" min={1} placeholder={t('e.g. 7')} value={proNumberMinLength} onChange={e => setProNumberMinLength(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>Usual max length</Label>
-            <Input type="number" min={1} placeholder="e.g. 10" value={proNumberMaxLength} onChange={e => setProNumberMaxLength(e.target.value)} />
+            <Label>{t('Usual max length')}</Label>
+            <Input type="number" min={1} placeholder={t('e.g. 10')} value={proNumberMaxLength} onChange={e => setProNumberMaxLength(e.target.value)} />
           </div>
           <div className="space-y-2">
             <label className="flex items-center gap-2 text-sm">
@@ -344,10 +352,12 @@ export default function VNextCreateCarrier() {
                 onChange={e => setProNumberNumericOnly(e.target.checked)}
                 className="h-4 w-4 rounded border border-input bg-background accent-primary"
               />
-              Digits only
+              {t('Digits only')}
             </label>
             <p className="text-xs text-muted-foreground">
-              Shown as a warning, not enforced — a PRO number that doesn't match can still be saved.
+              {t(
+                'Shown as a warning, not enforced — a PRO number that doesn\'t match can still be saved.'
+              )}
             </p>
           </div>
         </CardContent>
@@ -357,20 +367,20 @@ export default function VNextCreateCarrier() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <User className="h-4 w-4 text-primary" />
-            Contact
+            {t('Contact')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-3">
           <div className="space-y-2">
-            <Label>Contact name</Label>
-            <Input type="text" placeholder="Full name" value={contactName} onChange={e => setContactName(e.target.value)} />
+            <Label>{t('Contact name')}</Label>
+            <Input type="text" placeholder={t('Full name')} value={contactName} onChange={e => setContactName(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>Email</Label>
-            <Input type="email" placeholder="email@example.com" value={email} onChange={e => setEmail(e.target.value)} />
+            <Label>{t('Email')}</Label>
+            <Input type="email" placeholder={t('email@example.com')} value={email} onChange={e => setEmail(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>Phone</Label>
+            <Label>{t('Phone')}</Label>
             <Input type="tel" placeholder="(555) 000-0000" value={phone} onChange={e => setPhone(e.target.value)} />
           </div>
         </CardContent>
@@ -380,40 +390,40 @@ export default function VNextCreateCarrier() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MapPin className="h-4 w-4 text-primary" />
-            Address
+            {t('Address')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2 md:col-span-2">
-            <Label>Address 1</Label>
-            <Input type="text" placeholder="Street address" value={address1} onChange={e => setAddress1(e.target.value)} />
+            <Label>{t('Address 1')}</Label>
+            <Input type="text" placeholder={t('Street address')} value={address1} onChange={e => setAddress1(e.target.value)} />
           </div>
           <div className="space-y-2 md:col-span-2">
-            <Label>Address 2</Label>
-            <Input type="text" placeholder="Suite, unit, etc." value={address2} onChange={e => setAddress2(e.target.value)} />
+            <Label>{t('Address 2')}</Label>
+            <Input type="text" placeholder={t('Suite, unit, etc.')} value={address2} onChange={e => setAddress2(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>City</Label>
-            <Input type="text" placeholder="City" value={city} onChange={e => setCity(e.target.value)} />
+            <Label>{t('City')}</Label>
+            <Input type="text" placeholder={t('City')} value={city} onChange={e => setCity(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>State</Label>
-            <Input type="text" placeholder="State / Province" value={state} onChange={e => setState(e.target.value)} />
+            <Label>{t('State')}</Label>
+            <Input type="text" placeholder={t('State / Province')} value={state} onChange={e => setState(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>Postal code</Label>
+            <Label>{t('Postal code')}</Label>
             <Input type="text" placeholder="00000" value={postalCode} onChange={e => setPostalCode(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>Country</Label>
+            <Label>{t('Country')}</Label>
             <Select value={country} onValueChange={setCountry}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="US">United States</SelectItem>
-                <SelectItem value="CA">Canada</SelectItem>
-                <SelectItem value="MX">Mexico</SelectItem>
+                <SelectItem value="US">{t('United States')}</SelectItem>
+                <SelectItem value="CA">{t('Canada')}</SelectItem>
+                <SelectItem value="MX">{t('Mexico')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -424,12 +434,12 @@ export default function VNextCreateCarrier() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Truck className="h-4 w-4 text-primary" />
-            Equipment &amp; capabilities
+            {t('Equipment & capabilities')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <Label>Equipment types</Label>
+            <Label>{t('Equipment types')}</Label>
             <div className="mt-2 flex flex-wrap gap-4">
               {EQUIPMENT_TYPES.map(eq => (
                 <label key={eq.key} className="flex items-center gap-2 text-sm">
@@ -445,7 +455,7 @@ export default function VNextCreateCarrier() {
             </div>
           </div>
           <div>
-            <Label>Service mode</Label>
+            <Label>{t('Service mode')}</Label>
             <div className="mt-2 flex gap-4">
               {['FTL', 'LTL', 'Both'].map(mode => (
                 <label key={mode} className="flex items-center gap-2 text-sm">
@@ -469,35 +479,35 @@ export default function VNextCreateCarrier() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <CreditCard className="h-4 w-4 text-primary" />
-            Payment terms
+            {t('Payment terms')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label>Payment terms (days)</Label>
+            <Label>{t('Payment terms (days)')}</Label>
             <Select value={paymentTermsDays} onValueChange={setPaymentTermsDays}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="15">Net 15</SelectItem>
-                <SelectItem value="30">Net 30</SelectItem>
-                <SelectItem value="45">Net 45</SelectItem>
-                <SelectItem value="60">Net 60</SelectItem>
+                <SelectItem value="15">{t('Net 15')}</SelectItem>
+                <SelectItem value="30">{t('Net 30')}</SelectItem>
+                <SelectItem value="45">{t('Net 45')}</SelectItem>
+                <SelectItem value="60">{t('Net 60')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2">
-            <Label>Currency</Label>
+            <Label>{t('Currency')}</Label>
             <Select value={carrierCurrency} onValueChange={setCarrierCurrency}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="USD">USD</SelectItem>
-                <SelectItem value="EUR">EUR</SelectItem>
-                <SelectItem value="GBP">GBP</SelectItem>
-                <SelectItem value="CAD">CAD</SelectItem>
+                <SelectItem value="USD">{t('USD')}</SelectItem>
+                <SelectItem value="EUR">{t('EUR')}</SelectItem>
+                <SelectItem value="GBP">{t('GBP')}</SelectItem>
+                <SelectItem value="CAD">{t('CAD')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -508,23 +518,23 @@ export default function VNextCreateCarrier() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <ShieldCheck className="h-4 w-4 text-primary" />
-            Insurance
+            {t('Insurance')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label>Insurance amount</Label>
+            <Label>{t('Insurance amount')}</Label>
             <Input type="number" placeholder="1000000" value={insuranceAmount} onChange={e => setInsuranceAmount(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>Expiry date</Label>
+            <Label>{t('Expiry date')}</Label>
             <DatePicker type="date" value={expiryDate} onChange={e => setExpiryDate(e.target.value)} />
           </div>
           <div className="space-y-2 md:col-span-2">
-            <Label>Notes</Label>
+            <Label>{t('Notes')}</Label>
             <textarea
               rows={3}
-              placeholder="Additional insurance notes..."
+              placeholder={t('Additional insurance notes...')}
               value={notes}
               onChange={e => setNotes(e.target.value)}
               className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -542,11 +552,11 @@ export default function VNextCreateCarrier() {
 
       <div className="flex flex-wrap items-center justify-end gap-2">
         <Button variant="outline" asChild>
-          <Link to="/carriers">Cancel</Link>
+          <Link to="/carriers">{t('Cancel')}</Link>
         </Button>
         <Button variant="gradient" onClick={handleSubmit} disabled={submitting}>
           <Save className="h-4 w-4" />
-          {submitting ? 'Saving...' : isEdit ? 'Update carrier' : 'Save carrier'}
+          {submitting ? t('Saving...') : isEdit ? 'Update carrier' : 'Save carrier'}
         </Button>
       </div>
     </div>

@@ -14,6 +14,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface RmaLine {
   id: string;
   sku: string;
@@ -105,7 +107,7 @@ export default function WarehouseReturnInspect() {
   if (!rma) {
     return (
       <Card className="mx-auto mt-4 max-w-2xl p-6 text-center">
-        <p className="text-base text-destructive">{error || 'Not found'}</p>
+        <p className="text-base text-destructive">{error || t('Not found')}</p>
       </Card>
     );
   }
@@ -122,7 +124,7 @@ export default function WarehouseReturnInspect() {
           size="icon"
           className="h-12 w-12 shrink-0"
           onClick={() => navigate('/warehouse/tasks')}
-          aria-label="Back to tasks"
+          aria-label={t('Back to tasks')}
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
@@ -138,7 +140,7 @@ export default function WarehouseReturnInspect() {
       <Card>
         <CardContent className="pt-6">
           <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Return Inspection
+            {t('Return Inspection')}
           </div>
           <div className="mt-1 text-xl font-bold">{rma.rmaNumber}</div>
           <div className="text-sm text-muted-foreground capitalize">
@@ -151,8 +153,8 @@ export default function WarehouseReturnInspect() {
         <Card className="text-center">
           <CardContent className="flex flex-col items-center gap-2 py-10">
             <CheckCircle2 className="h-12 w-12 text-success" />
-            <p className="text-lg font-semibold">All lines inspected</p>
-            <p className="text-sm text-muted-foreground">Finance will process the refund.</p>
+            <p className="text-lg font-semibold">{t('All lines inspected')}</p>
+            <p className="text-sm text-muted-foreground">{t('Finance will process the refund.')}</p>
             <Button
               type="button"
               variant="gradient"
@@ -160,7 +162,7 @@ export default function WarehouseReturnInspect() {
               className="mt-4"
               onClick={() => navigate('/warehouse/tasks')}
             >
-              Back to Tasks
+              {t('Back to Tasks')}
             </Button>
           </CardContent>
         </Card>
@@ -179,7 +181,7 @@ export default function WarehouseReturnInspect() {
                     <div className="min-w-0 flex-1">
                       <div className="text-base font-semibold">{line.sku}</div>
                       <div className="text-sm text-muted-foreground">
-                        <span className="tabular-nums">{line.receivedQuantity}</span> received
+                        <span className="tabular-nums">{line.receivedQuantity}</span> {t('received')}
                         {line.disposition !== 'pending' && (
                           <span className="ml-1 text-success">
                             <Check className="inline h-4 w-4" /> {line.disposition.replace(/_/g, ' ')}
@@ -187,8 +189,8 @@ export default function WarehouseReturnInspect() {
                         )}
                         {line.requestedDisposition && line.disposition === 'pending' && (
                           <span className="ml-2">
-                            (customer asked: {line.requestedDisposition.replace(/_/g, ' ')})
-                          </span>
+                            {t('(customer asked:')} {line.requestedDisposition.replace(/_/g, ' ')})
+                                                      </span>
                         )}
                       </div>
                     </div>
@@ -198,7 +200,7 @@ export default function WarehouseReturnInspect() {
                         size="lg"
                         onClick={() => openLine(line)}
                       >
-                        Inspect
+                        {t('Inspect')}
                       </Button>
                     )}
                   </div>
@@ -207,7 +209,7 @@ export default function WarehouseReturnInspect() {
                     <div className="mt-4 space-y-4">
                       <div>
                         <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                          Condition
+                          {t('Condition')}
                         </Label>
                         <div className="mt-2 flex gap-2">
                           {INSPECTION_STATUSES.map(s => {
@@ -237,7 +239,7 @@ export default function WarehouseReturnInspect() {
 
                       <div>
                         <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                          Disposition
+                          {t('Disposition')}
                         </Label>
                         <div className="mt-2 grid grid-cols-2 gap-2">
                           {DISPOSITIONS.map(d => {
@@ -269,13 +271,13 @@ export default function WarehouseReturnInspect() {
 
                       <div>
                         <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                          Notes (optional)
+                          {t('Notes (optional)')}
                         </Label>
                         <textarea
                           rows={2}
                           value={notes}
                           onChange={e => setNotes(e.target.value)}
-                          placeholder="Observations, damage details, etc."
+                          placeholder={t('Observations, damage details, etc.')}
                           className="mt-2 flex w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                         />
                       </div>
@@ -289,7 +291,7 @@ export default function WarehouseReturnInspect() {
                           onClick={() => setActiveLineId(null)}
                           disabled={busy}
                         >
-                          Cancel
+                          {t('Cancel')}
                         </Button>
                         <Button
                           type="button"
@@ -300,7 +302,7 @@ export default function WarehouseReturnInspect() {
                           disabled={busy || !disposition}
                         >
                           {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
-                          {busy ? '...' : 'Submit'}
+                          {busy ? '...' : t('Submit')}
                         </Button>
                       </div>
                     </div>

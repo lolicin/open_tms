@@ -37,6 +37,8 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 
+import { t as translate } from '@/i18n';
+
 function timeAgo(dateStr: string): string {
   const diff = Date.now() - new Date(dateStr).getTime();
   const mins = Math.floor(diff / 60000);
@@ -128,9 +130,7 @@ function SourceEntityCard({ entityType, entityId }: { entityType: string | null;
   }, [entityType, entityId]);
 
   if (!entityType || !entityId) {
-    return (
-      <Card className="p-4 text-sm text-muted-foreground">No linked entity</Card>
-    );
+    return (<Card className="p-4 text-sm text-muted-foreground">{translate('No linked entity')}</Card>);
   }
   if (loading) {
     return (
@@ -140,7 +140,7 @@ function SourceEntityCard({ entityType, entityId }: { entityType: string | null;
     );
   }
   if (!data) {
-    return <Card className="p-4 text-sm text-muted-foreground">Entity not found</Card>;
+    return <Card className="p-4 text-sm text-muted-foreground">{translate('Entity not found')}</Card>;
   }
 
   if (entityType === 'shipment') {
@@ -150,7 +150,7 @@ function SourceEntityCard({ entityType, entityId }: { entityType: string | null;
         <CardHeader className="p-4 pb-2">
           <CardTitle className="flex items-center gap-2 text-sm">
             <Truck className="h-4 w-4" />
-            Shipment
+            {translate('Shipment')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2 px-4 pb-4 text-sm">
@@ -178,12 +178,12 @@ function SourceEntityCard({ entityType, entityId }: { entityType: string | null;
           ) : (
             <div className="flex items-center gap-2 text-xs text-warning">
               <CircleAlert className="h-3 w-3" />
-              No driver assigned
+              {translate('No driver assigned')}
             </div>
           )}
           <Button variant="link" size="sm" asChild className="h-auto p-0">
             <Link to={`/shipments/${entityId}`}>
-              View shipment
+              {translate('View shipment')}
               <ExternalLink className="h-3 w-3" />
             </Link>
           </Button>
@@ -197,16 +197,16 @@ function SourceEntityCard({ entityType, entityId }: { entityType: string | null;
       <CardHeader className="p-4 pb-2">
         <CardTitle className="flex items-center gap-2 text-sm">
           <Package className="h-4 w-4" />
-          Order
+          {translate('Order')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2 px-4 pb-4 text-sm">
         <div className="font-semibold">{data.reference || data.id?.slice(0, 8)}</div>
-        <div>Status: <Badge variant="info">{data.status}</Badge></div>
-        {data.customer && <div>Customer: {data.customer.name}</div>}
+        <div>{translate('Status:')} <Badge variant="info">{data.status}</Badge></div>
+        {data.customer && <div>{translate('Customer:')} {data.customer.name}</div>}
         <Button variant="link" size="sm" asChild className="h-auto p-0">
           <Link to={`/orders/${entityId}`}>
-            View order
+            {translate('View order')}
             <ExternalLink className="h-3 w-3" />
           </Link>
         </Button>
@@ -250,12 +250,12 @@ function IssueReportSection({ issueId }: { issueId: string }) {
         <FileText className="h-8 w-8 text-destructive" />
         <div className="flex-1">
           <div className="text-sm font-semibold">{report.fileName}</div>
-          <div className="text-xs text-muted-foreground">Generated {new Date(report.createdAt).toLocaleString()}</div>
+          <div className="text-xs text-muted-foreground">{translate('Generated')} {new Date(report.createdAt).toLocaleString()}</div>
         </div>
         <Button variant="gradient" size="sm" asChild>
           <a href={`${API_URL}/api/v1/documents/${report.id}/download`}>
             <Download className="h-4 w-4" />
-            Download
+            {translate('Download')}
           </a>
         </Button>
       </div>
@@ -264,10 +264,10 @@ function IssueReportSection({ issueId }: { issueId: string }) {
 
   return (
     <div className="flex items-center gap-3">
-      <span className="text-sm text-muted-foreground">No closure report generated yet.</span>
+      <span className="text-sm text-muted-foreground">{translate('No closure report generated yet.')}</span>
       <Button variant="gradient" size="sm" onClick={handleGenerate} disabled={generating}>
         <FileText className="h-4 w-4" />
-        {generating ? 'Generating...' : 'Generate report'}
+        {generating ? translate('Generating...') : translate('Generate report')}
       </Button>
     </div>
   );
@@ -386,7 +386,7 @@ export default function VNextIssueDetail() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{translate('Loading...')}</h3>
       </div>
     );
   }
@@ -394,7 +394,7 @@ export default function VNextIssueDetail() {
     return (
       <div className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
         <CircleAlert className="h-5 w-5" />
-        {error || 'Issue not found'}
+        {error || translate('Issue not found')}
       </div>
     );
   }
@@ -406,7 +406,7 @@ export default function VNextIssueDetail() {
     <div className="space-y-6">
       <Button variant="ghost" size="sm" onClick={() => navigate('/issues')} className="-ml-3 self-start">
         <ArrowLeft className="h-4 w-4" />
-        Back to issues
+        {translate('Back to issues')}
       </Button>
 
       <div className="space-y-3">
@@ -430,10 +430,10 @@ export default function VNextIssueDetail() {
             <Badge variant={statusVariant(issue.status)} className="capitalize">{issue.status.replace('_', ' ')}</Badge>
             <Badge variant="muted" className="capitalize">{issue.category}</Badge>
             {issue.needsCapa && (
-              <Badge variant="warning"><ClipboardList className="h-3 w-3" />Needs CAPA</Badge>
+              <Badge variant="warning"><ClipboardList className="h-3 w-3" />{translate('Needs CAPA')}</Badge>
             )}
             {isSnoozed && (
-              <Badge variant="secondary"><AlarmClock className="h-3 w-3" />Snoozed</Badge>
+              <Badge variant="secondary"><AlarmClock className="h-3 w-3" />{translate('Snoozed')}</Badge>
             )}
           </div>
         </div>
@@ -450,7 +450,7 @@ export default function VNextIssueDetail() {
             </span>
           ))}
           <div className="relative">
-            <Button variant="outline" size="sm" onClick={() => setShowLabelPicker(!showLabelPicker)}>+ Label</Button>
+            <Button variant="outline" size="sm" onClick={() => setShowLabelPicker(!showLabelPicker)}>{translate('+ Label')}</Button>
             {showLabelPicker && (
               <div className="absolute left-0 top-full z-10 mt-1 min-w-[160px] rounded-md border border-border bg-popover p-2 shadow-lg">
                 {allLabels.filter(l => !labels.find((el: any) => el.id === l.id)).map((l: any) => (
@@ -465,7 +465,7 @@ export default function VNextIssueDetail() {
                   </button>
                 ))}
                 {allLabels.filter(l => !labels.find((el: any) => el.id === l.id)).length === 0 && (
-                  <div className="p-2 text-xs text-muted-foreground">No more labels</div>
+                  <div className="p-2 text-xs text-muted-foreground">{translate('No more labels')}</div>
                 )}
               </div>
             )}
@@ -477,55 +477,55 @@ export default function VNextIssueDetail() {
         {issue.status === 'open' && (
           <Button onClick={() => doAction('/status', { status: 'in_progress' })}>
             <Play className="h-4 w-4" />
-            Start working
+            {translate('Start working')}
           </Button>
         )}
         {(issue.status === 'open' || issue.status === 'in_progress') && (
           <Button variant="default" onClick={() => { const r = prompt('Resolution notes (optional):'); doAction('/status', { status: 'resolved', resolution: r || undefined }); }}>
             <CheckCircle2 className="h-4 w-4" />
-            Resolve
+            {translate('Resolve')}
           </Button>
         )}
         {(issue.status === 'open' || issue.status === 'in_progress' || issue.status === 'resolved') && (
           <Button variant="outline" onClick={() => doAction('/close')}>
             <XCircle className="h-4 w-4" />
-            Close
+            {translate('Close')}
           </Button>
         )}
         {(issue.status === 'resolved' || issue.status === 'closed') && (
           <Button variant="outline" onClick={() => doAction('/reopen')}>
             <RefreshCw className="h-4 w-4" />
-            Reopen
+            {translate('Reopen')}
           </Button>
         )}
         <Button variant="outline" onClick={() => setShowAssign(!showAssign)}>
           <UserPlus className="h-4 w-4" />
-          Assign
+          {translate('Assign')}
         </Button>
         <Button variant="outline" onClick={() => { const to = prompt('Escalate to:'); const reason = prompt('Reason:'); if (to) doAction('/escalate', { escalatedTo: to, reason }); }}>
           <ArrowUpFromLine className="h-4 w-4" />
-          Escalate
+          {translate('Escalate')}
         </Button>
         {!isSnoozed ? (
           <Button variant="outline" onClick={() => setShowSnooze(!showSnooze)}>
             <AlarmClock className="h-4 w-4" />
-            Snooze
+            {translate('Snooze')}
           </Button>
         ) : (
           <Button variant="outline" onClick={() => doAction('/unsnooze')}>
             <AlarmClockOff className="h-4 w-4" />
-            Unsnooze
+            {translate('Unsnooze')}
           </Button>
         )}
         <Button variant={issue.needsCapa ? 'default' : 'outline'} onClick={() => doAction('/needs-capa', { needsCapa: !issue.needsCapa })}>
           <ClipboardList className="h-4 w-4" />
-          {issue.needsCapa ? 'Clear CAPA' : 'Needs CAPA'}
+          {issue.needsCapa ? translate('Clear CAPA') : translate('Needs CAPA')}
         </Button>
       </div>
 
       {showAssign && (
         <Card className="flex items-center gap-2 p-3">
-          <Input className="flex-1" placeholder="Assignee name" value={assignName} onChange={e => setAssignName(e.target.value)} />
+          <Input className="flex-1" placeholder={translate('Assignee name')} value={assignName} onChange={e => setAssignName(e.target.value)} />
           <Button variant="gradient" onClick={() => {
             if (assignName.trim()) {
               doAction('/assign', { assigneeId: assignName.toLowerCase().replace(/\s/g, '.'), assigneeName: assignName });
@@ -533,9 +533,9 @@ export default function VNextIssueDetail() {
               setAssignName('');
             }
           }}>
-            Assign
+            {translate('Assign')}
           </Button>
-          <Button variant="outline" onClick={() => setShowAssign(false)}>Cancel</Button>
+          <Button variant="outline" onClick={() => setShowAssign(false)}>{translate('Cancel')}</Button>
         </Card>
       )}
 
@@ -549,9 +549,9 @@ export default function VNextIssueDetail() {
               setSnoozeDate('');
             }
           }}>
-            Snooze
+            {translate('Snooze')}
           </Button>
-          <Button variant="outline" onClick={() => setShowSnooze(false)}>Cancel</Button>
+          <Button variant="outline" onClick={() => setShowSnooze(false)}>{translate('Cancel')}</Button>
         </Card>
       )}
 
@@ -581,7 +581,7 @@ export default function VNextIssueDetail() {
                 {activityLoading ? (
                   <Loader2 className="h-5 w-5 animate-spin" />
                 ) : activity.length === 0 ? (
-                  <div className="py-6 text-center text-sm text-muted-foreground">No activity yet</div>
+                  <div className="py-6 text-center text-sm text-muted-foreground">{translate('No activity yet')}</div>
                 ) : (
                   <div className="flex flex-col">
                     {activity.map((item, idx) => (
@@ -601,11 +601,11 @@ export default function VNextIssueDetail() {
                               <span className="text-sm font-semibold">{item.authorName}</span>
                               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                 {item.authorType === 'customer' ? (
-                                  <Badge variant="info" className="gap-1"><UserIcon className="h-3 w-3" />Customer</Badge>
+                                  <Badge variant="info" className="gap-1"><UserIcon className="h-3 w-3" />{translate('Customer')}</Badge>
                                 ) : item.visibleToCustomer ? (
-                                  <Badge variant="success" className="gap-1"><Eye className="h-3 w-3" />Shared with customer</Badge>
+                                  <Badge variant="success" className="gap-1"><Eye className="h-3 w-3" />{translate('Shared with customer')}</Badge>
                                 ) : (
-                                  <Badge variant="muted" className="gap-1"><EyeOff className="h-3 w-3" />Internal only</Badge>
+                                  <Badge variant="muted" className="gap-1"><EyeOff className="h-3 w-3" />{translate('Internal only')}</Badge>
                                 )}
                                 <span>{new Date(item.timestamp).toLocaleString()}</span>
                               </div>
@@ -635,13 +635,13 @@ export default function VNextIssueDetail() {
                   <div className="flex gap-2">
                     <textarea
                       rows={2}
-                      placeholder="Add a comment..."
+                      placeholder={translate('Add a comment...')}
                       value={newComment}
                       onChange={e => setNewComment(e.target.value)}
                       className="flex-1 resize-y rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     />
                     <Button variant="gradient" onClick={handleAddComment} disabled={submitting || !newComment.trim()} className="self-end">
-                      {submitting ? '...' : 'Post'}
+                      {submitting ? '...' : translate('Post')}
                     </Button>
                   </div>
                   <label className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -651,7 +651,7 @@ export default function VNextIssueDetail() {
                       onChange={e => setCommentVisibleToCustomer(e.target.checked)}
                       className="h-4 w-4 rounded border-input"
                     />
-                    Visible to customer in their portal
+                    {translate('Visible to customer in their portal')}
                   </label>
                 </div>
               </CardContent>
@@ -662,7 +662,7 @@ export default function VNextIssueDetail() {
             <Card>
               <CardContent className="grid gap-3 p-4 md:grid-cols-2">
                 <div className="md:col-span-2 space-y-2">
-                  <Label>Description</Label>
+                  <Label>{translate('Description')}</Label>
                   {editingDesc ? (
                     <div className="flex gap-2">
                       <textarea
@@ -672,8 +672,8 @@ export default function VNextIssueDetail() {
                         className="flex-1 resize-y rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                       />
                       <div className="flex flex-col gap-2">
-                        <Button variant="gradient" onClick={() => { doUpdate({ description: descDraft }); setEditingDesc(false); }}>Save</Button>
-                        <Button variant="outline" onClick={() => setEditingDesc(false)}>Cancel</Button>
+                        <Button variant="gradient" onClick={() => { doUpdate({ description: descDraft }); setEditingDesc(false); }}>{translate('Save')}</Button>
+                        <Button variant="outline" onClick={() => setEditingDesc(false)}>{translate('Cancel')}</Button>
                       </div>
                     </div>
                   ) : (
@@ -681,39 +681,39 @@ export default function VNextIssueDetail() {
                       onClick={() => { setDescDraft(issue.description || ''); setEditingDesc(true); }}
                       className="min-h-[40px] cursor-pointer rounded-md border border-input p-2 text-sm hover:border-primary/40"
                     >
-                      {issue.description || <span className="text-muted-foreground">Click to add description...</span>}
+                      {issue.description || <span className="text-muted-foreground">{translate('Click to add description...')}</span>}
                     </div>
                   )}
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-muted-foreground">Category</Label>
+                  <Label className="text-muted-foreground">{translate('Category')}</Label>
                   <div className="text-sm">{issue.category}</div>
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-muted-foreground">Source type</Label>
+                  <Label className="text-muted-foreground">{translate('Source type')}</Label>
                   <div className="text-sm">{issue.sourceEntityType || '-'}</div>
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-muted-foreground">Source entity</Label>
+                  <Label className="text-muted-foreground">{translate('Source entity')}</Label>
                   <div className="text-sm">{issue.sourceEntityId?.slice(0, 12) || '-'}</div>
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-muted-foreground">Created</Label>
+                  <Label className="text-muted-foreground">{translate('Created')}</Label>
                   <div className="text-sm">{new Date(issue.createdAt).toLocaleString()}</div>
                 </div>
                 <div className="space-y-1">
-                  <Label className="text-muted-foreground">Updated</Label>
+                  <Label className="text-muted-foreground">{translate('Updated')}</Label>
                   <div className="text-sm">{new Date(issue.updatedAt).toLocaleString()}</div>
                 </div>
                 {issue.escalatedTo && (
                   <div className="space-y-1">
-                    <Label className="text-muted-foreground">Escalated to</Label>
+                    <Label className="text-muted-foreground">{translate('Escalated to')}</Label>
                     <div className="text-sm">{issue.escalatedTo}</div>
                   </div>
                 )}
                 {issue.escalatedAt && (
                   <div className="space-y-1">
-                    <Label className="text-muted-foreground">Escalated at</Label>
+                    <Label className="text-muted-foreground">{translate('Escalated at')}</Label>
                     <div className="text-sm">{new Date(issue.escalatedAt).toLocaleString()}</div>
                   </div>
                 )}
@@ -726,30 +726,30 @@ export default function VNextIssueDetail() {
               <CardContent className="space-y-4 p-4">
                 <div className="grid gap-3 md:grid-cols-2">
                   <div className="md:col-span-2 space-y-1">
-                    <Label className="text-muted-foreground">Resolution</Label>
-                    <div className="text-sm">{issue.resolution || <span className="text-muted-foreground">No resolution notes</span>}</div>
+                    <Label className="text-muted-foreground">{translate('Resolution')}</Label>
+                    <div className="text-sm">{issue.resolution || <span className="text-muted-foreground">{translate('No resolution notes')}</span>}</div>
                   </div>
                   {issue.resolvedBy && (
                     <div className="space-y-1">
-                      <Label className="text-muted-foreground">Resolved by</Label>
+                      <Label className="text-muted-foreground">{translate('Resolved by')}</Label>
                       <div className="text-sm">{issue.resolvedBy}</div>
                     </div>
                   )}
                   {issue.resolvedAt && (
                     <div className="space-y-1">
-                      <Label className="text-muted-foreground">Resolved at</Label>
+                      <Label className="text-muted-foreground">{translate('Resolved at')}</Label>
                       <div className="text-sm">{new Date(issue.resolvedAt).toLocaleString()}</div>
                     </div>
                   )}
                   {issue.closedBy && (
                     <div className="space-y-1">
-                      <Label className="text-muted-foreground">Closed by</Label>
+                      <Label className="text-muted-foreground">{translate('Closed by')}</Label>
                       <div className="text-sm">{issue.closedBy}</div>
                     </div>
                   )}
                   {issue.closedAt && (
                     <div className="space-y-1">
-                      <Label className="text-muted-foreground">Closed at</Label>
+                      <Label className="text-muted-foreground">{translate('Closed at')}</Label>
                       <div className="text-sm">{new Date(issue.closedAt).toLocaleString()}</div>
                     </div>
                   )}
@@ -758,7 +758,7 @@ export default function VNextIssueDetail() {
                 <div>
                   <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold">
                     <FileText className="h-4 w-4" />
-                    Closure report
+                    {translate('Closure report')}
                   </h3>
                   <IssueReportSection issueId={id!} />
                 </div>
@@ -772,11 +772,11 @@ export default function VNextIssueDetail() {
 
           <Card>
             <CardHeader className="p-4 pb-2">
-              <CardTitle className="text-sm">SLA status</CardTitle>
+              <CardTitle className="text-sm">{translate('SLA status')}</CardTitle>
             </CardHeader>
             <CardContent className="px-4 pb-4 text-sm">
               {(issue.slaEvaluations || []).length === 0 ? (
-                <div className="text-muted-foreground">No SLA rules active</div>
+                <div className="text-muted-foreground">{translate('No SLA rules active')}</div>
               ) : (
                 (issue.slaEvaluations || []).map((sla: any, idx: number) => (
                   <div
@@ -798,26 +798,26 @@ export default function VNextIssueDetail() {
 
           <Card>
             <CardHeader className="p-4 pb-2">
-              <CardTitle className="text-sm">Assignment</CardTitle>
+              <CardTitle className="text-sm">{translate('Assignment')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 px-4 pb-4 text-sm">
               <div className="flex items-center gap-2">
                 <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
                   {getInitials(issue.assigneeName)}
                 </div>
-                <span>{issue.assigneeName || 'Unassigned'}</span>
+                <span>{issue.assigneeName || translate('Unassigned')}</span>
               </div>
-              {issue.escalatedTo && <div className="text-xs text-destructive">Escalated to: {issue.escalatedTo}</div>}
+              {issue.escalatedTo && <div className="text-xs text-destructive">{translate('Escalated to:')} {issue.escalatedTo}</div>}
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="p-4 pb-2">
-              <CardTitle className="text-sm">CAPA reports</CardTitle>
+              <CardTitle className="text-sm">{translate('CAPA reports')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 px-4 pb-4 text-sm">
               {(issue.capaReports || []).length === 0 ? (
-                <div className="text-muted-foreground">No CAPA reports linked</div>
+                <div className="text-muted-foreground">{translate('No CAPA reports linked')}</div>
               ) : (
                 (issue.capaReports || []).map((capa: any) => (
                   <div key={capa.id} className="flex items-center justify-between">
@@ -829,11 +829,11 @@ export default function VNextIssueDetail() {
               {issue.needsCapa && (
                 <div className="flex items-center gap-2 rounded-md border border-warning/30 bg-warning/10 p-2 text-xs text-warning">
                   <ClipboardList className="h-3 w-3" />
-                  CAPA required for this issue
+                  {translate('CAPA required for this issue')}
                 </div>
               )}
               <Button variant="outline" size="sm" asChild className="w-full">
-                <Link to={`/quality/capa?createFromIssue=${id}`}>Create CAPA report</Link>
+                <Link to={`/quality/capa?createFromIssue=${id}`}>{translate('Create CAPA report')}</Link>
               </Button>
             </CardContent>
           </Card>

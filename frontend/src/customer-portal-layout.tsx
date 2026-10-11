@@ -32,6 +32,8 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface CpNavItem {
   to: string;
   icon: LucideIcon;
@@ -49,39 +51,39 @@ interface CpAppDef {
 
 const APPS: CpAppDef[] = [
   {
-    key: 'portal', icon: Building2, label: 'Customer Portal', basePath: '/customer-portal',
+    key: 'portal', icon: Building2, label: t('Customer Portal'), basePath: '/customer-portal',
     sections: [
-      { title: 'Overview', items: [
-        { to: '/customer-portal', icon: LayoutDashboard, label: 'Dashboard', end: true },
+      { title: t('Overview'), items: [
+        { to: '/customer-portal', icon: LayoutDashboard, label: t('Dashboard'), end: true },
       ]},
-      { title: 'Operations', items: [
-        { to: '/customer-portal/orders', icon: Package, label: 'Orders' },
-        { to: '/customer-portal/shipments', icon: Truck, label: 'Shipments' },
-        { to: '/customer-portal/issues', icon: Bug, label: 'Issues' },
-        { to: '/customer-portal/returns', icon: Undo2, label: 'Returns' },
+      { title: t('Operations'), items: [
+        { to: '/customer-portal/orders', icon: Package, label: t('Orders') },
+        { to: '/customer-portal/shipments', icon: Truck, label: t('Shipments') },
+        { to: '/customer-portal/issues', icon: Bug, label: t('Issues') },
+        { to: '/customer-portal/returns', icon: Undo2, label: t('Returns') },
       ]},
-      { title: 'Finance & Docs', items: [
-        { to: '/customer-portal/invoices', icon: FileSpreadsheet, label: 'Invoices' },
-        { to: '/customer-portal/documents', icon: FileText, label: 'Documents' },
+      { title: t('Finance & Docs'), items: [
+        { to: '/customer-portal/invoices', icon: FileSpreadsheet, label: t('Invoices') },
+        { to: '/customer-portal/documents', icon: FileText, label: t('Documents') },
       ]},
-      { title: 'Account', items: [
-        { to: '/customer-portal/profile', icon: User, label: 'Profile' },
+      { title: t('Account'), items: [
+        { to: '/customer-portal/profile', icon: User, label: t('Profile') },
       ]},
     ],
   },
   {
-    key: 'developer', icon: Code, label: 'Developer', basePath: '/customer-portal/developer',
+    key: 'developer', icon: Code, label: t('Developer'), basePath: '/customer-portal/developer',
     sections: [
-      { title: 'Overview', items: [
-        { to: '/customer-portal/developer', icon: LayoutDashboard, label: 'Dashboard', end: true },
+      { title: t('Overview'), items: [
+        { to: '/customer-portal/developer', icon: LayoutDashboard, label: t('Dashboard'), end: true },
       ]},
-      { title: 'Access', items: [
-        { to: '/customer-portal/developer/api-keys', icon: Key, label: 'API Keys' },
-        { to: '/customer-portal/developer/webhooks', icon: Webhook, label: 'Webhooks' },
+      { title: t('Access'), items: [
+        { to: '/customer-portal/developer/api-keys', icon: Key, label: t('API Keys') },
+        { to: '/customer-portal/developer/webhooks', icon: Webhook, label: t('Webhooks') },
       ]},
-      { title: 'Integrations', items: [
-        { to: '/customer-portal/developer/edi', icon: Cable, label: 'EDI Setup' },
-        { to: '/customer-portal/developer/logs', icon: History, label: 'Integration Logs' },
+      { title: t('Integrations'), items: [
+        { to: '/customer-portal/developer/edi', icon: Cable, label: t('EDI Setup') },
+        { to: '/customer-portal/developer/logs', icon: History, label: t('Integration Logs') },
       ]},
     ],
   },
@@ -195,7 +197,7 @@ export function CustomerPortalLayout() {
             type="button"
             onClick={() => setSidebarOpen(o => !o)}
             className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-muted/40 hover:text-foreground lg:hidden"
-            aria-label="Toggle sidebar"
+            aria-label={t('Toggle sidebar')}
           >
             <Menu className="h-5 w-5" />
           </button>
@@ -208,8 +210,8 @@ export function CustomerPortalLayout() {
               type="button"
               onClick={() => setAppGridOpen(true)}
               className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-muted/40 hover:text-foreground"
-              aria-label="Switch app"
-              title="Switch app"
+              aria-label={t('Switch app')}
+              title={t('Switch app')}
             >
               <Grid3x3 className="h-4 w-4" />
             </button>
@@ -217,8 +219,8 @@ export function CustomerPortalLayout() {
               type="button"
               onClick={handleLogout}
               className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-muted/40 hover:text-foreground"
-              aria-label="Logout"
-              title="Logout"
+              aria-label={t('Logout')}
+              title={t('Logout')}
             >
               <LogOut className="h-4 w-4" />
             </button>
@@ -240,7 +242,7 @@ export function CustomerPortalLayout() {
       <Dialog open={appGridOpen} onOpenChange={setAppGridOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Switch app</DialogTitle>
+            <DialogTitle>{t('Switch app')}</DialogTitle>
           </DialogHeader>
           <div className="grid grid-cols-2 gap-3">
             {APPS.map(app => {

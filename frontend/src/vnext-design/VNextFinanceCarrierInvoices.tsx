@@ -31,6 +31,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface CarrierInvoice {
   id: string;
   invoiceNumber: string;
@@ -124,7 +126,7 @@ export default function VNextFinanceCarrierInvoices() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -141,8 +143,8 @@ export default function VNextFinanceCarrierInvoices() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Carrier Invoices</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{invoices.length} carrier invoices</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Carrier Invoices')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{invoices.length} {t('carrier invoices')}</p>
         </div>
       </div>
 
@@ -153,7 +155,7 @@ export default function VNextFinanceCarrierInvoices() {
               <Truck className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight">{stats.total}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Total</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Total')}</div>
           </CardContent>
         </Card>
         <Card>
@@ -162,7 +164,7 @@ export default function VNextFinanceCarrierInvoices() {
               <ClipboardList className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight">{stats.pendingReview}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Pending Review</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Pending Review')}</div>
           </CardContent>
         </Card>
         <Card>
@@ -171,7 +173,7 @@ export default function VNextFinanceCarrierInvoices() {
               <CircleAlert className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight">{stats.discrepancies}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Discrepancies</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Discrepancies')}</div>
           </CardContent>
         </Card>
         <Card>
@@ -180,7 +182,7 @@ export default function VNextFinanceCarrierInvoices() {
               <CreditCard className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight font-mono tabular-nums">{formatMoney(stats.totalDue)}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Due for Payment</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Due for Payment')}</div>
           </CardContent>
         </Card>
       </div>
@@ -191,7 +193,7 @@ export default function VNextFinanceCarrierInvoices() {
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               className="pl-9"
-              placeholder="Search carrier invoices..."
+              placeholder={t('Search carrier invoices...')}
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
@@ -201,12 +203,12 @@ export default function VNextFinanceCarrierInvoices() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="received">Received</SelectItem>
-              <SelectItem value="matched">Matched</SelectItem>
-              <SelectItem value="discrepancy">Discrepancy</SelectItem>
-              <SelectItem value="approved">Approved</SelectItem>
-              <SelectItem value="paid">Paid</SelectItem>
+              <SelectItem value="all">{t('All Status')}</SelectItem>
+              <SelectItem value="received">{t('Received')}</SelectItem>
+              <SelectItem value="matched">{t('Matched')}</SelectItem>
+              <SelectItem value="discrepancy">{t('Discrepancy')}</SelectItem>
+              <SelectItem value="approved">{t('Approved')}</SelectItem>
+              <SelectItem value="paid">{t('Paid')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -214,20 +216,20 @@ export default function VNextFinanceCarrierInvoices() {
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <Truck className="h-8 w-8" />
-            <h3 className="text-base font-medium">No carrier invoices found</h3>
+            <h3 className="text-base font-medium">{t('No carrier invoices found')}</h3>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Invoice #</TableHead>
-                <TableHead>Carrier</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Match</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
-                <TableHead className="text-right">Variance</TableHead>
-                <TableHead>Received</TableHead>
-                <TableHead>Due</TableHead>
+                <TableHead>{t('Invoice #')}</TableHead>
+                <TableHead>{t('Carrier')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead>{t('Match')}</TableHead>
+                <TableHead className="text-right">{t('Amount')}</TableHead>
+                <TableHead className="text-right">{t('Variance')}</TableHead>
+                <TableHead>{t('Received')}</TableHead>
+                <TableHead>{t('Due')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -243,7 +245,7 @@ export default function VNextFinanceCarrierInvoices() {
                   <TableCell>
                     <div className="flex items-center gap-1">
                       <Badge variant={statusVariant(inv.status)}>{inv.status}</Badge>
-                      {inv.autoApproved && <Badge variant="info" className="text-[10px]">auto</Badge>}
+                      {inv.autoApproved && <Badge variant="info" className="text-[10px]">{t('auto')}</Badge>}
                     </div>
                   </TableCell>
                   <TableCell>

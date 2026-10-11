@@ -12,6 +12,8 @@ import OsmRouteEditor from './OsmRouteEditor';
 import type { LatLng } from '../maps/polyline';
 import { Loader2 } from 'lucide-react';
 
+import { t } from '@/i18n';
+
 export interface RouteEditorProps {
   origin: LatLng | null;
   destination: LatLng | null;
@@ -43,7 +45,7 @@ export default function RouteEditor({ onRouteChange, ...props }: RouteEditorProp
         style={{ height: typeof props.height === 'number' ? props.height : undefined, minHeight: 200 }}
       >
         <Loader2 className="h-4 w-4 animate-spin" />
-        Loading map
+        {t('Loading map')}
       </div>
     );
   }

@@ -28,6 +28,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t as translate } from '@/i18n';
+
 interface QualitySummary {
   id: string;
   orgId: string;
@@ -90,10 +92,10 @@ function timeAgo(dateStr: string | null): string {
 }
 
 const TABS: { key: DimensionTab; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-  { key: 'carrier', label: 'Carriers', icon: Truck },
-  { key: 'lane', label: 'Lanes', icon: Route },
-  { key: 'location', label: 'Locations', icon: MapPin },
-  { key: 'customer', label: 'Customers', icon: Building2 },
+  { key: 'carrier', label: translate('Carriers'), icon: Truck },
+  { key: 'lane', label: translate('Lanes'), icon: Route },
+  { key: 'location', label: translate('Locations'), icon: MapPin },
+  { key: 'customer', label: translate('Customers'), icon: Building2 },
 ];
 
 export default function VNextQualityIssueSummaries() {
@@ -157,7 +159,7 @@ export default function VNextQualityIssueSummaries() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{translate('Loading...')}</h3>
       </div>
     );
   }
@@ -174,8 +176,8 @@ export default function VNextQualityIssueSummaries() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Issue analysis</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Quality metrics by carrier, lane, location, and customer</p>
+        <h1 className="text-3xl font-bold tracking-tight">{translate('Issue analysis')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{translate('Quality metrics by carrier, lane, location, and customer')}</p>
       </div>
 
       <div className="flex flex-wrap items-center gap-1 border-b border-border">
@@ -219,7 +221,7 @@ export default function VNextQualityIssueSummaries() {
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <BarChart3 className="h-10 w-10 opacity-40" />
-            <h3 className="text-base font-medium">No data found</h3>
+            <h3 className="text-base font-medium">{translate('No data found')}</h3>
             <p className="text-sm">
               {search
                 ? `No ${TABS.find(t => t.key === activeTab)?.label.toLowerCase() || 'results'} match your search.`
@@ -230,17 +232,17 @@ export default function VNextQualityIssueSummaries() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="cursor-pointer" onClick={() => handleSort('dimensionName')}>Name<SortIndicator field="dimensionName" /></TableHead>
-                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('totalIssues')}>Total<SortIndicator field="totalIssues" /></TableHead>
-                <TableHead className="cursor-pointer text-center" onClick={() => handleSort('criticalCount')}>Critical<SortIndicator field="criticalCount" /></TableHead>
-                <TableHead className="cursor-pointer text-center" onClick={() => handleSort('highCount')}>High<SortIndicator field="highCount" /></TableHead>
-                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('exceptionCount')}>Exceptions<SortIndicator field="exceptionCount" /></TableHead>
-                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('delayCount')}>Delays<SortIndicator field="delayCount" /></TableHead>
-                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('damageCount')}>Damage<SortIndicator field="damageCount" /></TableHead>
-                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('complianceCount')}>Compliance<SortIndicator field="complianceCount" /></TableHead>
-                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('capaCount')}>CAPA req.<SortIndicator field="capaCount" /></TableHead>
-                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('avgResolutionHours')}>Avg res.<SortIndicator field="avgResolutionHours" /></TableHead>
-                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('lastIssueAt')}>Last issue<SortIndicator field="lastIssueAt" /></TableHead>
+                <TableHead className="cursor-pointer" onClick={() => handleSort('dimensionName')}>{translate('Name')}<SortIndicator field="dimensionName" /></TableHead>
+                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('totalIssues')}>{translate('Total')}<SortIndicator field="totalIssues" /></TableHead>
+                <TableHead className="cursor-pointer text-center" onClick={() => handleSort('criticalCount')}>{translate('Critical')}<SortIndicator field="criticalCount" /></TableHead>
+                <TableHead className="cursor-pointer text-center" onClick={() => handleSort('highCount')}>{translate('High')}<SortIndicator field="highCount" /></TableHead>
+                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('exceptionCount')}>{translate('Exceptions')}<SortIndicator field="exceptionCount" /></TableHead>
+                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('delayCount')}>{translate('Delays')}<SortIndicator field="delayCount" /></TableHead>
+                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('damageCount')}>{translate('Damage')}<SortIndicator field="damageCount" /></TableHead>
+                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('complianceCount')}>{translate('Compliance')}<SortIndicator field="complianceCount" /></TableHead>
+                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('capaCount')}>{translate('CAPA req.')}<SortIndicator field="capaCount" /></TableHead>
+                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('avgResolutionHours')}>{translate('Avg res.')}<SortIndicator field="avgResolutionHours" /></TableHead>
+                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('lastIssueAt')}>{translate('Last issue')}<SortIndicator field="lastIssueAt" /></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -249,7 +251,7 @@ export default function VNextQualityIssueSummaries() {
                   <TableCell>
                     <div className="font-semibold">{s.dimensionName}</div>
                     <div className="text-xs text-muted-foreground">
-                      {s.openCount} open / {s.inProgressCount} in progress / {s.resolvedCount} resolved
+                      {s.openCount} {translate('open /')} {s.inProgressCount} {translate('in progress /')} {s.resolvedCount} {translate('resolved')}
                     </div>
                   </TableCell>
                   <TableCell className="text-right font-semibold">{s.totalIssues}</TableCell>

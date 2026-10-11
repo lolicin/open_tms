@@ -22,6 +22,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface LaneScore {
   dimensionName: string;
   totalIssues: number;
@@ -129,7 +131,7 @@ export default function VNextQualityLaneAnalysis() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -148,16 +150,16 @@ export default function VNextQualityLaneAnalysis() {
   const lanesWithCritical = data.filter(r => r.criticalCount > 0).length;
 
   const stats = [
-    { label: 'Lanes', value: totalLanes, icon: Route, tone: 'bg-primary/10 text-primary' },
-    { label: 'Total issues', value: totalIssuesAll, icon: AlertTriangle, tone: 'bg-warning/15 text-warning' },
-    { label: 'Lanes with critical', value: lanesWithCritical, icon: CircleAlert, tone: 'bg-destructive/10 text-destructive' },
+    { label: t('Lanes'), value: totalLanes, icon: Route, tone: 'bg-primary/10 text-primary' },
+    { label: t('Total issues'), value: totalIssuesAll, icon: AlertTriangle, tone: 'bg-warning/15 text-warning' },
+    { label: t('Lanes with critical'), value: lanesWithCritical, icon: CircleAlert, tone: 'bg-destructive/10 text-destructive' },
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Lane quality analysis</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Quality performance metrics across all lanes</p>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Lane quality analysis')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t('Quality performance metrics across all lanes')}</p>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-3">
@@ -181,24 +183,24 @@ export default function VNextQualityLaneAnalysis() {
         {sorted.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <Route className="h-10 w-10 opacity-40" />
-            <h3 className="text-base font-medium">No lane data</h3>
-            <p className="text-sm">No lane quality data is available yet.</p>
+            <h3 className="text-base font-medium">{t('No lane data')}</h3>
+            <p className="text-sm">{t('No lane quality data is available yet.')}</p>
           </div>
         ) : (
           <>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="cursor-pointer" onClick={() => handleSort('dimensionName')}>Lane<SortIndicator field="dimensionName" /></TableHead>
-                  <TableHead className="cursor-pointer text-right" onClick={() => handleSort('totalIssues')}>Total<SortIndicator field="totalIssues" /></TableHead>
-                  <TableHead className="cursor-pointer text-center" onClick={() => handleSort('criticalCount')}>Critical<SortIndicator field="criticalCount" /></TableHead>
-                  <TableHead className="cursor-pointer text-center" onClick={() => handleSort('highCount')}>High<SortIndicator field="highCount" /></TableHead>
-                  <TableHead className="cursor-pointer text-right" onClick={() => handleSort('exceptionCount')}>Exceptions<SortIndicator field="exceptionCount" /></TableHead>
-                  <TableHead className="cursor-pointer text-right" onClick={() => handleSort('delayCount')}>Delays<SortIndicator field="delayCount" /></TableHead>
-                  <TableHead className="cursor-pointer text-right" onClick={() => handleSort('damageCount')}>Damage<SortIndicator field="damageCount" /></TableHead>
-                  <TableHead className="cursor-pointer text-right" onClick={() => handleSort('capaRate')}>CAPA rate<SortIndicator field="capaRate" /></TableHead>
-                  <TableHead className="cursor-pointer text-right" onClick={() => handleSort('avgResolutionHours')}>Avg res.<SortIndicator field="avgResolutionHours" /></TableHead>
-                  <TableHead className="cursor-pointer text-right" onClick={() => handleSort('openCount')}>Open<SortIndicator field="openCount" /></TableHead>
+                  <TableHead className="cursor-pointer" onClick={() => handleSort('dimensionName')}>{t('Lane')}<SortIndicator field="dimensionName" /></TableHead>
+                  <TableHead className="cursor-pointer text-right" onClick={() => handleSort('totalIssues')}>{t('Total')}<SortIndicator field="totalIssues" /></TableHead>
+                  <TableHead className="cursor-pointer text-center" onClick={() => handleSort('criticalCount')}>{t('Critical')}<SortIndicator field="criticalCount" /></TableHead>
+                  <TableHead className="cursor-pointer text-center" onClick={() => handleSort('highCount')}>{t('High')}<SortIndicator field="highCount" /></TableHead>
+                  <TableHead className="cursor-pointer text-right" onClick={() => handleSort('exceptionCount')}>{t('Exceptions')}<SortIndicator field="exceptionCount" /></TableHead>
+                  <TableHead className="cursor-pointer text-right" onClick={() => handleSort('delayCount')}>{t('Delays')}<SortIndicator field="delayCount" /></TableHead>
+                  <TableHead className="cursor-pointer text-right" onClick={() => handleSort('damageCount')}>{t('Damage')}<SortIndicator field="damageCount" /></TableHead>
+                  <TableHead className="cursor-pointer text-right" onClick={() => handleSort('capaRate')}>{t('CAPA rate')}<SortIndicator field="capaRate" /></TableHead>
+                  <TableHead className="cursor-pointer text-right" onClick={() => handleSort('avgResolutionHours')}>{t('Avg res.')}<SortIndicator field="avgResolutionHours" /></TableHead>
+                  <TableHead className="cursor-pointer text-right" onClick={() => handleSort('openCount')}>{t('Open')}<SortIndicator field="openCount" /></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -206,7 +208,7 @@ export default function VNextQualityLaneAnalysis() {
                   <TableRow key={idx}>
                     <TableCell>
                       <div className="font-semibold">{row.dimensionName}</div>
-                      <div className="text-xs text-muted-foreground">{row.closedCount} closed</div>
+                      <div className="text-xs text-muted-foreground">{row.closedCount} {t('closed')}</div>
                     </TableCell>
                     <TableCell className="text-right font-semibold">{row.totalIssues}</TableCell>
                     <TableCell className="text-center">
@@ -239,7 +241,7 @@ export default function VNextQualityLaneAnalysis() {
             </Table>
             <Separator />
             <div className="px-5 py-3 text-xs italic text-muted-foreground">
-              Lanes with zero issues are not shown
+              {t('Lanes with zero issues are not shown')}
             </div>
           </>
         )}

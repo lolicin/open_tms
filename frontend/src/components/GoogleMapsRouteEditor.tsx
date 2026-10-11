@@ -16,6 +16,8 @@ import { AlertTriangle, Hand, Loader2, MapPinned, Route, Ruler, Timer } from 'lu
 
 import { useMapProvider } from '../MapProvider';
 
+import { t } from '@/i18n';
+
 interface LatLng {
   lat: number;
   lng: number;
@@ -250,10 +252,11 @@ export default function GoogleMapsRouteEditor({
       <div className="mb-4 flex items-start gap-3 rounded-md border border-warning/30 bg-warning/10 p-4 text-sm text-warning">
         <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" />
         <div>
-          <strong className="block">Google Maps API key required</strong>
+          <strong className="block">{t('Google Maps API key required')}</strong>
           <p className="mt-1 text-xs text-muted-foreground">
-            Route planning requires a Google Maps API key with the Directions API enabled.
-            Go to <strong>Admin &gt; Map settings</strong> to configure your API key.
+            {t(
+              'Route planning requires a Google Maps API key with the Directions API enabled.\n            Go to'
+            )} <strong>{t('Admin > Map settings')}</strong> {t('to configure your API key.')}
           </p>
         </div>
       </div>
@@ -272,7 +275,7 @@ export default function GoogleMapsRouteEditor({
       >
         <div className="text-center">
           <Route className="mx-auto h-12 w-12 opacity-40" />
-          <div className="mt-2 text-sm">Select origin and destination to plan a route</div>
+          <div className="mt-2 text-sm">{t('Select origin and destination to plan a route')}</div>
         </div>
       </div>
     );
@@ -297,7 +300,7 @@ export default function GoogleMapsRouteEditor({
             <strong>{routeInfo.duration}</strong>
           </div>
           {routeInfo.summary && (
-            <div className="text-xs text-muted-foreground">via {routeInfo.summary}</div>
+            <div className="text-xs text-muted-foreground">{t('via')} {routeInfo.summary}</div>
           )}
         </div>
       )}
@@ -305,7 +308,7 @@ export default function GoogleMapsRouteEditor({
       {calculating && (
         <div className="absolute left-1/2 top-1/2 z-20 flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 rounded-lg border border-border bg-card px-5 py-3 shadow-lg">
           <Loader2 className="h-4 w-4 animate-spin" />
-          <span className="text-sm">Calculating route...</span>
+          <span className="text-sm">{t('Calculating route...')}</span>
         </div>
       )}
 
@@ -319,7 +322,7 @@ export default function GoogleMapsRouteEditor({
       {editable && routeInfo && !calculating && (
         <div className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
           <Hand className="h-3.5 w-3.5" />
-          Drag the route on the map to adjust the planned path
+          {t('Drag the route on the map to adjust the planned path')}
         </div>
       )}
     </div>

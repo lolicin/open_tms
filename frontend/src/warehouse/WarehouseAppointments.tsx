@@ -12,6 +12,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
+import { t } from '@/i18n';
+
 interface Appointment {
   id: string;
   scheduledAt: string;
@@ -78,13 +80,13 @@ export default function WarehouseAppointments() {
           size="icon"
           className="h-12 w-12 shrink-0"
           onClick={() => navigate('/warehouse')}
-          aria-label="Home"
+          aria-label={t('Home')}
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Today's Appointments</h1>
-          <p className="text-sm text-muted-foreground">Check in arriving carriers before receiving.</p>
+          <h1 className="text-2xl font-bold tracking-tight">{t('Today\'s Appointments')}</h1>
+          <p className="text-sm text-muted-foreground">{t('Check in arriving carriers before receiving.')}</p>
         </div>
       </div>
 
@@ -102,7 +104,7 @@ export default function WarehouseAppointments() {
       ) : appointments.length === 0 ? (
         <Card className="flex flex-col items-center gap-2 py-12 text-center">
           <CalendarCheck className="h-12 w-12 text-muted-foreground" />
-          <p className="text-base font-semibold">No appointments today</p>
+          <p className="text-base font-semibold">{t('No appointments today')}</p>
         </Card>
       ) : (
         <div className="space-y-3">
@@ -121,9 +123,9 @@ export default function WarehouseAppointments() {
                   </div>
                   {(a.trailerNumber || a.asnReference) && (
                     <div className="mt-1 text-sm text-muted-foreground">
-                      {a.trailerNumber && <>Trailer {a.trailerNumber}</>}
+                      {a.trailerNumber && <>{t('Trailer')} {a.trailerNumber}</>}
                       {a.trailerNumber && a.asnReference && <> &middot; </>}
-                      {a.asnReference && <>ASN {a.asnReference}</>}
+                      {a.asnReference && <>{t('ASN')} {a.asnReference}</>}
                     </div>
                   )}
                 </div>
@@ -140,11 +142,11 @@ export default function WarehouseAppointments() {
                       disabled={busy === a.id}
                     >
                       {busy === a.id && <Loader2 className="h-4 w-4 animate-spin" />}
-                      {busy === a.id ? '...' : 'Check In'}
+                      {busy === a.id ? '...' : t('Check In')}
                     </Button>
                   )}
                   {a.status === 'checked_in' && (
-                    <span className="text-sm font-medium text-warning">Ready to receive</span>
+                    <span className="text-sm font-medium text-warning">{t('Ready to receive')}</span>
                   )}
                 </div>
               </div>

@@ -30,6 +30,8 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface Decision {
   id: string;
   orgId: string;
@@ -67,17 +69,17 @@ interface Decision {
 }
 
 function outcomeBadge(status: string | null) {
-  if (!status || status === 'pending') return <Badge variant="secondary">Pending review</Badge>;
-  if (status === 'correct') return <Badge variant="success">Correct</Badge>;
-  if (status === 'incorrect') return <Badge variant="destructive">Incorrect</Badge>;
-  if (status === 'partially_correct') return <Badge variant="warning">Partially correct</Badge>;
+  if (!status || status === 'pending') return <Badge variant="secondary">{t('Pending review')}</Badge>;
+  if (status === 'correct') return <Badge variant="success">{t('Correct')}</Badge>;
+  if (status === 'incorrect') return <Badge variant="destructive">{t('Incorrect')}</Badge>;
+  if (status === 'partially_correct') return <Badge variant="warning">{t('Partially correct')}</Badge>;
   return <Badge variant="secondary">{status}</Badge>;
 }
 
 function actionBadge(actionType: string) {
-  if (actionType === 'create_issue') return <Badge variant="info">Created issue</Badge>;
-  if (actionType === 'escalate_issue') return <Badge variant="warning">Escalated issue</Badge>;
-  if (actionType === 'no_action') return <Badge variant="secondary">No action</Badge>;
+  if (actionType === 'create_issue') return <Badge variant="info">{t('Created issue')}</Badge>;
+  if (actionType === 'escalate_issue') return <Badge variant="warning">{t('Escalated issue')}</Badge>;
+  if (actionType === 'no_action') return <Badge variant="secondary">{t('No action')}</Badge>;
   return <Badge variant="secondary">{actionType}</Badge>;
 }
 
@@ -183,7 +185,7 @@ export default function VNextAgentDecisionDetail() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading decision...</h3>
+        <h3 className="text-lg font-medium">{t('Loading decision...')}</h3>
       </div>
     );
   }
@@ -192,7 +194,7 @@ export default function VNextAgentDecisionDetail() {
     return (
       <div className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
         <CircleAlert className="h-5 w-5" />
-        {error || 'Decision not found'}
+        {error || t('Decision not found')}
       </div>
     );
   }
@@ -204,7 +206,7 @@ export default function VNextAgentDecisionDetail() {
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="sm" onClick={() => navigate('/agent-decisions')}>
           <ArrowLeft className="h-4 w-4" />
-          Decisions
+          {t('Decisions')}
         </Button>
         <span className="text-sm text-muted-foreground">/ {decision.id.slice(0, 8)}</span>
       </div>
@@ -225,13 +227,13 @@ export default function VNextAgentDecisionDetail() {
           {decision.outcomeStatus === 'pending' && (
             <Button variant="gradient" onClick={() => setShowOutcomeModal(true)}>
               <Star className="h-4 w-4" />
-              Record outcome
+              {t('Record outcome')}
             </Button>
           )}
           {decision.outcomeStatus === 'correct' && !decision.promotedToAutomation && (
             <Button variant="outline" onClick={promoteDecision}>
               <Sparkles className="h-4 w-4" />
-              Promote to automation
+              {t('Promote to automation')}
             </Button>
           )}
         </div>
@@ -240,11 +242,11 @@ export default function VNextAgentDecisionDetail() {
       <div className="flex flex-wrap gap-2">
         {actionBadge(decision.actionType)}
         {outcomeBadge(decision.outcomeStatus)}
-        {decision.promotedToAutomation && <Badge>Promoted</Badge>}
+        {decision.promotedToAutomation && <Badge>{t('Promoted')}</Badge>}
         <Badge variant="secondary"><Bot className="h-3 w-3" />{decision.agentType}</Badge>
         {confidencePct !== null && (
           <Badge variant={confidencePct >= 80 ? 'success' : confidencePct >= 50 ? 'warning' : 'destructive'}>
-            {confidencePct}% confidence
+            {confidencePct}{t('% confidence')}
           </Badge>
         )}
       </div>
@@ -252,7 +254,7 @@ export default function VNextAgentDecisionDetail() {
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         <div className="space-y-4">
           <Card>
-            <CardHeader><CardTitle>Agent reasoning</CardTitle></CardHeader>
+            <CardHeader><CardTitle>{t('Agent reasoning')}</CardTitle></CardHeader>
             <CardContent>
               <p className="whitespace-pre-wrap leading-relaxed">{decision.reasoning}</p>
             </CardContent>
@@ -261,8 +263,8 @@ export default function VNextAgentDecisionDetail() {
           {decision.matchedConditions && decision.matchedConditions.length > 0 && (
             <Card>
               <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Matched conditions</CardTitle>
-                <span className="text-xs text-muted-foreground">Used for automation rule promotion</span>
+                <CardTitle>{t('Matched conditions')}</CardTitle>
+                <span className="text-xs text-muted-foreground">{t('Used for automation rule promotion')}</span>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col gap-2">
@@ -282,7 +284,7 @@ export default function VNextAgentDecisionDetail() {
 
           {decision.actionPayload && Object.keys(decision.actionPayload).length > 0 && (
             <Card>
-              <CardHeader><CardTitle>Action details</CardTitle></CardHeader>
+              <CardHeader><CardTitle>{t('Action details')}</CardTitle></CardHeader>
               <CardContent>
                 {Object.entries(decision.actionPayload).map(([k, v]) => (
                   <InfoRow
@@ -298,7 +300,7 @@ export default function VNextAgentDecisionDetail() {
           <Card>
             <CardHeader className="cursor-pointer" onClick={() => setShowContext(!showContext)}>
               <div className="flex items-center justify-between">
-                <CardTitle>Context snapshot</CardTitle>
+                <CardTitle>{t('Context snapshot')}</CardTitle>
                 {showContext ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
               </div>
             </CardHeader>
@@ -315,7 +317,7 @@ export default function VNextAgentDecisionDetail() {
             <Card>
               <CardHeader className="cursor-pointer" onClick={() => setShowConversation(!showConversation)}>
                 <div className="flex items-center justify-between">
-                  <CardTitle>LLM conversation</CardTitle>
+                  <CardTitle>{t('LLM conversation')}</CardTitle>
                   {showConversation ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
                 </div>
               </CardHeader>
@@ -341,12 +343,12 @@ export default function VNextAgentDecisionDetail() {
 
           {decision.outcomeStatus && decision.outcomeStatus !== 'pending' && (
             <Card>
-              <CardHeader><CardTitle>Outcome review</CardTitle></CardHeader>
+              <CardHeader><CardTitle>{t('Outcome review')}</CardTitle></CardHeader>
               <CardContent>
-                <InfoRow label="Verdict" value={outcomeBadge(decision.outcomeStatus)} />
-                <InfoRow label="Reviewed at" value={decision.outcomeRecordedAt ? formatDate(decision.outcomeRecordedAt) : '-'} />
-                <InfoRow label="Reviewed by" value={decision.outcomeRecordedBy || 'System'} />
-                {decision.outcomeNotes && <InfoRow label="Notes" value={decision.outcomeNotes} />}
+                <InfoRow label={t('Verdict')} value={outcomeBadge(decision.outcomeStatus)} />
+                <InfoRow label={t('Reviewed at')} value={decision.outcomeRecordedAt ? formatDate(decision.outcomeRecordedAt) : '-'} />
+                <InfoRow label={t('Reviewed by')} value={decision.outcomeRecordedBy || 'System'} />
+                {decision.outcomeNotes && <InfoRow label={t('Notes')} value={decision.outcomeNotes} />}
               </CardContent>
             </Card>
           )}
@@ -354,42 +356,42 @@ export default function VNextAgentDecisionDetail() {
 
         <div className="space-y-3">
           <Card>
-            <CardHeader><CardTitle>Details</CardTitle></CardHeader>
+            <CardHeader><CardTitle>{t('Details')}</CardTitle></CardHeader>
             <CardContent>
-              <InfoRow label="Agent type" value={<span className="capitalize">{decision.agentType.replace(/_/g, ' ')}</span>} />
-              <InfoRow label="Trigger" value={decision.triggerEventType || decision.triggerType} />
+              <InfoRow label={t('Agent type')} value={<span className="capitalize">{decision.agentType.replace(/_/g, ' ')}</span>} />
+              <InfoRow label={t('Trigger')} value={decision.triggerEventType || decision.triggerType} />
               <InfoRow
-                label="Entity"
+                label={t('Entity')}
                 value={decision.entityType ? `${decision.entityType} / ${decision.entityId?.slice(0, 8)}...` : '-'}
               />
-              <InfoRow label="Model" value={decision.modelId || '-'} />
-              <InfoRow label="Provider" value={decision.modelProvider || '-'} />
-              <InfoRow label="Created" value={formatDate(decision.createdAt)} />
+              <InfoRow label={t('Model')} value={decision.modelId || '-'} />
+              <InfoRow label={t('Provider')} value={decision.modelProvider || '-'} />
+              <InfoRow label={t('Created')} value={formatDate(decision.createdAt)} />
             </CardContent>
           </Card>
 
           {(decision.inputTokens || decision.outputTokens || decision.durationMs) && (
             <Card>
-              <CardHeader><CardTitle>Token usage</CardTitle></CardHeader>
+              <CardHeader><CardTitle>{t('Token usage')}</CardTitle></CardHeader>
               <CardContent>
-                <InfoRow label="Input tokens" value={decision.inputTokens?.toLocaleString() ?? '-'} />
-                <InfoRow label="Output tokens" value={decision.outputTokens?.toLocaleString() ?? '-'} />
-                <InfoRow label="Total tokens" value={((decision.inputTokens || 0) + (decision.outputTokens || 0)).toLocaleString()} />
-                <InfoRow label="Duration" value={decision.durationMs ? `${(decision.durationMs / 1000).toFixed(1)}s` : '-'} />
+                <InfoRow label={t('Input tokens')} value={decision.inputTokens?.toLocaleString() ?? '-'} />
+                <InfoRow label={t('Output tokens')} value={decision.outputTokens?.toLocaleString() ?? '-'} />
+                <InfoRow label={t('Total tokens')} value={((decision.inputTokens || 0) + (decision.outputTokens || 0)).toLocaleString()} />
+                <InfoRow label={t('Duration')} value={decision.durationMs ? `${(decision.durationMs / 1000).toFixed(1)}s` : '-'} />
               </CardContent>
             </Card>
           )}
 
           {decision.actionEntityType && decision.actionEntityId && (
             <Card>
-              <CardHeader><CardTitle>Created entity</CardTitle></CardHeader>
+              <CardHeader><CardTitle>{t('Created entity')}</CardTitle></CardHeader>
               <CardContent className="space-y-3">
-                <InfoRow label="Type" value={<span className="capitalize">{decision.actionEntityType}</span>} />
-                <InfoRow label="ID" value={decision.actionEntityId.slice(0, 8) + '...'} />
+                <InfoRow label={t('Type')} value={<span className="capitalize">{decision.actionEntityType}</span>} />
+                <InfoRow label={t('ID')} value={decision.actionEntityId.slice(0, 8) + '...'} />
                 {decision.actionEntityType === 'issue' && (
                   <Button variant="outline" size="sm" className="w-full" onClick={() => navigate('/issues')}>
                     <ExternalLink className="h-4 w-4" />
-                    View issues
+                    {t('View issues')}
                   </Button>
                 )}
               </CardContent>
@@ -398,10 +400,10 @@ export default function VNextAgentDecisionDetail() {
 
           {decision.triggerEventId && (
             <Card>
-              <CardHeader><CardTitle>Trigger event</CardTitle></CardHeader>
+              <CardHeader><CardTitle>{t('Trigger event')}</CardTitle></CardHeader>
               <CardContent>
-                <InfoRow label="Event type" value={decision.triggerEventType || '-'} />
-                <InfoRow label="Event ID" value={decision.triggerEventId.slice(0, 8) + '...'} />
+                <InfoRow label={t('Event type')} value={decision.triggerEventType || '-'} />
+                <InfoRow label={t('Event ID')} value={decision.triggerEventId.slice(0, 8) + '...'} />
               </CardContent>
             </Card>
           )}
@@ -411,7 +413,7 @@ export default function VNextAgentDecisionDetail() {
       <Dialog open={showOutcomeModal} onOpenChange={setShowOutcomeModal}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Record decision outcome</DialogTitle>
+            <DialogTitle>{t('Record decision outcome')}</DialogTitle>
           </DialogHeader>
           {saveError && (
             <div className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
@@ -421,7 +423,7 @@ export default function VNextAgentDecisionDetail() {
           )}
           <div className="space-y-4">
             <div>
-              <p className="mb-2 text-sm font-medium">Was this decision correct?</p>
+              <p className="mb-2 text-sm font-medium">{t('Was this decision correct?')}</p>
               <div className="flex flex-wrap gap-2">
                 {(['correct', 'partially_correct', 'incorrect'] as const).map(status => (
                   <Button
@@ -440,11 +442,11 @@ export default function VNextAgentDecisionDetail() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="outcome-notes">Notes (optional)</Label>
+              <Label htmlFor="outcome-notes">{t('Notes (optional)')}</Label>
               <textarea
                 id="outcome-notes"
                 rows={3}
-                placeholder="Why was this decision correct/incorrect?"
+                placeholder={t('Why was this decision correct/incorrect?')}
                 value={outcomeNotes}
                 onChange={e => setOutcomeNotes(e.target.value)}
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -452,9 +454,9 @@ export default function VNextAgentDecisionDetail() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowOutcomeModal(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setShowOutcomeModal(false)}>{t('Cancel')}</Button>
             <Button variant="gradient" onClick={recordOutcome} disabled={saving}>
-              {saving ? 'Saving...' : 'Save outcome'}
+              {saving ? t('Saving...') : t('Save outcome')}
             </Button>
           </DialogFooter>
         </DialogContent>

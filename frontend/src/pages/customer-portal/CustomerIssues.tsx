@@ -23,6 +23,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface Issue {
   id: string;
   title: string;
@@ -83,7 +85,7 @@ export default function CustomerIssues() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">Issues</h1>
+      <h1 className="text-3xl font-bold tracking-tight">{t('Issues')}</h1>
       <Card>
         <div className="flex flex-wrap items-center gap-3 p-4">
           <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -91,11 +93,11 @@ export default function CustomerIssues() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All statuses</SelectItem>
-              <SelectItem value="open">Open (active)</SelectItem>
-              <SelectItem value="in_progress">In progress</SelectItem>
-              <SelectItem value="resolved">Resolved</SelectItem>
-              <SelectItem value="closed">Closed</SelectItem>
+              <SelectItem value="all">{t('All statuses')}</SelectItem>
+              <SelectItem value="open">{t('Open (active)')}</SelectItem>
+              <SelectItem value="in_progress">{t('In progress')}</SelectItem>
+              <SelectItem value="resolved">{t('Resolved')}</SelectItem>
+              <SelectItem value="closed">{t('Closed')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -103,19 +105,19 @@ export default function CustomerIssues() {
         {loading ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <Loader2 className="h-6 w-6 animate-spin" />
-            <span className="text-sm">Loading issues...</span>
+            <span className="text-sm">{t('Loading issues...')}</span>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Title</TableHead>
-                <TableHead>Source</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Priority</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead className="text-right">Comments</TableHead>
-                <TableHead>Updated</TableHead>
+                <TableHead>{t('Title')}</TableHead>
+                <TableHead>{t('Source')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead>{t('Priority')}</TableHead>
+                <TableHead>{t('Category')}</TableHead>
+                <TableHead className="text-right">{t('Comments')}</TableHead>
+                <TableHead>{t('Updated')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -139,7 +141,7 @@ export default function CustomerIssues() {
               {issues.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={7} className="py-8 text-center text-sm text-muted-foreground">
-                    No issues
+                    {t('No issues')}
                   </TableCell>
                 </TableRow>
               )}

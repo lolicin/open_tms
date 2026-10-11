@@ -40,6 +40,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface CAPAReport {
   id: string;
   orgId: string;
@@ -130,30 +132,30 @@ const EMPTY_FORM: FormData = {
 };
 
 const STATUS_OPTIONS = [
-  { value: 'draft', label: 'Draft' },
-  { value: 'investigation', label: 'Investigation' },
-  { value: 'root_cause_identified', label: 'Root Cause Identified' },
-  { value: 'action_plan', label: 'Action Plan' },
-  { value: 'implementation', label: 'Implementation' },
-  { value: 'verification', label: 'Verification' },
-  { value: 'closed', label: 'Closed' },
+  { value: 'draft', label: t('Draft') },
+  { value: 'investigation', label: t('Investigation') },
+  { value: 'root_cause_identified', label: t('Root Cause Identified') },
+  { value: 'action_plan', label: t('Action Plan') },
+  { value: 'implementation', label: t('Implementation') },
+  { value: 'verification', label: t('Verification') },
+  { value: 'closed', label: t('Closed') },
 ];
 
 const PRIORITY_OPTIONS = [
-  { value: 'low', label: 'Low' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'high', label: 'High' },
-  { value: 'critical', label: 'Critical' },
+  { value: 'low', label: t('Low') },
+  { value: 'medium', label: t('Medium') },
+  { value: 'high', label: t('High') },
+  { value: 'critical', label: t('Critical') },
 ];
 
 const ROOT_CAUSE_CATEGORIES = [
-  { value: '', label: 'Select category...' },
-  { value: 'equipment', label: 'Equipment' },
-  { value: 'process', label: 'Process' },
-  { value: 'personnel', label: 'Personnel' },
-  { value: 'environmental', label: 'Environmental' },
-  { value: 'material', label: 'Material' },
-  { value: 'other', label: 'Other' },
+  { value: '', label: t('Select category...') },
+  { value: 'equipment', label: t('Equipment') },
+  { value: 'process', label: t('Process') },
+  { value: 'personnel', label: t('Personnel') },
+  { value: 'environmental', label: t('Environmental') },
+  { value: 'material', label: t('Material') },
+  { value: 'other', label: t('Other') },
 ];
 
 type ChipVariant = 'success' | 'warning' | 'destructive' | 'info' | 'muted' | 'default';
@@ -286,7 +288,7 @@ export default function VNextCAPAReports() {
 
   async function handleSubmit() {
     if (!form.title.trim() || !form.issueId.trim() || !form.description.trim()) {
-      setSubmitError('Title, Issue ID, and Description are required.');
+      setSubmitError(t('Title, Issue ID, and Description are required.'));
       return;
     }
     setSubmitting(true);
@@ -372,7 +374,7 @@ export default function VNextCAPAReports() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -389,22 +391,22 @@ export default function VNextCAPAReports() {
   const isEdit = !!editingReport;
 
   const stats = [
-    { tone: 'primary' as const, label: 'Total Reports', value: totalCount, Icon: ClipboardList },
-    { tone: 'info' as const, label: 'Open', value: openCount, Icon: Clock },
-    { tone: 'destructive' as const, label: 'Overdue', value: overdueCount, Icon: AlertTriangle },
-    { tone: 'success' as const, label: 'Closed', value: closedCount, Icon: CheckCircle2 },
+    { tone: 'primary' as const, label: t('Total Reports'), value: totalCount, Icon: ClipboardList },
+    { tone: 'info' as const, label: t('Open'), value: openCount, Icon: Clock },
+    { tone: 'destructive' as const, label: t('Overdue'), value: overdueCount, Icon: AlertTriangle },
+    { tone: 'success' as const, label: t('Closed'), value: closedCount, Icon: CheckCircle2 },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">CAPA Reports</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Corrective and preventive action tracking for quality management</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('CAPA Reports')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Corrective and preventive action tracking for quality management')}</p>
         </div>
         <Button variant="gradient" onClick={openCreate}>
           <Plus className="h-4 w-4" />
-          New CAPA Report
+          {t('New CAPA Report')}
         </Button>
       </div>
 
@@ -435,7 +437,7 @@ export default function VNextCAPAReports() {
           <div className="relative min-w-[260px] flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search by report number or title..."
+              placeholder={t('Search by report number or title...')}
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="pl-9"
@@ -446,7 +448,7 @@ export default function VNextCAPAReports() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Statuses</SelectItem>
+              <SelectItem value="all">{t('All Statuses')}</SelectItem>
               {STATUS_OPTIONS.map(s => (
                 <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
               ))}
@@ -457,7 +459,7 @@ export default function VNextCAPAReports() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Priorities</SelectItem>
+              <SelectItem value="all">{t('All Priorities')}</SelectItem>
               {PRIORITY_OPTIONS.map(p => (
                 <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>
               ))}
@@ -468,22 +470,24 @@ export default function VNextCAPAReports() {
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center gap-2 py-12 text-muted-foreground">
             <ClipboardList className="h-10 w-10" />
-            <h3 className="text-base font-medium">No CAPA reports found</h3>
-            <p className="text-sm">Create a new CAPA report to begin tracking corrective and preventive actions.</p>
+            <h3 className="text-base font-medium">{t('No CAPA reports found')}</h3>
+            <p className="text-sm">{t(
+              'Create a new CAPA report to begin tracking corrective and preventive actions.'
+            )}</p>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Report #</TableHead>
-                <TableHead>Title</TableHead>
-                <TableHead>Issue</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Priority</TableHead>
-                <TableHead>Investigator</TableHead>
-                <TableHead>Due Date</TableHead>
-                <TableHead>Created</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t('Report #')}</TableHead>
+                <TableHead>{t('Title')}</TableHead>
+                <TableHead>{t('Issue')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead>{t('Priority')}</TableHead>
+                <TableHead>{t('Investigator')}</TableHead>
+                <TableHead>{t('Due Date')}</TableHead>
+                <TableHead>{t('Created')}</TableHead>
+                <TableHead>{t('Actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -526,7 +530,7 @@ export default function VNextCAPAReports() {
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8"
-                      title="Edit report"
+                      title={t('Edit report')}
                       onClick={() => openEdit(report.id)}
                     >
                       <Edit className="h-4 w-4" />
@@ -542,7 +546,7 @@ export default function VNextCAPAReports() {
       <Dialog open={showModal} onOpenChange={open => !open && closeModal()}>
         <DialogContent className="max-h-[85vh] max-w-3xl overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>{isEdit ? 'Edit CAPA Report' : 'New CAPA Report'}</DialogTitle>
+            <DialogTitle>{isEdit ? t('Edit CAPA Report') : t('New CAPA Report')}</DialogTitle>
           </DialogHeader>
 
           {submitError && (
@@ -552,34 +556,34 @@ export default function VNextCAPAReports() {
             </div>
           )}
 
-          <FormSection title="Problem Identification" Icon={AlertTriangle}>
+          <FormSection title={t('Problem Identification')} Icon={AlertTriangle}>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2 md:col-span-2">
-                <Label>Title <span className="text-destructive">*</span></Label>
+                <Label>{t('Title')} <span className="text-destructive">*</span></Label>
                 <Input
-                  placeholder="Brief title for the CAPA report"
+                  placeholder={t('Brief title for the CAPA report')}
                   value={form.title}
                   onChange={e => updateField('title', e.target.value)}
                 />
               </div>
               <div className="space-y-2">
-                <Label>Issue ID <span className="text-destructive">*</span></Label>
+                <Label>{t('Issue ID')} <span className="text-destructive">*</span></Label>
                 <Input
-                  placeholder="Linked issue ID"
+                  placeholder={t('Linked issue ID')}
                   value={form.issueId}
                   onChange={e => updateField('issueId', e.target.value)}
                 />
               </div>
               <div className="space-y-2">
-                <Label>Shipment ID</Label>
+                <Label>{t('Shipment ID')}</Label>
                 <Input
-                  placeholder="Optional shipment ID"
+                  placeholder={t('Optional shipment ID')}
                   value={form.shipmentId}
                   onChange={e => updateField('shipmentId', e.target.value)}
                 />
               </div>
               <div className="space-y-2">
-                <Label>Priority</Label>
+                <Label>{t('Priority')}</Label>
                 <Select value={form.priority} onValueChange={v => updateField('priority', v)}>
                   <SelectTrigger>
                     <SelectValue />
@@ -591,24 +595,24 @@ export default function VNextCAPAReports() {
                   </SelectContent>
                 </Select>
               </div>
-              <FormTextarea label="Description" required value={form.description} onChange={v => updateField('description', v)} placeholder="Detailed description of the issue..." />
-              <FormTextarea label="Immediate Action" value={form.immediateAction} onChange={v => updateField('immediateAction', v)} placeholder="Actions taken immediately to address the issue..." />
-              <FormTextarea label="Containment Action" value={form.containmentAction} onChange={v => updateField('containmentAction', v)} placeholder="Short-term containment measures..." />
+              <FormTextarea label={t('Description')} required value={form.description} onChange={v => updateField('description', v)} placeholder={t('Detailed description of the issue...')} />
+              <FormTextarea label={t('Immediate Action')} value={form.immediateAction} onChange={v => updateField('immediateAction', v)} placeholder={t('Actions taken immediately to address the issue...')} />
+              <FormTextarea label={t('Containment Action')} value={form.containmentAction} onChange={v => updateField('containmentAction', v)} placeholder={t('Short-term containment measures...')} />
             </div>
           </FormSection>
 
-          <FormSection title="Investigation" Icon={Search}>
+          <FormSection title={t('Investigation')} Icon={Search}>
             <div className="grid gap-4 md:grid-cols-2">
-              <FormTextarea label="Investigation Details" value={form.investigationDetails} onChange={v => updateField('investigationDetails', v)} placeholder="Details of the investigation conducted..." />
-              <FormTextarea label="Root Cause" value={form.rootCause} onChange={v => updateField('rootCause', v)} placeholder="Identified root cause of the issue..." />
+              <FormTextarea label={t('Investigation Details')} value={form.investigationDetails} onChange={v => updateField('investigationDetails', v)} placeholder={t('Details of the investigation conducted...')} />
+              <FormTextarea label={t('Root Cause')} value={form.rootCause} onChange={v => updateField('rootCause', v)} placeholder={t('Identified root cause of the issue...')} />
               <div className="space-y-2">
-                <Label>Root Cause Category</Label>
+                <Label>{t('Root Cause Category')}</Label>
                 <Select value={form.rootCauseCategory || '_none'} onValueChange={v => updateField('rootCauseCategory', v === '_none' ? '' : v)}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="_none">Select category...</SelectItem>
+                    <SelectItem value="_none">{t('Select category...')}</SelectItem>
                     {ROOT_CAUSE_CATEGORIES.filter(c => c.value).map(c => (
                       <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>
                     ))}
@@ -618,20 +622,20 @@ export default function VNextCAPAReports() {
             </div>
           </FormSection>
 
-          <FormSection title="Corrective & Preventive Actions" Icon={Wrench}>
+          <FormSection title={t('Corrective & Preventive Actions')} Icon={Wrench}>
             <div className="grid gap-4 md:grid-cols-2">
-              <FormTextarea label="Corrective Action" value={form.correctiveAction} onChange={v => updateField('correctiveAction', v)} placeholder="Actions to correct the identified issue..." />
+              <FormTextarea label={t('Corrective Action')} value={form.correctiveAction} onChange={v => updateField('correctiveAction', v)} placeholder={t('Actions to correct the identified issue...')} />
               <div className="space-y-2">
-                <Label>Corrective Action Due Date</Label>
+                <Label>{t('Corrective Action Due Date')}</Label>
                 <DatePicker
                   type="date"
                   value={form.correctiveActionDueDate}
                   onChange={e => updateField('correctiveActionDueDate', e.target.value)}
                 />
               </div>
-              <FormTextarea label="Preventive Action" value={form.preventiveAction} onChange={v => updateField('preventiveAction', v)} placeholder="Actions to prevent recurrence..." />
+              <FormTextarea label={t('Preventive Action')} value={form.preventiveAction} onChange={v => updateField('preventiveAction', v)} placeholder={t('Actions to prevent recurrence...')} />
               <div className="space-y-2">
-                <Label>Preventive Action Due Date</Label>
+                <Label>{t('Preventive Action Due Date')}</Label>
                 <DatePicker
                   type="date"
                   value={form.preventiveActionDueDate}
@@ -641,20 +645,20 @@ export default function VNextCAPAReports() {
             </div>
           </FormSection>
 
-          <FormSection title="People" Icon={Users}>
+          <FormSection title={t('People')} Icon={Users}>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>Investigator Name</Label>
+                <Label>{t('Investigator Name')}</Label>
                 <Input
-                  placeholder="Person leading the investigation"
+                  placeholder={t('Person leading the investigation')}
                   value={form.investigatorName}
                   onChange={e => updateField('investigatorName', e.target.value)}
                 />
               </div>
               <div className="space-y-2">
-                <Label>Approver Name</Label>
+                <Label>{t('Approver Name')}</Label>
                 <Input
-                  placeholder="Person responsible for approval"
+                  placeholder={t('Person responsible for approval')}
                   value={form.approverName}
                   onChange={e => updateField('approverName', e.target.value)}
                 />
@@ -663,28 +667,28 @@ export default function VNextCAPAReports() {
           </FormSection>
 
           {isEdit && (
-            <FormSection title="Verification & Closure" Icon={ShieldCheck}>
+            <FormSection title={t('Verification & Closure')} Icon={ShieldCheck}>
               <div className="grid gap-4 md:grid-cols-2">
-                <FormTextarea label="Verification Method" value={form.verificationMethod} onChange={v => updateField('verificationMethod', v)} placeholder="Method used to verify the corrective action was effective..." />
+                <FormTextarea label={t('Verification Method')} value={form.verificationMethod} onChange={v => updateField('verificationMethod', v)} placeholder={t('Method used to verify the corrective action was effective...')} />
                 <div className="space-y-2">
-                  <Label>Verified By</Label>
+                  <Label>{t('Verified By')}</Label>
                   <Input
-                    placeholder="Person who verified"
+                    placeholder={t('Person who verified')}
                     value={form.verifiedByName}
                     onChange={e => updateField('verifiedByName', e.target.value)}
                   />
                 </div>
-                <FormTextarea label="Effectiveness Check" value={form.effectivenessCheck} onChange={v => updateField('effectivenessCheck', v)} placeholder="Results of the effectiveness check..." />
-                <FormTextarea label="Lessons Learned" value={form.lessonsLearned} onChange={v => updateField('lessonsLearned', v)} placeholder="Key takeaways and lessons learned..." />
+                <FormTextarea label={t('Effectiveness Check')} value={form.effectivenessCheck} onChange={v => updateField('effectivenessCheck', v)} placeholder={t('Results of the effectiveness check...')} />
+                <FormTextarea label={t('Lessons Learned')} value={form.lessonsLearned} onChange={v => updateField('lessonsLearned', v)} placeholder={t('Key takeaways and lessons learned...')} />
               </div>
             </FormSection>
           )}
 
           <DialogFooter>
-            <Button variant="outline" onClick={closeModal} disabled={submitting}>Cancel</Button>
+            <Button variant="outline" onClick={closeModal} disabled={submitting}>{t('Cancel')}</Button>
             <Button variant="gradient" onClick={handleSubmit} disabled={submitting}>
               <Save className="h-4 w-4" />
-              {submitting ? 'Saving...' : isEdit ? 'Update Report' : 'Create Report'}
+              {submitting ? t('Saving...') : isEdit ? 'Update Report' : 'Create Report'}
             </Button>
           </DialogFooter>
         </DialogContent>

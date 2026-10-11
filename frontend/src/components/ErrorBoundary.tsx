@@ -3,6 +3,8 @@ import { AlertTriangle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
+import { t } from '@/i18n';
+
 interface Props {
   children: React.ReactNode;
 }
@@ -33,13 +35,15 @@ export class ErrorBoundary extends Component<Props, State> {
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-destructive/10 text-destructive">
             <AlertTriangle className="h-8 w-8" />
           </div>
-          <h2 className="text-xl font-semibold">Something went wrong</h2>
+          <h2 className="text-xl font-semibold">{t('Something went wrong')}</h2>
           <p className="max-w-md text-sm text-muted-foreground">
-            {this.state.error?.message || 'This page encountered an error. Try refreshing or navigating to a different page.'}
+            {this.state.error?.message || t(
+              'This page encountered an error. Try refreshing or navigating to a different page.'
+            )}
           </p>
           {this.state.error && (
             <details className="w-full max-w-md rounded-md border border-border bg-muted/40 p-4 text-left">
-              <summary className="cursor-pointer text-sm font-semibold">Error details</summary>
+              <summary className="cursor-pointer text-sm font-semibold">{t('Error details')}</summary>
               <pre className="mt-2 whitespace-pre-wrap break-words text-xs text-destructive">
                 {this.state.error.message}
               </pre>
@@ -52,7 +56,7 @@ export class ErrorBoundary extends Component<Props, State> {
               window.location.reload();
             }}
           >
-            Reload page
+            {t('Reload page')}
           </Button>
         </div>
       );

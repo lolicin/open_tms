@@ -22,6 +22,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface AtRiskShipment {
   id: string;
   reference: string;
@@ -70,32 +72,34 @@ export default function VNextCutoffDashboard() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Cutoff At Risk</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Cutoff At Risk')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Shipments projected to miss a carrier cutoff. Warning and critical severities auto-raise triage issues.
+            {t(
+              'Shipments projected to miss a carrier cutoff. Warning and critical severities auto-raise triage issues.'
+            )}
           </p>
         </div>
         <Button variant="outline" onClick={handleRunNow} disabled={running}>
-          {running ? 'Scanning...' : 'Run scan now'}
+          {running ? t('Scanning...') : t('Run scan now')}
         </Button>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-3">
         <Card>
           <CardContent className="p-5">
-            <div className="text-xs text-muted-foreground">At risk</div>
+            <div className="text-xs text-muted-foreground">{t('At risk')}</div>
             <div className="mt-1 text-3xl font-bold">{shipments.length}</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-5">
-            <div className="text-xs text-muted-foreground">Critical</div>
+            <div className="text-xs text-muted-foreground">{t('Critical')}</div>
             <div className="mt-1 text-3xl font-bold text-destructive">{critical}</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-5">
-            <div className="text-xs text-muted-foreground">Warning</div>
+            <div className="text-xs text-muted-foreground">{t('Warning')}</div>
             <div className="mt-1 text-3xl font-bold text-warning">{warning}</div>
           </CardContent>
         </Card>
@@ -108,22 +112,22 @@ export default function VNextCutoffDashboard() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All at-risk</SelectItem>
-              <SelectItem value="critical">Critical only</SelectItem>
-              <SelectItem value="warning">Warning only</SelectItem>
+              <SelectItem value="all">{t('All at-risk')}</SelectItem>
+              <SelectItem value="critical">{t('Critical only')}</SelectItem>
+              <SelectItem value="warning">{t('Warning only')}</SelectItem>
             </SelectContent>
           </Select>
         </CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Shipment</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Carrier</TableHead>
-              <TableHead>Customer</TableHead>
-              <TableHead>Severity</TableHead>
-              <TableHead>Flagged</TableHead>
-              <TableHead>Issue</TableHead>
+              <TableHead>{t('Shipment')}</TableHead>
+              <TableHead>{t('Status')}</TableHead>
+              <TableHead>{t('Carrier')}</TableHead>
+              <TableHead>{t('Customer')}</TableHead>
+              <TableHead>{t('Severity')}</TableHead>
+              <TableHead>{t('Flagged')}</TableHead>
+              <TableHead>{t('Issue')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -137,7 +141,7 @@ export default function VNextCutoffDashboard() {
             {!loading && shipments.length === 0 && (
               <TableRow>
                 <TableCell colSpan={7} className="py-12 text-center text-sm text-muted-foreground">
-                  No shipments at risk. Scans run automatically every 5 minutes.
+                  {t('No shipments at risk. Scans run automatically every 5 minutes.')}
                 </TableCell>
               </TableRow>
             )}
@@ -161,7 +165,7 @@ export default function VNextCutoffDashboard() {
                 </TableCell>
                 <TableCell>
                   {s.lastCutoffRiskIssueId
-                    ? <Link to={`/issues/${s.lastCutoffRiskIssueId}`} className="font-mono text-sm text-primary hover:underline">View issue</Link>
+                    ? <Link to={`/issues/${s.lastCutoffRiskIssueId}`} className="font-mono text-sm text-primary hover:underline">{t('View issue')}</Link>
                     : <span className="text-muted-foreground">-</span>}
                 </TableCell>
               </TableRow>

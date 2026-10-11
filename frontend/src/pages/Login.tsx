@@ -11,6 +11,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
+import { t } from '@/i18n';
+
 export default function Login() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -64,11 +66,11 @@ export default function Login() {
                 systemName
               ) : (
                 <>
-                  Open <GradientText>TMS</GradientText>
+                  {t('Open')} <GradientText>{t('TMS')}</GradientText>
                 </>
               )}
             </h1>
-            <p className="text-sm text-muted-foreground">Sign in to continue</p>
+            <p className="text-sm text-muted-foreground">{t('Sign in to continue')}</p>
           </div>
         </CardHeader>
         <CardContent>
@@ -80,7 +82,7 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} autoComplete="on" className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="login-email">Email</Label>
+              <Label htmlFor="login-email">{t('Email')}</Label>
               <Input
                 id="login-email"
                 type="email"
@@ -89,11 +91,11 @@ export default function Login() {
                 required
                 autoFocus
                 autoComplete="username"
-                placeholder="you@company.com"
+                placeholder={t('you@company.com')}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="login-password">Password</Label>
+              <Label htmlFor="login-password">{t('Password')}</Label>
               <Input
                 id="login-password"
                 type="password"
@@ -101,7 +103,7 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 autoComplete="current-password"
-                placeholder="Enter your password"
+                placeholder={t('Enter your password')}
               />
             </div>
             <Button
@@ -112,7 +114,7 @@ export default function Login() {
               disabled={loading || !email || !password}
             >
               {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-              {loading ? 'Signing in...' : 'Sign in'}
+              {loading ? t('Signing in...') : t('Sign in')}
             </Button>
           </form>
 
@@ -121,18 +123,18 @@ export default function Login() {
               to="/forgot-password"
               className="text-muted-foreground transition-colors hover:text-primary"
             >
-              Forgot password?
+              {t('Forgot password?')}
             </Link>
           </div>
         </CardContent>
       </Card>
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-xs text-muted-foreground">
         <Link to="/carrier-portal/login" className="transition-colors hover:text-primary">
-          Carrier login
+          {t('Carrier login')}
         </Link>
         <span className="mx-2 opacity-50">·</span>
         <Link to="/customer-portal/login" className="transition-colors hover:text-primary">
-          Customer login
+          {t('Customer login')}
         </Link>
       </div>
     </div>

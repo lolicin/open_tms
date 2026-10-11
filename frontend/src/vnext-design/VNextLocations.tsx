@@ -49,6 +49,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 type BadgeVariant = 'default' | 'secondary' | 'destructive' | 'outline' | 'success' | 'warning' | 'info' | 'muted';
 
 interface ArrivalCriteriaSummary {
@@ -166,7 +168,7 @@ export default function VNextLocations() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -181,24 +183,24 @@ export default function VNextLocations() {
   }
 
   const statCards = [
-    { label: 'Total locations', value: stats.total, icon: MapPin, tone: 'bg-primary/10 text-primary' },
-    { label: 'Active', value: stats.active, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
-    { label: 'With coordinates', value: stats.withCoords, icon: Crosshair, tone: 'bg-info/15 text-info' },
-    { label: 'With arrival criteria', value: stats.withCriteria, icon: RadioTower, tone: 'bg-warning/15 text-warning' },
+    { label: t('Total locations'), value: stats.total, icon: MapPin, tone: 'bg-primary/10 text-primary' },
+    { label: t('Active'), value: stats.active, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
+    { label: t('With coordinates'), value: stats.withCoords, icon: Crosshair, tone: 'bg-info/15 text-info' },
+    { label: t('With arrival criteria'), value: stats.withCriteria, icon: RadioTower, tone: 'bg-warning/15 text-warning' },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Locations</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{locations.length} locations managed</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Locations')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{locations.length} {t('locations managed')}</p>
         </div>
         <div className="flex gap-2">
           {hasPermission('locations:write') && (
             <Button variant="gradient" onClick={() => navigate('/locations/create')}>
               <Plus className="h-4 w-4" />
-              New location
+              {t('New location')}
             </Button>
           )}
         </div>
@@ -226,7 +228,7 @@ export default function VNextLocations() {
           <div className="flex h-[400px] flex-col items-center justify-center gap-2 text-muted-foreground">
             <MapIcon className="h-12 w-12 opacity-50" />
             <span className="text-sm">
-              Map view - {filtered.filter(l => l.lat !== null).length} locations with coordinates would render here
+              {t('Map view -')} {filtered.filter(l => l.lat !== null).length} {t('locations with coordinates would render here')}
             </span>
           </div>
         </Card>
@@ -237,7 +239,7 @@ export default function VNextLocations() {
           <div className="relative min-w-[280px] flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search by name, address, city, state..."
+              placeholder={t('Search by name, address, city, state...')}
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="pl-9"
@@ -248,7 +250,7 @@ export default function VNextLocations() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All types</SelectItem>
+              <SelectItem value="all">{t('All types')}</SelectItem>
               {Object.entries(LOCATION_TYPE_LABELS).map(([value, label]) => (
                 <SelectItem key={value} value={value}>{label}</SelectItem>
               ))}
@@ -259,10 +261,10 @@ export default function VNextLocations() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All countries</SelectItem>
-              <SelectItem value="US">United States</SelectItem>
-              <SelectItem value="CA">Canada</SelectItem>
-              <SelectItem value="MX">Mexico</SelectItem>
+              <SelectItem value="all">{t('All countries')}</SelectItem>
+              <SelectItem value="US">{t('United States')}</SelectItem>
+              <SelectItem value="CA">{t('Canada')}</SelectItem>
+              <SelectItem value="MX">{t('Mexico')}</SelectItem>
             </SelectContent>
           </Select>
           <div className="inline-flex rounded-md border border-input">
@@ -292,14 +294,14 @@ export default function VNextLocations() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Address</TableHead>
-                  <TableHead>City / State</TableHead>
-                  <TableHead>Country</TableHead>
-                  <TableHead>Coordinates</TableHead>
-                  <TableHead>Arrival criteria</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>{t('Name')}</TableHead>
+                  <TableHead>{t('Type')}</TableHead>
+                  <TableHead>{t('Address')}</TableHead>
+                  <TableHead>{t('City / State')}</TableHead>
+                  <TableHead>{t('Country')}</TableHead>
+                  <TableHead>{t('Coordinates')}</TableHead>
+                  <TableHead>{t('Arrival criteria')}</TableHead>
+                  <TableHead>{t('Status')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -322,7 +324,7 @@ export default function VNextLocations() {
                             {typeBadge.label}
                           </Badge>
                         ) : (
-                          <span className="text-xs italic text-muted-foreground">Unclassified</span>
+                          <span className="text-xs italic text-muted-foreground">{t('Unclassified')}</span>
                         )}
                       </TableCell>
                       <TableCell className="text-sm">{l.address1}{l.address2 ? `, ${l.address2}` : ''}</TableCell>
@@ -334,7 +336,7 @@ export default function VNextLocations() {
                             {l.lat.toFixed(3)}, {l.lng.toFixed(3)}
                           </Badge>
                         ) : (
-                          <span className="text-xs italic text-muted-foreground">No coordinates</span>
+                          <span className="text-xs italic text-muted-foreground">{t('No coordinates')}</span>
                         )}
                       </TableCell>
                       <TableCell>
@@ -352,12 +354,12 @@ export default function VNextLocations() {
                             })}
                           </div>
                         ) : (
-                          <span className="text-xs italic text-muted-foreground">None</span>
+                          <span className="text-xs italic text-muted-foreground">{t('None')}</span>
                         )}
                       </TableCell>
                       <TableCell>
                         <Badge variant={l.archived ? 'destructive' : 'success'}>
-                          {l.archived ? 'Archived' : 'Active'}
+                          {l.archived ? t('Archived') : t('Active')}
                         </Badge>
                       </TableCell>
                     </TableRow>
@@ -368,8 +370,8 @@ export default function VNextLocations() {
                     <TableCell colSpan={8}>
                       <div className="flex flex-col items-center gap-2 py-12 text-muted-foreground">
                         <SearchX className="h-8 w-8" />
-                        <h3 className="text-base font-medium">No locations found</h3>
-                        <p className="text-sm">Try adjusting your search or filters</p>
+                        <h3 className="text-base font-medium">{t('No locations found')}</h3>
+                        <p className="text-sm">{t('Try adjusting your search or filters')}</p>
                       </div>
                     </TableCell>
                   </TableRow>

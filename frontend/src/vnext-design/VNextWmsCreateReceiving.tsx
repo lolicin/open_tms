@@ -25,6 +25,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface LocationOption { id: string; name: string; }
 interface BinOption { id: string; label: string; binType: string; }
 
@@ -118,8 +120,8 @@ export default function VNextWmsCreateReceiving() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">New Receiving Task</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Receive inbound goods at a warehouse dock</p>
+        <h1 className="text-3xl font-bold tracking-tight">{t('New Receiving Task')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t('Receive inbound goods at a warehouse dock')}</p>
       </div>
 
       {error && (
@@ -133,7 +135,7 @@ export default function VNextWmsCreateReceiving() {
         <Card className="max-w-4xl">
           <CardContent className="grid gap-4 p-6 md:grid-cols-2">
             <div className="space-y-2">
-              <Label>Facility *</Label>
+              <Label>{t('Facility *')}</Label>
               <FacilitySelect
                 facilities={facilities}
                 value={form.facilityId}
@@ -145,26 +147,26 @@ export default function VNextWmsCreateReceiving() {
             </div>
 
             <div className="space-y-2">
-              <Label>Receiving Type *</Label>
+              <Label>{t('Receiving Type *')}</Label>
               <Select value={form.receivingType} onValueChange={v => setForm({ ...form, receivingType: v as 'asn' | 'blind' })}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="blind">Blind Receiving</SelectItem>
-                  <SelectItem value="asn">ASN-Based (Expected Items)</SelectItem>
+                  <SelectItem value="blind">{t('Blind Receiving')}</SelectItem>
+                  <SelectItem value="asn">{t('ASN-Based (Expected Items)')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label>Dock Door</Label>
+              <Label>{t('Dock Door')}</Label>
               <Select value={form.dockBinId} onValueChange={v => setForm({ ...form, dockBinId: v })}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="none">No dock assigned</SelectItem>
+                  <SelectItem value="none">{t('No dock assigned')}</SelectItem>
                   {dockBins.map(b => (
                     <SelectItem key={b.id} value={b.id}>{b.label}</SelectItem>
                   ))}
@@ -173,18 +175,18 @@ export default function VNextWmsCreateReceiving() {
             </div>
 
             <div className="space-y-2">
-              <Label>Inbound Shipment ID</Label>
-              <Input value={form.inboundShipmentId} onChange={e => setForm({ ...form, inboundShipmentId: e.target.value })} placeholder="Optional" />
+              <Label>{t('Inbound Shipment ID')}</Label>
+              <Input value={form.inboundShipmentId} onChange={e => setForm({ ...form, inboundShipmentId: e.target.value })} placeholder={t('Optional')} />
             </div>
 
             <div className="space-y-2">
-              <Label>Carrier Name</Label>
-              <Input value={form.carrierName} onChange={e => setForm({ ...form, carrierName: e.target.value })} placeholder="Optional" />
+              <Label>{t('Carrier Name')}</Label>
+              <Input value={form.carrierName} onChange={e => setForm({ ...form, carrierName: e.target.value })} placeholder={t('Optional')} />
             </div>
 
             <div className="space-y-2">
-              <Label>Trailer #</Label>
-              <Input value={form.trailerNumber} onChange={e => setForm({ ...form, trailerNumber: e.target.value })} placeholder="Optional" />
+              <Label>{t('Trailer #')}</Label>
+              <Input value={form.trailerNumber} onChange={e => setForm({ ...form, trailerNumber: e.target.value })} placeholder={t('Optional')} />
             </div>
 
             <div className="md:col-span-2">
@@ -195,7 +197,7 @@ export default function VNextWmsCreateReceiving() {
                   onChange={e => setForm({ ...form, crossDock: e.target.checked })}
                   className="h-4 w-4 rounded border border-input bg-background accent-primary"
                 />
-                Cross-Dock (skip putaway to storage)
+                {t('Cross-Dock (skip putaway to storage)')}
               </label>
             </div>
           </CardContent>
@@ -204,24 +206,24 @@ export default function VNextWmsCreateReceiving() {
         {form.receivingType === 'asn' && (
           <Card className="mt-6 max-w-4xl">
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Expected Items</CardTitle>
+              <CardTitle>{t('Expected Items')}</CardTitle>
               <Button type="button" variant="outline" size="sm" onClick={addLine}>
                 <Plus className="h-4 w-4" />
-                Add Line
+                {t('Add Line')}
               </Button>
             </CardHeader>
             <CardContent className="p-0">
               {lines.length === 0 ? (
                 <p className="px-6 py-4 text-sm text-muted-foreground">
-                  No expected items. Add lines to pre-populate what you expect to receive.
+                  {t('No expected items. Add lines to pre-populate what you expect to receive.')}
                 </p>
               ) : (
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>SKU</TableHead>
-                      <TableHead>Expected Qty</TableHead>
-                      <TableHead>Lot #</TableHead>
+                      <TableHead>{t('SKU')}</TableHead>
+                      <TableHead>{t('Expected Qty')}</TableHead>
+                      <TableHead>{t('Lot #')}</TableHead>
                       <TableHead></TableHead>
                     </TableRow>
                   </TableHeader>
@@ -229,13 +231,13 @@ export default function VNextWmsCreateReceiving() {
                     {lines.map((line, i) => (
                       <TableRow key={i}>
                         <TableCell>
-                          <Input value={line.sku} onChange={e => updateLine(i, 'sku', e.target.value)} placeholder="SKU" />
+                          <Input value={line.sku} onChange={e => updateLine(i, 'sku', e.target.value)} placeholder={t('SKU')} />
                         </TableCell>
                         <TableCell>
                           <Input type="number" min="1" value={line.expectedQuantity} onChange={e => updateLine(i, 'expectedQuantity', e.target.value)} className="w-24" />
                         </TableCell>
                         <TableCell>
-                          <Input value={line.lotNumber} onChange={e => updateLine(i, 'lotNumber', e.target.value)} placeholder="Optional" />
+                          <Input value={line.lotNumber} onChange={e => updateLine(i, 'lotNumber', e.target.value)} placeholder={t('Optional')} />
                         </TableCell>
                         <TableCell>
                           <Button type="button" variant="ghost" size="icon" onClick={() => removeLine(i)}>
@@ -252,9 +254,9 @@ export default function VNextWmsCreateReceiving() {
         )}
 
         <div className="mt-6 flex flex-wrap items-center justify-end gap-2">
-          <Button variant="outline" type="button" onClick={() => navigate('/wms/receiving')}>Cancel</Button>
+          <Button variant="outline" type="button" onClick={() => navigate('/wms/receiving')}>{t('Cancel')}</Button>
           <Button variant="gradient" type="submit" disabled={saving}>
-            {saving ? 'Creating...' : 'Create Task'}
+            {saving ? t('Creating...') : t('Create Task')}
           </Button>
         </div>
       </form>

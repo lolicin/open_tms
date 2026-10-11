@@ -7,6 +7,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
+import { t } from '@/i18n';
+
 interface Candidate {
   id: string;
   reference: string;
@@ -77,23 +79,25 @@ export default function ConsolidationShipmentPicker({ open, title, confirmLabel,
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
-            Draft or ready shipments that aren't on a consolidation. Each keeps its own customer; the run gets every pickup before every drop.
+            {t(
+              'Draft or ready shipments that aren\'t on a consolidation. Each keeps its own customer; the run gets every pickup before every drop.'
+            )}
           </DialogDescription>
         </DialogHeader>
 
         <div className="relative">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input placeholder="Search by shipment reference..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
+          <Input placeholder={t('Search by shipment reference...')} value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
         </div>
 
         <div className="max-h-80 space-y-1 overflow-y-auto">
           {loading && (
             <div className="flex items-center gap-2 p-4 text-sm text-muted-foreground">
-              <Loader2 className="h-4 w-4 animate-spin" /> Loading shipments...
+              <Loader2 className="h-4 w-4 animate-spin" /> {t('Loading shipments...')}
             </div>
           )}
           {!loading && candidates.length === 0 && (
-            <p className="p-4 text-sm text-muted-foreground">No shipments available to consolidate.</p>
+            <p className="p-4 text-sm text-muted-foreground">{t('No shipments available to consolidate.')}</p>
           )}
           {!loading && candidates.map((c) => (
             <label key={c.id} className="flex cursor-pointer items-start gap-3 rounded-md border p-3 hover:bg-muted/50">
@@ -116,7 +120,7 @@ export default function ConsolidationShipmentPicker({ open, title, confirmLabel,
         {error && <p className="text-sm text-destructive">{error}</p>}
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>{t('Cancel')}</Button>
           <Button onClick={confirm} disabled={selected.length === 0 || saving}>
             {saving && <Loader2 className="h-4 w-4 animate-spin" />}
             {confirmLabel}{selected.length > 0 ? ` (${selected.length})` : ''}

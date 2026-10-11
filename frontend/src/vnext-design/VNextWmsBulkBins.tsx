@@ -15,20 +15,22 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { t as translate } from '@/i18n';
+
 const BIN_TYPES = [
-  { value: 'pallet', label: 'Pallet' },
-  { value: 'shelf', label: 'Shelf' },
-  { value: 'floor', label: 'Floor' },
-  { value: 'dock_door', label: 'Dock Door' },
-  { value: 'staging', label: 'Staging' },
-  { value: 'pack_station', label: 'Pack Station' },
+  { value: 'pallet', label: translate('Pallet') },
+  { value: 'shelf', label: translate('Shelf') },
+  { value: 'floor', label: translate('Floor') },
+  { value: 'dock_door', label: translate('Dock Door') },
+  { value: 'staging', label: translate('Staging') },
+  { value: 'pack_station', label: translate('Pack Station') },
 ];
 
 const TEMP_ZONES = [
-  { value: 'inherit', label: 'Inherit from zone' },
-  { value: 'ambient', label: 'Ambient' },
-  { value: 'refrigerated', label: 'Refrigerated' },
-  { value: 'frozen', label: 'Frozen' },
+  { value: 'inherit', label: translate('Inherit from zone') },
+  { value: 'ambient', label: translate('Ambient') },
+  { value: 'refrigerated', label: translate('Refrigerated') },
+  { value: 'frozen', label: translate('Frozen') },
 ];
 
 interface PreviewResult {
@@ -138,8 +140,8 @@ export default function VNextWmsBulkBins() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Bulk Create Bins</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Generate bins from a label pattern with aisle/row/level ranges</p>
+        <h1 className="text-3xl font-bold tracking-tight">{translate('Bulk Create Bins')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{translate('Generate bins from a label pattern with aisle/row/level ranges')}</p>
       </div>
 
       {error && (
@@ -159,24 +161,24 @@ export default function VNextWmsBulkBins() {
         <form onSubmit={handleSubmit}>
           <Card>
             <CardHeader>
-              <CardTitle>Configuration</CardTitle>
+              <CardTitle>{translate('Configuration')}</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2 md:col-span-2">
-                <Label>Label Pattern *</Label>
+                <Label>{translate('Label Pattern *')}</Label>
                 <Input
                   value={form.labelPattern}
                   onChange={e => setForm({ ...form, labelPattern: e.target.value })}
-                  placeholder="e.g. BULK-{aisle}-{row}-{level}"
+                  placeholder={translate('e.g. BULK-{aisle}-{row}-{level}')}
                   required
                 />
                 <p className="text-xs text-muted-foreground">
-                  Use {'{aisle}'}, {'{row}'}, {'{level}'} as placeholders. Rows and levels are zero-padded.
+                  {translate('Use')} {translate('{aisle}')}, {translate('{row}')}, {translate('{level}')} {translate('as placeholders. Rows and levels are zero-padded.')}
                 </p>
               </div>
 
               <div className="space-y-2">
-                <Label>Bin Type *</Label>
+                <Label>{translate('Bin Type *')}</Label>
                 <Select value={form.binType} onValueChange={v => setForm({ ...form, binType: v })}>
                   <SelectTrigger>
                     <SelectValue />
@@ -190,7 +192,7 @@ export default function VNextWmsBulkBins() {
               </div>
 
               <div className="space-y-2">
-                <Label>Temperature Zone</Label>
+                <Label>{translate('Temperature Zone')}</Label>
                 <Select value={form.temperatureZone} onValueChange={v => setForm({ ...form, temperatureZone: v })}>
                   <SelectTrigger>
                     <SelectValue />
@@ -204,39 +206,39 @@ export default function VNextWmsBulkBins() {
               </div>
 
               <div className="space-y-2 md:col-span-2">
-                <Label>Aisles (comma-separated) *</Label>
+                <Label>{translate('Aisles (comma-separated) *')}</Label>
                 <Input
                   value={form.aisles}
                   onChange={e => setForm({ ...form, aisles: e.target.value })}
-                  placeholder="A,B,C"
+                  placeholder={translate('A,B,C')}
                   required
                 />
               </div>
 
               <div className="space-y-2">
-                <Label>Row Start</Label>
+                <Label>{translate('Row Start')}</Label>
                 <Input type="number" min="1" value={form.rowStart} onChange={e => setForm({ ...form, rowStart: e.target.value })} />
               </div>
               <div className="space-y-2">
-                <Label>Row End</Label>
+                <Label>{translate('Row End')}</Label>
                 <Input type="number" min="1" value={form.rowEnd} onChange={e => setForm({ ...form, rowEnd: e.target.value })} />
               </div>
               <div className="space-y-2">
-                <Label>Level Start</Label>
+                <Label>{translate('Level Start')}</Label>
                 <Input type="number" min="1" value={form.levelStart} onChange={e => setForm({ ...form, levelStart: e.target.value })} />
               </div>
               <div className="space-y-2">
-                <Label>Level End</Label>
+                <Label>{translate('Level End')}</Label>
                 <Input type="number" min="1" value={form.levelEnd} onChange={e => setForm({ ...form, levelEnd: e.target.value })} />
               </div>
 
               <div className="space-y-2">
-                <Label>Max Weight (kg)</Label>
-                <Input type="number" step="0.1" value={form.maxWeightKg} onChange={e => setForm({ ...form, maxWeightKg: e.target.value })} placeholder="Optional" />
+                <Label>{translate('Max Weight (kg)')}</Label>
+                <Input type="number" step="0.1" value={form.maxWeightKg} onChange={e => setForm({ ...form, maxWeightKg: e.target.value })} placeholder={translate('Optional')} />
               </div>
               <div className="space-y-2">
-                <Label>Max Pallet Positions</Label>
-                <Input type="number" min="1" value={form.maxPalletPositions} onChange={e => setForm({ ...form, maxPalletPositions: e.target.value })} placeholder="Optional" />
+                <Label>{translate('Max Pallet Positions')}</Label>
+                <Input type="number" min="1" value={form.maxPalletPositions} onChange={e => setForm({ ...form, maxPalletPositions: e.target.value })} placeholder={translate('Optional')} />
               </div>
 
               <div className="md:col-span-2">
@@ -247,20 +249,20 @@ export default function VNextWmsBulkBins() {
                     onChange={e => setForm({ ...form, hazmatCertified: e.target.checked })}
                     className="h-4 w-4 rounded border border-input bg-background accent-primary"
                   />
-                  Hazmat Certified
+                  {translate('Hazmat Certified')}
                 </label>
               </div>
 
               <div className="flex flex-wrap items-center justify-end gap-2 md:col-span-2">
                 <Button variant="outline" type="button" onClick={() => navigate(-1)}>
-                  Cancel
+                  {translate('Cancel')}
                 </Button>
                 <Button variant="outline" type="button" onClick={handlePreview}>
                   <Eye className="h-4 w-4" />
-                  Preview Labels
+                  {translate('Preview Labels')}
                 </Button>
                 <Button variant="gradient" type="submit" disabled={saving}>
-                  {saving ? 'Creating...' : 'Create Bins'}
+                  {saving ? translate('Creating...') : translate('Create Bins')}
                 </Button>
               </div>
             </CardContent>
@@ -269,14 +271,14 @@ export default function VNextWmsBulkBins() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Preview</CardTitle>
+            <CardTitle>{translate('Preview')}</CardTitle>
           </CardHeader>
           <CardContent>
             {preview ? (
               <div className="space-y-3">
                 <div className="flex items-center gap-2 rounded-md border border-info/30 bg-info/10 p-3 text-sm text-info">
                   <Info className="h-4 w-4" />
-                  Will create <strong>{preview.count}</strong> bins
+                  {translate('Will create')} <strong>{preview.count}</strong> {translate('bins')}
                 </div>
                 <div className="max-h-96 overflow-auto font-mono text-sm">
                   {preview.labels.map((label, i) => (
@@ -286,7 +288,7 @@ export default function VNextWmsBulkBins() {
                   ))}
                   {preview.truncated && (
                     <div className="py-2 italic text-muted-foreground">
-                      ...and {preview.count - preview.labels.length} more
+                      {translate('...and')} {preview.count - preview.labels.length} {translate('more')}
                     </div>
                   )}
                 </div>
@@ -294,7 +296,7 @@ export default function VNextWmsBulkBins() {
             ) : (
               <div className="flex flex-col items-center gap-3 py-12 text-center text-muted-foreground">
                 <Eye className="h-10 w-10" />
-                <p className="text-sm">Click "Preview Labels" to see what will be generated</p>
+                <p className="text-sm">{translate('Click "Preview Labels" to see what will be generated')}</p>
               </div>
             )}
           </CardContent>

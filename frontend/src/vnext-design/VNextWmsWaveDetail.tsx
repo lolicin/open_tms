@@ -27,6 +27,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t as translate } from '@/i18n';
+
 interface WaveDetail {
   id: string;
   waveNumber: string;
@@ -125,7 +127,7 @@ export default function VNextWmsWaveDetail() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/wms/waves" className="hover:text-foreground">
-          <ArrowLeft className="inline h-4 w-4" /> Waves
+          <ArrowLeft className="inline h-4 w-4" /> {translate('Waves')}
         </Link>
         <ChevronRight className="h-3 w-3" />
         <span>{wave.waveNumber}</span>
@@ -139,7 +141,7 @@ export default function VNextWmsWaveDetail() {
             <Badge variant="default">{formatStatus(wave.pickStrategy)}</Badge>
             {wave.cutoffAt && (
               <span className="text-sm text-muted-foreground">
-                Cutoff: {new Date(wave.cutoffAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                {translate('Cutoff:')} {new Date(wave.cutoffAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </span>
             )}
           </div>
@@ -148,7 +150,7 @@ export default function VNextWmsWaveDetail() {
           {wave.status === 'planning' && (
             <Button variant="gradient" onClick={handleRelease} disabled={releasing}>
               <Play className="h-4 w-4" />
-              {releasing ? 'Releasing...' : 'Release Wave'}
+              {releasing ? translate('Releasing...') : translate('Release Wave')}
             </Button>
           )}
         </div>
@@ -165,13 +167,13 @@ export default function VNextWmsWaveDetail() {
         <div className="space-y-2">
           <div className="flex items-center gap-3 rounded-md border border-success/30 bg-success/10 p-4 text-sm text-success">
             <CheckCircle2 className="h-5 w-5" />
-            Wave released: {releaseResult.pickTasksCreated} pick task(s) created
+            {translate('Wave released:')} {releaseResult.pickTasksCreated} {translate('pick task(s) created')}
           </div>
           {releaseResult.allocationFailures?.length > 0 && (
             <div className="flex items-start gap-3 rounded-md border border-warning/30 bg-warning/10 p-4 text-sm text-warning">
               <AlertTriangle className="h-5 w-5" />
               <div>
-                <strong>Allocation warnings:</strong>
+                <strong>{translate('Allocation warnings:')}</strong>
                 <ul className="ml-5 mt-1 list-disc">
                   {releaseResult.allocationFailures.map((f: string, i: number) => <li key={i}>{f}</li>)}
                 </ul>
@@ -183,10 +185,10 @@ export default function VNextWmsWaveDetail() {
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {[
-          { label: 'Orders', value: wave.orderCount, icon: Receipt, tone: 'bg-primary/10 text-primary' },
-          { label: 'Order Lines', value: wave.lineCount, icon: List, tone: 'bg-info/15 text-info' },
-          { label: 'Pick Tasks', value: wave.pickTasks.length, icon: ClipboardList, tone: 'bg-warning/15 text-warning' },
-          ...(totalPickLines > 0 ? [{ label: 'Lines Picked', value: `${completedPickLines}/${totalPickLines}`, icon: CheckCircle2, tone: 'bg-success/15 text-success' }] : []),
+          { label: translate('Orders'), value: wave.orderCount, icon: Receipt, tone: 'bg-primary/10 text-primary' },
+          { label: translate('Order Lines'), value: wave.lineCount, icon: List, tone: 'bg-info/15 text-info' },
+          { label: translate('Pick Tasks'), value: wave.pickTasks.length, icon: ClipboardList, tone: 'bg-warning/15 text-warning' },
+          ...(totalPickLines > 0 ? [{ label: translate('Lines Picked'), value: `${completedPickLines}/${totalPickLines}`, icon: CheckCircle2, tone: 'bg-success/15 text-success' }] : []),
         ].map(s => {
           const Icon = s.icon;
           return (
@@ -205,23 +207,23 @@ export default function VNextWmsWaveDetail() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Pick Tasks</CardTitle>
+          <CardTitle>{translate('Pick Tasks')}</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           {wave.pickTasks.length === 0 ? (
             <div className="px-6 py-8 text-center text-sm text-muted-foreground">
-              {wave.status === 'planning' ? 'Release the wave to generate pick tasks.' : 'No pick tasks.'}
+              {wave.status === 'planning' ? translate('Release the wave to generate pick tasks.') : translate('No pick tasks.')}
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Task</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Order</TableHead>
-                  <TableHead>Progress</TableHead>
-                  <TableHead>Assigned</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>{translate('Task')}</TableHead>
+                  <TableHead>{translate('Type')}</TableHead>
+                  <TableHead>{translate('Order')}</TableHead>
+                  <TableHead>{translate('Progress')}</TableHead>
+                  <TableHead>{translate('Assigned')}</TableHead>
+                  <TableHead>{translate('Status')}</TableHead>
                   <TableHead></TableHead>
                 </TableRow>
               </TableHeader>
@@ -244,13 +246,13 @@ export default function VNextWmsWaveDetail() {
                         <span className="text-xs text-muted-foreground">{t.completedLines}/{t.totalLines}</span>
                       </div>
                     </TableCell>
-                    <TableCell>{t.assignedToUserId || 'Unassigned'}</TableCell>
+                    <TableCell>{t.assignedToUserId || translate('Unassigned')}</TableCell>
                     <TableCell>
                       <Badge variant={statusVariant(t.status)}>{formatStatus(t.status)}</Badge>
                     </TableCell>
                     <TableCell>
                       <Button variant="outline" size="sm" onClick={() => navigate(`/wms/picking/${t.id}`)}>
-                        View
+                        {translate('View')}
                       </Button>
                     </TableCell>
                   </TableRow>

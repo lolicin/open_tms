@@ -22,6 +22,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface EdiLog {
   id: string;
   transactionType: string;
@@ -67,9 +69,9 @@ export default function CustomerIntegrationLogs() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Integration logs</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Integration logs')}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Every EDI transaction exchanged with your trading partners. {total} in total.
+          {t('Every EDI transaction exchanged with your trading partners.')} {total} {t('in total.')}
         </p>
       </div>
 
@@ -80,9 +82,9 @@ export default function CustomerIntegrationLogs() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All directions</SelectItem>
-              <SelectItem value="inbound">Inbound</SelectItem>
-              <SelectItem value="outbound">Outbound</SelectItem>
+              <SelectItem value="all">{t('All directions')}</SelectItem>
+              <SelectItem value="inbound">{t('Inbound')}</SelectItem>
+              <SelectItem value="outbound">{t('Outbound')}</SelectItem>
             </SelectContent>
           </Select>
           <Select value={txType} onValueChange={setTxType}>
@@ -90,18 +92,18 @@ export default function CustomerIntegrationLogs() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All transaction types</SelectItem>
-              <SelectItem value="850">850 - Purchase Order</SelectItem>
-              <SelectItem value="855">855 - PO Ack</SelectItem>
-              <SelectItem value="856">856 - ASN</SelectItem>
-              <SelectItem value="810">810 - Invoice</SelectItem>
-              <SelectItem value="820">820 - Payment</SelectItem>
-              <SelectItem value="210">210 - Freight Invoice</SelectItem>
-              <SelectItem value="204">204 - Load Tender</SelectItem>
-              <SelectItem value="990">990 - Tender Response</SelectItem>
-              <SelectItem value="214">214 - Shipment Status</SelectItem>
-              <SelectItem value="180">180 - RMA</SelectItem>
-              <SelectItem value="997">997 - Functional Ack</SelectItem>
+              <SelectItem value="all">{t('All transaction types')}</SelectItem>
+              <SelectItem value="850">{t('850 - Purchase Order')}</SelectItem>
+              <SelectItem value="855">{t('855 - PO Ack')}</SelectItem>
+              <SelectItem value="856">{t('856 - ASN')}</SelectItem>
+              <SelectItem value="810">{t('810 - Invoice')}</SelectItem>
+              <SelectItem value="820">{t('820 - Payment')}</SelectItem>
+              <SelectItem value="210">{t('210 - Freight Invoice')}</SelectItem>
+              <SelectItem value="204">{t('204 - Load Tender')}</SelectItem>
+              <SelectItem value="990">{t('990 - Tender Response')}</SelectItem>
+              <SelectItem value="214">{t('214 - Shipment Status')}</SelectItem>
+              <SelectItem value="180">{t('180 - RMA')}</SelectItem>
+              <SelectItem value="997">{t('997 - Functional Ack')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -111,14 +113,14 @@ export default function CustomerIntegrationLogs() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Partner</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Direction</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Control #</TableHead>
-              <TableHead>Received</TableHead>
-              <TableHead>Processed</TableHead>
-              <TableHead>Error</TableHead>
+              <TableHead>{t('Partner')}</TableHead>
+              <TableHead>{t('Type')}</TableHead>
+              <TableHead>{t('Direction')}</TableHead>
+              <TableHead>{t('Status')}</TableHead>
+              <TableHead>{t('Control #')}</TableHead>
+              <TableHead>{t('Received')}</TableHead>
+              <TableHead>{t('Processed')}</TableHead>
+              <TableHead>{t('Error')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -132,7 +134,7 @@ export default function CustomerIntegrationLogs() {
             {!loading && logs.length === 0 && (
               <TableRow>
                 <TableCell colSpan={8} className="py-8 text-center text-sm text-muted-foreground">
-                  No EDI transactions yet for your account.
+                  {t('No EDI transactions yet for your account.')}
                 </TableCell>
               </TableRow>
             )}

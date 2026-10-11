@@ -22,6 +22,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface LineItem {
   id: string;
   chargeType: string;
@@ -132,7 +134,7 @@ export default function VNextFinanceCarrierInvoiceDetail() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -140,7 +142,7 @@ export default function VNextFinanceCarrierInvoiceDetail() {
     return (
       <div className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
         <CircleAlert className="h-5 w-5" />
-        {error || 'Not found'}
+        {error || t('Not found')}
       </div>
     );
   }
@@ -151,7 +153,7 @@ export default function VNextFinanceCarrierInvoiceDetail() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm">
         <Button variant="ghost" size="sm" onClick={() => navigate('/finance/carrier-invoices')}>
-          <ArrowLeft className="h-4 w-4" /> Carrier Invoices
+          <ArrowLeft className="h-4 w-4" /> {t('Carrier Invoices')}
         </Button>
         <span className="text-muted-foreground">/ {ci.invoiceNumber}</span>
       </div>
@@ -162,19 +164,19 @@ export default function VNextFinanceCarrierInvoiceDetail() {
           <div className="mt-2 flex items-center gap-2">
             <Badge variant={statusVariant(ci.status)}>{ci.status}</Badge>
             <Badge variant={matchVariant(ci.matchStatus)}>{ci.matchStatus.replace(/_/g, ' ')}</Badge>
-            {ci.autoApproved && <Badge variant="info">auto-approved</Badge>}
+            {ci.autoApproved && <Badge variant="info">{t('auto-approved')}</Badge>}
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
           {['received', 'matched', 'discrepancy'].includes(ci.status) && (
             <Button size="sm" onClick={() => doAction('approve')} disabled={!!actionLoading}>
-              {actionLoading === 'approve' ? 'Approving...' : 'Approve for Payment'}
+              {actionLoading === 'approve' ? t('Approving...') : t('Approve for Payment')}
             </Button>
           )}
           {['approved', 'scheduled'].includes(ci.status) && (
             <Button size="sm" onClick={() => doAction('pay', { amountCents: ci.approvedCents ?? ci.totalCents })} disabled={!!actionLoading}>
               <CreditCard className="h-4 w-4" />
-              {actionLoading === 'pay' ? 'Recording...' : 'Record Payment'}
+              {actionLoading === 'pay' ? t('Recording...') : t('Record Payment')}
             </Button>
           )}
         </div>
@@ -184,18 +186,18 @@ export default function VNextFinanceCarrierInvoiceDetail() {
         <div className="space-y-6">
           <Card>
             <div className="p-5">
-              <h2 className="text-lg font-semibold">Freight Audit - Line-by-Line Match</h2>
+              <h2 className="text-lg font-semibold">{t('Freight Audit - Line-by-Line Match')}</h2>
             </div>
             <Separator />
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Description</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Match</TableHead>
-                  <TableHead className="text-right">Invoiced</TableHead>
-                  <TableHead className="text-right">Expected</TableHead>
-                  <TableHead className="text-right">Variance</TableHead>
+                  <TableHead>{t('Description')}</TableHead>
+                  <TableHead>{t('Type')}</TableHead>
+                  <TableHead>{t('Match')}</TableHead>
+                  <TableHead className="text-right">{t('Invoiced')}</TableHead>
+                  <TableHead className="text-right">{t('Expected')}</TableHead>
+                  <TableHead className="text-right">{t('Variance')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -203,8 +205,8 @@ export default function VNextFinanceCarrierInvoiceDetail() {
                   <TableRow key={li.id}>
                     <TableCell>
                       {li.description}
-                      {li.freightClass && <span className="ml-1 text-sm text-muted-foreground">(Class {li.freightClass})</span>}
-                      {li.billedWeight && <span className="ml-1 text-sm text-muted-foreground">- {li.billedWeight} lbs</span>}
+                      {li.freightClass && <span className="ml-1 text-sm text-muted-foreground">{t('(Class')} {li.freightClass})</span>}
+                      {li.billedWeight && <span className="ml-1 text-sm text-muted-foreground">- {li.billedWeight} {t('lbs')}</span>}
                     </TableCell>
                     <TableCell>
                       <Badge variant="muted">{li.chargeType.replace(/_/g, ' ')}</Badge>
@@ -229,7 +231,7 @@ export default function VNextFinanceCarrierInvoiceDetail() {
             </Table>
             <div className="border-t p-5">
               <div className="flex justify-between text-sm font-bold">
-                <span>Total</span>
+                <span>{t('Total')}</span>
                 <div className="flex items-center gap-6">
                   <span className="font-mono tabular-nums">{formatMoney(ci.totalCents)}</span>
                   <span className={cn('font-mono tabular-nums', ci.varianceCents && ci.varianceCents > 0 ? 'text-destructive' : 'text-muted-foreground')}>
@@ -244,51 +246,51 @@ export default function VNextFinanceCarrierInvoiceDetail() {
         <aside className="space-y-6 lg:sticky lg:top-20 lg:self-start">
           <Card>
             <CardContent className="p-5">
-              <h3 className="mb-4 text-base font-semibold">Invoice Details</h3>
+              <h3 className="mb-4 text-base font-semibold">{t('Invoice Details')}</h3>
               <dl className="space-y-3 text-sm">
                 <div>
-                  <dt className="text-xs text-muted-foreground">Carrier</dt>
+                  <dt className="text-xs text-muted-foreground">{t('Carrier')}</dt>
                   <dd>{ci.carrier.name}{ci.carrier.scacCode && ` (${ci.carrier.scacCode})`}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-muted-foreground">Invoice Total</dt>
+                  <dt className="text-xs text-muted-foreground">{t('Invoice Total')}</dt>
                   <dd className="font-semibold font-mono tabular-nums">{formatMoney(ci.totalCents)}</dd>
                 </div>
                 {ci.approvedCents != null && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">Approved</dt>
+                    <dt className="text-xs text-muted-foreground">{t('Approved')}</dt>
                     <dd className="text-success font-mono tabular-nums">{formatMoney(ci.approvedCents)}</dd>
                   </div>
                 )}
                 <div>
-                  <dt className="text-xs text-muted-foreground">Received</dt>
+                  <dt className="text-xs text-muted-foreground">{t('Received')}</dt>
                   <dd>{formatDate(ci.receivedDate)}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-muted-foreground">Due Date</dt>
+                  <dt className="text-xs text-muted-foreground">{t('Due Date')}</dt>
                   <dd>{formatDate(ci.dueDate)}</dd>
                 </div>
                 {ci.approvedAt && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">Approved At</dt>
+                    <dt className="text-xs text-muted-foreground">{t('Approved At')}</dt>
                     <dd>{formatDate(ci.approvedAt)}</dd>
                   </div>
                 )}
                 {ci.paidAt && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">Paid</dt>
+                    <dt className="text-xs text-muted-foreground">{t('Paid')}</dt>
                     <dd>{formatDate(ci.paidAt)}</dd>
                   </div>
                 )}
                 {ci.paymentReference && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">Payment Ref</dt>
+                    <dt className="text-xs text-muted-foreground">{t('Payment Ref')}</dt>
                     <dd>{ci.paymentReference}</dd>
                   </div>
                 )}
                 {ci.notes && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">Notes</dt>
+                    <dt className="text-xs text-muted-foreground">{t('Notes')}</dt>
                     <dd>{ci.notes}</dd>
                   </div>
                 )}

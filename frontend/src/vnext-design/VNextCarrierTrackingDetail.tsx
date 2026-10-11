@@ -50,6 +50,8 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface TrackingIntegration {
   id: string;
   carrierId: string;
@@ -284,7 +286,7 @@ export default function VNextCarrierTrackingDetail() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -294,10 +296,10 @@ export default function VNextCarrierTrackingDetail() {
       <div className="space-y-3">
         <div className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
           <CircleAlert className="h-5 w-5" />
-          {error || 'Integration not found'}
+          {error || t('Integration not found')}
         </div>
         <Button variant="link" asChild>
-          <Link to="/integrations/carrier-tracking">Back to list</Link>
+          <Link to="/integrations/carrier-tracking">{t('Back to list')}</Link>
         </Button>
       </div>
     );
@@ -313,7 +315,7 @@ export default function VNextCarrierTrackingDetail() {
       <Button variant="ghost" size="sm" asChild className="-ml-3 self-start">
         <Link to="/integrations/carrier-tracking">
           <ArrowLeft className="h-4 w-4" />
-          Back to carrier tracking
+          {t('Back to carrier tracking')}
         </Link>
       </Button>
 
@@ -350,22 +352,22 @@ export default function VNextCarrierTrackingDetail() {
           <Card className="space-y-4 p-5">
             <h3 className="flex items-center gap-2 text-base font-semibold">
               <Activity className="h-5 w-5 text-primary" />
-              Connection status
+              {t('Connection status')}
             </h3>
 
             <div className="grid gap-4 sm:grid-cols-3">
               <div>
-                <div className="text-xs text-muted-foreground">Last polled</div>
+                <div className="text-xs text-muted-foreground">{t('Last polled')}</div>
                 <div className="mt-1 text-sm font-medium">{timeAgo(integration.lastPolledAt)}</div>
               </div>
               <div>
-                <div className="text-xs text-muted-foreground">Error count</div>
+                <div className="text-xs text-muted-foreground">{t('Error count')}</div>
                 <div className={cn('mt-1 text-sm font-medium', integration.errorCount > 0 && 'text-destructive')}>
                   {integration.errorCount}
                 </div>
               </div>
               <div>
-                <div className="text-xs text-muted-foreground">Created</div>
+                <div className="text-xs text-muted-foreground">{t('Created')}</div>
                 <div className="mt-1 text-sm font-medium">{formatDate(integration.createdAt)}</div>
               </div>
             </div>
@@ -380,7 +382,7 @@ export default function VNextCarrierTrackingDetail() {
             {integration.dailyMax && integration.dailyMax > 0 && (
               <div>
                 <div className="mb-2 flex items-center justify-between text-xs text-muted-foreground">
-                  <span>API usage today</span>
+                  <span>{t('API usage today')}</span>
                   <span>{integration.callsToday || 0} / {integration.dailyMax}</span>
                 </div>
                 <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
@@ -397,30 +399,32 @@ export default function VNextCarrierTrackingDetail() {
 
             <Button onClick={handlePoll} disabled={polling}>
               {polling ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
-              {polling ? 'Polling...' : 'Poll now'}
+              {polling ? t('Polling...') : t('Poll now')}
             </Button>
           </Card>
 
           <Card className="space-y-4 p-5">
             <h3 className="flex items-center gap-2 text-base font-semibold">
               <CalendarClock className="h-5 w-5 text-primary" />
-              Recent tracking events
+              {t('Recent tracking events')}
             </h3>
 
             {events.length === 0 ? (
               <div className="flex flex-col items-center gap-2 rounded-md border-2 border-dashed border-border p-8 text-center text-muted-foreground">
                 <CalendarClock className="h-8 w-8 opacity-40" />
-                <p className="text-sm">No tracking events yet. Events will appear here once shipments are tracked.</p>
+                <p className="text-sm">{t(
+                  'No tracking events yet. Events will appear here once shipments are tracked.'
+                )}</p>
               </div>
             ) : (
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Tracking number</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Location</TableHead>
-                    <TableHead>Occurred</TableHead>
-                    <TableHead>Source</TableHead>
+                    <TableHead>{t('Tracking number')}</TableHead>
+                    <TableHead>{t('Status')}</TableHead>
+                    <TableHead>{t('Location')}</TableHead>
+                    <TableHead>{t('Occurred')}</TableHead>
+                    <TableHead>{t('Source')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -445,28 +449,28 @@ export default function VNextCarrierTrackingDetail() {
 
         <div className="space-y-3">
           <Card className="space-y-3 p-4">
-            <h4 className="text-sm font-semibold">Configuration</h4>
+            <h4 className="text-sm font-semibold">{t('Configuration')}</h4>
             <div className="space-y-1 text-sm">
               <div className="flex items-center justify-between border-b border-border py-2">
-                <span className="text-muted-foreground">Provider</span>
+                <span className="text-muted-foreground">{t('Provider')}</span>
                 <span className="font-medium">{PROVIDER_LABELS[integration.providerType] || integration.providerType}</span>
               </div>
               <div className="flex items-center justify-between border-b border-border py-2">
-                <span className="text-muted-foreground">Polling</span>
+                <span className="text-muted-foreground">{t('Polling')}</span>
                 <label className="flex items-center gap-2">
                   <input type="checkbox" checked={integration.pollingEnabled} onChange={handleTogglePolling} />
-                  <span className="font-medium">{integration.pollingEnabled ? 'Enabled' : 'Disabled'}</span>
+                  <span className="font-medium">{integration.pollingEnabled ? t('Enabled') : t('Disabled')}</span>
                 </label>
               </div>
               {integration.pollingEnabled && (
                 <div className="flex items-center justify-between border-b border-border py-2">
-                  <span className="text-muted-foreground">Interval</span>
-                  <span className="font-medium">{integration.pollingIntervalMinutes} min</span>
+                  <span className="text-muted-foreground">{t('Interval')}</span>
+                  <span className="font-medium">{integration.pollingIntervalMinutes} {t('min')}</span>
                 </div>
               )}
               <div className="flex items-center justify-between py-2">
-                <span className="text-muted-foreground">Webhook</span>
-                <span className="font-medium">{integration.webhookEnabled ? 'Active' : 'Not configured'}</span>
+                <span className="text-muted-foreground">{t('Webhook')}</span>
+                <span className="font-medium">{integration.webhookEnabled ? t('Active') : t('Not configured')}</span>
               </div>
             </div>
           </Card>
@@ -474,8 +478,8 @@ export default function VNextCarrierTrackingDetail() {
           {integration.credentials && Object.keys(integration.credentials).length > 0 && (
             <Card className="space-y-3 p-4">
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-semibold">Credentials</h4>
-                <Button variant="ghost" size="icon" title="Edit credentials" onClick={() => setEditingCredentials(!editingCredentials)}>
+                <h4 className="text-sm font-semibold">{t('Credentials')}</h4>
+                <Button variant="ghost" size="icon" title={t('Edit credentials')} onClick={() => setEditingCredentials(!editingCredentials)}>
                   {editingCredentials ? <X className="h-4 w-4" /> : <Pencil className="h-4 w-4" />}
                 </Button>
               </div>
@@ -491,28 +495,28 @@ export default function VNextCarrierTrackingDetail() {
           )}
 
           <Card className="space-y-3 p-4">
-            <h4 className="text-sm font-semibold">Actions</h4>
+            <h4 className="text-sm font-semibold">{t('Actions')}</h4>
             <div className="flex flex-col gap-2">
               <Button onClick={handleTest} disabled={testing} className="w-full">
                 {testing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Wifi className="h-4 w-4" />}
-                {testing ? 'Testing...' : 'Test connection'}
+                {testing ? t('Testing...') : t('Test connection')}
               </Button>
               <Button variant="outline" onClick={handleToggleStatus} className="w-full">
                 {integration.status === 'disabled' ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
-                {integration.status === 'disabled' ? 'Enable' : 'Disable'}
+                {integration.status === 'disabled' ? t('Enable') : t('Disable')}
               </Button>
               <Button variant="destructive" onClick={() => setShowDeleteConfirm(true)} className="w-full">
                 <Trash2 className="h-4 w-4" />
-                Delete integration
+                {t('Delete integration')}
               </Button>
             </div>
           </Card>
 
           <Card className="space-y-3 p-4">
             <div className="flex items-center justify-between">
-              <h4 className="text-sm font-semibold">Notes</h4>
+              <h4 className="text-sm font-semibold">{t('Notes')}</h4>
               {!editingNotes && (
-                <Button variant="ghost" size="icon" title="Edit notes" onClick={() => setEditingNotes(true)}>
+                <Button variant="ghost" size="icon" title={t('Edit notes')} onClick={() => setEditingNotes(true)}>
                   <Pencil className="h-4 w-4" />
                 </Button>
               )}
@@ -523,19 +527,19 @@ export default function VNextCarrierTrackingDetail() {
                   value={notes}
                   onChange={e => setNotes(e.target.value)}
                   rows={4}
-                  placeholder="Add notes about this integration..."
+                  placeholder={t('Add notes about this integration...')}
                   className="w-full resize-y rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 />
                 <div className="flex justify-end gap-2">
                   <Button variant="outline" size="sm" onClick={() => { setEditingNotes(false); setNotes(integration.notes || ''); }}>
-                    Cancel
+                    {t('Cancel')}
                   </Button>
-                  <Button size="sm" onClick={handleSaveNotes}>Save</Button>
+                  <Button size="sm" onClick={handleSaveNotes}>{t('Save')}</Button>
                 </div>
               </div>
             ) : (
               <p className={cn('whitespace-pre-wrap text-sm', !integration.notes && 'text-muted-foreground')}>
-                {integration.notes || 'No notes.'}
+                {integration.notes || t('No notes.')}
               </p>
             )}
           </Card>
@@ -545,15 +549,16 @@ export default function VNextCarrierTrackingDetail() {
       <Dialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Delete integration</DialogTitle>
+            <DialogTitle>{t('Delete integration')}</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete the tracking integration for <strong>{integration.carrierName}</strong>?
-              This will stop all tracking updates from this carrier. This action cannot be undone.
+              {t('Are you sure you want to delete the tracking integration for')} <strong>{integration.carrierName}</strong>{t(
+                '?\n              This will stop all tracking updates from this carrier. This action cannot be undone.'
+              )}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowDeleteConfirm(false)}>Cancel</Button>
-            <Button variant="destructive" onClick={handleDelete}>Delete</Button>
+            <Button variant="outline" onClick={() => setShowDeleteConfirm(false)}>{t('Cancel')}</Button>
+            <Button variant="destructive" onClick={handleDelete}>{t('Delete')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

@@ -19,11 +19,13 @@ import {
   TriageLoading, TriageError, TriageEmpty, StatTile, StatGrid, IssueCard, BarList,
 } from './triage/components';
 
+import { t as translate } from '@/i18n';
+
 const RANGES = [
-  { value: '24h', label: '24 hours' },
-  { value: '7d', label: '7 days' },
-  { value: '30d', label: '30 days' },
-  { value: '90d', label: '90 days' },
+  { value: '24h', label: translate('24 hours') },
+  { value: '7d', label: translate('7 days') },
+  { value: '30d', label: translate('30 days') },
+  { value: '90d', label: translate('90 days') },
 ];
 
 export default function VNextTriageDashboard() {
@@ -54,8 +56,8 @@ export default function VNextTriageDashboard() {
     <div className="grid gap-5">
       <header className="flex flex-wrap items-center gap-3">
         <Radar className="h-5 w-5" aria-hidden="true" />
-        <h1 className="m-0 flex-1 text-xl font-semibold">Signal Dashboard</h1>
-        <div className="flex gap-1" role="group" aria-label="Date range">
+        <h1 className="m-0 flex-1 text-xl font-semibold">{translate('Signal Dashboard')}</h1>
+        <div className="flex gap-1" role="group" aria-label={translate('Date range')}>
           {RANGES.map((r) => (
             <Button
               key={r.value}
@@ -69,48 +71,48 @@ export default function VNextTriageDashboard() {
         </div>
       </header>
 
-      {loading && <TriageLoading label="Loading signal data" />}
+      {loading && <TriageLoading label={translate('Loading signal data')} />}
       {error && !loading && <TriageError message={error} onRetry={load} />}
 
       {summary && !loading && !error && (
         <>
           <div aria-live="polite">
             <StatGrid>
-              <StatTile label="Issues raised" value={summary.total} sub={`in the last ${range}`} />
+              <StatTile label={translate('Issues raised')} value={summary.total} sub={`in the last ${range}`} />
               <StatTile
-                label="Real signal"
+                label={translate('Real signal')}
                 value={summary.signalCount}
                 sub={`${100 - summary.noiseRatio}% of volume`}
                 tone="success"
               />
               <StatTile
-                label="Suppressed as noise"
+                label={translate('Suppressed as noise')}
                 value={summary.noiseCount}
                 sub={`${summary.noiseRatio}% of volume`}
                 tone={summary.noiseRatio > 50 ? 'warning' : undefined}
               />
-              <StatTile label="Mean confidence" value={`${summary.avgSignalScore}/100`} />
+              <StatTile label={translate('Mean confidence')} value={`${summary.avgSignalScore}/100`} />
               <StatTile
-                label="SLA breached"
+                label={translate('SLA breached')}
                 value={summary.slaBreaches}
                 tone={summary.slaBreaches ? 'error' : undefined}
               />
               <StatTile
-                label="At risk now"
+                label={translate('At risk now')}
                 value={summary.slaAtRisk}
                 sub="open and past deadline"
                 tone={summary.slaAtRisk ? 'warning' : undefined}
               />
-              <StatTile label="Mean time to resolve" value={fmtDuration(summary.avgTimeToResolutionMins)} />
-              <StatTile label="Mean first response" value={fmtDuration(summary.avgTimeToFirstResponseMins)} />
+              <StatTile label={translate('Mean time to resolve')} value={fmtDuration(summary.avgTimeToResolutionMins)} />
+              <StatTile label={translate('Mean first response')} value={fmtDuration(summary.avgTimeToFirstResponseMins)} />
             </StatGrid>
           </div>
 
           <div className="grid gap-4 lg:grid-cols-2">
             <Card className="p-4">
-              <h2 className="mb-3 mt-0 text-[15px] font-semibold">By issue type</h2>
+              <h2 className="mb-3 mt-0 text-[15px] font-semibold">{translate('By issue type')}</h2>
               {summary.byType.length === 0
-                ? <TriageEmpty title="Nothing raised in this window" />
+                ? <TriageEmpty title={translate('Nothing raised in this window')} />
                 : (
                   <BarList
                     rows={summary.byType.map((t) => ({ label: t.name, count: t.count }))}
@@ -120,9 +122,9 @@ export default function VNextTriageDashboard() {
             </Card>
 
             <Card className="p-4">
-              <h2 className="mb-3 mt-0 text-[15px] font-semibold">By status</h2>
+              <h2 className="mb-3 mt-0 text-[15px] font-semibold">{translate('By status')}</h2>
               {Object.keys(summary.byStatus).length === 0
-                ? <TriageEmpty title="Nothing raised in this window" />
+                ? <TriageEmpty title={translate('Nothing raised in this window')} />
                 : (
                   <BarList
                     rows={Object.entries(summary.byStatus).map(([k, v]) => ({
@@ -135,14 +137,15 @@ export default function VNextTriageDashboard() {
 
           <Card className="p-4">
             <h2 className="mb-1 mt-0 flex items-center gap-2 text-[15px] font-semibold">
-              <Repeat className="h-4 w-4" aria-hidden="true" /> Recurring offenders
+              <Repeat className="h-4 w-4" aria-hidden="true" /> {translate('Recurring offenders')}
             </h2>
             <p className="mb-3 mt-0 text-sm text-muted-foreground">
-              Entities raising the same issue type more than once. Repeats usually mean something
-              systemic rather than a one-off.
+              {translate(
+                'Entities raising the same issue type more than once. Repeats usually mean something\n              systemic rather than a one-off.'
+              )}
             </p>
             {summary.recurring.length === 0
-              ? <TriageEmpty title="No repeat offenders" hint="Every issue in this window is a one-off." />
+              ? <TriageEmpty title={translate('No repeat offenders')} hint="Every issue in this window is a one-off." />
               : (
                 <div className="grid gap-1.5">
                   {summary.recurring.map((r) => (
@@ -166,13 +169,13 @@ export default function VNextTriageDashboard() {
 
           <Card className="p-4">
             <div className="mb-3 flex items-center gap-2">
-              <h2 className="m-0 flex-1 text-[15px] font-semibold">Work next</h2>
+              <h2 className="m-0 flex-1 text-[15px] font-semibold">{translate('Work next')}</h2>
               <Button size="sm" variant="outline" onClick={() => navigate('/triage/board')}>
-                Open the board
+                {translate('Open the board')}
               </Button>
             </div>
             {actionable.length === 0
-              ? <TriageEmpty title="Nothing waiting" hint="No open, un-snoozed issues above the noise bar." />
+              ? <TriageEmpty title={translate('Nothing waiting')} hint="No open, un-snoozed issues above the noise bar." />
               : (
                 <div className="grid gap-2">
                   {actionable.map((i) => (

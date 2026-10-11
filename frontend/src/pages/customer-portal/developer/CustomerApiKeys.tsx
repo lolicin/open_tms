@@ -17,6 +17,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface ApiKey {
   id: string;
   name: string;
@@ -73,7 +75,9 @@ export default function CustomerApiKeys() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Revoke this API key? Applications using it will stop working immediately.')) return;
+    if (!confirm(t(
+      'Revoke this API key? Applications using it will stop working immediately.'
+    ))) return;
     await customerFetch(`${API_URL}/api/v1/customer-portal/developer/api-keys/${id}`, { method: 'DELETE' });
     load();
   };
@@ -82,12 +86,12 @@ export default function CustomerApiKeys() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">API keys</h1>
-          <p className="text-sm text-muted-foreground">Authenticate programmatic access to Open TMS.</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('API keys')}</h1>
+          <p className="text-sm text-muted-foreground">{t('Authenticate programmatic access to Open TMS.')}</p>
         </div>
         <Button variant="gradient" onClick={() => setShowCreate(v => !v)}>
           <Plus className="h-4 w-4" />
-          New key
+          {t('New key')}
         </Button>
       </div>
 
@@ -99,16 +103,16 @@ export default function CustomerApiKeys() {
 
       {freshKey && (
         <div className="rounded-md border border-warning/30 bg-warning/10 p-4 text-sm text-warning-foreground">
-          <div className="font-semibold">Copy this key now - it will not be shown again.</div>
+          <div className="font-semibold">{t('Copy this key now - it will not be shown again.')}</div>
           <code className="mt-2 block break-all rounded bg-muted px-3 py-2 text-xs text-foreground">
             {freshKey.key}
           </code>
           <div className="mt-3 flex gap-2">
             <Button variant="outline" size="sm" onClick={() => navigator.clipboard.writeText(freshKey.key)}>
-              Copy
+              {t('Copy')}
             </Button>
             <Button variant="outline" size="sm" onClick={() => setFreshKey(null)}>
-              I have stored it
+              {t('I have stored it')}
             </Button>
           </div>
         </div>
@@ -117,23 +121,23 @@ export default function CustomerApiKeys() {
       {showCreate && (
         <Card>
           <CardHeader>
-            <CardTitle>Create API key</CardTitle>
+            <CardTitle>{t('Create API key')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="key-name">Name</Label>
+              <Label htmlFor="key-name">{t('Name')}</Label>
               <Input
                 id="key-name"
                 value={newName}
                 onChange={e => setNewName(e.target.value)}
-                placeholder="e.g. Production ERP integration"
+                placeholder={t('e.g. Production ERP integration')}
               />
             </div>
             <div className="flex gap-2">
               <Button variant="gradient" onClick={handleCreate} disabled={creating}>
-                {creating ? 'Creating...' : 'Create'}
+                {creating ? t('Creating...') : t('Create')}
               </Button>
-              <Button variant="outline" onClick={() => setShowCreate(false)}>Cancel</Button>
+              <Button variant="outline" onClick={() => setShowCreate(false)}>{t('Cancel')}</Button>
             </div>
           </CardContent>
         </Card>
@@ -143,11 +147,11 @@ export default function CustomerApiKeys() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Prefix</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Last used</TableHead>
-              <TableHead>Created</TableHead>
+              <TableHead>{t('Name')}</TableHead>
+              <TableHead>{t('Prefix')}</TableHead>
+              <TableHead>{t('Status')}</TableHead>
+              <TableHead>{t('Last used')}</TableHead>
+              <TableHead>{t('Created')}</TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>
@@ -162,7 +166,7 @@ export default function CustomerApiKeys() {
             {!loading && keys.length === 0 && (
               <TableRow>
                 <TableCell colSpan={6} className="py-8 text-center text-sm text-muted-foreground">
-                  No API keys yet. Create one to start using the public API.
+                  {t('No API keys yet. Create one to start using the public API.')}
                 </TableCell>
               </TableRow>
             )}
@@ -174,11 +178,11 @@ export default function CustomerApiKeys() {
                 </TableCell>
                 <TableCell>
                   <Badge variant={k.active ? 'success' : 'secondary'}>
-                    {k.active ? 'Active' : 'Disabled'}
+                    {k.active ? t('Active') : t('Disabled')}
                   </Badge>
                 </TableCell>
                 <TableCell className="text-sm text-muted-foreground">
-                  {k.lastUsedAt ? new Date(k.lastUsedAt).toLocaleString() : 'never'}
+                  {k.lastUsedAt ? new Date(k.lastUsedAt).toLocaleString() : t('never')}
                 </TableCell>
                 <TableCell className="text-sm text-muted-foreground">
                   {new Date(k.createdAt).toLocaleDateString()}
@@ -186,10 +190,10 @@ export default function CustomerApiKeys() {
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
                     <Button variant="outline" size="sm" onClick={() => handleToggle(k.id, k.active)}>
-                      {k.active ? 'Disable' : 'Enable'}
+                      {k.active ? t('Disable') : t('Enable')}
                     </Button>
                     <Button variant="outline" size="sm" className="text-destructive" onClick={() => handleDelete(k.id)}>
-                      Revoke
+                      {t('Revoke')}
                     </Button>
                   </div>
                 </TableCell>

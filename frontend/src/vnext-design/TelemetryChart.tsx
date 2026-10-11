@@ -3,6 +3,8 @@ import { Thermometer } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
+import { t as translate } from '@/i18n';
+
 // ─── Time-series chart ──────────────────────────────────────────────────
 // Renders sensor readings as a proper X/Y line chart: X = time (actual
 // elapsed time between readings, not reading index), Y = value. Includes
@@ -47,7 +49,7 @@ export function TimeSeriesChart({
     return (
       <div className="flex flex-col items-center gap-2 py-8 text-muted-foreground">
         <Thermometer className="h-8 w-8" />
-        <h3 className="text-sm font-medium">Not enough data in this period</h3>
+        <h3 className="text-sm font-medium">{translate('Not enough data in this period')}</h3>
       </div>
     );
   }
@@ -135,11 +137,11 @@ export function TimeSeriesChart({
 export type TelemetryPeriodKey = '24h' | '3d' | '7d' | '30d' | 'all' | 'custom';
 
 export const TELEMETRY_PERIODS: { key: TelemetryPeriodKey; label: string; hours?: number }[] = [
-  { key: '24h', label: '24h', hours: 24 },
-  { key: '3d', label: '3 days', hours: 72 },
-  { key: '7d', label: '7 days', hours: 168 },
-  { key: '30d', label: '30 days', hours: 720 },
-  { key: 'all', label: 'All time' },
+  { key: '24h', label: translate('24h'), hours: 24 },
+  { key: '3d', label: translate('3 days'), hours: 72 },
+  { key: '7d', label: translate('7 days'), hours: 168 },
+  { key: '30d', label: translate('30 days'), hours: 720 },
+  { key: 'all', label: translate('All time') },
 ];
 
 export function computeTelemetryRange(
@@ -190,13 +192,13 @@ export function TelemetryPeriodFilter({
         variant={period === 'custom' ? 'default' : 'outline'}
         onClick={() => onPeriodChange('custom')}
       >
-        Custom range
+        {translate('Custom range')}
       </Button>
 
       {period === 'custom' && (
         <div className="flex flex-wrap items-center gap-2 pl-1">
           <label className="flex items-center gap-1 text-xs text-muted-foreground">
-            From
+            {translate('From')}
             <input
               type="datetime-local"
               value={customFrom}
@@ -205,7 +207,7 @@ export function TelemetryPeriodFilter({
             />
           </label>
           <label className="flex items-center gap-1 text-xs text-muted-foreground">
-            To
+            {translate('To')}
             <input
               type="datetime-local"
               value={customTo}

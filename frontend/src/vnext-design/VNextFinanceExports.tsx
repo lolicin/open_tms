@@ -23,6 +23,8 @@ import {
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface ExportOption {
   key: string;
   label: string;
@@ -36,51 +38,59 @@ interface ExportOption {
 const EXPORTS: ExportOption[] = [
   {
     key: 'invoices',
-    label: 'Invoice Register',
-    description: 'All customer invoices with line item detail - totals, payment status, balances',
+    label: t('Invoice Register'),
+    description: t(
+      'All customer invoices with line item detail - totals, payment status, balances'
+    ),
     icon: Receipt,
     endpoint: '/api/v1/reports/export/invoices',
     supportsDateRange: true,
-    extraParams: [{ key: 'status', label: 'Status', options: [
-      { value: 'all', label: 'All' }, { value: 'draft', label: 'Draft' }, { value: 'sent', label: 'Sent' },
-      { value: 'paid', label: 'Paid' }, { value: 'overdue', label: 'Overdue' }, { value: 'void', label: 'Void' },
+    extraParams: [{ key: 'status', label: t('Status'), options: [
+      { value: 'all', label: t('All') }, { value: 'draft', label: t('Draft') }, { value: 'sent', label: t('Sent') },
+      { value: 'paid', label: t('Paid') }, { value: 'overdue', label: t('Overdue') }, { value: 'void', label: t('Void') },
     ]}],
   },
   {
     key: 'carrier-invoices',
-    label: 'Carrier Invoice Register',
-    description: 'All carrier invoices with freight audit results - match status, variance, line items',
+    label: t('Carrier Invoice Register'),
+    description: t(
+      'All carrier invoices with freight audit results - match status, variance, line items'
+    ),
     icon: Truck,
     endpoint: '/api/v1/reports/export/carrier-invoices',
     supportsDateRange: true,
-    extraParams: [{ key: 'status', label: 'Status', options: [
-      { value: 'all', label: 'All' }, { value: 'received', label: 'Received' }, { value: 'approved', label: 'Approved' },
-      { value: 'paid', label: 'Paid' }, { value: 'discrepancy', label: 'Discrepancy' },
+    extraParams: [{ key: 'status', label: t('Status'), options: [
+      { value: 'all', label: t('All') }, { value: 'received', label: t('Received') }, { value: 'approved', label: t('Approved') },
+      { value: 'paid', label: t('Paid') }, { value: 'discrepancy', label: t('Discrepancy') },
     ]}],
   },
   {
     key: 'payments',
-    label: 'Payment Ledger',
-    description: 'All customer payments received - date, invoice, amount, method, reference',
+    label: t('Payment Ledger'),
+    description: t(
+      'All customer payments received - date, invoice, amount, method, reference'
+    ),
     icon: CreditCard,
     endpoint: '/api/v1/reports/export/payments',
     supportsDateRange: true,
   },
   {
     key: 'charges',
-    label: 'Charge Detail',
-    description: 'All revenue and cost charges across shipments - for margin analysis and reconciliation',
+    label: t('Charge Detail'),
+    description: t(
+      'All revenue and cost charges across shipments - for margin analysis and reconciliation'
+    ),
     icon: DollarSign,
     endpoint: '/api/v1/reports/export/charges',
     supportsDateRange: true,
-    extraParams: [{ key: 'chargeCategory', label: 'Category', options: [
-      { value: 'all', label: 'All' }, { value: 'revenue', label: 'Revenue' }, { value: 'cost', label: 'Cost' },
+    extraParams: [{ key: 'chargeCategory', label: t('Category'), options: [
+      { value: 'all', label: t('All') }, { value: 'revenue', label: t('Revenue') }, { value: 'cost', label: t('Cost') },
     ]}],
   },
   {
     key: 'ar-aging',
-    label: 'AR Aging',
-    description: 'Outstanding invoices bucketed by days past due per customer',
+    label: t('AR Aging'),
+    description: t('Outstanding invoices bucketed by days past due per customer'),
     icon: BarChart3,
     endpoint: '/api/v1/reports/ar-aging/csv',
     supportsDateRange: false,
@@ -115,21 +125,21 @@ export default function VNextFinanceExports() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Financial Exports</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Download CSV files for your accounting system</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Financial Exports')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Download CSV files for your accounting system')}</p>
         </div>
       </div>
 
       <Card>
         <CardContent className="p-5">
-          <h3 className="mb-3 text-base font-semibold">Date Range</h3>
+          <h3 className="mb-3 text-base font-semibold">{t('Date Range')}</h3>
           <div className="flex flex-wrap items-end gap-4">
             <div className="space-y-1.5">
-              <Label htmlFor="from">From</Label>
+              <Label htmlFor="from">{t('From')}</Label>
               <DatePicker id="from" type="date" value={dateFrom} onChange={e => setDateFrom(e.target.value)} className="w-[170px]" />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="to">To</Label>
+              <Label htmlFor="to">{t('To')}</Label>
               <DatePicker id="to" type="date" value={dateTo} onChange={e => setDateTo(e.target.value)} className="w-[170px]" />
             </div>
             <div className="flex flex-wrap gap-2">
@@ -140,7 +150,7 @@ export default function VNextFinanceExports() {
                   setDateFrom(d.toISOString().slice(0, 10)); setDateTo(today);
                 }}
               >
-                Last 30 days
+                {t('Last 30 days')}
               </Button>
               <Button
                 variant="ghost"
@@ -149,7 +159,7 @@ export default function VNextFinanceExports() {
                   setDateFrom(d.toISOString().slice(0, 10)); setDateTo(today);
                 }}
               >
-                Last 90 days
+                {t('Last 90 days')}
               </Button>
               <Button
                 variant="ghost"
@@ -157,7 +167,7 @@ export default function VNextFinanceExports() {
                   setDateFrom(`${new Date().getFullYear()}-01-01`); setDateTo(today);
                 }}
               >
-                Year to date
+                {t('Year to date')}
               </Button>
             </div>
           </div>
@@ -197,7 +207,7 @@ export default function VNextFinanceExports() {
 
                 <Button variant="outline" className="w-full" onClick={() => download(exp)}>
                   <Download className="h-4 w-4" />
-                  Download CSV
+                  {t('Download CSV')}
                 </Button>
               </CardContent>
             </Card>

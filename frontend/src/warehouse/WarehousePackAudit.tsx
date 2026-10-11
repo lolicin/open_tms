@@ -10,6 +10,8 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface AuditLine {
   sku: string;
   expectedQuantity: number;
@@ -111,7 +113,7 @@ export default function WarehousePackAudit() {
   if (!ctx) {
     return (
       <div className="rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-        {error || 'Not found'}
+        {error || t('Not found')}
       </div>
     );
   }
@@ -128,7 +130,7 @@ export default function WarehousePackAudit() {
         className="-ml-2"
       >
         <ArrowLeft className="h-5 w-5" />
-        <span className="text-base">Tasks</span>
+        <span className="text-base">{t('Tasks')}</span>
       </Button>
 
       {error && (
@@ -153,14 +155,14 @@ export default function WarehousePackAudit() {
             <div className="text-2xl font-bold capitalize">{result.verdict}</div>
             <div className="text-sm text-muted-foreground">
               {result.weightVariancePercent > 0 ? '+' : ''}
-              {result.weightVariancePercent}% weight variance
+              {result.weightVariancePercent}{t('% weight variance')}
             </div>
             <div className="text-sm text-muted-foreground">
-              Expected: {(result.expectedWeightGrams / 1000).toFixed(2)} kg
+              {t('Expected:')} {(result.expectedWeightGrams / 1000).toFixed(2)} {t('kg')}
             </div>
             {result.issueId && (
               <div className="rounded-md border border-warning/30 bg-warning/10 px-4 py-2 text-sm text-warning">
-                A quality issue has been raised for follow-up.
+                {t('A quality issue has been raised for follow-up.')}
               </div>
             )}
             <Button
@@ -169,7 +171,7 @@ export default function WarehousePackAudit() {
               className="mt-2 w-full text-base"
               onClick={() => navigate('/warehouse/tasks')}
             >
-              Back to tasks
+              {t('Back to tasks')}
             </Button>
           </CardContent>
         </Card>
@@ -178,22 +180,22 @@ export default function WarehousePackAudit() {
           <Card>
             <CardContent className="space-y-1 p-5">
               <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Pack audit
+                {t('Pack audit')}
               </div>
               <div className="text-sm text-muted-foreground">
-                Pack task <code className="font-mono">{ctx.packTaskId.slice(0, 8)}</code> - {ctx.lines.length} line{ctx.lines.length === 1 ? '' : 's'}
+                {t('Pack task')} <code className="font-mono">{ctx.packTaskId.slice(0, 8)}</code>- {ctx.lines.length} {t('line')}{ctx.lines.length === 1 ? '' : t('s')}
               </div>
               <div className="pt-2 text-3xl font-bold tabular-nums text-primary">
-                {(ctx.expectedWeightGrams / 1000).toFixed(2)} kg
+                {(ctx.expectedWeightGrams / 1000).toFixed(2)} {t('kg')}
               </div>
-              <div className="text-xs text-muted-foreground">expected weight</div>
+              <div className="text-xs text-muted-foreground">{t('expected weight')}</div>
             </CardContent>
           </Card>
 
           <Card className="border-primary/40">
             <CardContent className="space-y-3 p-5">
               <Label className="text-xs font-semibold uppercase tracking-wider text-primary">
-                Actual weight (grams)
+                {t('Actual weight (grams)')}
               </Label>
               <Input
                 type="number"
@@ -210,12 +212,12 @@ export default function WarehousePackAudit() {
           <Card>
             <CardContent className="space-y-3 p-5">
               <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Dimensions (mm, optional)
+                {t('Dimensions (mm, optional)')}
               </Label>
               <div className="grid grid-cols-3 gap-2">
-                <Input type="number" inputMode="numeric" value={length} onChange={e => setLength(e.target.value)} placeholder="L" className="h-12 text-center text-base" />
-                <Input type="number" inputMode="numeric" value={width} onChange={e => setWidth(e.target.value)} placeholder="W" className="h-12 text-center text-base" />
-                <Input type="number" inputMode="numeric" value={height} onChange={e => setHeight(e.target.value)} placeholder="H" className="h-12 text-center text-base" />
+                <Input type="number" inputMode="numeric" value={length} onChange={e => setLength(e.target.value)} placeholder={t('L')} className="h-12 text-center text-base" />
+                <Input type="number" inputMode="numeric" value={width} onChange={e => setWidth(e.target.value)} placeholder={t('W')} className="h-12 text-center text-base" />
+                <Input type="number" inputMode="numeric" value={height} onChange={e => setHeight(e.target.value)} placeholder={t('H')} className="h-12 text-center text-base" />
               </div>
             </CardContent>
           </Card>
@@ -223,13 +225,13 @@ export default function WarehousePackAudit() {
           <Card>
             <CardContent className="space-y-2 p-5">
               <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Notes (optional)
+                {t('Notes (optional)')}
               </Label>
               <textarea
                 rows={2}
                 value={notes}
                 onChange={e => setNotes(e.target.value)}
-                placeholder="Observation, damage, etc."
+                placeholder={t('Observation, damage, etc.')}
                 className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               />
             </CardContent>
@@ -238,7 +240,7 @@ export default function WarehousePackAudit() {
           {ctx.existingAudits.length > 0 && (
             <div className="space-y-2">
               <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Previous audits for this pack
+                {t('Previous audits for this pack')}
               </Label>
               {ctx.existingAudits.map(a => {
                 const tone = VERDICT_TONE[a.verdict];
@@ -249,7 +251,7 @@ export default function WarehousePackAudit() {
                         {a.verdict}
                       </Badge>
                       <span className="text-muted-foreground">
-                        {Number(a.weightVariancePercent ?? 0).toFixed(1)}% - {(a.actualWeightGrams / 1000).toFixed(2)} kg
+                        {Number(a.weightVariancePercent ?? 0).toFixed(1)}% - {(a.actualWeightGrams / 1000).toFixed(2)} {t('kg')}
                       </span>
                     </CardContent>
                   </Card>
@@ -270,7 +272,7 @@ export default function WarehousePackAudit() {
             disabled={busy || !weight}
           >
             {busy && <Loader2 className="h-4 w-4 animate-spin" />}
-            {busy ? 'Recording...' : 'Record audit'}
+            {busy ? t('Recording...') : t('Record audit')}
           </Button>
         </div>
       )}

@@ -33,6 +33,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t as translate } from '@/i18n';
+
 interface WaveTemplate {
   id: string;
   name: string;
@@ -139,12 +141,12 @@ export default function VNextWmsWaveTemplates() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Wave Templates</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Automate wave creation with reusable templates</p>
+          <h1 className="text-3xl font-bold tracking-tight">{translate('Wave Templates')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{translate('Automate wave creation with reusable templates')}</p>
         </div>
         <Button variant="gradient" onClick={() => setShowCreate(true)}>
           <Plus className="h-4 w-4" />
-          New Template
+          {translate('New Template')}
         </Button>
       </div>
 
@@ -165,7 +167,7 @@ export default function VNextWmsWaveTemplates() {
           </span>
           {applyResult.waveId && (
             <Button variant="outline" size="sm" onClick={() => navigate(`/wms/waves/${applyResult.waveId}`)}>
-              View Wave
+              {translate('View Wave')}
             </Button>
           )}
         </div>
@@ -174,60 +176,60 @@ export default function VNextWmsWaveTemplates() {
       <Dialog open={showCreate} onOpenChange={setShowCreate}>
         <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
-            <DialogTitle>New Wave Template</DialogTitle>
+            <DialogTitle>{translate('New Wave Template')}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleCreate} className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2 md:col-span-2">
-                <Label>Template Name *</Label>
-                <Input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder='e.g. "Daily FedEx 14:00 cutoff"' required />
+                <Label>{translate('Template Name *')}</Label>
+                <Input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder={translate('e.g. "Daily FedEx 14:00 cutoff"')} required />
               </div>
               <div className="space-y-2">
-                <Label>Pick Strategy *</Label>
+                <Label>{translate('Pick Strategy *')}</Label>
                 <Select value={form.pickStrategy} onValueChange={v => setForm({ ...form, pickStrategy: v })}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="discrete">Discrete</SelectItem>
-                    <SelectItem value="batch">Batch</SelectItem>
-                    <SelectItem value="zone">Zone</SelectItem>
+                    <SelectItem value="discrete">{translate('Discrete')}</SelectItem>
+                    <SelectItem value="batch">{translate('Batch')}</SelectItem>
+                    <SelectItem value="zone">{translate('Zone')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               {form.pickStrategy === 'zone' && (
                 <div className="space-y-2">
-                  <Label>Zone Pick Mode *</Label>
+                  <Label>{translate('Zone Pick Mode *')}</Label>
                   <Select value={form.zonePickMode || 'parallel'} onValueChange={v => setForm({ ...form, zonePickMode: v })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="parallel">Parallel (all zones simultaneously)</SelectItem>
-                      <SelectItem value="sequential">Sequential (pick-and-pass)</SelectItem>
+                      <SelectItem value="parallel">{translate('Parallel (all zones simultaneously)')}</SelectItem>
+                      <SelectItem value="sequential">{translate('Sequential (pick-and-pass)')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               )}
               <div className="space-y-2">
-                <Label>Cutoff Time</Label>
+                <Label>{translate('Cutoff Time')}</Label>
                 <Input type="time" value={form.cutoffTime} onChange={e => setForm({ ...form, cutoffTime: e.target.value })} />
               </div>
               <div className="space-y-2">
-                <Label>Min Orders</Label>
-                <Input type="number" min="1" value={form.minOrders} onChange={e => setForm({ ...form, minOrders: e.target.value })} placeholder="Optional" />
+                <Label>{translate('Min Orders')}</Label>
+                <Input type="number" min="1" value={form.minOrders} onChange={e => setForm({ ...form, minOrders: e.target.value })} placeholder={translate('Optional')} />
               </div>
               <div className="space-y-2">
-                <Label>Max Orders</Label>
-                <Input type="number" min="1" value={form.maxOrders} onChange={e => setForm({ ...form, maxOrders: e.target.value })} placeholder="Optional" />
+                <Label>{translate('Max Orders')}</Label>
+                <Input type="number" min="1" value={form.maxOrders} onChange={e => setForm({ ...form, maxOrders: e.target.value })} placeholder={translate('Optional')} />
               </div>
               <div className="space-y-2">
-                <Label>Priority (1-100)</Label>
+                <Label>{translate('Priority (1-100)')}</Label>
                 <Input type="number" min="1" max="100" value={form.priority} onChange={e => setForm({ ...form, priority: e.target.value })} />
               </div>
               <div className="space-y-2">
-                <Label>Auto-Release Schedule</Label>
-                <Input value={form.releaseSchedule} onChange={e => setForm({ ...form, releaseSchedule: e.target.value })} placeholder="Cron e.g. 0 14 * * *" />
+                <Label>{translate('Auto-Release Schedule')}</Label>
+                <Input value={form.releaseSchedule} onChange={e => setForm({ ...form, releaseSchedule: e.target.value })} placeholder={translate('Cron e.g. 0 14 * * *')} />
               </div>
               <div className="md:col-span-2">
                 <label className="flex items-center gap-2 text-sm">
@@ -237,13 +239,13 @@ export default function VNextWmsWaveTemplates() {
                     onChange={e => setForm({ ...form, autoRelease: e.target.checked })}
                     className="h-4 w-4 rounded border border-input bg-background accent-primary"
                   />
-                  Auto-release waves (allocate inventory + generate picks immediately)
+                  {translate('Auto-release waves (allocate inventory + generate picks immediately)')}
                 </label>
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" type="button" onClick={() => setShowCreate(false)}>Cancel</Button>
-              <Button variant="gradient" type="submit" disabled={creating}>{creating ? 'Creating...' : 'Create Template'}</Button>
+              <Button variant="outline" type="button" onClick={() => setShowCreate(false)}>{translate('Cancel')}</Button>
+              <Button variant="gradient" type="submit" disabled={creating}>{creating ? translate('Creating...') : translate('Create Template')}</Button>
             </DialogFooter>
           </form>
         </DialogContent>
@@ -261,8 +263,10 @@ export default function VNextWmsWaveTemplates() {
         <Card>
           <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
             <FileText className="h-12 w-12 text-muted-foreground" />
-            <h3 className="text-base font-medium">No wave templates</h3>
-            <p className="text-sm text-muted-foreground">Templates automate wave creation based on carrier cutoffs, order grouping, and schedules.</p>
+            <h3 className="text-base font-medium">{translate('No wave templates')}</h3>
+            <p className="text-sm text-muted-foreground">{translate(
+              'Templates automate wave creation based on carrier cutoffs, order grouping, and schedules.'
+            )}</p>
           </CardContent>
         </Card>
       ) : (
@@ -270,14 +274,14 @@ export default function VNextWmsWaveTemplates() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Strategy</TableHead>
-                <TableHead>Cutoff</TableHead>
-                <TableHead>Orders</TableHead>
-                <TableHead>Schedule</TableHead>
-                <TableHead>Waves</TableHead>
-                <TableHead>Active</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{translate('Name')}</TableHead>
+                <TableHead>{translate('Strategy')}</TableHead>
+                <TableHead>{translate('Cutoff')}</TableHead>
+                <TableHead>{translate('Orders')}</TableHead>
+                <TableHead>{translate('Schedule')}</TableHead>
+                <TableHead>{translate('Waves')}</TableHead>
+                <TableHead>{translate('Active')}</TableHead>
+                <TableHead>{translate('Actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -289,18 +293,18 @@ export default function VNextWmsWaveTemplates() {
                   </TableCell>
                   <TableCell>{t.cutoffTime || '-'}</TableCell>
                   <TableCell>{t.minOrders || '-'} - {t.maxOrders || '-'}</TableCell>
-                  <TableCell className={t.releaseSchedule ? 'font-mono text-xs' : ''}>{t.releaseSchedule || 'Manual'}</TableCell>
+                  <TableCell className={t.releaseSchedule ? 'font-mono text-xs' : ''}>{t.releaseSchedule || translate('Manual')}</TableCell>
                   <TableCell>{t._count.waves}</TableCell>
                   <TableCell>
                     <button type="button" onClick={() => handleToggle(t.id, t.active)}>
                       <Badge variant={t.active ? 'success' : 'muted'} className="cursor-pointer">
-                        {t.active ? 'Active' : 'Inactive'}
+                        {t.active ? translate('Active') : translate('Inactive')}
                       </Badge>
                     </button>
                   </TableCell>
                   <TableCell>
                     <Button variant="gradient" size="sm" disabled={applying === t.id || !t.active} onClick={() => handleApply(t.id)}>
-                      {applying === t.id ? 'Running...' : 'Run Now'}
+                      {applying === t.id ? translate('Running...') : translate('Run Now')}
                     </Button>
                   </TableCell>
                 </TableRow>

@@ -24,6 +24,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t as translate } from '@/i18n';
+
 interface ZoneDetail {
   id: string;
   locationId: string;
@@ -107,7 +109,7 @@ export default function VNextWmsZoneDetail() {
     return (
       <div className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
         <CircleAlert className="h-5 w-5" />
-        {error || 'Zone not found'}
+        {error || translate('Zone not found')}
       </div>
     );
   }
@@ -116,7 +118,7 @@ export default function VNextWmsZoneDetail() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/wms/zones" className="hover:text-foreground">
-          <ArrowLeft className="inline h-4 w-4" /> Zones
+          <ArrowLeft className="inline h-4 w-4" /> {translate('Zones')}
         </Link>
         <ChevronRight className="h-3 w-3" />
         <span>{zone.name}</span>
@@ -125,16 +127,16 @@ export default function VNextWmsZoneDetail() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">{zone.name}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{formatZoneType(zone.zoneType)} zone</p>
+          <p className="mt-1 text-sm text-muted-foreground">{formatZoneType(zone.zoneType)} {translate('zone')}</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={() => navigate(`/wms/zones/${id}/edit`)}>
             <Edit className="h-4 w-4" />
-            Edit
+            {translate('Edit')}
           </Button>
           <Button variant="gradient" onClick={() => navigate(`/wms/zones/${id}/bins/create`)}>
             <Plus className="h-4 w-4" />
-            Add Bins
+            {translate('Add Bins')}
           </Button>
         </div>
       </div>
@@ -143,28 +145,28 @@ export default function VNextWmsZoneDetail() {
         <div className="space-y-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Bins ({zone.bins.length})</CardTitle>
+              <CardTitle>{translate('Bins (')}{zone.bins.length})</CardTitle>
               <Button variant="outline" size="sm" onClick={() => navigate(`/wms/zones/${id}/bins/bulk`)}>
                 <ListPlus className="h-4 w-4" />
-                Bulk Create
+                {translate('Bulk Create')}
               </Button>
             </CardHeader>
             <CardContent className="p-0">
               {zone.bins.length === 0 ? (
                 <div className="flex flex-col items-center gap-3 py-12 text-center text-muted-foreground">
                   <Boxes className="h-10 w-10" />
-                  <p className="text-sm">No bins in this zone yet. Add bins individually or use bulk create.</p>
+                  <p className="text-sm">{translate('No bins in this zone yet. Add bins individually or use bulk create.')}</p>
                 </div>
               ) : (
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Label</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Level</TableHead>
-                      <TableHead>Walk Seq</TableHead>
-                      <TableHead>Utilization</TableHead>
-                      <TableHead>Status</TableHead>
+                      <TableHead>{translate('Label')}</TableHead>
+                      <TableHead>{translate('Type')}</TableHead>
+                      <TableHead>{translate('Level')}</TableHead>
+                      <TableHead>{translate('Walk Seq')}</TableHead>
+                      <TableHead>{translate('Utilization')}</TableHead>
+                      <TableHead>{translate('Status')}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -185,7 +187,7 @@ export default function VNextWmsZoneDetail() {
                         </TableCell>
                         <TableCell>
                           <Badge variant={bin.active ? 'success' : 'muted'}>
-                            {bin.active ? 'Active' : 'Inactive'}
+                            {bin.active ? translate('Active') : translate('Inactive')}
                           </Badge>
                         </TableCell>
                       </TableRow>
@@ -200,44 +202,44 @@ export default function VNextWmsZoneDetail() {
         <aside className="space-y-6 lg:sticky lg:top-20 lg:self-start">
           <Card>
             <CardHeader>
-              <CardTitle>Properties</CardTitle>
+              <CardTitle>{translate('Properties')}</CardTitle>
             </CardHeader>
             <CardContent>
               <dl className="grid grid-cols-2 gap-3 text-sm">
                 <div>
-                  <dt className="text-xs text-muted-foreground">Type</dt>
+                  <dt className="text-xs text-muted-foreground">{translate('Type')}</dt>
                   <dd className="mt-0.5 font-medium">{formatZoneType(zone.zoneType)}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-muted-foreground">Temperature</dt>
-                  <dd className="mt-0.5">{zone.temperatureZone ? formatZoneType(zone.temperatureZone) : 'None'}</dd>
+                  <dt className="text-xs text-muted-foreground">{translate('Temperature')}</dt>
+                  <dd className="mt-0.5">{zone.temperatureZone ? formatZoneType(zone.temperatureZone) : translate('None')}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-muted-foreground">Hazmat</dt>
-                  <dd className="mt-0.5">{zone.hazmatCertified ? 'Yes' : 'No'}</dd>
+                  <dt className="text-xs text-muted-foreground">{translate('Hazmat')}</dt>
+                  <dd className="mt-0.5">{zone.hazmatCertified ? translate('Yes') : translate('No')}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-muted-foreground">Sort Order</dt>
+                  <dt className="text-xs text-muted-foreground">{translate('Sort Order')}</dt>
                   <dd className="mt-0.5">{zone.sortOrder}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-muted-foreground">Max Weight</dt>
+                  <dt className="text-xs text-muted-foreground">{translate('Max Weight')}</dt>
                   <dd className="mt-0.5">{zone.maxWeightKg != null ? `${zone.maxWeightKg} kg` : '-'}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-muted-foreground">Max Volume</dt>
+                  <dt className="text-xs text-muted-foreground">{translate('Max Volume')}</dt>
                   <dd className="mt-0.5">{zone.maxVolumeCbm != null ? `${zone.maxVolumeCbm} cbm` : '-'}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-muted-foreground">Status</dt>
+                  <dt className="text-xs text-muted-foreground">{translate('Status')}</dt>
                   <dd className="mt-0.5">
                     <Badge variant={zone.active ? 'success' : 'destructive'}>
-                      {zone.active ? 'Active' : 'Inactive'}
+                      {zone.active ? translate('Active') : translate('Inactive')}
                     </Badge>
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-muted-foreground">Bins</dt>
+                  <dt className="text-xs text-muted-foreground">{translate('Bins')}</dt>
                   <dd className="mt-0.5 font-semibold">{zone.bins.length}</dd>
                 </div>
               </dl>
@@ -247,7 +249,7 @@ export default function VNextWmsZoneDetail() {
           {zone.aisles.length > 0 && (
             <Card>
               <CardHeader>
-                <CardTitle>Aisles</CardTitle>
+                <CardTitle>{translate('Aisles')}</CardTitle>
               </CardHeader>
               <CardContent className="flex flex-wrap gap-2">
                 {zone.aisles.map(a => (

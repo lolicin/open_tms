@@ -3,6 +3,8 @@ import { API_URL } from './api';
 import { clearWarehouseSession, getWarehouseToken } from './warehouse/warehouse-session';
 import { clearInventoryAppSession, getInventoryAppToken } from './inventory-app/inventory-session';
 
+import { t } from '@/i18n';
+
 /**
  * Global fetch interceptor for the main TMS app.
  *
@@ -239,7 +241,7 @@ export function installAuthFetchInterceptor() {
         finalInit?.method ?? (input instanceof Request ? input.method : 'GET')
       ).toUpperCase();
       if (method !== 'GET' && method !== 'HEAD') {
-        toast.error("You don't have permission to perform that action.");
+        toast.error(t('You don\'t have permission to perform that action.'));
       }
     }
 

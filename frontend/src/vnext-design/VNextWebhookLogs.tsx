@@ -39,6 +39,8 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 
+import { t as translate } from '@/i18n';
+
 export default function VNextWebhookLogs() {
   const [logs, setLogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -117,24 +119,24 @@ export default function VNextWebhookLogs() {
   function statusBadge(l: any): { variant: 'success' | 'destructive' | 'warning'; label: string } {
     if (l.statusCode != null && l.statusCode < 400) return { variant: 'success', label: l.status || 'Success' };
     if (l.statusCode != null && l.statusCode >= 400) return { variant: 'destructive', label: l.status || 'Error' };
-    if (l.status === 'Success') return { variant: 'success', label: 'Success' };
-    if (l.status === 'Error') return { variant: 'destructive', label: 'Error' };
+    if (l.status === 'Success') return { variant: 'success', label: translate('Success') };
+    if (l.status === 'Error') return { variant: 'destructive', label: translate('Error') };
     return { variant: 'warning', label: l.status || '-' };
   }
 
   const statBlocks = [
-    { label: 'Total', value: stats.total, icon: ListChecks, tone: 'bg-primary/10 text-primary' },
-    { label: 'Successful', value: stats.successful, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
-    { label: 'Errors', value: stats.errors, icon: XCircle, tone: 'bg-destructive/15 text-destructive' },
-    { label: 'Updates', value: stats.updates, icon: RefreshCw, tone: 'bg-info/15 text-info' },
+    { label: translate('Total'), value: stats.total, icon: ListChecks, tone: 'bg-primary/10 text-primary' },
+    { label: translate('Successful'), value: stats.successful, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
+    { label: translate('Errors'), value: stats.errors, icon: XCircle, tone: 'bg-destructive/15 text-destructive' },
+    { label: translate('Updates'), value: stats.updates, icon: RefreshCw, tone: 'bg-info/15 text-info' },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Webhook logs</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Inbound webhook activity from devices and integrations</p>
+          <h1 className="text-3xl font-bold tracking-tight">{translate('Webhook logs')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{translate('Inbound webhook activity from devices and integrations')}</p>
         </div>
       </div>
 
@@ -165,10 +167,10 @@ export default function VNextWebhookLogs() {
 
       <Card>
         <CardHeader className="flex flex-col items-start gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <CardTitle>Logs</CardTitle>
+          <CardTitle>{translate('Logs')}</CardTitle>
           <div className="flex flex-wrap items-center gap-2">
             <Input
-              placeholder="Search device, shipment..."
+              placeholder={translate('Search device, shipment...')}
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="w-56"
@@ -176,20 +178,20 @@ export default function VNextWebhookLogs() {
             <Select value={statusFilter} onValueChange={v => { setStatusFilter(v); setPage(1); }}>
               <SelectTrigger className="w-44"><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All statuses</SelectItem>
-                <SelectItem value="success">Success</SelectItem>
-                <SelectItem value="error">Error</SelectItem>
-                <SelectItem value="skipped">Skipped</SelectItem>
-                <SelectItem value="notfound">Not Found</SelectItem>
+                <SelectItem value="all">{translate('All statuses')}</SelectItem>
+                <SelectItem value="success">{translate('Success')}</SelectItem>
+                <SelectItem value="error">{translate('Error')}</SelectItem>
+                <SelectItem value="skipped">{translate('Skipped')}</SelectItem>
+                <SelectItem value="notfound">{translate('Not Found')}</SelectItem>
               </SelectContent>
             </Select>
             <Select value={dateRange} onValueChange={setDateRange}>
               <SelectTrigger className="w-44"><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="24h">Last 24 hours</SelectItem>
-                <SelectItem value="48h">Last 48 hours</SelectItem>
-                <SelectItem value="7d">Last 7 days</SelectItem>
-                <SelectItem value="30d">Last 30 days</SelectItem>
+                <SelectItem value="24h">{translate('Last 24 hours')}</SelectItem>
+                <SelectItem value="48h">{translate('Last 48 hours')}</SelectItem>
+                <SelectItem value="7d">{translate('Last 7 days')}</SelectItem>
+                <SelectItem value="30d">{translate('Last 30 days')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -202,19 +204,19 @@ export default function VNextWebhookLogs() {
           ) : filtered.length === 0 ? (
             <div className="flex flex-col items-center gap-2 py-12 text-center text-muted-foreground">
               <ListChecks className="h-8 w-8" />
-              <h3 className="text-base font-medium">No webhook logs found</h3>
-              <p className="text-sm">Logs will appear here when webhooks are received.</p>
+              <h3 className="text-base font-medium">{translate('No webhook logs found')}</h3>
+              <p className="text-sm">{translate('Logs will appear here when webhooks are received.')}</p>
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Time</TableHead>
-                  <TableHead>Device</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Shipment</TableHead>
-                  <TableHead>Location</TableHead>
-                  <TableHead>Updated</TableHead>
+                  <TableHead>{translate('Time')}</TableHead>
+                  <TableHead>{translate('Device')}</TableHead>
+                  <TableHead>{translate('Status')}</TableHead>
+                  <TableHead>{translate('Shipment')}</TableHead>
+                  <TableHead>{translate('Location')}</TableHead>
+                  <TableHead>{translate('Updated')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -263,11 +265,11 @@ export default function VNextWebhookLogs() {
         <div className="flex items-center justify-between border-t p-3">
           <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage(p => Math.max(1, p - 1))}>
             <ChevronLeft className="h-4 w-4" />
-            Previous
+            {translate('Previous')}
           </Button>
-          <span className="text-sm text-muted-foreground">Page {page} of {totalPages}</span>
+          <span className="text-sm text-muted-foreground">{translate('Page')} {page} {translate('of')} {totalPages}</span>
           <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage(p => p + 1)}>
-            Next
+            {translate('Next')}
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
@@ -276,49 +278,49 @@ export default function VNextWebhookLogs() {
       <Dialog open={!!selectedLog} onOpenChange={open => !open && setSelectedLog(null)}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>
-            <DialogTitle>Webhook log detail</DialogTitle>
+            <DialogTitle>{translate('Webhook log detail')}</DialogTitle>
           </DialogHeader>
           {selectedLog && (
             <div className="max-h-[70vh] space-y-4 overflow-auto">
               <dl className="grid gap-3 md:grid-cols-2">
                 <div>
-                  <dt className="text-xs uppercase tracking-wide text-muted-foreground">ID</dt>
+                  <dt className="text-xs uppercase tracking-wide text-muted-foreground">{translate('ID')}</dt>
                   <dd className="font-mono text-xs">{selectedLog.id}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs uppercase tracking-wide text-muted-foreground">Status</dt>
+                  <dt className="text-xs uppercase tracking-wide text-muted-foreground">{translate('Status')}</dt>
                   <dd className="text-sm">{selectedLog.status}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs uppercase tracking-wide text-muted-foreground">Device</dt>
+                  <dt className="text-xs uppercase tracking-wide text-muted-foreground">{translate('Device')}</dt>
                   <dd className="text-sm">{selectedLog.deviceName || '-'}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs uppercase tracking-wide text-muted-foreground">Event type</dt>
+                  <dt className="text-xs uppercase tracking-wide text-muted-foreground">{translate('Event type')}</dt>
                   <dd className="text-sm">{selectedLog.eventType || '-'}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs uppercase tracking-wide text-muted-foreground">Shipment</dt>
+                  <dt className="text-xs uppercase tracking-wide text-muted-foreground">{translate('Shipment')}</dt>
                   <dd className="text-sm">{selectedLog.shipmentReference || selectedLog.shipmentId || '-'}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs uppercase tracking-wide text-muted-foreground">Received</dt>
+                  <dt className="text-xs uppercase tracking-wide text-muted-foreground">{translate('Received')}</dt>
                   <dd className="text-sm">{selectedLog.createdAt ? new Date(selectedLog.createdAt).toLocaleString() : '-'}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs uppercase tracking-wide text-muted-foreground">Processed</dt>
+                  <dt className="text-xs uppercase tracking-wide text-muted-foreground">{translate('Processed')}</dt>
                   <dd className="text-sm">{selectedLog.processedAt ? new Date(selectedLog.processedAt).toLocaleString() : '-'}</dd>
                 </div>
                 {selectedLog.errorMessage && (
                   <div className="md:col-span-2">
-                    <dt className="text-xs uppercase tracking-wide text-muted-foreground">Error</dt>
+                    <dt className="text-xs uppercase tracking-wide text-muted-foreground">{translate('Error')}</dt>
                     <dd className="text-sm text-destructive">{selectedLog.errorMessage}</dd>
                   </div>
                 )}
               </dl>
               {selectedLog.rawPayload && (
                 <div>
-                  <h3 className="mb-2 text-sm font-semibold">Raw payload</h3>
+                  <h3 className="mb-2 text-sm font-semibold">{translate('Raw payload')}</h3>
                   <pre className="max-h-72 overflow-auto rounded-md border bg-muted p-3 font-mono text-xs">
                     {JSON.stringify(selectedLog.rawPayload, null, 2)}
                   </pre>
@@ -329,7 +331,7 @@ export default function VNextWebhookLogs() {
           <DialogFooter>
             <Button variant="outline" onClick={() => setSelectedLog(null)}>
               <X className="h-4 w-4" />
-              Close
+              {translate('Close')}
             </Button>
           </DialogFooter>
         </DialogContent>

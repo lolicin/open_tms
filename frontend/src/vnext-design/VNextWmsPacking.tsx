@@ -23,6 +23,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t as translate } from '@/i18n';
+
 interface PackTask {
   id: string;
   status: string;
@@ -74,8 +76,8 @@ export default function VNextWmsPacking() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Packing</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Pack station tasks for order verification and cartonization</p>
+        <h1 className="text-3xl font-bold tracking-tight">{translate('Packing')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{translate('Pack station tasks for order verification and cartonization')}</p>
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
@@ -90,9 +92,11 @@ export default function VNextWmsPacking() {
         <Card>
           <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
             <Package className="h-12 w-12 text-muted-foreground" />
-            <h3 className="text-base font-medium">No pack tasks</h3>
+            <h3 className="text-base font-medium">{translate('No pack tasks')}</h3>
             <p className="text-sm text-muted-foreground">
-              Pack tasks are created when pick tasks are completed. Items arrive at the pack station for verification, cartonization, and label generation.
+              {translate(
+                'Pack tasks are created when pick tasks are completed. Items arrive at the pack station for verification, cartonization, and label generation.'
+              )}
             </p>
           </CardContent>
         </Card>
@@ -101,13 +105,13 @@ export default function VNextWmsPacking() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Task</TableHead>
-                <TableHead>Order</TableHead>
-                <TableHead>Pack Station</TableHead>
-                <TableHead>Progress</TableHead>
-                <TableHead>Assigned To</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Created</TableHead>
+                <TableHead>{translate('Task')}</TableHead>
+                <TableHead>{translate('Order')}</TableHead>
+                <TableHead>{translate('Pack Station')}</TableHead>
+                <TableHead>{translate('Progress')}</TableHead>
+                <TableHead>{translate('Assigned To')}</TableHead>
+                <TableHead>{translate('Status')}</TableHead>
+                <TableHead>{translate('Created')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -115,7 +119,7 @@ export default function VNextWmsPacking() {
                 <TableRow key={task.id} onClick={() => navigate(`/wms/packing/${task.id}`)} className="cursor-pointer">
                   <TableCell className="font-mono text-sm font-semibold">{task.id.slice(0, 8)}</TableCell>
                   <TableCell className="font-semibold">{task.orderRef}</TableCell>
-                  <TableCell>{task.packStation || 'Unassigned'}</TableCell>
+                  <TableCell>{task.packStation || translate('Unassigned')}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <div className="h-2 w-32 overflow-hidden rounded-full bg-muted">
@@ -127,7 +131,7 @@ export default function VNextWmsPacking() {
                       <span className="text-xs text-muted-foreground">{task.packedLines}/{task.lineCount}</span>
                     </div>
                   </TableCell>
-                  <TableCell>{task.assignedTo || 'Unassigned'}</TableCell>
+                  <TableCell>{task.assignedTo || translate('Unassigned')}</TableCell>
                   <TableCell>
                     <Badge variant={statusVariant(task.status)}>{formatStatus(task.status)}</Badge>
                   </TableCell>

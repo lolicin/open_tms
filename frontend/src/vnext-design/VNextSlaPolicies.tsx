@@ -47,6 +47,8 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
+import { t as translate } from '@/i18n';
+
 interface SlaRule {
   ruleType: string;
   name: string;
@@ -86,29 +88,29 @@ interface Customer {
 }
 
 const RULE_TYPES: { value: string; label: string; Icon: LucideIcon; description: string }[] = [
-  { value: 'eta_delivery', label: 'ETA Delivery', Icon: Clock, description: 'Shipment must arrive within X minutes of pickup' },
-  { value: 'issue_response', label: 'Issue Response', Icon: Reply, description: 'Issue must be acknowledged within X minutes' },
-  { value: 'issue_resolution', label: 'Issue Resolution', Icon: CheckCircle2, description: 'Issue must be resolved within X minutes' },
-  { value: 'dwell_time', label: 'Dwell Time', Icon: Hourglass, description: 'Max time a shipment can be stationary at a location' },
-  { value: 'dock_turnaround', label: 'Dock Turnaround', Icon: ArrowLeftRight, description: 'Max time from arrival to departure at a dock' },
-  { value: 'sort_to_dispatch', label: 'Sort to Dispatch', Icon: Sparkles, description: 'Max time from inbound arrival to outbound dispatch at cross-docks' },
-  { value: 'facility_dwell', label: 'Facility Dwell', Icon: Building2, description: 'Max time at a specific facility type' },
-  { value: 'light_event', label: 'Light Sensor Event', Icon: Sun, description: 'Light detection outside known locations (tampering)' },
-  { value: 'seal_event', label: 'Security Seal Event', Icon: Lock, description: 'Seal break detected outside known locations' },
-  { value: 'temperature_excursion', label: 'Temperature Excursion', Icon: Thermometer, description: 'Single excursion duration limit' },
-  { value: 'temperature_out_of_range', label: 'Cumulative Out-of-Range', Icon: Activity, description: 'Total time out of acceptable temperature range' },
+  { value: 'eta_delivery', label: translate('ETA Delivery'), Icon: Clock, description: translate('Shipment must arrive within X minutes of pickup') },
+  { value: 'issue_response', label: translate('Issue Response'), Icon: Reply, description: translate('Issue must be acknowledged within X minutes') },
+  { value: 'issue_resolution', label: translate('Issue Resolution'), Icon: CheckCircle2, description: translate('Issue must be resolved within X minutes') },
+  { value: 'dwell_time', label: translate('Dwell Time'), Icon: Hourglass, description: translate('Max time a shipment can be stationary at a location') },
+  { value: 'dock_turnaround', label: translate('Dock Turnaround'), Icon: ArrowLeftRight, description: translate('Max time from arrival to departure at a dock') },
+  { value: 'sort_to_dispatch', label: translate('Sort to Dispatch'), Icon: Sparkles, description: translate('Max time from inbound arrival to outbound dispatch at cross-docks') },
+  { value: 'facility_dwell', label: translate('Facility Dwell'), Icon: Building2, description: translate('Max time at a specific facility type') },
+  { value: 'light_event', label: translate('Light Sensor Event'), Icon: Sun, description: translate('Light detection outside known locations (tampering)') },
+  { value: 'seal_event', label: translate('Security Seal Event'), Icon: Lock, description: translate('Seal break detected outside known locations') },
+  { value: 'temperature_excursion', label: translate('Temperature Excursion'), Icon: Thermometer, description: translate('Single excursion duration limit') },
+  { value: 'temperature_out_of_range', label: translate('Cumulative Out-of-Range'), Icon: Activity, description: translate('Total time out of acceptable temperature range') },
 ];
 
 const LOCATION_TYPES = [
-  { value: 'warehouse', label: 'Warehouse' },
-  { value: 'distribution_centre', label: 'Distribution Centre' },
-  { value: 'cross_dock', label: 'Cross Dock' },
-  { value: 'terminal', label: 'Terminal' },
-  { value: 'port', label: 'Port' },
-  { value: 'rail_yard', label: 'Rail Yard' },
-  { value: 'customer', label: 'Customer' },
-  { value: 'store', label: 'Store' },
-  { value: 'manufacturing', label: 'Manufacturing' },
+  { value: 'warehouse', label: translate('Warehouse') },
+  { value: 'distribution_centre', label: translate('Distribution Centre') },
+  { value: 'cross_dock', label: translate('Cross Dock') },
+  { value: 'terminal', label: translate('Terminal') },
+  { value: 'port', label: translate('Port') },
+  { value: 'rail_yard', label: translate('Rail Yard') },
+  { value: 'customer', label: translate('Customer') },
+  { value: 'store', label: translate('Store') },
+  { value: 'manufacturing', label: translate('Manufacturing') },
 ];
 
 const PRIORITIES = ['low', 'medium', 'high', 'critical'];
@@ -158,7 +160,7 @@ function RuleEditor({ rule, onChange, onRemove }: { rule: SlaRule; onChange: (r:
                 onChange={e => set('active', e.target.checked)}
                 className="h-4 w-4 rounded border border-input bg-background accent-primary"
               />
-              Active
+              {translate('Active')}
             </label>
             <Button variant="ghost" size="icon" onClick={onRemove}>
               <Trash2 className="h-4 w-4 text-destructive" />
@@ -168,26 +170,26 @@ function RuleEditor({ rule, onChange, onRemove }: { rule: SlaRule; onChange: (r:
 
         <div className="grid gap-3 md:grid-cols-2">
           <div className="space-y-1">
-            <Label>Rule name</Label>
+            <Label>{translate('Rule name')}</Label>
             <Input value={rule.name} onChange={e => set('name', e.target.value)} />
           </div>
 
           {isEta && (
             <div className="space-y-1">
-              <Label>Max delivery time (minutes)</Label>
-              <Input type="number" value={rule.maxDeliveryMinutes ?? ''} onChange={e => setNum('maxDeliveryMinutes', e.target.value)} placeholder="e.g. 1440 (24 hours)" />
+              <Label>{translate('Max delivery time (minutes)')}</Label>
+              <Input type="number" value={rule.maxDeliveryMinutes ?? ''} onChange={e => setNum('maxDeliveryMinutes', e.target.value)} placeholder={translate('e.g. 1440 (24 hours)')} />
             </div>
           )}
 
           {(isTimeThreshold || isEta) && (
             <>
               <div className="space-y-1">
-                <Label>Warning threshold (min)</Label>
-                <Input type="number" value={rule.warningThresholdMinutes ?? ''} onChange={e => setNum('warningThresholdMinutes', e.target.value)} placeholder="e.g. 60" />
+                <Label>{translate('Warning threshold (min)')}</Label>
+                <Input type="number" value={rule.warningThresholdMinutes ?? ''} onChange={e => setNum('warningThresholdMinutes', e.target.value)} placeholder={translate('e.g. 60')} />
               </div>
               <div className="space-y-1">
-                <Label>Breach threshold (min)</Label>
-                <Input type="number" value={rule.breachThresholdMinutes ?? ''} onChange={e => setNum('breachThresholdMinutes', e.target.value)} placeholder="e.g. 120" />
+                <Label>{translate('Breach threshold (min)')}</Label>
+                <Input type="number" value={rule.breachThresholdMinutes ?? ''} onChange={e => setNum('breachThresholdMinutes', e.target.value)} placeholder={translate('e.g. 120')} />
               </div>
             </>
           )}
@@ -195,11 +197,11 @@ function RuleEditor({ rule, onChange, onRemove }: { rule: SlaRule; onChange: (r:
           {isDwell && (
             <>
               <div className="space-y-1">
-                <Label>Max dwell time (min)</Label>
-                <Input type="number" value={rule.maxDwellMinutes ?? ''} onChange={e => setNum('maxDwellMinutes', e.target.value)} placeholder="e.g. 240" />
+                <Label>{translate('Max dwell time (min)')}</Label>
+                <Input type="number" value={rule.maxDwellMinutes ?? ''} onChange={e => setNum('maxDwellMinutes', e.target.value)} placeholder={translate('e.g. 240')} />
               </div>
               <div className="space-y-1">
-                <Label>Location type</Label>
+                <Label>{translate('Location type')}</Label>
                 <Select value={rule.dwellLocationType ?? 'any'} onValueChange={v => set('dwellLocationType', v)}>
                   <SelectTrigger>
                     <SelectValue />
@@ -216,13 +218,13 @@ function RuleEditor({ rule, onChange, onRemove }: { rule: SlaRule; onChange: (r:
 
           {isLocationSpecific && (
             <div className="space-y-1">
-              <Label>Facility type filter</Label>
+              <Label>{translate('Facility type filter')}</Label>
               <Select value={rule.locationType ?? 'all'} onValueChange={v => set('locationType', v === 'all' ? null : v)}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All location types</SelectItem>
+                  <SelectItem value="all">{translate('All location types')}</SelectItem>
                   {LOCATION_TYPES.map(lt => (
                     <SelectItem key={lt.value} value={lt.value}>{lt.label}</SelectItem>
                   ))}
@@ -233,21 +235,21 @@ function RuleEditor({ rule, onChange, onRemove }: { rule: SlaRule; onChange: (r:
 
           {['dock_turnaround', 'sort_to_dispatch', 'facility_dwell'].includes(rule.ruleType) && (
             <div className="space-y-1">
-              <Label>Max time (minutes)</Label>
-              <Input type="number" value={rule.maxDwellMinutes ?? ''} onChange={e => setNum('maxDwellMinutes', e.target.value)} placeholder="e.g. 120" />
+              <Label>{translate('Max time (minutes)')}</Label>
+              <Input type="number" value={rule.maxDwellMinutes ?? ''} onChange={e => setNum('maxDwellMinutes', e.target.value)} placeholder={translate('e.g. 120')} />
             </div>
           )}
 
           {isIssue && (
             <>
               <div className="space-y-1">
-                <Label>Issue priority filter</Label>
+                <Label>{translate('Issue priority filter')}</Label>
                 <Select value={rule.issuePriority ?? 'all'} onValueChange={v => set('issuePriority', v === 'all' ? null : v)}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All priorities</SelectItem>
+                    <SelectItem value="all">{translate('All priorities')}</SelectItem>
                     {PRIORITIES.map(p => (
                       <SelectItem key={p} value={p}>{p.charAt(0).toUpperCase() + p.slice(1)}</SelectItem>
                     ))}
@@ -255,13 +257,13 @@ function RuleEditor({ rule, onChange, onRemove }: { rule: SlaRule; onChange: (r:
                 </Select>
               </div>
               <div className="space-y-1">
-                <Label>Issue category filter</Label>
+                <Label>{translate('Issue category filter')}</Label>
                 <Select value={rule.issueCategory ?? 'all'} onValueChange={v => set('issueCategory', v === 'all' ? null : v)}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All categories</SelectItem>
+                    <SelectItem value="all">{translate('All categories')}</SelectItem>
                     {CATEGORIES.map(c => (
                       <SelectItem key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</SelectItem>
                     ))}
@@ -273,15 +275,15 @@ function RuleEditor({ rule, onChange, onRemove }: { rule: SlaRule; onChange: (r:
 
           {isOccurrence && (
             <div className="space-y-1">
-              <Label>Max occurrences before breach</Label>
-              <Input type="number" value={rule.maxOccurrences ?? ''} onChange={e => setNum('maxOccurrences', e.target.value)} placeholder="0 = any occurrence" />
+              <Label>{translate('Max occurrences before breach')}</Label>
+              <Input type="number" value={rule.maxOccurrences ?? ''} onChange={e => setNum('maxOccurrences', e.target.value)} placeholder={translate('0 = any occurrence')} />
             </div>
           )}
 
           {(rule.ruleType === 'temperature_excursion' || rule.ruleType === 'temperature_out_of_range') && (
             <div className="space-y-1">
-              <Label>Max excursion duration (min)</Label>
-              <Input type="number" value={rule.maxExcursionMinutes ?? ''} onChange={e => setNum('maxExcursionMinutes', e.target.value)} placeholder="e.g. 30" />
+              <Label>{translate('Max excursion duration (min)')}</Label>
+              <Input type="number" value={rule.maxExcursionMinutes ?? ''} onChange={e => setNum('maxExcursionMinutes', e.target.value)} placeholder={translate('e.g. 30')} />
             </div>
           )}
 
@@ -293,12 +295,12 @@ function RuleEditor({ rule, onChange, onRemove }: { rule: SlaRule; onChange: (r:
                 onChange={e => set('autoCreateIssue', e.target.checked)}
                 className="h-4 w-4 rounded border border-input bg-background accent-primary"
               />
-              Auto-create issue on breach
+              {translate('Auto-create issue on breach')}
             </label>
           </div>
           {rule.autoCreateIssue !== false && (
             <div className="space-y-1">
-              <Label>Issue priority on breach</Label>
+              <Label>{translate('Issue priority on breach')}</Label>
               <Select value={rule.issuePriorityOnBreach ?? 'high'} onValueChange={v => set('issuePriorityOnBreach', v)}>
                 <SelectTrigger>
                   <SelectValue />
@@ -353,21 +355,21 @@ function PolicyEditor({ policy, onSave, saving }: { policy: SlaPolicy | null; on
     <div className="space-y-4">
       <div className="grid gap-3 md:grid-cols-2">
         <div className="space-y-1">
-          <Label>Policy name</Label>
-          <Input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Standard SLA" />
+          <Label>{translate('Policy name')}</Label>
+          <Input value={name} onChange={e => setName(e.target.value)} placeholder={translate('e.g. Standard SLA')} />
         </div>
         <div className="space-y-1">
-          <Label>Description</Label>
-          <Input value={description} onChange={e => setDescription(e.target.value)} placeholder="Optional description" />
+          <Label>{translate('Description')}</Label>
+          <Input value={description} onChange={e => setDescription(e.target.value)} placeholder={translate('Optional description')} />
         </div>
       </div>
 
       <div className="flex items-center justify-between">
-        <h3 className="text-base font-semibold">Rules ({rules.length})</h3>
+        <h3 className="text-base font-semibold">{translate('Rules (')}{rules.length})</h3>
         <div className="relative">
           <Button variant="outline" onClick={() => setShowAddMenu(!showAddMenu)} disabled={availableTypes.length === 0}>
             <Plus className="h-4 w-4" />
-            Add rule
+            {translate('Add rule')}
           </Button>
           {showAddMenu && availableTypes.length > 0 && (
             <div className="absolute right-0 top-full z-50 mt-1 w-72 overflow-hidden rounded-md border bg-popover shadow-lg">
@@ -394,7 +396,7 @@ function PolicyEditor({ policy, onSave, saving }: { policy: SlaPolicy | null; on
 
       {rules.length === 0 && (
         <div className="rounded-md border-2 border-dashed border-input bg-background p-8 text-center text-sm text-muted-foreground">
-          No rules configured. Click "Add rule" to define SLA thresholds.
+          {translate('No rules configured. Click "Add rule" to define SLA thresholds.')}
         </div>
       )}
 
@@ -405,7 +407,7 @@ function PolicyEditor({ policy, onSave, saving }: { policy: SlaPolicy | null; on
       <div className="flex justify-end">
         <Button variant="gradient" onClick={handleSave} disabled={saving || !name.trim()}>
           {saving && <Loader2 className="h-4 w-4 animate-spin" />}
-          {policy?.id ? 'Save changes' : 'Create policy'}
+          {policy?.id ? translate('Save changes') : translate('Create policy')}
         </Button>
       </div>
     </div>
@@ -421,7 +423,7 @@ function Banner({ variant, message, onClose }: { variant: 'success' | 'error'; m
     <div className={`flex items-start justify-between gap-3 rounded-md border p-3 text-sm ${tone}`}>
       <span>{message}</span>
       {onClose && (
-        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">Dismiss</button>
+        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">{translate('Dismiss')}</button>
       )}
     </div>
   );
@@ -560,9 +562,11 @@ export default function VNextSlaPolicies() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">SLA policies</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{translate('SLA policies')}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Configure service level agreements. The organization default applies to all entities unless a customer-specific override exists.
+          {translate(
+            'Configure service level agreements. The organization default applies to all entities unless a customer-specific override exists.'
+          )}
         </p>
       </div>
 
@@ -574,12 +578,12 @@ export default function VNextSlaPolicies() {
         <TabsList>
           <TabsTrigger value="org">
             <Building2 className="mr-1 h-4 w-4" />
-            Organization default
+            {translate('Organization default')}
           </TabsTrigger>
           <TabsTrigger value="customer">
             <Users className="mr-1 h-4 w-4" />
-            Customer overrides ({customerPolicies.length})
-          </TabsTrigger>
+            {translate('Customer overrides (')}{customerPolicies.length})
+                      </TabsTrigger>
         </TabsList>
 
         <TabsContent value="org" className="mt-4 space-y-4">
@@ -587,7 +591,7 @@ export default function VNextSlaPolicies() {
           {orgPolicy?.id && (
             <Button variant="outline" onClick={() => setShowCloneModal(true)}>
               <Copy className="h-4 w-4" />
-              Clone for customer
+              {translate('Clone for customer')}
             </Button>
           )}
         </TabsContent>
@@ -595,10 +599,10 @@ export default function VNextSlaPolicies() {
         <TabsContent value="customer" className="mt-4 space-y-4">
           <div className="flex flex-wrap items-end gap-3">
             <div className="flex-1 space-y-1 md:max-w-md">
-              <Label>Customer</Label>
+              <Label>{translate('Customer')}</Label>
               <Select value={selectedCustomerId || ''} onValueChange={v => setSelectedCustomerId(v || null)}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select a customer..." />
+                  <SelectValue placeholder={translate('Select a customer...')} />
                 </SelectTrigger>
                 <SelectContent>
                   {customerPolicies.map(p => (
@@ -607,7 +611,7 @@ export default function VNextSlaPolicies() {
                     </SelectItem>
                   ))}
                   {customersWithoutPolicy.map(c => (
-                    <SelectItem key={c.id} value={c.id}>{c.name} (no override)</SelectItem>
+                    <SelectItem key={c.id} value={c.id}>{c.name} {translate('(no override)')}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -616,13 +620,13 @@ export default function VNextSlaPolicies() {
               <Button
                 variant="destructive"
                 onClick={() => {
-                  if (selectedCustomerPolicy?.id && confirm('Deactivate this customer SLA policy?')) {
+                  if (selectedCustomerPolicy?.id && confirm(translate('Deactivate this customer SLA policy?'))) {
                     deactivatePolicy(selectedCustomerPolicy.id);
                   }
                 }}
               >
                 <Trash2 className="h-4 w-4" />
-                Deactivate
+                {translate('Deactivate')}
               </Button>
             )}
           </div>
@@ -630,10 +634,14 @@ export default function VNextSlaPolicies() {
           {!selectedCustomerId && (
             <div className="rounded-md border-2 border-dashed border-input bg-background p-10 text-center text-sm text-muted-foreground">
               <Users className="mx-auto mb-2 h-10 w-10 opacity-40" />
-              <p>Select a customer above to edit their SLA override, or choose a customer without an override to create one.</p>
+              <p>{translate(
+                'Select a customer above to edit their SLA override, or choose a customer without an override to create one.'
+              )}</p>
               {orgPolicy?.id && (
                 <p className="mt-1 text-xs">
-                  Tip: Use "Clone for customer" on the Organization tab to copy the default policy as a starting point.
+                  {translate(
+                    'Tip: Use "Clone for customer" on the Organization tab to copy the default policy as a starting point.'
+                  )}
                 </p>
               )}
             </div>
@@ -652,16 +660,18 @@ export default function VNextSlaPolicies() {
       <Dialog open={showCloneModal} onOpenChange={setShowCloneModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Clone policy for customer</DialogTitle>
+            <DialogTitle>{translate('Clone policy for customer')}</DialogTitle>
             <DialogDescription>
-              This will create a customer-specific SLA policy based on the organization default.
+              {translate(
+                'This will create a customer-specific SLA policy based on the organization default.'
+              )}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-2">
-            <Label>Customer</Label>
+            <Label>{translate('Customer')}</Label>
             <Select value={cloneCustomerId} onValueChange={setCloneCustomerId}>
               <SelectTrigger>
-                <SelectValue placeholder="Select customer..." />
+                <SelectValue placeholder={translate('Select customer...')} />
               </SelectTrigger>
               <SelectContent>
                 {customersWithoutPolicy.map(c => (
@@ -671,9 +681,9 @@ export default function VNextSlaPolicies() {
             </Select>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowCloneModal(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setShowCloneModal(false)}>{translate('Cancel')}</Button>
             <Button variant="gradient" onClick={cloneOrgPolicy} disabled={!cloneCustomerId || saving}>
-              {saving ? 'Cloning...' : 'Clone policy'}
+              {saving ? translate('Cloning...') : translate('Clone policy')}
             </Button>
           </DialogFooter>
         </DialogContent>

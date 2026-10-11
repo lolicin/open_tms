@@ -41,6 +41,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface CarrierTrackingIntegration {
   id: string;
   carrierId: string;
@@ -162,7 +164,7 @@ export default function VNextCarrierTracking() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -171,15 +173,15 @@ export default function VNextCarrierTracking() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Carrier tracking integrations</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Carrier tracking integrations')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {integrations.length} integration{integrations.length !== 1 ? 's' : ''} configured
+            {integrations.length} {t('integration')}{integrations.length !== 1 ? t('s') : ''} {t('configured')}
           </p>
         </div>
         <Button variant="gradient" asChild>
           <Link to="/integrations/carrier-tracking/setup">
             <Plus className="h-4 w-4" />
-            Add integration
+            {t('Add integration')}
           </Link>
         </Button>
       </div>
@@ -188,7 +190,7 @@ export default function VNextCarrierTracking() {
         <div className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
           <CircleAlert className="h-5 w-5" />
           <span className="flex-1">{error}</span>
-          <Button variant="ghost" size="sm" onClick={() => setError(null)}>Dismiss</Button>
+          <Button variant="ghost" size="sm" onClick={() => setError(null)}>{t('Dismiss')}</Button>
         </div>
       )}
 
@@ -197,7 +199,7 @@ export default function VNextCarrierTracking() {
           <Select value={providerFilter} onValueChange={setProviderFilter}>
             <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All providers</SelectItem>
+              <SelectItem value="all">{t('All providers')}</SelectItem>
               {Object.entries(PROVIDER_LABELS).map(([val, label]) => (
                 <SelectItem key={val} value={val}>{label}</SelectItem>
               ))}
@@ -206,7 +208,7 @@ export default function VNextCarrierTracking() {
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All statuses</SelectItem>
+              <SelectItem value="all">{t('All statuses')}</SelectItem>
               {Object.entries(STATUS_LABELS).map(([val, label]) => (
                 <SelectItem key={val} value={val}>{label}</SelectItem>
               ))}
@@ -221,29 +223,31 @@ export default function VNextCarrierTracking() {
             <MapPin className="h-10 w-10 opacity-40" />
             {integrations.length === 0 ? (
               <>
-                <h3 className="text-base font-semibold">No tracking integrations yet</h3>
-                <p className="text-sm">Set up a carrier tracking integration to start receiving real-time shipment updates.</p>
+                <h3 className="text-base font-semibold">{t('No tracking integrations yet')}</h3>
+                <p className="text-sm">{t(
+                  'Set up a carrier tracking integration to start receiving real-time shipment updates.'
+                )}</p>
                 <Button variant="gradient" asChild>
                   <Link to="/integrations/carrier-tracking/setup">
                     <Plus className="h-4 w-4" />
-                    Add integration
+                    {t('Add integration')}
                   </Link>
                 </Button>
               </>
             ) : (
-              <p className="text-sm">No integrations match the current filters.</p>
+              <p className="text-sm">{t('No integrations match the current filters.')}</p>
             )}
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Carrier</TableHead>
-                <TableHead>Provider</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Last polled</TableHead>
-                <TableHead>Errors</TableHead>
-                <TableHead className="w-[140px]">Actions</TableHead>
+                <TableHead>{t('Carrier')}</TableHead>
+                <TableHead>{t('Provider')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead>{t('Last polled')}</TableHead>
+                <TableHead>{t('Errors')}</TableHead>
+                <TableHead className="w-[140px]">{t('Actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -279,18 +283,18 @@ export default function VNextCarrierTracking() {
                     </TableCell>
                     <TableCell>
                       <div className="flex gap-1">
-                        <Button variant="ghost" size="icon" asChild title="View details">
+                        <Button variant="ghost" size="icon" asChild title={t('View details')}>
                           <Link to={`/integrations/carrier-tracking/${integration.id}`}>
                             <Eye className="h-4 w-4" />
                           </Link>
                         </Button>
-                        <Button variant="ghost" size="icon" title="Test connection" onClick={() => handleTest(integration.id)}>
+                        <Button variant="ghost" size="icon" title={t('Test connection')} onClick={() => handleTest(integration.id)}>
                           <Wifi className="h-4 w-4" />
                         </Button>
                         <Button
                           variant="ghost"
                           size="icon"
-                          title="Delete"
+                          title={t('Delete')}
                           onClick={() => handleDelete(integration.id, integration.carrierName)}
                           disabled={deleting === integration.id}
                           className={cn('text-destructive hover:text-destructive')}

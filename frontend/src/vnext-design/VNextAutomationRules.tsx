@@ -43,6 +43,8 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface AutomationRule {
   id: string;
   name: string;
@@ -66,24 +68,24 @@ const OPERATORS = [
   { value: 'lessThan', label: '<' },
   { value: 'greaterThanOrEqual', label: '>=' },
   { value: 'lessThanOrEqual', label: '<=' },
-  { value: 'contains', label: 'contains' },
-  { value: 'in', label: 'in' },
-  { value: 'exists', label: 'exists' },
-  { value: 'notExists', label: 'not exists' },
+  { value: 'contains', label: t('contains') },
+  { value: 'in', label: t('in') },
+  { value: 'exists', label: t('exists') },
+  { value: 'notExists', label: t('not exists') },
 ];
 
 const EVENT_PATTERNS = [
-  { value: 'shipment.exception', label: 'Shipment Exception' },
-  { value: 'shipment.status_changed', label: 'Shipment Status Changed' },
-  { value: 'shipment.delivered', label: 'Shipment Delivered' },
-  { value: 'shipment.*', label: 'All Shipment Events' },
-  { value: 'sla.breached', label: 'SLA Breached' },
-  { value: 'sla.warning', label: 'SLA Warning' },
-  { value: 'sla.*', label: 'All SLA Events' },
-  { value: 'cargo.misdrop_detected', label: 'Cargo Misdrop' },
-  { value: 'cargo.missing_at_stop', label: 'Cargo Missing' },
-  { value: 'cargo.left_on_vehicle', label: 'Cargo Left on Vehicle' },
-  { value: 'cold_chain.excursion_detected', label: 'Cold Chain Excursion' },
+  { value: 'shipment.exception', label: t('Shipment Exception') },
+  { value: 'shipment.status_changed', label: t('Shipment Status Changed') },
+  { value: 'shipment.delivered', label: t('Shipment Delivered') },
+  { value: 'shipment.*', label: t('All Shipment Events') },
+  { value: 'sla.breached', label: t('SLA Breached') },
+  { value: 'sla.warning', label: t('SLA Warning') },
+  { value: 'sla.*', label: t('All SLA Events') },
+  { value: 'cargo.misdrop_detected', label: t('Cargo Misdrop') },
+  { value: 'cargo.missing_at_stop', label: t('Cargo Missing') },
+  { value: 'cargo.left_on_vehicle', label: t('Cargo Left on Vehicle') },
+  { value: 'cold_chain.excursion_detected', label: t('Cold Chain Excursion') },
 ];
 
 function timeAgo(dateStr: string | null): string {
@@ -153,7 +155,7 @@ export default function VNextAutomationRules() {
   }
 
   async function deleteRule(id: string) {
-    if (!confirm('Delete this automation rule?')) return;
+    if (!confirm(t('Delete this automation rule?'))) return;
     await fetch(`${API_URL}/api/v1/automation-rules/${id}`, { method: 'DELETE' });
     await loadRules();
     setSuccessMsg('Rule deleted');
@@ -215,27 +217,27 @@ export default function VNextAutomationRules() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading rules...</h3>
+        <h3 className="text-lg font-medium">{t('Loading rules...')}</h3>
       </div>
     );
   }
 
   const stats = [
-    { label: 'Total rules', value: rules.length, icon: Zap, tone: 'bg-primary/10 text-primary' },
-    { label: 'Active', value: rules.filter(r => r.enabled).length, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
-    { label: 'Total executions', value: rules.reduce((sum, r) => sum + r.executionCount, 0), icon: PlayCircle, tone: 'bg-info/15 text-info' },
+    { label: t('Total rules'), value: rules.length, icon: Zap, tone: 'bg-primary/10 text-primary' },
+    { label: t('Active'), value: rules.filter(r => r.enabled).length, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
+    { label: t('Total executions'), value: rules.reduce((sum, r) => sum + r.executionCount, 0), icon: PlayCircle, tone: 'bg-info/15 text-info' },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Automation rules</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{rules.length} rules</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Automation rules')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{rules.length} {t('rules')}</p>
         </div>
         <Button variant="gradient" onClick={() => setShowCreate(true)}>
           <Plus className="h-4 w-4" />
-          Create rule
+          {t('Create rule')}
         </Button>
       </div>
 
@@ -276,7 +278,7 @@ export default function VNextAutomationRules() {
           <div className="relative min-w-[240px] flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search rules..."
+              placeholder={t('Search rules...')}
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="pl-9"
@@ -289,20 +291,22 @@ export default function VNextAutomationRules() {
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <Zap className="h-10 w-10 opacity-40" />
-            <h3 className="text-base font-medium">No automation rules yet</h3>
-            <p className="text-sm">Create rules manually or promote agent decisions to automate proven patterns.</p>
+            <h3 className="text-base font-medium">{t('No automation rules yet')}</h3>
+            <p className="text-sm">{t(
+              'Create rules manually or promote agent decisions to automate proven patterns.'
+            )}</p>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Rule</TableHead>
-                <TableHead>Event</TableHead>
-                <TableHead>Conditions</TableHead>
-                <TableHead>Action</TableHead>
-                <TableHead>Executions</TableHead>
-                <TableHead>Last run</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{t('Rule')}</TableHead>
+                <TableHead>{t('Event')}</TableHead>
+                <TableHead>{t('Conditions')}</TableHead>
+                <TableHead>{t('Action')}</TableHead>
+                <TableHead>{t('Executions')}</TableHead>
+                <TableHead>{t('Last run')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
                 <TableHead className="w-[60px]"></TableHead>
               </TableRow>
             </TableHeader>
@@ -314,7 +318,7 @@ export default function VNextAutomationRules() {
                     <TableCell>
                       <div className="font-medium">{rule.name}</div>
                       {rule.sourceDecisionId && (
-                        <div className="text-xs text-muted-foreground">Promoted from agent</div>
+                        <div className="text-xs text-muted-foreground">{t('Promoted from agent')}</div>
                       )}
                     </TableCell>
                     <TableCell><code className="rounded bg-muted px-1.5 py-0.5 text-xs">{rule.eventPattern}</code></TableCell>
@@ -324,9 +328,9 @@ export default function VNextAutomationRules() {
                       </span>
                     </TableCell>
                     <TableCell>
-                      {rule.actionType === 'create_issue' && <Badge variant="info">Create issue</Badge>}
-                      {rule.actionType === 'escalate_issue' && <Badge variant="warning">Escalate</Badge>}
-                      {rule.actionType === 'skill_chain' && <Badge>Skill chain</Badge>}
+                      {rule.actionType === 'create_issue' && <Badge variant="info">{t('Create issue')}</Badge>}
+                      {rule.actionType === 'escalate_issue' && <Badge variant="warning">{t('Escalate')}</Badge>}
+                      {rule.actionType === 'skill_chain' && <Badge>{t('Skill chain')}</Badge>}
                     </TableCell>
                     <TableCell className="font-semibold">{rule.executionCount}</TableCell>
                     <TableCell className="text-sm text-muted-foreground">{timeAgo(rule.lastExecutedAt)}</TableCell>
@@ -336,11 +340,11 @@ export default function VNextAutomationRules() {
                         className="cursor-pointer"
                         onClick={() => toggleRule(rule.id)}
                       >
-                        {rule.enabled ? 'Active' : 'Disabled'}
+                        {rule.enabled ? t('Active') : t('Disabled')}
                       </Badge>
                     </TableCell>
                     <TableCell onClick={e => e.stopPropagation()}>
-                      <Button variant="ghost" size="icon" onClick={() => deleteRule(rule.id)} title="Delete" className="text-destructive hover:text-destructive">
+                      <Button variant="ghost" size="icon" onClick={() => deleteRule(rule.id)} title={t('Delete')} className="text-destructive hover:text-destructive">
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </TableCell>
@@ -355,19 +359,19 @@ export default function VNextAutomationRules() {
       <Dialog open={showCreate} onOpenChange={setShowCreate}>
         <DialogContent className="max-w-2xl max-h-[85vh] overflow-auto">
           <DialogHeader>
-            <DialogTitle>Create automation rule</DialogTitle>
+            <DialogTitle>{t('Create automation rule')}</DialogTitle>
           </DialogHeader>
 
           <div className="space-y-6">
             <div className="space-y-2">
-              <Label>Rule name</Label>
-              <Input placeholder="e.g. Critical delay auto-escalation" value={formName} onChange={e => setFormName(e.target.value)} />
+              <Label>{t('Rule name')}</Label>
+              <Input placeholder={t('e.g. Critical delay auto-escalation')} value={formName} onChange={e => setFormName(e.target.value)} />
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-primary">WHEN</h3>
+              <h3 className="text-sm font-semibold text-primary">{t('WHEN')}</h3>
               <div className="space-y-2">
-                <Label>Event type</Label>
+                <Label>{t('Event type')}</Label>
                 <Select value={formEventPattern} onValueChange={setFormEventPattern}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
@@ -380,12 +384,12 @@ export default function VNextAutomationRules() {
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-primary">GIVEN</h3>
+              <h3 className="text-sm font-semibold text-primary">{t('GIVEN')}</h3>
               {formConditions.map((c, i) => (
                 <div key={i} className="flex items-center gap-2">
                   <Input
                     className="flex-[2] font-mono text-sm"
-                    placeholder="payload.delayMinutes"
+                    placeholder={t('payload.delayMinutes')}
                     value={c.field}
                     onChange={e => {
                       const arr = [...formConditions];
@@ -411,7 +415,7 @@ export default function VNextAutomationRules() {
                   {c.operator !== 'exists' && c.operator !== 'notExists' && (
                     <Input
                       className="flex-[2] font-mono text-sm"
-                      placeholder='60 or "critical" or ["a","b"]'
+                      placeholder={t('60 or "critical" or ["a","b"]')}
                       value={c.value}
                       onChange={e => {
                         const arr = [...formConditions];
@@ -436,62 +440,62 @@ export default function VNextAutomationRules() {
                 onClick={() => setFormConditions([...formConditions, { field: '', operator: 'equals', value: '' }])}
               >
                 <Plus className="h-4 w-4" />
-                Add condition
+                {t('Add condition')}
               </Button>
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-primary">THEN</h3>
+              <h3 className="text-sm font-semibold text-primary">{t('THEN')}</h3>
               <div className="grid gap-3 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>Action</Label>
+                  <Label>{t('Action')}</Label>
                   <Select value={formActionType} onValueChange={setFormActionType}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="create_issue">Create issue</SelectItem>
-                      <SelectItem value="escalate_issue">Escalate issue</SelectItem>
-                      {skillChains.length > 0 && <SelectItem value="skill_chain">Skill chain</SelectItem>}
+                      <SelectItem value="create_issue">{t('Create issue')}</SelectItem>
+                      <SelectItem value="escalate_issue">{t('Escalate issue')}</SelectItem>
+                      {skillChains.length > 0 && <SelectItem value="skill_chain">{t('Skill chain')}</SelectItem>}
                     </SelectContent>
                   </Select>
                 </div>
                 {formActionType === 'create_issue' && (
                   <>
                     <div className="space-y-2">
-                      <Label>Priority</Label>
+                      <Label>{t('Priority')}</Label>
                       <Select value={formIssuePriority} onValueChange={setFormIssuePriority}>
                         <SelectTrigger><SelectValue /></SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="low">Low</SelectItem>
-                          <SelectItem value="medium">Medium</SelectItem>
-                          <SelectItem value="high">High</SelectItem>
-                          <SelectItem value="critical">Critical</SelectItem>
+                          <SelectItem value="low">{t('Low')}</SelectItem>
+                          <SelectItem value="medium">{t('Medium')}</SelectItem>
+                          <SelectItem value="high">{t('High')}</SelectItem>
+                          <SelectItem value="critical">{t('Critical')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                     <div className="space-y-2">
-                      <Label>Category</Label>
+                      <Label>{t('Category')}</Label>
                       <Select value={formIssueCategory} onValueChange={setFormIssueCategory}>
                         <SelectTrigger><SelectValue /></SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="exception">Exception</SelectItem>
-                          <SelectItem value="delay">Delay</SelectItem>
-                          <SelectItem value="damage">Damage</SelectItem>
-                          <SelectItem value="compliance">Compliance</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
+                          <SelectItem value="exception">{t('Exception')}</SelectItem>
+                          <SelectItem value="delay">{t('Delay')}</SelectItem>
+                          <SelectItem value="damage">{t('Damage')}</SelectItem>
+                          <SelectItem value="compliance">{t('Compliance')}</SelectItem>
+                          <SelectItem value="other">{t('Other')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                     <div className="md:col-span-2 space-y-2">
-                      <Label>Issue title</Label>
-                      <Input placeholder="Leave blank to use rule name" value={formIssueTitle} onChange={e => setFormIssueTitle(e.target.value)} />
+                      <Label>{t('Issue title')}</Label>
+                      <Input placeholder={t('Leave blank to use rule name')} value={formIssueTitle} onChange={e => setFormIssueTitle(e.target.value)} />
                     </div>
                   </>
                 )}
                 {formActionType === 'skill_chain' && (
                   <div className="md:col-span-2 space-y-2">
-                    <Label>Skill chain</Label>
+                    <Label>{t('Skill chain')}</Label>
                     <Select value={formSkillChainId} onValueChange={setFormSkillChainId}>
-                      <SelectTrigger><SelectValue placeholder="Select a skill chain..." /></SelectTrigger>
+                      <SelectTrigger><SelectValue placeholder={t('Select a skill chain...')} /></SelectTrigger>
                       <SelectContent>
                         {skillChains.map(sc => (
                           <SelectItem key={sc.id} value={sc.id}>
@@ -502,7 +506,9 @@ export default function VNextAutomationRules() {
                     </Select>
                     {skillChains.length === 0 && (
                       <p className="text-xs text-warning">
-                        No skill chains created yet. Create one at Settings &gt; Skill Chains first.
+                        {t(
+                          'No skill chains created yet. Create one at Settings > Skill Chains first.'
+                        )}
                       </p>
                     )}
                   </div>
@@ -511,7 +517,7 @@ export default function VNextAutomationRules() {
             </div>
 
             <div className="space-y-2">
-              <Label>Rule priority ({formPriority})</Label>
+              <Label>{t('Rule priority (')}{formPriority})</Label>
               <input
                 type="range"
                 min="1"
@@ -520,14 +526,14 @@ export default function VNextAutomationRules() {
                 onChange={e => setFormPriority(parseInt(e.target.value, 10))}
                 className="w-full"
               />
-              <span className="text-xs text-muted-foreground">Lower number = higher priority. First matching rule executes.</span>
+              <span className="text-xs text-muted-foreground">{t('Lower number = higher priority. First matching rule executes.')}</span>
             </div>
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowCreate(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setShowCreate(false)}>{t('Cancel')}</Button>
             <Button variant="gradient" onClick={createRule} disabled={saving || !formName}>
-              {saving ? 'Creating...' : 'Create rule'}
+              {saving ? t('Creating...') : t('Create rule')}
             </Button>
           </DialogFooter>
         </DialogContent>

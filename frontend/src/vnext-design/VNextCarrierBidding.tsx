@@ -20,6 +20,8 @@ import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { keepMapSized, worldBoundsMapOptions, capWorldZoomOut, addBaseTileLayer } from '../lib/leafletMap';
 
+import { t as translate } from '@/i18n';
+
 type BadgeVariant = 'default' | 'secondary' | 'destructive' | 'outline' | 'success' | 'warning' | 'info' | 'muted';
 
 interface Bid {
@@ -181,7 +183,7 @@ export default function VNextCarrierBidding() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{translate('Loading...')}</h3>
       </div>
     );
   }
@@ -191,19 +193,19 @@ export default function VNextCarrierBidding() {
       <div className="space-y-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Carrier bidding</h1>
-            <p className="mt-1 text-sm text-muted-foreground">0 open bid requests</p>
+            <h1 className="text-3xl font-bold tracking-tight">{translate('Carrier bidding')}</h1>
+            <p className="mt-1 text-sm text-muted-foreground">{translate('0 open bid requests')}</p>
           </div>
           <Button variant="gradient">
             <Plus className="h-4 w-4" />
-            New bid request
+            {translate('New bid request')}
           </Button>
         </div>
         <Card>
           <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
             <Gavel className="h-12 w-12 opacity-50" />
-            <h3 className="text-lg font-medium">No tenders found</h3>
-            <p className="text-sm">Create a new bid request to get started</p>
+            <h3 className="text-lg font-medium">{translate('No tenders found')}</h3>
+            <p className="text-sm">{translate('Create a new bid request to get started')}</p>
           </div>
         </Card>
       </div>
@@ -226,14 +228,14 @@ export default function VNextCarrierBidding() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Carrier bidding</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{translate('Carrier bidding')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {lanes.filter(l => l.status === 'Open').length} open bid requests &middot; {lanes.reduce((s, l) => s + l.bids.length, 0)} total bids
+            {lanes.filter(l => l.status === 'Open').length} {translate('open bid requests ·')} {lanes.reduce((s, l) => s + l.bids.length, 0)} {translate('total bids')}
           </p>
         </div>
         <Button variant="gradient">
           <Plus className="h-4 w-4" />
-          New bid request
+          {translate('New bid request')}
         </Button>
       </div>
 
@@ -241,7 +243,7 @@ export default function VNextCarrierBidding() {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Bid requests</CardTitle>
+              <CardTitle>{translate('Bid requests')}</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
               <Separator />
@@ -271,8 +273,8 @@ export default function VNextCarrierBidding() {
                           </div>
                         </div>
                         <div className="shrink-0 text-right">
-                          <div className="text-xs text-muted-foreground">Target: ${lane.targetRate.toLocaleString()}</div>
-                          <div className="text-sm font-semibold">{lane.bids.length} bids</div>
+                          <div className="text-xs text-muted-foreground">{translate('Target: $')}{lane.targetRate.toLocaleString()}</div>
+                          <div className="text-sm font-semibold">{lane.bids.length} {translate('bids')}</div>
                         </div>
                         <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground" />
                       </button>
@@ -287,11 +289,11 @@ export default function VNextCarrierBidding() {
             <CardHeader>
               <div className="flex flex-wrap items-end justify-between gap-3">
                 <CardTitle>
-                  Bids for {selectedLane.origin} <ChevronRight className="inline h-3.5 w-3.5 text-muted-foreground" /> {selectedLane.dest}
+                  {translate('Bids for')} {selectedLane.origin} <ChevronRight className="inline h-3.5 w-3.5 text-muted-foreground" /> {selectedLane.dest}
                 </CardTitle>
                 <div className="flex gap-4 text-sm text-muted-foreground">
-                  <span>Target: <strong className="text-foreground">${selectedLane.targetRate.toLocaleString()}</strong></span>
-                  <span>Range: <strong className="text-foreground">${lowestBid.toLocaleString()} - ${highestBid.toLocaleString()}</strong></span>
+                  <span>{translate('Target:')} <strong className="text-foreground">${selectedLane.targetRate.toLocaleString()}</strong></span>
+                  <span>{translate('Range:')} <strong className="text-foreground">${lowestBid.toLocaleString()} - ${highestBid.toLocaleString()}</strong></span>
                 </div>
               </div>
             </CardHeader>
@@ -311,7 +313,7 @@ export default function VNextCarrierBidding() {
                     >
                       {i === 0 && bid.status === 'pending' && (
                         <div className="absolute left-4 top-0 -translate-y-1/2 rounded-md bg-success px-2 py-0.5 text-[10px] font-bold uppercase text-success-foreground">
-                          Best value
+                          {translate('Best value')}
                         </div>
                       )}
                       <div className="flex min-w-0 flex-1 items-center gap-3">
@@ -324,7 +326,7 @@ export default function VNextCarrierBidding() {
                             <BidStars rating={bid.rating} />
                           </div>
                           <div className="mt-1 text-xs text-muted-foreground">
-                            {bid.onTime}% on-time &middot; {bid.loads} loads YTD &middot; {bid.equipment}
+                            {bid.onTime}{translate('% on-time ·')} {bid.loads} {translate('loads YTD ·')} {bid.equipment}
                           </div>
                         </div>
                       </div>
@@ -332,15 +334,15 @@ export default function VNextCarrierBidding() {
                         <div className={cn('text-xl font-bold tracking-tight', underTarget ? 'text-success' : 'text-foreground')}>
                           ${bid.price.toLocaleString()}
                         </div>
-                        <div className="text-xs text-muted-foreground">{bid.transit} transit</div>
-                        <div className="text-[11px] text-muted-foreground">Submitted {bid.submitted}</div>
+                        <div className="text-xs text-muted-foreground">{bid.transit} {translate('transit')}</div>
+                        <div className="text-[11px] text-muted-foreground">{translate('Submitted')} {bid.submitted}</div>
                       </div>
                       <div className="flex items-center gap-2">
                         {bid.status === 'pending' ? (
                           <>
                             <Button size="sm" variant="default" className="bg-success text-success-foreground hover:bg-success/90">
                               <Check className="h-4 w-4" />
-                              Accept
+                              {translate('Accept')}
                             </Button>
                             <Button size="icon" variant="outline">
                               <X className="h-4 w-4" />
@@ -349,10 +351,10 @@ export default function VNextCarrierBidding() {
                         ) : bid.status === 'accepted' ? (
                           <Badge variant="success">
                             <Check className="mr-1 h-3.5 w-3.5" />
-                            Accepted
+                            {translate('Accepted')}
                           </Badge>
                         ) : (
-                          <Badge variant="secondary">Declined</Badge>
+                          <Badge variant="secondary">{translate('Declined')}</Badge>
                         )}
                       </div>
                     </div>
@@ -362,8 +364,8 @@ export default function VNextCarrierBidding() {
               {selectedLane.bids.length === 0 && (
                 <div className="flex flex-col items-center gap-2 py-12 text-muted-foreground">
                   <Gavel className="h-10 w-10 opacity-50" />
-                  <h3 className="text-base font-medium">No bids yet</h3>
-                  <p className="text-sm">Waiting for carrier responses</p>
+                  <h3 className="text-base font-medium">{translate('No bids yet')}</h3>
+                  <p className="text-sm">{translate('Waiting for carrier responses')}</p>
                 </div>
               )}
             </CardContent>
@@ -377,15 +379,15 @@ export default function VNextCarrierBidding() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Lane details</CardTitle>
+              <CardTitle>{translate('Lane details')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <InfoItem label="Customer">{selectedLane.customer}</InfoItem>
-              <InfoItem label="Mode">{selectedLane.mode}</InfoItem>
-              <InfoItem label="Weight">{selectedLane.weight}</InfoItem>
-              <InfoItem label="Pickup date">{selectedLane.pickup}</InfoItem>
-              <InfoItem label="Required delivery">{selectedLane.delivery}</InfoItem>
-              <InfoItem label="Target rate">
+              <InfoItem label={translate('Customer')}>{selectedLane.customer}</InfoItem>
+              <InfoItem label={translate('Mode')}>{selectedLane.mode}</InfoItem>
+              <InfoItem label={translate('Weight')}>{selectedLane.weight}</InfoItem>
+              <InfoItem label={translate('Pickup date')}>{selectedLane.pickup}</InfoItem>
+              <InfoItem label={translate('Required delivery')}>{selectedLane.delivery}</InfoItem>
+              <InfoItem label={translate('Target rate')}>
                 <span className="text-lg font-bold">${selectedLane.targetRate.toLocaleString()}</span>
               </InfoItem>
             </CardContent>
@@ -393,22 +395,22 @@ export default function VNextCarrierBidding() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Bid summary</CardTitle>
+              <CardTitle>{translate('Bid summary')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <InfoItem label="Total bids">
+              <InfoItem label={translate('Total bids')}>
                 <span className="font-semibold">{selectedLane.bids.length}</span>
               </InfoItem>
-              <InfoItem label="Lowest bid">
+              <InfoItem label={translate('Lowest bid')}>
                 <span className="font-semibold text-success">${lowestBid.toLocaleString()}</span>
               </InfoItem>
-              <InfoItem label="Highest bid">
+              <InfoItem label={translate('Highest bid')}>
                 <span className="font-semibold">${highestBid.toLocaleString()}</span>
               </InfoItem>
-              <InfoItem label="vs target">
+              <InfoItem label={translate('vs target')}>
                 <span className={cn('font-semibold', overTarget ? 'text-destructive' : 'text-success')}>
                   {overTarget ? '+' : '-'}${Math.abs(targetDiff).toLocaleString()}
-                  {' '}({overTarget ? 'over' : 'under'})
+                  {' '}({overTarget ? translate('over') : translate('under')})
                 </span>
               </InfoItem>
             </CardContent>

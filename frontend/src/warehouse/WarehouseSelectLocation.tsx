@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 export default function WarehouseSelectLocation() {
   const navigate = useNavigate();
   const [locations, setLocations] = useState<any[]>([]);
@@ -70,17 +72,17 @@ export default function WarehouseSelectLocation() {
       <div className="w-full max-w-md space-y-6">
         <div className="flex flex-col items-center text-center">
           <MapPin className="h-12 w-12 text-primary" />
-          <h2 className="mt-3 text-2xl font-bold tracking-tight">Select Your Location</h2>
+          <h2 className="mt-3 text-2xl font-bold tracking-tight">{t('Select Your Location')}</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Choose the warehouse or origin you are working from today.
+            {t('Choose the warehouse or origin you are working from today.')}
           </p>
         </div>
 
         {locations.length === 0 ? (
           <Card className="flex flex-col items-center gap-3 p-8 text-center">
             <MapPinOff className="h-10 w-10 text-muted-foreground" />
-            <p className="text-base font-semibold">No locations available</p>
-            <p className="text-sm text-muted-foreground">Ask your admin to set up locations first.</p>
+            <p className="text-base font-semibold">{t('No locations available')}</p>
+            <p className="text-sm text-muted-foreground">{t('Ask your admin to set up locations first.')}</p>
           </Card>
         ) : (
           <div className="space-y-3">
@@ -125,7 +127,7 @@ export default function WarehouseSelectLocation() {
           onClick={handleContinue}
         >
           {saving && <Loader2 className="h-4 w-4 animate-spin" />}
-          {saving ? 'Setting up...' : 'Continue'}
+          {saving ? t('Setting up...') : t('Continue')}
         </Button>
       </div>
     </div>

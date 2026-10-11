@@ -23,6 +23,8 @@ import {
   TableCell,
 } from '@/components/ui/table';
 
+import { t as translate } from '@/i18n';
+
 interface DocumentTemplate {
   id: string;
   name: string;
@@ -36,10 +38,10 @@ interface DocumentTemplate {
 }
 
 const DOCUMENT_TYPES = [
-  { value: 'bol', label: 'Bill of Lading' },
-  { value: 'label', label: 'Label' },
-  { value: 'customs', label: 'Customs' },
-  { value: 'daily_report', label: 'Daily Report' },
+  { value: 'bol', label: translate('Bill of Lading') },
+  { value: 'label', label: translate('Label') },
+  { value: 'customs', label: translate('Customs') },
+  { value: 'daily_report', label: translate('Daily Report') },
 ];
 
 const typeLabel = (t: string) => DOCUMENT_TYPES.find(d => d.value === t)?.label || t;
@@ -63,7 +65,7 @@ function Banner({ variant, message, onClose }: { variant: 'success' | 'error'; m
     <div className={`flex items-start justify-between gap-3 rounded-md border p-3 text-sm ${tone}`}>
       <span>{message}</span>
       {onClose && (
-        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">Dismiss</button>
+        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">{translate('Dismiss')}</button>
       )}
     </div>
   );
@@ -172,7 +174,7 @@ export default function VNextDocumentTemplates() {
   }
 
   async function deleteTemplate(id: string) {
-    if (!confirm('Are you sure you want to delete this template?')) return;
+    if (!confirm(translate('Are you sure you want to delete this template?'))) return;
     setError('');
     setSuccess('');
     try {
@@ -199,23 +201,23 @@ export default function VNextDocumentTemplates() {
   }
 
   const stats = [
-    { label: 'Total templates', value: templates.length, icon: FileText, tone: 'bg-primary/10 text-primary' },
-    { label: 'Active', value: templates.filter(t => t.active).length, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
-    { label: 'Default', value: templates.filter(t => t.isDefault).length, icon: Star, tone: 'bg-info/15 text-info' },
+    { label: translate('Total templates'), value: templates.length, icon: FileText, tone: 'bg-primary/10 text-primary' },
+    { label: translate('Active'), value: templates.filter(t => t.active).length, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
+    { label: translate('Default'), value: templates.filter(t => t.isDefault).length, icon: Star, tone: 'bg-info/15 text-info' },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Document templates</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{translate('Document templates')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Manage templates for BOLs, labels, customs forms, and reports
+            {translate('Manage templates for BOLs, labels, customs forms, and reports')}
           </p>
         </div>
         <Button variant="gradient" onClick={openCreate}>
           <Plus className="h-4 w-4" />
-          New template
+          {translate('New template')}
         </Button>
       </div>
 
@@ -244,16 +246,16 @@ export default function VNextDocumentTemplates() {
       {showForm && (
         <Card>
           <CardHeader>
-            <CardTitle>{editing ? 'Edit template' : 'Create template'}</CardTitle>
+            <CardTitle>{editing ? translate('Edit template') : translate('Create template')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>Name *</Label>
-                <Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Template name" />
+                <Label>{translate('Name *')}</Label>
+                <Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder={translate('Template name')} />
               </div>
               <div className="space-y-2">
-                <Label>Document type</Label>
+                <Label>{translate('Document type')}</Label>
                 <Select value={form.documentType} onValueChange={v => setForm(f => ({ ...f, documentType: v }))}>
                   <SelectTrigger>
                     <SelectValue />
@@ -268,29 +270,29 @@ export default function VNextDocumentTemplates() {
             </div>
 
             <div className="space-y-2">
-              <Label>Description</Label>
+              <Label>{translate('Description')}</Label>
               <textarea
                 value={form.description}
                 onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-                placeholder="Brief description of this template"
+                placeholder={translate('Brief description of this template')}
                 rows={2}
                 className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               />
             </div>
 
             <div className="space-y-2">
-              <Label>HTML template</Label>
+              <Label>{translate('HTML template')}</Label>
               <textarea
                 value={form.htmlTemplate}
                 onChange={e => setForm(f => ({ ...f, htmlTemplate: e.target.value }))}
-                placeholder="<html>...</html>"
+                placeholder={translate('<html>...</html>')}
                 rows={10}
                 className="flex w-full rounded-md border border-input bg-background px-3 py-2 font-mono text-xs ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               />
             </div>
 
             <div className="space-y-2">
-              <Label>Config (JSON)</Label>
+              <Label>{translate('Config (JSON)')}</Label>
               <textarea
                 value={form.config}
                 onChange={e => setForm(f => ({ ...f, config: e.target.value }))}
@@ -308,7 +310,7 @@ export default function VNextDocumentTemplates() {
                   onChange={e => setForm(f => ({ ...f, isDefault: e.target.checked }))}
                   className="h-4 w-4 rounded border border-input bg-background accent-primary"
                 />
-                Default template
+                {translate('Default template')}
               </label>
               <label className="flex cursor-pointer items-center gap-2 text-sm">
                 <input
@@ -317,15 +319,15 @@ export default function VNextDocumentTemplates() {
                   onChange={e => setForm(f => ({ ...f, active: e.target.checked }))}
                   className="h-4 w-4 rounded border border-input bg-background accent-primary"
                 />
-                Active
+                {translate('Active')}
               </label>
             </div>
 
             <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={cancelForm}>Cancel</Button>
+              <Button variant="outline" onClick={cancelForm}>{translate('Cancel')}</Button>
               <Button variant="gradient" onClick={saveTemplate} disabled={saving}>
                 <Save className="h-4 w-4" />
-                {saving ? 'Saving...' : editing ? 'Update template' : 'Create template'}
+                {saving ? translate('Saving...') : editing ? 'Update template' : 'Create template'}
               </Button>
             </div>
           </CardContent>
@@ -334,26 +336,26 @@ export default function VNextDocumentTemplates() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Templates</CardTitle>
+          <CardTitle>{translate('Templates')}</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           {templates.length === 0 ? (
             <div className="flex flex-col items-center gap-2 py-12 text-center text-muted-foreground">
               <FileText className="h-8 w-8" />
-              <h3 className="text-base font-medium">No document templates</h3>
-              <p className="text-sm">Create your first template to get started.</p>
+              <h3 className="text-base font-medium">{translate('No document templates')}</h3>
+              <p className="text-sm">{translate('Create your first template to get started.')}</p>
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Description</TableHead>
-                  <TableHead>Default</TableHead>
-                  <TableHead>Active</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead className="w-32">Actions</TableHead>
+                  <TableHead>{translate('Name')}</TableHead>
+                  <TableHead>{translate('Type')}</TableHead>
+                  <TableHead>{translate('Description')}</TableHead>
+                  <TableHead>{translate('Default')}</TableHead>
+                  <TableHead>{translate('Active')}</TableHead>
+                  <TableHead>{translate('Created')}</TableHead>
+                  <TableHead className="w-32">{translate('Actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -366,7 +368,7 @@ export default function VNextDocumentTemplates() {
                       {t.isDefault && <CheckCircle2 className="h-4 w-4 text-primary" />}
                     </TableCell>
                     <TableCell>
-                      <Badge variant={t.active ? 'success' : 'destructive'}>{t.active ? 'Active' : 'Inactive'}</Badge>
+                      <Badge variant={t.active ? 'success' : 'destructive'}>{t.active ? translate('Active') : translate('Inactive')}</Badge>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
                       {t.createdAt ? new Date(t.createdAt).toLocaleDateString() : ''}

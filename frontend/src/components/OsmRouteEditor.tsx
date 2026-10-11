@@ -24,6 +24,8 @@ import {
 import { encodePolyline, decodePolyline, pathLengthMetres, type LatLng } from '../maps/polyline';
 import { Button } from '@/components/ui/button';
 
+import { t } from '@/i18n';
+
 const ROUTE_COLOUR = '#3b82f6';
 
 export interface OsmRouteEditorProps {
@@ -169,7 +171,7 @@ export default function OsmRouteEditor({
         className="flex items-center justify-center rounded-lg border border-border bg-card p-6 text-sm text-muted-foreground"
         style={{ height: typeof height === 'number' ? height : undefined, minHeight: 200 }}
       >
-        Pick an origin and a destination to plan the route.
+        {t('Pick an origin and a destination to plan the route.')}
       </div>
     );
   }
@@ -180,8 +182,9 @@ export default function OsmRouteEditor({
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="flex items-start gap-2 text-xs text-muted-foreground">
             <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-            Click the map to bend the route. Without a Google Maps key it follows the points you
-            place rather than the road network, and distance is measured along that line.
+            {t(
+              'Click the map to bend the route. Without a Google Maps key it follows the points you\n            place rather than the road network, and distance is measured along that line.'
+            )}
           </p>
           <div className="flex gap-2">
             <Button
@@ -191,7 +194,7 @@ export default function OsmRouteEditor({
               disabled={corners.length === 0}
             >
               <Undo2 className="h-4 w-4" />
-              Undo point
+              {t('Undo point')}
             </Button>
             <Button
               variant="outline"
@@ -200,7 +203,7 @@ export default function OsmRouteEditor({
               disabled={corners.length === 0}
             >
               <Trash2 className="h-4 w-4" />
-              Straighten
+              {t('Straighten')}
             </Button>
           </div>
         </div>

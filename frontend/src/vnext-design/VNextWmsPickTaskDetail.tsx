@@ -25,6 +25,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface PickLineDetail {
   id: string;
   orderId: string;
@@ -135,7 +137,7 @@ export default function VNextWmsPickTaskDetail() {
     return (
       <div className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
         <CircleAlert className="h-5 w-5" />
-        {error || 'Not found'}
+        {error || t('Not found')}
       </div>
     );
   }
@@ -147,19 +149,19 @@ export default function VNextWmsPickTaskDetail() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/wms/picking" className="hover:text-foreground">
-          <ArrowLeft className="inline h-4 w-4" /> Picking
+          <ArrowLeft className="inline h-4 w-4" /> {t('Picking')}
         </Link>
         <ChevronRight className="h-3 w-3" />
         <span>{task.id.slice(0, 8)}</span>
       </div>
 
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Pick Task</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Pick Task')}</h1>
         <div className="mt-2 flex flex-wrap items-center gap-2">
           <span className="font-mono text-sm font-semibold">{task.id.slice(0, 8)}</span>
           <Badge variant={statusVariant(task.status)}>{formatStatus(task.status)}</Badge>
           <Badge variant="default">{formatStatus(task.pickType)}</Badge>
-          {task.wave && <span className="text-sm text-muted-foreground">Wave: {task.wave.waveNumber}</span>}
+          {task.wave && <span className="text-sm text-muted-foreground">{t('Wave:')} {task.wave.waveNumber}</span>}
         </div>
       </div>
 
@@ -173,8 +175,8 @@ export default function VNextWmsPickTaskDetail() {
       <Card>
         <CardContent className="p-5">
           <div className="mb-2 flex justify-between text-sm">
-            <span className="font-semibold">Progress</span>
-            <span className="text-muted-foreground">{task.completedLines}/{task.totalLines} lines</span>
+            <span className="font-semibold">{t('Progress')}</span>
+            <span className="text-muted-foreground">{task.completedLines}/{task.totalLines} {t('lines')}</span>
           </div>
           <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
             <div
@@ -188,32 +190,32 @@ export default function VNextWmsPickTaskDetail() {
       {isActive && nextLine && (
         <Card className="border-l-4 border-l-primary">
           <CardHeader>
-            <CardTitle>Next Pick</CardTitle>
+            <CardTitle>{t('Next Pick')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap items-center gap-8">
               <div>
-                <div className="text-xs text-muted-foreground">Bin</div>
+                <div className="text-xs text-muted-foreground">{t('Bin')}</div>
                 <div className="text-2xl font-bold text-primary">{nextLine.bin.label}</div>
                 <div className="text-xs text-muted-foreground">{nextLine.bin.zone.name}</div>
               </div>
               <div>
-                <div className="text-xs text-muted-foreground">SKU</div>
+                <div className="text-xs text-muted-foreground">{t('SKU')}</div>
                 <div className="text-lg font-semibold">{nextLine.sku}</div>
               </div>
               <div>
-                <div className="text-xs text-muted-foreground">Qty</div>
+                <div className="text-xs text-muted-foreground">{t('Qty')}</div>
                 <div className="text-lg font-semibold">{nextLine.requestedQuantity} {nextLine.uomCode}</div>
               </div>
               {nextLine.lotNumber && (
                 <div>
-                  <div className="text-xs text-muted-foreground">Lot</div>
+                  <div className="text-xs text-muted-foreground">{t('Lot')}</div>
                   <div>{nextLine.lotNumber}</div>
                 </div>
               )}
               <Button variant="gradient" onClick={() => startPick(nextLine)}>
                 <Check className="h-4 w-4" />
-                Confirm Pick
+                {t('Confirm Pick')}
               </Button>
             </div>
           </CardContent>
@@ -223,12 +225,12 @@ export default function VNextWmsPickTaskDetail() {
       {pickingLineId && (
         <Card className="border-l-4 border-l-success">
           <CardHeader>
-            <CardTitle>Record Pick</CardTitle>
+            <CardTitle>{t('Record Pick')}</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handlePick} className="flex flex-wrap items-end gap-3">
               <div className="w-32 space-y-2">
-                <Label>Picked Qty</Label>
+                <Label>{t('Picked Qty')}</Label>
                 <Input
                   type="number"
                   min="0"
@@ -240,20 +242,20 @@ export default function VNextWmsPickTaskDetail() {
               </div>
               {parseInt(pickForm.pickedQuantity) < (task.pickLines.find(l => l.id === pickingLineId)?.requestedQuantity ?? 0) && (
                 <div className="w-44 space-y-2">
-                  <Label>Short Pick Action</Label>
+                  <Label>{t('Short Pick Action')}</Label>
                   <Select value={pickForm.shortPickAction} onValueChange={v => setPickForm({ ...pickForm, shortPickAction: v })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="backorder">Backorder</SelectItem>
-                      <SelectItem value="cancel_line">Cancel Line</SelectItem>
+                      <SelectItem value="backorder">{t('Backorder')}</SelectItem>
+                      <SelectItem value="cancel_line">{t('Cancel Line')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               )}
-              <Button variant="gradient" type="submit" disabled={picking}>{picking ? 'Saving...' : 'Confirm'}</Button>
-              <Button variant="outline" type="button" onClick={() => setPickingLineId(null)}>Cancel</Button>
+              <Button variant="gradient" type="submit" disabled={picking}>{picking ? t('Saving...') : t('Confirm')}</Button>
+              <Button variant="outline" type="button" onClick={() => setPickingLineId(null)}>{t('Cancel')}</Button>
             </form>
           </CardContent>
         </Card>
@@ -261,20 +263,20 @@ export default function VNextWmsPickTaskDetail() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Pick Lines (walk order)</CardTitle>
+          <CardTitle>{t('Pick Lines (walk order)')}</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Seq</TableHead>
-                <TableHead>Bin</TableHead>
-                <TableHead>Zone</TableHead>
-                <TableHead>SKU</TableHead>
-                <TableHead>Requested</TableHead>
-                <TableHead>Picked</TableHead>
-                <TableHead>Lot</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{t('Seq')}</TableHead>
+                <TableHead>{t('Bin')}</TableHead>
+                <TableHead>{t('Zone')}</TableHead>
+                <TableHead>{t('SKU')}</TableHead>
+                <TableHead>{t('Requested')}</TableHead>
+                <TableHead>{t('Picked')}</TableHead>
+                <TableHead>{t('Lot')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
                 {isActive && <TableHead></TableHead>}
               </TableRow>
             </TableHeader>
@@ -302,7 +304,7 @@ export default function VNextWmsPickTaskDetail() {
                     <TableCell>
                       {line.status === 'pending' && (
                         <Button variant="outline" size="sm" onClick={() => startPick(line)}>
-                          Pick
+                          {t('Pick')}
                         </Button>
                       )}
                     </TableCell>

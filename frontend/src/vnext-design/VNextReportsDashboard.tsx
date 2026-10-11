@@ -22,6 +22,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface DashboardData {
   periodLabel: string;
   dateFrom: string;
@@ -193,7 +195,7 @@ export default function VNextReportsDashboard() {
   if (error || !data) {
     return (
       <div className="rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-        {error || 'Failed to load dashboard'}
+        {error || t('Failed to load dashboard')}
       </div>
     );
   }
@@ -209,16 +211,16 @@ export default function VNextReportsDashboard() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Executive Dashboard</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Executive Dashboard')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">{data.periodLabel}</p>
         </div>
         <Tabs value={period} onValueChange={v => setPeriod(v as Period)}>
           <TabsList>
-            <TabsTrigger value="7d">7 Days</TabsTrigger>
-            <TabsTrigger value="30d">30 Days</TabsTrigger>
-            <TabsTrigger value="mtd">MTD</TabsTrigger>
-            <TabsTrigger value="qtd">QTD</TabsTrigger>
-            <TabsTrigger value="ytd">YTD</TabsTrigger>
+            <TabsTrigger value="7d">{t('7 Days')}</TabsTrigger>
+            <TabsTrigger value="30d">{t('30 Days')}</TabsTrigger>
+            <TabsTrigger value="mtd">{t('MTD')}</TabsTrigger>
+            <TabsTrigger value="qtd">{t('QTD')}</TabsTrigger>
+            <TabsTrigger value="ytd">{t('YTD')}</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>
@@ -229,26 +231,26 @@ export default function VNextReportsDashboard() {
           Icon={Truck}
           iconClass="bg-primary/10 text-primary"
           value={shipments.total}
-          label="Total Shipments"
+          label={t('Total Shipments')}
           trend={shipTrend}
         />
         <StatCard
           Icon={Plane}
           iconClass="bg-info/15 text-info"
           value={shipments.inTransit}
-          label="In Transit"
+          label={t('In Transit')}
         />
         <StatCard
           Icon={Warehouse}
           iconClass="bg-warning/15 text-warning"
           value={shipments.atLocations}
-          label="At Locations"
+          label={t('At Locations')}
         />
         <StatCard
           Icon={CheckCircle2}
           iconClass="bg-success/15 text-success"
           value={shipments.complete}
-          label="Delivered"
+          label={t('Delivered')}
         />
       </div>
 
@@ -258,21 +260,21 @@ export default function VNextReportsDashboard() {
           Icon={ScrollText}
           iconClass="bg-primary/10 text-primary"
           value={orders.total}
-          label="Total Orders"
+          label={t('Total Orders')}
           trend={orderTrend}
         />
         <StatCard
           Icon={TrendingUp}
           iconClass="bg-success/15 text-success"
           value={formatCents(financial.totalRevenueCents)}
-          label="Revenue"
+          label={t('Revenue')}
           trend={revTrend}
         />
         <StatCard
           Icon={CreditCard}
           iconClass="bg-destructive/10 text-destructive"
           value={formatCents(financial.totalCostCents)}
-          label="Cost Spent"
+          label={t('Cost Spent')}
         />
         <StatCard
           Icon={TrendingUp}
@@ -285,7 +287,7 @@ export default function VNextReportsDashboard() {
               <span className="text-sm font-normal">({financial.marginPercent}%)</span>
             </>
           }
-          label="Margin"
+          label={t('Margin')}
           trend={marginTrend}
         />
       </div>
@@ -296,21 +298,21 @@ export default function VNextReportsDashboard() {
           Icon={Receipt}
           iconClass="bg-info/15 text-info"
           value={invoices.outstanding}
-          label="Outstanding Invoices"
+          label={t('Outstanding Invoices')}
           subtext={formatCents(invoices.totalBalanceCents)}
         />
         <StatCard
           Icon={Clock}
           iconClass="bg-destructive/10 text-destructive"
           value={invoices.overdueCount}
-          label="Overdue"
+          label={t('Overdue')}
           subtext={<span className="text-destructive">{formatCents(invoices.overdueBalanceCents)}</span>}
         />
         <StatCard
           Icon={Bug}
           iconClass="bg-warning/15 text-warning"
           value={issues.open + issues.inProgress}
-          label="Active Issues"
+          label={t('Active Issues')}
           subtext={`${issues.open} open, ${issues.inProgress} in progress`}
         />
         <StatCard
@@ -319,7 +321,7 @@ export default function VNextReportsDashboard() {
             issues.critical > 0 ? 'bg-destructive/10 text-destructive' : 'bg-success/15 text-success',
           )}
           value={issues.critical}
-          label="Critical Issues"
+          label={t('Critical Issues')}
         />
       </div>
 
@@ -327,29 +329,29 @@ export default function VNextReportsDashboard() {
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Shipment Status</CardTitle>
+            <CardTitle className="text-base">{t('Shipment Status')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <StatusBar label="Draft" count={shipments.byStatus['draft'] || 0} total={shipments.total} colorClass="bg-muted-foreground" />
-            <StatusBar label="Booked" count={shipments.byStatus['booked'] || 0} total={shipments.total} colorClass="bg-info" />
-            <StatusBar label="In Transit" count={shipments.byStatus['in_transit'] || 0} total={shipments.total} colorClass="bg-primary" />
-            <StatusBar label="At Pickup" count={shipments.byStatus['at_pickup'] || 0} total={shipments.total} colorClass="bg-warning" />
-            <StatusBar label="At Delivery" count={shipments.byStatus['at_delivery'] || 0} total={shipments.total} colorClass="bg-warning" />
-            <StatusBar label="Delivered" count={shipments.byStatus['delivered'] || 0} total={shipments.total} colorClass="bg-success" />
-            <StatusBar label="Exception" count={shipments.byStatus['exception'] || 0} total={shipments.total} colorClass="bg-destructive" />
+            <StatusBar label={t('Draft')} count={shipments.byStatus['draft'] || 0} total={shipments.total} colorClass="bg-muted-foreground" />
+            <StatusBar label={t('Booked')} count={shipments.byStatus['booked'] || 0} total={shipments.total} colorClass="bg-info" />
+            <StatusBar label={t('In Transit')} count={shipments.byStatus['in_transit'] || 0} total={shipments.total} colorClass="bg-primary" />
+            <StatusBar label={t('At Pickup')} count={shipments.byStatus['at_pickup'] || 0} total={shipments.total} colorClass="bg-warning" />
+            <StatusBar label={t('At Delivery')} count={shipments.byStatus['at_delivery'] || 0} total={shipments.total} colorClass="bg-warning" />
+            <StatusBar label={t('Delivered')} count={shipments.byStatus['delivered'] || 0} total={shipments.total} colorClass="bg-success" />
+            <StatusBar label={t('Exception')} count={shipments.byStatus['exception'] || 0} total={shipments.total} colorClass="bg-destructive" />
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Order Delivery Status</CardTitle>
+            <CardTitle className="text-base">{t('Order Delivery Status')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <StatusBar label="Unassigned" count={orders.byDeliveryStatus['unassigned'] || 0} total={orders.total} colorClass="bg-muted-foreground" />
-            <StatusBar label="Assigned" count={orders.byDeliveryStatus['assigned'] || 0} total={orders.total} colorClass="bg-info" />
-            <StatusBar label="In Transit" count={orders.byDeliveryStatus['in_transit'] || 0} total={orders.total} colorClass="bg-primary" />
-            <StatusBar label="Delivered" count={orders.byDeliveryStatus['delivered'] || 0} total={orders.total} colorClass="bg-success" />
-            <StatusBar label="Exception" count={orders.byDeliveryStatus['exception'] || 0} total={orders.total} colorClass="bg-destructive" />
+            <StatusBar label={t('Unassigned')} count={orders.byDeliveryStatus['unassigned'] || 0} total={orders.total} colorClass="bg-muted-foreground" />
+            <StatusBar label={t('Assigned')} count={orders.byDeliveryStatus['assigned'] || 0} total={orders.total} colorClass="bg-info" />
+            <StatusBar label={t('In Transit')} count={orders.byDeliveryStatus['in_transit'] || 0} total={orders.total} colorClass="bg-primary" />
+            <StatusBar label={t('Delivered')} count={orders.byDeliveryStatus['delivered'] || 0} total={orders.total} colorClass="bg-success" />
+            <StatusBar label={t('Exception')} count={orders.byDeliveryStatus['exception'] || 0} total={orders.total} colorClass="bg-destructive" />
           </CardContent>
         </Card>
       </div>
@@ -357,21 +359,21 @@ export default function VNextReportsDashboard() {
       {/* Billing Pipeline */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Billing Pipeline</CardTitle>
+          <CardTitle className="text-base">{t('Billing Pipeline')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-4">
             <div className="rounded-md bg-muted/30 p-4 text-center">
               <div className="text-3xl font-bold tracking-tight text-warning">{financial.notInvoiced}</div>
-              <div className="mt-1 text-sm text-muted-foreground">Not Invoiced</div>
+              <div className="mt-1 text-sm text-muted-foreground">{t('Not Invoiced')}</div>
             </div>
             <div className="rounded-md bg-muted/30 p-4 text-center">
               <div className="text-3xl font-bold tracking-tight text-info">{financial.invoiced}</div>
-              <div className="mt-1 text-sm text-muted-foreground">Invoiced</div>
+              <div className="mt-1 text-sm text-muted-foreground">{t('Invoiced')}</div>
             </div>
             <div className="rounded-md bg-muted/30 p-4 text-center">
               <div className="text-3xl font-bold tracking-tight text-success">{financial.paid}</div>
-              <div className="mt-1 text-sm text-muted-foreground">Paid</div>
+              <div className="mt-1 text-sm text-muted-foreground">{t('Paid')}</div>
             </div>
           </div>
         </CardContent>

@@ -17,6 +17,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface Wave {
   id: string;
   waveNumber: string;
@@ -80,18 +82,18 @@ export default function VNextWmsWaves() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Waves</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Group orders into pick waves for efficient fulfillment</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Waves')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Group orders into pick waves for efficient fulfillment')}</p>
         </div>
         <div className="flex gap-2">
           <FacilitySelect facilities={facilities} value={facilityId} onChange={setFacilityId} loading={facilitiesLoading} error={facilitiesError} className="w-[220px]" />
           <Button variant="outline" onClick={() => navigate('/wms/waves/templates')}>
             <FileText className="h-4 w-4" />
-            Templates
+            {t('Templates')}
           </Button>
           <Button variant="gradient" onClick={() => navigate('/wms/waves/create')}>
             <Plus className="h-4 w-4" />
-            Create Wave
+            {t('Create Wave')}
           </Button>
         </div>
       </div>
@@ -104,12 +106,14 @@ export default function VNextWmsWaves() {
         <Card>
           <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
             <Waves className="h-12 w-12 text-muted-foreground" />
-            <h3 className="text-base font-medium">No waves created</h3>
+            <h3 className="text-base font-medium">{t('No waves created')}</h3>
             <p className="text-sm text-muted-foreground">
-              Waves group orders for efficient picking. Create wave templates to automate grouping by carrier, cutoff time, or service level.
+              {t(
+                'Waves group orders for efficient picking. Create wave templates to automate grouping by carrier, cutoff time, or service level.'
+              )}
             </p>
             <Button variant="gradient" onClick={() => navigate('/wms/waves/create')}>
-              Create First Wave
+              {t('Create First Wave')}
             </Button>
           </CardContent>
         </Card>
@@ -118,13 +122,13 @@ export default function VNextWmsWaves() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Wave #</TableHead>
-                <TableHead>Strategy</TableHead>
-                <TableHead>Orders</TableHead>
-                <TableHead>Lines</TableHead>
-                <TableHead>Cutoff</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Created</TableHead>
+                <TableHead>{t('Wave #')}</TableHead>
+                <TableHead>{t('Strategy')}</TableHead>
+                <TableHead>{t('Orders')}</TableHead>
+                <TableHead>{t('Lines')}</TableHead>
+                <TableHead>{t('Cutoff')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead>{t('Created')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

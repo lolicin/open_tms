@@ -12,11 +12,13 @@ import {
   type CarrierSessionUser,
 } from './pages/carrier-portal/carrierSession';
 
+import { t } from '@/i18n';
+
 const NAV: { to: string; label: string; end?: boolean }[] = [
-  { to: '/carrier-portal', label: 'Dashboard', end: true },
-  { to: '/carrier-portal/history', label: 'Tender History' },
-  { to: '/carrier-portal/bids', label: 'Bid History' },
-  { to: '/carrier-portal/profile', label: 'Profile' },
+  { to: '/carrier-portal', label: t('Dashboard'), end: true },
+  { to: '/carrier-portal/history', label: t('Tender History') },
+  { to: '/carrier-portal/bids', label: t('Bid History') },
+  { to: '/carrier-portal/profile', label: t('Profile') },
 ];
 
 export function CarrierPortalLayout() {
@@ -43,7 +45,7 @@ export function CarrierPortalLayout() {
     <div className="min-h-screen bg-background text-foreground font-sans">
       <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b border-border bg-background/80 px-4 backdrop-blur md:px-6">
         <div className="flex items-center gap-3">
-          <Logo size="sm" wordmark={<>Carrier <span className="text-primary">Portal</span></>} />
+          <Logo size="sm" wordmark={<>{t('Carrier')} <span className="text-primary">{t('Portal')}</span></>} />
           {user.carrierName && (
             <>
               <Separator orientation="vertical" className="h-5" />
@@ -76,7 +78,7 @@ export function CarrierPortalLayout() {
           )}
           <Button variant="outline" size="sm" onClick={handleLogout}>
             <LogOut className="h-4 w-4" />
-            Logout
+            {t('Logout')}
           </Button>
         </nav>
       </header>

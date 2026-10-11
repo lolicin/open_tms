@@ -24,6 +24,8 @@ import {
   DialogFooter,
 } from '@/components/ui/dialog';
 
+import { t } from '@/i18n';
+
 interface InternalUser {
   id: string;
   email: string;
@@ -114,9 +116,9 @@ export default function VNextUsers() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Internal users</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Internal users')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Manage TMS staff accounts. Reset a password when a user is locked out.
+            {t('Manage TMS staff accounts. Reset a password when a user is locked out.')}
           </p>
         </div>
       </div>
@@ -134,12 +136,12 @@ export default function VNextUsers() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Roles</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Last login</TableHead>
-                  <TableHead className="w-56">Actions</TableHead>
+                  <TableHead>{t('Name')}</TableHead>
+                  <TableHead>{t('Email')}</TableHead>
+                  <TableHead>{t('Roles')}</TableHead>
+                  <TableHead>{t('Status')}</TableHead>
+                  <TableHead>{t('Last login')}</TableHead>
+                  <TableHead className="w-56">{t('Actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -149,7 +151,7 @@ export default function VNextUsers() {
                     <TableCell className="text-muted-foreground">{u.email}</TableCell>
                     <TableCell>
                       {u.roles.length === 0 ? (
-                        <span className="text-sm text-muted-foreground">No roles</span>
+                        <span className="text-sm text-muted-foreground">{t('No roles')}</span>
                       ) : (
                         <div className="flex flex-wrap gap-1">
                           {u.roles.map(r => (
@@ -160,7 +162,7 @@ export default function VNextUsers() {
                     </TableCell>
                     <TableCell>
                       <Badge variant={u.active ? 'success' : 'secondary'}>
-                        {u.active ? 'Active' : 'Disabled'}
+                        {u.active ? t('Active') : t('Disabled')}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
@@ -170,11 +172,11 @@ export default function VNextUsers() {
                       <div className="flex gap-2">
                         <Button variant="outline" size="sm" onClick={() => setResetTarget(u)}>
                           <KeyRound className="h-3 w-3" />
-                          Reset password
+                          {t('Reset password')}
                         </Button>
                         <Button variant="outline" size="sm" onClick={() => toggleActive(u)}>
                           <Power className="h-3 w-3" />
-                          {u.active ? 'Deactivate' : 'Reactivate'}
+                          {u.active ? t('Deactivate') : t('Reactivate')}
                         </Button>
                       </div>
                     </TableCell>
@@ -182,7 +184,7 @@ export default function VNextUsers() {
                 ))}
                 {users.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center text-sm text-muted-foreground">No users.</TableCell>
+                    <TableCell colSpan={6} className="text-center text-sm text-muted-foreground">{t('No users.')}</TableCell>
                   </TableRow>
                 )}
               </TableBody>
@@ -194,26 +196,28 @@ export default function VNextUsers() {
       <Dialog open={!!resetTarget} onOpenChange={open => !open && setResetTarget(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Reset password for {resetTarget?.email}</DialogTitle>
+            <DialogTitle>{t('Reset password for')} {resetTarget?.email}</DialogTitle>
             <DialogDescription>
-              Choose a temporary password. Share it with the user via a secure channel; they can change it after signing in.
+              {t(
+                'Choose a temporary password. Share it with the user via a secure channel; they can change it after signing in.'
+              )}
             </DialogDescription>
           </DialogHeader>
           {resetError && <Banner variant="error" message={resetError} />}
           <div className="space-y-2">
-            <Label>New password</Label>
+            <Label>{t('New password')}</Label>
             <Input
               type="text"
               value={newPassword}
               onChange={e => setNewPassword(e.target.value)}
-              placeholder="At least 8 chars, upper/lower/number"
+              placeholder={t('At least 8 chars, upper/lower/number')}
               autoFocus
             />
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setResetTarget(null)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setResetTarget(null)}>{t('Cancel')}</Button>
             <Button variant="gradient" onClick={doReset} disabled={resetBusy || newPassword.length < 8}>
-              {resetBusy ? 'Resetting...' : 'Reset password'}
+              {resetBusy ? t('Resetting...') : t('Reset password')}
             </Button>
           </DialogFooter>
         </DialogContent>

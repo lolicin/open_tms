@@ -26,6 +26,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface Order {
   id: string; orderNumber: string; poNumber?: string; status: string;
   deliveryStatus: string; customerName: string; serviceLevel?: string;
@@ -68,18 +70,18 @@ export default function CustomerOrders() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Orders')}</h1>
         <div className="flex items-center gap-2">
           <Button variant="outline" asChild>
             <Link to="/customer-portal/orders/import">
               <Upload className="h-4 w-4" />
-              Bulk upload
+              {t('Bulk upload')}
             </Link>
           </Button>
           <Button variant="gradient" asChild>
             <Link to="/customer-portal/orders/create">
               <Plus className="h-4 w-4" />
-              New order
+              {t('New order')}
             </Link>
           </Button>
         </div>
@@ -90,7 +92,7 @@ export default function CustomerOrders() {
           <div className="relative min-w-[280px] flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search by order or PO number..."
+              placeholder={t('Search by order or PO number...')}
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="pl-9"
@@ -101,12 +103,12 @@ export default function CustomerOrders() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All statuses</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="validated">Validated</SelectItem>
-              <SelectItem value="assigned">Assigned</SelectItem>
-              <SelectItem value="delivered">Delivered</SelectItem>
-              <SelectItem value="exception">Exception</SelectItem>
+              <SelectItem value="all">{t('All statuses')}</SelectItem>
+              <SelectItem value="pending">{t('Pending')}</SelectItem>
+              <SelectItem value="validated">{t('Validated')}</SelectItem>
+              <SelectItem value="assigned">{t('Assigned')}</SelectItem>
+              <SelectItem value="delivered">{t('Delivered')}</SelectItem>
+              <SelectItem value="exception">{t('Exception')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -116,19 +118,19 @@ export default function CustomerOrders() {
         {loading ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <Loader2 className="h-6 w-6 animate-spin" />
-            <span className="text-sm">Loading orders...</span>
+            <span className="text-sm">{t('Loading orders...')}</span>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Order</TableHead>
-                <TableHead>PO</TableHead>
-                <TableHead>Route</TableHead>
-                <TableHead>Service</TableHead>
-                <TableHead>Items</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Delivery</TableHead>
+                <TableHead>{t('Order')}</TableHead>
+                <TableHead>{t('PO')}</TableHead>
+                <TableHead>{t('Route')}</TableHead>
+                <TableHead>{t('Service')}</TableHead>
+                <TableHead>{t('Items')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead>{t('Delivery')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -146,7 +148,7 @@ export default function CustomerOrders() {
                   <TableCell>
                     <Badge variant="muted">{o.serviceLevel || '-'}</Badge>
                   </TableCell>
-                  <TableCell className="text-sm">{o.lineItemCount} items</TableCell>
+                  <TableCell className="text-sm">{o.lineItemCount} {t('items')}</TableCell>
                   <TableCell>
                     <Badge variant={statusVariant(o.status)}>{orderStatusLabel(o.status)}</Badge>
                   </TableCell>
@@ -158,7 +160,7 @@ export default function CustomerOrders() {
               {orders.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={7} className="py-8 text-center text-sm text-muted-foreground">
-                    No orders found
+                    {t('No orders found')}
                   </TableCell>
                 </TableRow>
               )}
@@ -168,7 +170,7 @@ export default function CustomerOrders() {
 
         {total > 0 && (
           <div className="border-t border-border px-4 py-2 text-xs text-muted-foreground">
-            {total} total orders
+            {total} {t('total orders')}
           </div>
         )}
       </Card>

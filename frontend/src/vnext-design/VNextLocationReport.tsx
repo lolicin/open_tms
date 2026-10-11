@@ -32,6 +32,8 @@ import {
 import { cn } from '@/lib/utils';
 import { LOCATION_TYPE_META, getLocationTypeMeta } from './locationTypesMeta';
 
+import { t as translate } from '@/i18n';
+
 interface LocationRow {
   id: string;
   name: string;
@@ -152,7 +154,7 @@ export default function VNextLocationReport() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading report...</h3>
+        <h3 className="text-lg font-medium">{translate('Loading report...')}</h3>
       </div>
     );
   }
@@ -172,17 +174,17 @@ export default function VNextLocationReport() {
   );
 
   const stats = [
-    { tone: 'primary' as const, label: 'Locations', value: summary.totalLocations, icon: MapPin },
-    { tone: 'success' as const, label: 'Shipments Inbound', value: summary.totalShipmentsInbound, icon: ArrowDownToLine },
-    { tone: 'info' as const, label: 'Shipments Outbound', value: summary.totalShipmentsOutbound, icon: ArrowUpFromLine },
-    { tone: 'warning' as const, label: 'In Transit', value: summary.totalInTransit, icon: Truck },
+    { tone: 'primary' as const, label: translate('Locations'), value: summary.totalLocations, icon: MapPin },
+    { tone: 'success' as const, label: translate('Shipments Inbound'), value: summary.totalShipmentsInbound, icon: ArrowDownToLine },
+    { tone: 'info' as const, label: translate('Shipments Outbound'), value: summary.totalShipmentsOutbound, icon: ArrowUpFromLine },
+    { tone: 'warning' as const, label: translate('In Transit'), value: summary.totalInTransit, icon: Truck },
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Location Activity</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Shipment and order volume across your network</p>
+        <h1 className="text-3xl font-bold tracking-tight">{translate('Location Activity')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{translate('Shipment and order volume across your network')}</p>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -202,8 +204,8 @@ export default function VNextLocationReport() {
 
       <Tabs value={tab} onValueChange={v => setTab(v as 'activity' | 'breakdown')}>
         <TabsList>
-          <TabsTrigger value="activity">Location Activity</TabsTrigger>
-          <TabsTrigger value="breakdown">Type Breakdown</TabsTrigger>
+          <TabsTrigger value="activity">{translate('Location Activity')}</TabsTrigger>
+          <TabsTrigger value="breakdown">{translate('Type Breakdown')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="activity" className="mt-4">
@@ -212,7 +214,7 @@ export default function VNextLocationReport() {
               <div className="relative min-w-[280px] flex-1">
                 <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
-                  placeholder="Search by name, city, state..."
+                  placeholder={translate('Search by name, city, state...')}
                   value={search}
                   onChange={e => setSearch(e.target.value)}
                   className="pl-9"
@@ -223,7 +225,7 @@ export default function VNextLocationReport() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="all">{translate('All Types')}</SelectItem>
                   {Object.entries(LOCATION_TYPE_META).map(([value, meta]) => (
                     <SelectItem key={value} value={value}>{meta.label}</SelectItem>
                   ))}
@@ -246,25 +248,25 @@ export default function VNextLocationReport() {
               <TableHeader>
                 <TableRow>
                   <TableHead className="cursor-pointer" onClick={() => toggleSort('name')}>
-                    Location <SortIcon field="name" />
+                    {translate('Location')} <SortIcon field="name" />
                   </TableHead>
                   <TableHead className="cursor-pointer" onClick={() => toggleSort('locationType')}>
-                    Type <SortIcon field="locationType" />
+                    {translate('Type')} <SortIcon field="locationType" />
                   </TableHead>
                   <TableHead className="cursor-pointer text-right" onClick={() => toggleSort('shipmentsInbound')}>
-                    Shipments In <SortIcon field="shipmentsInbound" />
+                    {translate('Shipments In')} <SortIcon field="shipmentsInbound" />
                   </TableHead>
                   <TableHead className="cursor-pointer text-right" onClick={() => toggleSort('shipmentsOutbound')}>
-                    Shipments Out <SortIcon field="shipmentsOutbound" />
+                    {translate('Shipments Out')} <SortIcon field="shipmentsOutbound" />
                   </TableHead>
                   <TableHead className="cursor-pointer text-right" onClick={() => toggleSort('ordersInbound')}>
-                    Orders In <SortIcon field="ordersInbound" />
+                    {translate('Orders In')} <SortIcon field="ordersInbound" />
                   </TableHead>
                   <TableHead className="cursor-pointer text-right" onClick={() => toggleSort('ordersOutbound')}>
-                    Orders Out <SortIcon field="ordersOutbound" />
+                    {translate('Orders Out')} <SortIcon field="ordersOutbound" />
                   </TableHead>
                   <TableHead className="cursor-pointer text-right" onClick={() => toggleSort('shipmentsInTransitTo')}>
-                    In Transit <SortIcon field="shipmentsInTransitTo" />
+                    {translate('In Transit')} <SortIcon field="shipmentsInTransitTo" />
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -288,7 +290,7 @@ export default function VNextLocationReport() {
                         {meta ? (
                           <Badge variant="muted" className="text-xs">{meta.label}</Badge>
                         ) : (
-                          <span className="text-xs italic text-muted-foreground">Unclassified</span>
+                          <span className="text-xs italic text-muted-foreground">{translate('Unclassified')}</span>
                         )}
                       </TableCell>
                       <TableCell className="text-right tabular-nums">{loc.shipmentsInbound}</TableCell>
@@ -313,8 +315,8 @@ export default function VNextLocationReport() {
                     <TableCell colSpan={7}>
                       <div className="flex flex-col items-center gap-2 py-12 text-muted-foreground">
                         <SearchX className="h-8 w-8" />
-                        <h3 className="text-base font-medium">No locations found</h3>
-                        <p className="text-sm">Try adjusting your filters</p>
+                        <h3 className="text-base font-medium">{translate('No locations found')}</h3>
+                        <p className="text-sm">{translate('Try adjusting your filters')}</p>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -331,7 +333,7 @@ export default function VNextLocationReport() {
               <CardContent className="p-6">
                 <h3 className="mb-4 flex items-center gap-2 text-base font-semibold">
                   <PieChart className="h-4 w-4" />
-                  Locations by Type
+                  {translate('Locations by Type')}
                 </h3>
                 <div className="space-y-3">
                   {Object.entries(typeBreakdown)
@@ -369,7 +371,7 @@ export default function VNextLocationReport() {
               <CardContent className="p-6">
                 <h3 className="mb-4 flex items-center gap-2 text-base font-semibold">
                   <BarChart3 className="h-4 w-4" />
-                  Shipment Volume by Type
+                  {translate('Shipment Volume by Type')}
                 </h3>
                 <div className="space-y-4">
                   {Object.entries(typeBreakdown)
@@ -387,7 +389,7 @@ export default function VNextLocationReport() {
                               <MapPin className="h-4 w-4 text-muted-foreground" />
                               <span className="text-sm font-semibold">{label}</span>
                             </div>
-                            <span className="text-xs text-muted-foreground">{total} shipments</span>
+                            <span className="text-xs text-muted-foreground">{total} {translate('shipments')}</span>
                           </div>
                           <div className="flex h-2 gap-1">
                             <div
@@ -402,10 +404,10 @@ export default function VNextLocationReport() {
                             />
                           </div>
                           <div className="mt-1 flex gap-4 text-xs text-muted-foreground">
-                            <span>In: {entry.shipmentsInbound}</span>
-                            <span>Out: {entry.shipmentsOutbound}</span>
-                            <span>Orders In: {entry.ordersInbound}</span>
-                            <span>Orders Out: {entry.ordersOutbound}</span>
+                            <span>{translate('In:')} {entry.shipmentsInbound}</span>
+                            <span>{translate('Out:')} {entry.shipmentsOutbound}</span>
+                            <span>{translate('Orders In:')} {entry.ordersInbound}</span>
+                            <span>{translate('Orders Out:')} {entry.ordersOutbound}</span>
                           </div>
                         </div>
                       );

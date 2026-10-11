@@ -33,15 +33,17 @@ import {
 } from '@/components/ui/dialog';
 import { GradientText } from '@/components/brand/GradientText';
 
+import { t } from '@/i18n';
+
 const COLOR_TOKENS = [
-  { name: 'primary', label: 'Primary', tone: 'bg-primary text-primary-foreground' },
-  { name: 'secondary', label: 'Secondary', tone: 'bg-secondary text-secondary-foreground' },
-  { name: 'accent', label: 'Accent', tone: 'bg-accent text-accent-foreground' },
-  { name: 'destructive', label: 'Destructive', tone: 'bg-destructive text-destructive-foreground' },
-  { name: 'success', label: 'Success', tone: 'bg-success text-success-foreground' },
-  { name: 'warning', label: 'Warning', tone: 'bg-warning text-warning-foreground' },
-  { name: 'info', label: 'Info', tone: 'bg-info text-info-foreground' },
-  { name: 'muted', label: 'Muted', tone: 'bg-muted text-muted-foreground' },
+  { name: 'primary', label: t('Primary'), tone: 'bg-primary text-primary-foreground' },
+  { name: 'secondary', label: t('Secondary'), tone: 'bg-secondary text-secondary-foreground' },
+  { name: 'accent', label: t('Accent'), tone: 'bg-accent text-accent-foreground' },
+  { name: 'destructive', label: t('Destructive'), tone: 'bg-destructive text-destructive-foreground' },
+  { name: 'success', label: t('Success'), tone: 'bg-success text-success-foreground' },
+  { name: 'warning', label: t('Warning'), tone: 'bg-warning text-warning-foreground' },
+  { name: 'info', label: t('Info'), tone: 'bg-info text-info-foreground' },
+  { name: 'muted', label: t('Muted'), tone: 'bg-muted text-muted-foreground' },
 ];
 
 const BUTTON_VARIANTS = ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link', 'gradient'] as const;
@@ -54,28 +56,28 @@ export default function VNextStyleGuide() {
     <div className="space-y-10">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">
-          <GradientText>Style guide</GradientText>
+          <GradientText>{t('Style guide')}</GradientText>
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Reference page for shadcn/ui primitives in the Open TMS frontend.
+          {t('Reference page for shadcn/ui primitives in the Open TMS frontend.')}
         </p>
       </div>
 
       <section className="space-y-3">
-        <h2 className="text-xl font-semibold">Typography</h2>
+        <h2 className="text-xl font-semibold">{t('Typography')}</h2>
         <Card>
           <CardContent className="space-y-2 p-6">
-            <h1 className="text-3xl font-bold tracking-tight">Page heading (3xl bold)</h1>
-            <h2 className="text-xl font-semibold">Section heading (xl semibold)</h2>
-            <p className="text-sm">Body text (sm) - The quick brown fox jumps over the lazy dog.</p>
-            <p className="text-xs text-muted-foreground">Muted small label (xs)</p>
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Tiny uppercase label</p>
+            <h1 className="text-3xl font-bold tracking-tight">{t('Page heading (3xl bold)')}</h1>
+            <h2 className="text-xl font-semibold">{t('Section heading (xl semibold)')}</h2>
+            <p className="text-sm">{t('Body text (sm) - The quick brown fox jumps over the lazy dog.')}</p>
+            <p className="text-xs text-muted-foreground">{t('Muted small label (xs)')}</p>
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{t('Tiny uppercase label')}</p>
           </CardContent>
         </Card>
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-xl font-semibold">Color tokens</h2>
+        <h2 className="text-xl font-semibold">{t('Color tokens')}</h2>
         <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-4">
           {COLOR_TOKENS.map(c => (
             <div key={c.name} className={`rounded-md p-4 ${c.tone}`}>
@@ -87,7 +89,7 @@ export default function VNextStyleGuide() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-xl font-semibold">Buttons</h2>
+        <h2 className="text-xl font-semibold">{t('Buttons')}</h2>
         <Card>
           <CardContent className="flex flex-wrap gap-2 p-6">
             {BUTTON_VARIANTS.map(v => (
@@ -97,20 +99,20 @@ export default function VNextStyleGuide() {
         </Card>
         <Card>
           <CardContent className="flex flex-wrap items-center gap-2 p-6">
-            <Button size="sm">Small</Button>
-            <Button>Default</Button>
-            <Button size="lg">Large</Button>
+            <Button size="sm">{t('Small')}</Button>
+            <Button>{t('Default')}</Button>
+            <Button size="lg">{t('Large')}</Button>
             <Button size="icon"><Plus className="h-4 w-4" /></Button>
             <Button variant="gradient">
               <Truck className="h-4 w-4" />
-              With icon
+              {t('With icon')}
             </Button>
           </CardContent>
         </Card>
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-xl font-semibold">Badges</h2>
+        <h2 className="text-xl font-semibold">{t('Badges')}</h2>
         <Card>
           <CardContent className="flex flex-wrap gap-2 p-6">
             {BADGE_VARIANTS.map(v => (
@@ -121,67 +123,67 @@ export default function VNextStyleGuide() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-xl font-semibold">Cards</h2>
+        <h2 className="text-xl font-semibold">{t('Cards')}</h2>
         <div className="grid gap-4 md:grid-cols-2">
           <Card>
             <CardHeader>
-              <CardTitle>Simple card</CardTitle>
-              <CardDescription>With a description below the title.</CardDescription>
+              <CardTitle>{t('Simple card')}</CardTitle>
+              <CardDescription>{t('With a description below the title.')}</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">Card body content goes here.</p>
+              <p className="text-sm text-muted-foreground">{t('Card body content goes here.')}</p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-start justify-between">
               <div>
-                <CardTitle>Card with action</CardTitle>
-                <CardDescription>Header has a button on the right.</CardDescription>
+                <CardTitle>{t('Card with action')}</CardTitle>
+                <CardDescription>{t('Header has a button on the right.')}</CardDescription>
               </div>
-              <Button variant="outline" size="sm">Action</Button>
+              <Button variant="outline" size="sm">{t('Action')}</Button>
             </CardHeader>
             <Separator />
             <CardContent className="pt-4">
-              <p className="text-sm">Footer-style content separated by a divider.</p>
+              <p className="text-sm">{t('Footer-style content separated by a divider.')}</p>
             </CardContent>
           </Card>
         </div>
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-xl font-semibold">Form fields</h2>
+        <h2 className="text-xl font-semibold">{t('Form fields')}</h2>
         <Card>
           <CardContent className="space-y-4 p-6">
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>Text input</Label>
-                <Input placeholder="Type something..." />
+                <Label>{t('Text input')}</Label>
+                <Input placeholder={t('Type something...')} />
               </div>
               <div className="space-y-2">
-                <Label>Select</Label>
+                <Label>{t('Select')}</Label>
                 <Select>
                   <SelectTrigger>
-                    <SelectValue placeholder="Choose an option..." />
+                    <SelectValue placeholder={t('Choose an option...')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="a">Option A</SelectItem>
-                    <SelectItem value="b">Option B</SelectItem>
-                    <SelectItem value="c">Option C</SelectItem>
+                    <SelectItem value="a">{t('Option A')}</SelectItem>
+                    <SelectItem value="b">{t('Option B')}</SelectItem>
+                    <SelectItem value="c">{t('Option C')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2 md:col-span-2">
-                <Label>Textarea</Label>
+                <Label>{t('Textarea')}</Label>
                 <textarea
                   rows={4}
-                  placeholder="Long form input..."
+                  placeholder={t('Long form input...')}
                   className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label>Checkboxes and radios</Label>
+              <Label>{t('Checkboxes and radios')}</Label>
               <div className="flex flex-wrap items-center gap-4 text-sm">
                 <label className="flex cursor-pointer items-center gap-2">
                   <input
@@ -189,7 +191,7 @@ export default function VNextStyleGuide() {
                     defaultChecked
                     className="h-4 w-4 rounded border border-input bg-background accent-primary"
                   />
-                  Checkbox
+                  {t('Checkbox')}
                 </label>
                 <label className="flex cursor-pointer items-center gap-2">
                   <input
@@ -198,7 +200,7 @@ export default function VNextStyleGuide() {
                     defaultChecked
                     className="h-4 w-4 border border-input bg-background accent-primary"
                   />
-                  Radio A
+                  {t('Radio A')}
                 </label>
                 <label className="flex cursor-pointer items-center gap-2">
                   <input
@@ -206,7 +208,7 @@ export default function VNextStyleGuide() {
                     name="demo-radio"
                     className="h-4 w-4 border border-input bg-background accent-primary"
                   />
-                  Radio B
+                  {t('Radio B')}
                 </label>
               </div>
             </div>
@@ -215,44 +217,44 @@ export default function VNextStyleGuide() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-xl font-semibold">Tabs</h2>
+        <h2 className="text-xl font-semibold">{t('Tabs')}</h2>
         <Tabs defaultValue="overview">
           <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="details">Details</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="overview">{t('Overview')}</TabsTrigger>
+            <TabsTrigger value="details">{t('Details')}</TabsTrigger>
+            <TabsTrigger value="settings">{t('Settings')}</TabsTrigger>
           </TabsList>
           <TabsContent value="overview" className="mt-4">
-            <Card><CardContent className="p-6 text-sm">Overview content.</CardContent></Card>
+            <Card><CardContent className="p-6 text-sm">{t('Overview content.')}</CardContent></Card>
           </TabsContent>
           <TabsContent value="details" className="mt-4">
-            <Card><CardContent className="p-6 text-sm">Details content.</CardContent></Card>
+            <Card><CardContent className="p-6 text-sm">{t('Details content.')}</CardContent></Card>
           </TabsContent>
           <TabsContent value="settings" className="mt-4">
-            <Card><CardContent className="p-6 text-sm">Settings content.</CardContent></Card>
+            <Card><CardContent className="p-6 text-sm">{t('Settings content.')}</CardContent></Card>
           </TabsContent>
         </Tabs>
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-xl font-semibold">Tables</h2>
+        <h2 className="text-xl font-semibold">{t('Tables')}</h2>
         <Card>
           <CardContent className="p-0">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>ID</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t('ID')}</TableHead>
+                  <TableHead>{t('Name')}</TableHead>
+                  <TableHead>{t('Status')}</TableHead>
+                  <TableHead className="text-right">{t('Actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {[1, 2, 3].map(i => (
                   <TableRow key={i}>
-                    <TableCell className="font-mono text-xs">SHP-{i.toString().padStart(4, '0')}</TableCell>
-                    <TableCell>Sample row {i}</TableCell>
-                    <TableCell><Badge variant="success">Active</Badge></TableCell>
+                    <TableCell className="font-mono text-xs">{t('SHP-')}{i.toString().padStart(4, '0')}</TableCell>
+                    <TableCell>{t('Sample row')} {i}</TableCell>
+                    <TableCell><Badge variant="success">{t('Active')}</Badge></TableCell>
                     <TableCell className="text-right">
                       <Button variant="ghost" size="icon"><Trash2 className="h-4 w-4" /></Button>
                     </TableCell>
@@ -265,7 +267,7 @@ export default function VNextStyleGuide() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-xl font-semibold">Alerts</h2>
+        <h2 className="text-xl font-semibold">{t('Alerts')}</h2>
         <div className="space-y-2">
           {[
             { tone: 'border-success/30 bg-success/10 text-success', Icon: CheckCircle2, msg: 'Operation completed successfully.' },
@@ -282,18 +284,18 @@ export default function VNextStyleGuide() {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-xl font-semibold">Modal</h2>
-        <Button variant="outline" onClick={() => setModalOpen(true)}>Open dialog</Button>
+        <h2 className="text-xl font-semibold">{t('Modal')}</h2>
+        <Button variant="outline" onClick={() => setModalOpen(true)}>{t('Open dialog')}</Button>
         <Dialog open={modalOpen} onOpenChange={setModalOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Example dialog</DialogTitle>
-              <DialogDescription>This is a sample modal with header, body, and footer.</DialogDescription>
+              <DialogTitle>{t('Example dialog')}</DialogTitle>
+              <DialogDescription>{t('This is a sample modal with header, body, and footer.')}</DialogDescription>
             </DialogHeader>
-            <p className="text-sm text-muted-foreground">Body content goes here.</p>
+            <p className="text-sm text-muted-foreground">{t('Body content goes here.')}</p>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setModalOpen(false)}>Cancel</Button>
-              <Button variant="gradient" onClick={() => setModalOpen(false)}>Confirm</Button>
+              <Button variant="outline" onClick={() => setModalOpen(false)}>{t('Cancel')}</Button>
+              <Button variant="gradient" onClick={() => setModalOpen(false)}>{t('Confirm')}</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>

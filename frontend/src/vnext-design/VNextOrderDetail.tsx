@@ -50,6 +50,8 @@ import { useCurrentUser } from '../hooks/useCurrentUser';
 import { NOTE_TAGS } from './VNextCreateShipment';
 import { cn } from '@/lib/utils';
 
+import { t as translate } from '@/i18n';
+
 type BadgeVariant = 'default' | 'secondary' | 'destructive' | 'outline' | 'success' | 'warning' | 'info' | 'muted';
 
 interface LineItem {
@@ -225,15 +227,15 @@ const NOTE_GROUPS: {
   iconText: string;
 }[] = [
   {
-    key: 'issue', label: 'Issues', Icon: AlertTriangle, empty: 'No issues noted for this order.',
+    key: 'issue', label: translate('Issues'), Icon: AlertTriangle, empty: 'No issues noted for this order.',
     border: 'border-l-4 border-l-destructive', iconBg: 'bg-destructive/10', iconText: 'text-destructive',
   },
   {
-    key: 'requirement', label: 'Additional requirements', Icon: Info, empty: 'No additional requirements noted.',
+    key: 'requirement', label: translate('Additional requirements'), Icon: Info, empty: 'No additional requirements noted.',
     border: 'border-l-4 border-l-info', iconBg: 'bg-info/10', iconText: 'text-info',
   },
   {
-    key: '', label: 'Standard notes', Icon: MessageSquare, empty: 'No standard notes yet.',
+    key: '', label: translate('Standard notes'), Icon: MessageSquare, empty: 'No standard notes yet.',
     border: 'border-l-4 border-l-primary', iconBg: 'bg-primary/10', iconText: 'text-primary',
   },
 ];
@@ -280,7 +282,7 @@ function NotesTab({ orderId }: { orderId: string }) {
       setNoteTag(NOTE_TAGS[0].key);
       loadComments();
     } catch {
-      toast.error('Failed to post comment');
+      toast.error(translate('Failed to post comment'));
     } finally {
       setSubmitting(false);
     }
@@ -313,7 +315,7 @@ function NotesTab({ orderId }: { orderId: string }) {
       cancelEdit();
       loadComments();
     } catch {
-      toast.error('Failed to update comment');
+      toast.error(translate('Failed to update comment'));
     } finally {
       setBusyId(null);
     }
@@ -331,7 +333,7 @@ function NotesTab({ orderId }: { orderId: string }) {
       }
       loadComments();
     } catch {
-      toast.error('Failed to delete comment');
+      toast.error(translate('Failed to delete comment'));
     } finally {
       setBusyId(null);
     }
@@ -365,12 +367,12 @@ function NotesTab({ orderId }: { orderId: string }) {
         </div>
         <div className="flex-1">
           <div className="mb-1 flex items-center justify-between gap-2">
-            <span className="text-sm font-semibold">{c.authorName || 'Unknown user'}</span>
+            <span className="text-sm font-semibold">{c.authorName || translate('Unknown user')}</span>
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground">
                 {c.createdAt ? new Date(c.createdAt).toLocaleString() : ''}
                 {c.updatedAt && c.createdAt && c.updatedAt !== c.createdAt && (
-                  <span className="ml-1 italic">(edited)</span>
+                  <span className="ml-1 italic">{translate('(edited)')}</span>
                 )}
               </span>
               {!isEditing && (canEdit || canDelete) && (
@@ -381,7 +383,7 @@ function NotesTab({ orderId }: { orderId: string }) {
                       onClick={() => beginEdit(c)}
                       disabled={busy}
                       className="inline-flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground hover:bg-muted/40 hover:text-foreground"
-                      title="Edit comment"
+                      title={translate('Edit comment')}
                     >
                       <Pencil className="h-3.5 w-3.5" />
                     </button>
@@ -417,9 +419,9 @@ function NotesTab({ orderId }: { orderId: string }) {
                   onClick={() => saveEdit(c.id)}
                   disabled={busy || !editingDraft.trim() || editingDraft === c.body}
                 >
-                  {busy ? '...' : 'Save'}
+                  {busy ? '...' : translate('Save')}
                 </Button>
-                <Button size="sm" variant="ghost" onClick={cancelEdit} disabled={busy} title="Cancel">
+                <Button size="sm" variant="ghost" onClick={cancelEdit} disabled={busy} title={translate('Cancel')}>
                   <X className="h-3.5 w-3.5" />
                 </Button>
               </div>
@@ -464,11 +466,11 @@ function NotesTab({ orderId }: { orderId: string }) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Add a note</CardTitle>
+          <CardTitle className="text-base">{translate('Add a note')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="space-y-2">
-            <Label>Tag</Label>
+            <Label>{translate('Tag')}</Label>
             <div className="flex flex-wrap gap-2">
               {NOTE_TAGS.map(t => (
                 <button
@@ -489,13 +491,13 @@ function NotesTab({ orderId }: { orderId: string }) {
           <div className="flex gap-2">
             <textarea
               className="flex w-full flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              placeholder="Add a note..."
+              placeholder={translate('Add a note...')}
               value={newComment}
               onChange={e => setNewComment(e.target.value)}
               rows={2}
             />
             <Button variant="gradient" onClick={handleSubmit} disabled={submitting || !newComment.trim()} className="self-end">
-              {submitting ? '...' : 'Post'}
+              {submitting ? '...' : translate('Post')}
             </Button>
           </div>
         </CardContent>
@@ -564,10 +566,10 @@ export default function VNextOrderDetail() {
         toast.error(json.error || 'Failed to archive order', { duration: 8000 });
         return;
       }
-      toast.success('Order archived');
+      toast.success(translate('Order archived'));
       navigate('/orders');
     } catch {
-      toast.error('Failed to archive order');
+      toast.error(translate('Failed to archive order'));
     } finally {
       setArchiving(false);
     }
@@ -583,10 +585,10 @@ export default function VNextOrderDetail() {
         toast.error(json.error || 'Failed to cancel order', { duration: 8000 });
         return;
       }
-      toast.success('Order cancelled');
+      toast.success(translate('Order cancelled'));
       loadOrder();
     } catch {
-      toast.error('Failed to cancel order');
+      toast.error(translate('Failed to cancel order'));
     } finally {
       setCancelling(false);
       setConfirmCancel(false);
@@ -603,10 +605,10 @@ export default function VNextOrderDetail() {
         toast.error(json.error || 'Failed to unarchive order', { duration: 8000 });
         return;
       }
-      toast.success('Order restored');
+      toast.success(translate('Order restored'));
       loadOrder();
     } catch {
-      toast.error('Failed to unarchive order');
+      toast.error(translate('Failed to unarchive order'));
     } finally {
       setUnarchiving(false);
     }
@@ -622,10 +624,10 @@ export default function VNextOrderDetail() {
         toast.error(json.error || 'Failed to delete order', { duration: 8000 });
         return;
       }
-      toast.success('Order deleted');
+      toast.success(translate('Order deleted'));
       navigate('/orders');
     } catch {
-      toast.error('Failed to delete order');
+      toast.error(translate('Failed to delete order'));
     } finally {
       setDeleting(false);
       setConfirmDelete(false);
@@ -650,7 +652,7 @@ export default function VNextOrderDetail() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading order...</h3>
+        <h3 className="text-lg font-medium">{translate('Loading order...')}</h3>
       </div>
     );
   }
@@ -659,7 +661,7 @@ export default function VNextOrderDetail() {
     return (
       <div className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
         <CircleAlert className="h-5 w-5" />
-        {error || 'Order not found'}
+        {error || translate('Order not found')}
       </div>
     );
   }
@@ -667,13 +669,13 @@ export default function VNextOrderDetail() {
   const openIssues = issues.filter(i => i.status === 'open' || i.status === 'in_progress');
 
   const tabs = [
-    { value: 'details', label: 'Details' },
-    { value: 'notes', label: 'Notes' },
-    { value: 'line-items', label: 'Line items' },
-    { value: 'handling-units', label: 'Handling units' },
-    { value: 'shipments', label: 'Shipments' },
+    { value: 'details', label: translate('Details') },
+    { value: 'notes', label: translate('Notes') },
+    { value: 'line-items', label: translate('Line items') },
+    { value: 'handling-units', label: translate('Handling units') },
+    { value: 'shipments', label: translate('Shipments') },
     { value: 'issues', label: `Issues${issues.length > 0 ? ` (${issues.length})` : ''}` },
-    { value: 'activity', label: 'Activity' },
+    { value: 'activity', label: translate('Activity') },
   ];
 
   return (
@@ -681,7 +683,7 @@ export default function VNextOrderDetail() {
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Button variant="ghost" size="sm" onClick={() => navigate('/orders')} className="-ml-2 h-auto px-2 py-1">
           <ArrowLeft className="h-4 w-4" />
-          Orders
+          {translate('Orders')}
         </Button>
         <span>/ {order.orderNumber || order.id}</span>
       </div>
@@ -695,23 +697,23 @@ export default function VNextOrderDetail() {
               <Badge variant={deliveryStatusVariant(order.deliveryStatus)}>{deliveryStatusLabel(order.deliveryStatus)}</Badge>
             )}
             {order.poNumber && (
-              <span className="text-sm text-muted-foreground">PO# {order.poNumber}</span>
+              <span className="text-sm text-muted-foreground">{translate('PO#')} {order.poNumber}</span>
             )}
           </div>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={() => navigate(`/orders/${order.id}/edit`)}>
             <Pencil className="h-4 w-4" />
-            Edit
+            {translate('Edit')}
           </Button>
           <Button variant="outline" size="sm" onClick={() => navigate(`/documents?orderId=${order.id}`)}>
             <FileText className="h-4 w-4" />
-            Documents
+            {translate('Documents')}
           </Button>
           {hasPermission('shipments:write') && order.status === 'verified' && !order.archived && !order.deletedAt && (
             <Button variant="outline" size="sm" onClick={() => navigate(`/shipments/create?orderIds=${order.id}`)}>
               <Truck className="h-4 w-4" />
-              Create shipment
+              {translate('Create shipment')}
             </Button>
           )}
           {hasPermission('orders:write') && ['pending', 'verified', 'issue'].includes(order.status) && !order.deletedAt && (
@@ -723,20 +725,20 @@ export default function VNextOrderDetail() {
               className="text-destructive hover:text-destructive"
             >
               <XCircle className="h-4 w-4" />
-              Cancel order
+              {translate('Cancel order')}
             </Button>
           )}
           {hasPermission('orders:write') && !order.archived && !order.deletedAt && (
             <Button variant="outline" size="sm" onClick={handleArchive} disabled={archiving}>
               {archiving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Archive className="h-4 w-4" />}
-              Archive
+              {translate('Archive')}
             </Button>
           )}
           {hasPermission('orders:delete') && !order.deletedAt && (
             <Button variant="outline" size="sm" onClick={() => setConfirmDelete(true)} disabled={deleting}
               className="text-destructive hover:text-destructive">
               <Trash2 className="h-4 w-4" />
-              Delete
+              {translate('Delete')}
             </Button>
           )}
         </div>
@@ -747,13 +749,13 @@ export default function VNextOrderDetail() {
         <div className="flex flex-wrap items-center gap-3 rounded-md border border-warning/30 bg-warning/10 p-4 text-sm">
           <Archive className="h-5 w-5 text-warning" />
           <div className="flex-1">
-            <span className="font-medium text-warning">This order is archived.</span>
-            <span className="ml-1 text-muted-foreground">It does not appear in active order lists.</span>
+            <span className="font-medium text-warning">{translate('This order is archived.')}</span>
+            <span className="ml-1 text-muted-foreground">{translate('It does not appear in active order lists.')}</span>
           </div>
           {hasPermission('orders:delete') && (
             <Button variant="outline" size="sm" onClick={handleUnarchive} disabled={unarchiving}>
               {unarchiving ? <Loader2 className="h-4 w-4 animate-spin" /> : <ArchiveRestore className="h-4 w-4" />}
-              Unarchive
+              {translate('Unarchive')}
             </Button>
           )}
         </div>
@@ -772,7 +774,7 @@ export default function VNextOrderDetail() {
             <CircleAlert className={cn('h-5 w-5', hasCritical ? 'text-destructive' : 'text-warning')} />
             <div className="flex-1">
               <span className={cn('font-medium', hasCritical ? 'text-destructive' : 'text-warning')}>
-                {openIssues.length} open issue{openIssues.length === 1 ? '' : 's'} on this order.
+                {openIssues.length} {translate('open issue')}{openIssues.length === 1 ? '' : translate('s')} {translate('on this order.')}
               </span>
               <span className="ml-1 text-muted-foreground">
                 {openIssues[0].title}
@@ -780,7 +782,7 @@ export default function VNextOrderDetail() {
               </span>
             </div>
             <Button variant="outline" size="sm" onClick={() => setActiveTab('issues')}>
-              View
+              {translate('View')}
             </Button>
           </div>
         );
@@ -790,17 +792,18 @@ export default function VNextOrderDetail() {
       <Dialog open={confirmDelete} onOpenChange={setConfirmDelete}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete this order?</DialogTitle>
+            <DialogTitle>{translate('Delete this order?')}</DialogTitle>
             <DialogDescription>
-              {order.orderNumber || order.id} will be removed from all views. The record is retained for audit
-              but cannot be restored from the UI. This is different from archiving.
+              {order.orderNumber || order.id} {translate(
+                'will be removed from all views. The record is retained for audit\n              but cannot be restored from the UI. This is different from archiving.'
+              )}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setConfirmDelete(false)} disabled={deleting}>Cancel</Button>
+            <Button variant="outline" onClick={() => setConfirmDelete(false)} disabled={deleting}>{translate('Cancel')}</Button>
             <Button variant="destructive" onClick={handleSoftDelete} disabled={deleting}>
               {deleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-              Delete order
+              {translate('Delete order')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -810,17 +813,18 @@ export default function VNextOrderDetail() {
       <Dialog open={confirmCancel} onOpenChange={setConfirmCancel}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Cancel this order?</DialogTitle>
+            <DialogTitle>{translate('Cancel this order?')}</DialogTitle>
             <DialogDescription>
-              {order.orderNumber || order.id} will be marked cancelled. This can only be done before the order
-              is assigned to a shipment, and can't be undone from here.
+              {order.orderNumber || order.id} {translate(
+                'will be marked cancelled. This can only be done before the order\n              is assigned to a shipment, and can\'t be undone from here.'
+              )}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setConfirmCancel(false)} disabled={cancelling}>Never mind</Button>
+            <Button variant="outline" onClick={() => setConfirmCancel(false)} disabled={cancelling}>{translate('Never mind')}</Button>
             <Button variant="destructive" onClick={handleCancel} disabled={cancelling}>
               {cancelling ? <Loader2 className="h-4 w-4 animate-spin" /> : <XCircle className="h-4 w-4" />}
-              Cancel order
+              {translate('Cancel order')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -831,9 +835,9 @@ export default function VNextOrderDetail() {
         <div className="flex flex-wrap items-center justify-between gap-3 p-4">
           <div className="flex items-center gap-2 text-sm font-medium">
             <span className="inline-block h-2 w-2 rounded-full bg-success" />
-            {order.origin ? `${order.origin.city}, ${order.origin.state}` : 'Origin not set'}
+            {order.origin ? `${order.origin.city}, ${order.origin.state}` : translate('Origin not set')}
             <ArrowLeft className="h-3.5 w-3.5 rotate-180 text-muted-foreground" />
-            {order.destination ? `${order.destination.city}, ${order.destination.state}` : 'Destination not set'}
+            {order.destination ? `${order.destination.city}, ${order.destination.state}` : translate('Destination not set')}
             <span className="inline-block h-2 w-2 rounded-full bg-destructive" />
           </div>
           <span className="text-xs text-muted-foreground">
@@ -857,39 +861,39 @@ export default function VNextOrderDetail() {
           <div className="grid gap-6 lg:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>Order information</CardTitle>
+                <CardTitle>{translate('Order information')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <InfoItem label="Customer">{order.customer?.name || '-'}</InfoItem>
-                  <InfoItem label="PO number">{order.poNumber || '-'}</InfoItem>
-                  <InfoItem label="Service level">{order.serviceLevel || '-'}</InfoItem>
-                  <InfoItem label="Import source">{order.importSource || '-'}</InfoItem>
-                  <InfoItem label="Requirements">
+                  <InfoItem label={translate('Customer')}>{order.customer?.name || '-'}</InfoItem>
+                  <InfoItem label={translate('PO number')}>{order.poNumber || '-'}</InfoItem>
+                  <InfoItem label={translate('Service level')}>{order.serviceLevel || '-'}</InfoItem>
+                  <InfoItem label={translate('Import source')}>{order.importSource || '-'}</InfoItem>
+                  <InfoItem label={translate('Requirements')}>
                     <div className="flex flex-wrap gap-1">
-                      {order.temperatureControl && <Badge variant="muted">Temp control</Badge>}
-                      {order.requiresHazmat && <Badge variant="warning">Hazmat</Badge>}
+                      {order.temperatureControl && <Badge variant="muted">{translate('Temp control')}</Badge>}
+                      {order.requiresHazmat && <Badge variant="warning">{translate('Hazmat')}</Badge>}
                       {!order.temperatureControl && !order.requiresHazmat && '-'}
                     </div>
                   </InfoItem>
-                  <InfoItem label="Created">{formatDateTime(order.createdAt)}</InfoItem>
-                  <InfoItem label="Updated">{formatDateTime(order.updatedAt)}</InfoItem>
+                  <InfoItem label={translate('Created')}>{formatDateTime(order.createdAt)}</InfoItem>
+                  <InfoItem label={translate('Updated')}>{formatDateTime(order.updatedAt)}</InfoItem>
                 </div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle>Route</CardTitle>
+                <CardTitle>{translate('Route')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
                     <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-success" />
                     <div>
-                      <div className="text-sm font-semibold">{order.origin?.name || 'Origin'}</div>
+                      <div className="text-sm font-semibold">{order.origin?.name || translate('Origin')}</div>
                       <div className="text-xs text-muted-foreground">
-                        {order.origin ? `${order.origin.city}, ${order.origin.state}` : 'Not set'}
+                        {order.origin ? `${order.origin.city}, ${order.origin.state}` : translate('Not set')}
                       </div>
                     </div>
                   </div>
@@ -897,16 +901,16 @@ export default function VNextOrderDetail() {
                   <div className="flex items-center gap-3">
                     <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-destructive" />
                     <div>
-                      <div className="text-sm font-semibold">{order.destination?.name || 'Destination'}</div>
+                      <div className="text-sm font-semibold">{order.destination?.name || translate('Destination')}</div>
                       <div className="text-xs text-muted-foreground">
-                        {order.destination ? `${order.destination.city}, ${order.destination.state}` : 'Not set'}
+                        {order.destination ? `${order.destination.city}, ${order.destination.state}` : translate('Not set')}
                       </div>
                     </div>
                   </div>
                   <Separator />
                   <div className="grid gap-4 sm:grid-cols-2">
-                    <InfoItem label="Requested pickup">{formatDate(order.requestedPickupDate)}</InfoItem>
-                    <InfoItem label="Requested delivery">{formatDate(order.requestedDeliveryDate)}</InfoItem>
+                    <InfoItem label={translate('Requested pickup')}>{formatDate(order.requestedPickupDate)}</InfoItem>
+                    <InfoItem label={translate('Requested delivery')}>{formatDate(order.requestedDeliveryDate)}</InfoItem>
                   </div>
                 </div>
               </CardContent>
@@ -918,18 +922,18 @@ export default function VNextOrderDetail() {
           {(order.specialInstructions || order.notes) && (
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Order notes</CardTitle>
+                <CardTitle className="text-base">{translate('Order notes')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {order.specialInstructions && (
                   <div>
-                    <div className="text-xs font-semibold text-muted-foreground">Special instructions</div>
+                    <div className="text-xs font-semibold text-muted-foreground">{translate('Special instructions')}</div>
                     <p className="mt-1 text-sm">{order.specialInstructions}</p>
                   </div>
                 )}
                 {order.notes && (
                   <div>
-                    <div className="text-xs font-semibold text-muted-foreground">Notes</div>
+                    <div className="text-xs font-semibold text-muted-foreground">{translate('Notes')}</div>
                     <p className="mt-1 text-sm">{order.notes}</p>
                   </div>
                 )}
@@ -942,8 +946,8 @@ export default function VNextOrderDetail() {
         <TabsContent value="line-items" className="mt-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Line items</CardTitle>
-              <span className="text-sm text-muted-foreground">{order.lineItems?.length || 0} items</span>
+              <CardTitle>{translate('Line items')}</CardTitle>
+              <span className="text-sm text-muted-foreground">{order.lineItems?.length || 0} {translate('items')}</span>
             </CardHeader>
             <CardContent className="p-0">
               <Separator />
@@ -952,14 +956,14 @@ export default function VNextOrderDetail() {
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>SKU</TableHead>
-                        <TableHead>Description</TableHead>
-                        <TableHead>Qty</TableHead>
-                        <TableHead>UoM</TableHead>
-                        <TableHead>Weight</TableHead>
-                        <TableHead>Dims</TableHead>
-                        <TableHead>Class</TableHead>
-                        <TableHead>NMFC</TableHead>
+                        <TableHead>{translate('SKU')}</TableHead>
+                        <TableHead>{translate('Description')}</TableHead>
+                        <TableHead>{translate('Qty')}</TableHead>
+                        <TableHead>{translate('UoM')}</TableHead>
+                        <TableHead>{translate('Weight')}</TableHead>
+                        <TableHead>{translate('Dims')}</TableHead>
+                        <TableHead>{translate('Class')}</TableHead>
+                        <TableHead>{translate('NMFC')}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -984,15 +988,15 @@ export default function VNextOrderDetail() {
 
                   {order.lineItems.some((li) => li.hazmat) && (
                     <div className="m-4 rounded-md border border-warning/40 bg-warning/10 p-3">
-                      <div className="mb-2 text-xs font-semibold uppercase tracking-wide">Hazmat</div>
+                      <div className="mb-2 text-xs font-semibold uppercase tracking-wide">{translate('Hazmat')}</div>
                       <Table>
                         <TableHeader>
                           <TableRow>
-                            <TableHead>SKU</TableHead>
-                            <TableHead>UN</TableHead>
-                            <TableHead>Class</TableHead>
-                            <TableHead>PG</TableHead>
-                            <TableHead>Proper shipping name</TableHead>
+                            <TableHead>{translate('SKU')}</TableHead>
+                            <TableHead>{translate('UN')}</TableHead>
+                            <TableHead>{translate('Class')}</TableHead>
+                            <TableHead>{translate('PG')}</TableHead>
+                            <TableHead>{translate('Proper shipping name')}</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -1012,13 +1016,13 @@ export default function VNextOrderDetail() {
 
                   {order.lineItems.some((li) => li.hsCode || li.countryOfOrigin) && (
                     <div className="m-4 rounded-md border border-border p-3">
-                      <div className="mb-2 text-xs font-semibold uppercase tracking-wide">Customs</div>
+                      <div className="mb-2 text-xs font-semibold uppercase tracking-wide">{translate('Customs')}</div>
                       <Table>
                         <TableHeader>
                           <TableRow>
-                            <TableHead>SKU</TableHead>
-                            <TableHead>HS code</TableHead>
-                            <TableHead>Country of origin</TableHead>
+                            <TableHead>{translate('SKU')}</TableHead>
+                            <TableHead>{translate('HS code')}</TableHead>
+                            <TableHead>{translate('Country of origin')}</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -1036,13 +1040,13 @@ export default function VNextOrderDetail() {
 
                   {order.lineItems.some((li) => li.tempMinC != null || li.tempMaxC != null) && (
                     <div className="m-4 rounded-md border border-info/40 bg-info/10 p-3">
-                      <div className="mb-2 text-xs font-semibold uppercase tracking-wide">Temperature</div>
+                      <div className="mb-2 text-xs font-semibold uppercase tracking-wide">{translate('Temperature')}</div>
                       <Table>
                         <TableHeader>
                           <TableRow>
-                            <TableHead>SKU</TableHead>
-                            <TableHead>Min (°C)</TableHead>
-                            <TableHead>Max (°C)</TableHead>
+                            <TableHead>{translate('SKU')}</TableHead>
+                            <TableHead>{translate('Min (°C)')}</TableHead>
+                            <TableHead>{translate('Max (°C)')}</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -1060,7 +1064,7 @@ export default function VNextOrderDetail() {
                 </>
               ) : (
                 <div className="px-6 py-12 text-center text-sm text-muted-foreground">
-                  No line items
+                  {translate('No line items')}
                 </div>
               )}
             </CardContent>
@@ -1070,12 +1074,12 @@ export default function VNextOrderDetail() {
         <TabsContent value="handling-units" className="mt-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Handling units</CardTitle>
+              <CardTitle>{translate('Handling units')}</CardTitle>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">{order.trackableUnits?.length ?? 0} units</span>
+                <span className="text-sm text-muted-foreground">{order.trackableUnits?.length ?? 0} {translate('units')}</span>
                 <Button variant="outline" size="sm" onClick={() => setEditingUnits(s => !s)}>
                   <Boxes className="h-4 w-4" />
-                  {editingUnits ? 'Done editing' : 'Edit handling units'}
+                  {editingUnits ? translate('Done editing') : translate('Edit handling units')}
                 </Button>
               </div>
             </CardHeader>
@@ -1111,10 +1115,10 @@ export default function VNextOrderDetail() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Identifier</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Packaging</TableHead>
-                      <TableHead>Line items</TableHead>
+                      <TableHead>{translate('Identifier')}</TableHead>
+                      <TableHead>{translate('Type')}</TableHead>
+                      <TableHead>{translate('Packaging')}</TableHead>
+                      <TableHead>{translate('Line items')}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -1130,7 +1134,7 @@ export default function VNextOrderDetail() {
                 </Table>
               ) : (
                 <div className="p-6 text-sm text-muted-foreground">
-                  No handling units yet. Click "Edit handling units" to build them.
+                  {translate('No handling units yet. Click "Edit handling units" to build them.')}
                 </div>
               )}
             </CardContent>
@@ -1140,8 +1144,8 @@ export default function VNextOrderDetail() {
         <TabsContent value="shipments" className="mt-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Shipments</CardTitle>
-              <span className="text-sm text-muted-foreground">{order.orderShipments?.length || 0} shipments</span>
+              <CardTitle>{translate('Shipments')}</CardTitle>
+              <span className="text-sm text-muted-foreground">{order.orderShipments?.length || 0} {translate('shipments')}</span>
             </CardHeader>
             <CardContent className="p-0">
               <Separator />
@@ -1149,8 +1153,8 @@ export default function VNextOrderDetail() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Reference</TableHead>
-                      <TableHead>Status</TableHead>
+                      <TableHead>{translate('Reference')}</TableHead>
+                      <TableHead>{translate('Status')}</TableHead>
                       <TableHead className="w-[120px]"></TableHead>
                     </TableRow>
                   </TableHeader>
@@ -1165,7 +1169,7 @@ export default function VNextOrderDetail() {
                           <Button asChild variant="ghost" size="sm">
                             <Link to={`/shipments/${os.shipment.id}`}>
                               <ExternalLink className="h-4 w-4" />
-                              View
+                              {translate('View')}
                             </Link>
                           </Button>
                         </TableCell>
@@ -1175,7 +1179,7 @@ export default function VNextOrderDetail() {
                 </Table>
               ) : (
                 <div className="px-6 py-12 text-center text-sm text-muted-foreground">
-                  No shipments linked
+                  {translate('No shipments linked')}
                 </div>
               )}
             </CardContent>
@@ -1206,7 +1210,7 @@ export default function VNextOrderDetail() {
             <Card>
               <CardContent className="flex flex-col items-center gap-2 py-12 text-muted-foreground">
                 <CircleAlert className="h-10 w-10 opacity-40" />
-                <p className="text-sm">No issues on this order.</p>
+                <p className="text-sm">{translate('No issues on this order.')}</p>
               </CardContent>
             </Card>
           )}
@@ -1215,7 +1219,7 @@ export default function VNextOrderDetail() {
         <TabsContent value="activity" className="mt-4">
           <Card>
             <CardHeader>
-              <CardTitle>Audit log</CardTitle>
+              <CardTitle>{translate('Audit log')}</CardTitle>
             </CardHeader>
             <CardContent>
               {order.auditLogs && order.auditLogs.length > 0 ? (
@@ -1224,7 +1228,7 @@ export default function VNextOrderDetail() {
                     <li key={log.id} className="relative">
                       <span className="absolute -left-[29px] top-1 flex h-3 w-3 items-center justify-center rounded-full bg-info ring-4 ring-background" />
                       <div className="text-xs text-muted-foreground">{formatDateTime(log.createdAt)}</div>
-                      <div className="mt-1 text-sm font-medium">{log.action || 'Action'}</div>
+                      <div className="mt-1 text-sm font-medium">{log.action || translate('Action')}</div>
                       {log.description && (
                         <div className="mt-0.5 text-sm text-muted-foreground">{log.description}</div>
                       )}
@@ -1238,7 +1242,7 @@ export default function VNextOrderDetail() {
                   ))}
                 </ol>
               ) : (
-                <p className="py-8 text-center text-sm text-muted-foreground">No activity recorded yet</p>
+                <p className="py-8 text-center text-sm text-muted-foreground">{translate('No activity recorded yet')}</p>
               )}
             </CardContent>
           </Card>

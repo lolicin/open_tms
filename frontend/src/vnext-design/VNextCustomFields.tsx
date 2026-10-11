@@ -37,6 +37,8 @@ import {
 } from '@/components/ui/table';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+import { t } from '@/i18n';
+
 interface CustomField {
   id?: string;
   fieldKey: string;
@@ -60,21 +62,21 @@ interface CustomFieldVersion {
 }
 
 const ENTITY_TYPES = [
-  { key: 'shipment', label: 'Shipment', Icon: Truck },
-  { key: 'order', label: 'Order', Icon: ScrollText },
-  { key: 'carrier', label: 'Carrier', Icon: Bus },
-  { key: 'customer', label: 'Customer', Icon: Users },
-  { key: 'location', label: 'Location', Icon: MapPin },
+  { key: 'shipment', label: t('Shipment'), Icon: Truck },
+  { key: 'order', label: t('Order'), Icon: ScrollText },
+  { key: 'carrier', label: t('Carrier'), Icon: Bus },
+  { key: 'customer', label: t('Customer'), Icon: Users },
+  { key: 'location', label: t('Location'), Icon: MapPin },
 ];
 
 const FIELD_TYPES = [
-  { value: 'text', label: 'Text' },
-  { value: 'decimal', label: 'Decimal' },
-  { value: 'integer', label: 'Integer' },
-  { value: 'date', label: 'Date' },
-  { value: 'boolean', label: 'Boolean' },
-  { value: 'list', label: 'List' },
-  { value: 'multi_list', label: 'Multi-List' },
+  { value: 'text', label: t('Text') },
+  { value: 'decimal', label: t('Decimal') },
+  { value: 'integer', label: t('Integer') },
+  { value: 'date', label: t('Date') },
+  { value: 'boolean', label: t('Boolean') },
+  { value: 'list', label: t('List') },
+  { value: 'multi_list', label: t('Multi-List') },
 ];
 
 const emptyField: CustomField = {
@@ -97,7 +99,7 @@ function Banner({ variant, message, onClose }: { variant: 'success' | 'error'; m
     <div className={`flex items-start justify-between gap-3 rounded-md border p-3 text-sm ${tone}`}>
       <span>{message}</span>
       {onClose && (
-        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">Dismiss</button>
+        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">{t('Dismiss')}</button>
       )}
     </div>
   );
@@ -175,7 +177,7 @@ export default function VNextCustomFields() {
     try {
       const body = {
         entityType: activeTab,
-        description: 'Updated fields',
+        description: t('Updated fields'),
         fields: fields.map((f, i) => ({
           fieldKey: f.fieldKey,
           label: f.label,
@@ -209,12 +211,12 @@ export default function VNextCustomFields() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Custom fields</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Define custom fields for each entity type</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Custom fields')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Define custom fields for each entity type')}</p>
         </div>
         <Button variant="gradient" onClick={saveVersion} disabled={saving}>
           <Save className="h-4 w-4" />
-          {saving ? 'Saving...' : 'Save version'}
+          {saving ? t('Saving...') : t('Save version')}
         </Button>
       </div>
 
@@ -241,36 +243,36 @@ export default function VNextCustomFields() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>
-                {ENTITY_TYPES.find(e => e.key === activeTab)?.label} fields
+                {ENTITY_TYPES.find(e => e.key === activeTab)?.label} {t('fields')}
                 {currentVersion && (
                   <span className="ml-2 text-sm font-normal text-muted-foreground">
-                    (Version {currentVersion.version})
-                  </span>
+                    {t('(Version')} {currentVersion.version})
+                                      </span>
                 )}
               </CardTitle>
               <Button variant="outline" onClick={() => { setShowAddField(true); setNewField({ ...emptyField, displayOrder: fields.length + 1 }); }}>
                 <Plus className="h-4 w-4" />
-                Add field
+                {t('Add field')}
               </Button>
             </CardHeader>
             <CardContent className="p-0">
               {fields.length === 0 ? (
                 <div className="flex flex-col items-center gap-2 py-12 text-center text-muted-foreground">
                   <Box className="h-8 w-8" />
-                  <h3 className="text-base font-medium">No custom fields defined</h3>
-                  <p className="text-sm">Add fields to extend this entity type.</p>
+                  <h3 className="text-base font-medium">{t('No custom fields defined')}</h3>
+                  <p className="text-sm">{t('Add fields to extend this entity type.')}</p>
                 </div>
               ) : (
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Field key</TableHead>
-                      <TableHead>Label</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Required</TableHead>
-                      <TableHead>Default value</TableHead>
-                      <TableHead>Order</TableHead>
-                      <TableHead className="w-20">Actions</TableHead>
+                      <TableHead>{t('Field key')}</TableHead>
+                      <TableHead>{t('Label')}</TableHead>
+                      <TableHead>{t('Type')}</TableHead>
+                      <TableHead>{t('Required')}</TableHead>
+                      <TableHead>{t('Default value')}</TableHead>
+                      <TableHead>{t('Order')}</TableHead>
+                      <TableHead className="w-20">{t('Actions')}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -306,20 +308,20 @@ export default function VNextCustomFields() {
           {showAddField && (
             <Card>
               <CardHeader>
-                <CardTitle>Add field</CardTitle>
+                <CardTitle>{t('Add field')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid gap-4 md:grid-cols-3">
                   <div className="space-y-2">
-                    <Label>Field key *</Label>
-                    <Input value={newField.fieldKey} onChange={e => setNewField(f => ({ ...f, fieldKey: e.target.value }))} placeholder="e.g. custom_weight" />
+                    <Label>{t('Field key *')}</Label>
+                    <Input value={newField.fieldKey} onChange={e => setNewField(f => ({ ...f, fieldKey: e.target.value }))} placeholder={t('e.g. custom_weight')} />
                   </div>
                   <div className="space-y-2">
-                    <Label>Label *</Label>
-                    <Input value={newField.label} onChange={e => setNewField(f => ({ ...f, label: e.target.value }))} placeholder="e.g. Custom Weight" />
+                    <Label>{t('Label *')}</Label>
+                    <Input value={newField.label} onChange={e => setNewField(f => ({ ...f, label: e.target.value }))} placeholder={t('e.g. Custom Weight')} />
                   </div>
                   <div className="space-y-2">
-                    <Label>Field type</Label>
+                    <Label>{t('Field type')}</Label>
                     <Select value={newField.fieldType} onValueChange={v => setNewField(f => ({ ...f, fieldType: v }))}>
                       <SelectTrigger>
                         <SelectValue />
@@ -332,15 +334,15 @@ export default function VNextCustomFields() {
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label>Description</Label>
-                    <Input value={newField.description} onChange={e => setNewField(f => ({ ...f, description: e.target.value }))} placeholder="Field description" />
+                    <Label>{t('Description')}</Label>
+                    <Input value={newField.description} onChange={e => setNewField(f => ({ ...f, description: e.target.value }))} placeholder={t('Field description')} />
                   </div>
                   <div className="space-y-2">
-                    <Label>Default value</Label>
-                    <Input value={newField.defaultValue} onChange={e => setNewField(f => ({ ...f, defaultValue: e.target.value }))} placeholder="Default value" />
+                    <Label>{t('Default value')}</Label>
+                    <Input value={newField.defaultValue} onChange={e => setNewField(f => ({ ...f, defaultValue: e.target.value }))} placeholder={t('Default value')} />
                   </div>
                   <div className="space-y-2">
-                    <Label>Display order</Label>
+                    <Label>{t('Display order')}</Label>
                     <Input
                       type="number"
                       value={newField.displayOrder}
@@ -355,15 +357,15 @@ export default function VNextCustomFields() {
                         onChange={e => setNewField(f => ({ ...f, required: e.target.checked }))}
                         className="h-4 w-4 rounded border border-input bg-background accent-primary"
                       />
-                      Required
+                      {t('Required')}
                     </label>
                   </div>
                 </div>
                 <div className="flex justify-end gap-2">
-                  <Button variant="outline" onClick={() => setShowAddField(false)}>Cancel</Button>
+                  <Button variant="outline" onClick={() => setShowAddField(false)}>{t('Cancel')}</Button>
                   <Button variant="gradient" onClick={addField}>
                     <Plus className="h-4 w-4" />
-                    Add field
+                    {t('Add field')}
                   </Button>
                 </div>
               </CardContent>
@@ -372,36 +374,36 @@ export default function VNextCustomFields() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Version history</CardTitle>
+              <CardTitle>{t('Version history')}</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
               {versions.length === 0 ? (
                 <div className="flex flex-col items-center gap-2 py-12 text-center text-muted-foreground">
                   <History className="h-8 w-8" />
-                  <h3 className="text-base font-medium">No version history</h3>
-                  <p className="text-sm">Versions will appear here after saving custom fields.</p>
+                  <h3 className="text-base font-medium">{t('No version history')}</h3>
+                  <p className="text-sm">{t('Versions will appear here after saving custom fields.')}</p>
                 </div>
               ) : (
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Version</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Fields</TableHead>
-                      <TableHead>Description</TableHead>
-                      <TableHead>Created</TableHead>
+                      <TableHead>{t('Version')}</TableHead>
+                      <TableHead>{t('Status')}</TableHead>
+                      <TableHead>{t('Fields')}</TableHead>
+                      <TableHead>{t('Description')}</TableHead>
+                      <TableHead>{t('Created')}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {versions.map(v => (
                       <TableRow key={v.id}>
-                        <TableCell className="font-medium">v{v.version}</TableCell>
+                        <TableCell className="font-medium">{t('v')}{v.version}</TableCell>
                         <TableCell>
                           <Badge variant={v.active ? 'success' : 'secondary'}>
-                            {v.active ? 'Active' : 'Previous'}
+                            {v.active ? t('Active') : t('Previous')}
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-sm text-muted-foreground">{v.fields?.length || 0} fields</TableCell>
+                        <TableCell className="text-sm text-muted-foreground">{v.fields?.length || 0} {t('fields')}</TableCell>
                         <TableCell className="text-sm text-muted-foreground">{v.description || ''}</TableCell>
                         <TableCell className="text-sm text-muted-foreground">
                           {v.createdAt ? new Date(v.createdAt).toLocaleString() : ''}

@@ -21,6 +21,8 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface MapsSettings {
   hasBrowserKey: boolean;
   maskedBrowserKey: string | null;
@@ -46,7 +48,7 @@ function Banner({ variant, message, onClose }: { variant: 'success' | 'error'; m
     <div className={`flex items-start justify-between gap-3 rounded-md border p-3 text-sm ${tone}`}>
       <span>{message}</span>
       {onClose && (
-        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">Dismiss</button>
+        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">{t('Dismiss')}</button>
       )}
     </div>
   );
@@ -119,7 +121,7 @@ export default function VNextMapsSettings() {
     return (
       <div className="flex items-center gap-2 p-6 text-sm text-muted-foreground">
         <Loader2 className="h-4 w-4 animate-spin" />
-        Loading map settings
+        {t('Loading map settings')}
       </div>
     );
   }
@@ -129,10 +131,11 @@ export default function VNextMapsSettings() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Map settings</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Map settings')}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Maps work with no configuration at all. Adding Google keys turns on the things
-          OpenStreetMap cannot do.
+          {t(
+            'Maps work with no configuration at all. Adding Google keys turns on the things\n          OpenStreetMap cannot do.'
+          )}
         </p>
       </div>
 
@@ -149,7 +152,7 @@ export default function VNextMapsSettings() {
               {settings.hasBrowserKey ? <MapIcon className="h-5 w-5" /> : <Globe className="h-5 w-5" />}
             </div>
             <div>
-              <div className="text-xs uppercase tracking-wide text-muted-foreground">Current mode</div>
+              <div className="text-xs uppercase tracking-wide text-muted-foreground">{t('Current mode')}</div>
               <div className="text-lg font-semibold">{mode}</div>
             </div>
           </CardContent>
@@ -164,15 +167,15 @@ export default function VNextMapsSettings() {
               <ServerCog className="h-5 w-5" />
             </div>
             <div>
-              <div className="text-xs uppercase tracking-wide text-muted-foreground">Server features</div>
-              <div className="text-lg font-semibold">{settings.hasServerKey ? 'Enabled' : 'Fallbacks in use'}</div>
+              <div className="text-xs uppercase tracking-wide text-muted-foreground">{t('Server features')}</div>
+              <div className="text-lg font-semibold">{settings.hasServerKey ? t('Enabled') : t('Fallbacks in use')}</div>
             </div>
           </CardContent>
         </Card>
       </div>
 
       <KeyCard
-        title="Browser key"
+        title={t('Browser key')}
         icon={<KeyRound className="h-4 w-4" />}
         field="googleMapsBrowserKey"
         hasKey={settings.hasBrowserKey}
@@ -185,7 +188,7 @@ export default function VNextMapsSettings() {
       />
 
       <KeyCard
-        title="Server key"
+        title={t('Server key')}
         icon={<ServerCog className="h-4 w-4" />}
         field="googleMapsServerKey"
         hasKey={settings.hasServerKey}
@@ -203,11 +206,11 @@ export default function VNextMapsSettings() {
           <div className="space-y-3 border-t border-border pt-4">
             <div className="flex items-center justify-between gap-3">
               <p className="text-xs text-muted-foreground">
-                Checks the server key against the Geocoding API.
+                {t('Checks the server key against the Geocoding API.')}
               </p>
               <Button variant="outline" size="sm" onClick={testServerKey} disabled={testing || !settings.hasServerKey}>
                 {testing ? <Loader2 className="h-4 w-4 animate-spin" /> : <FlaskConical className="h-4 w-4" />}
-                Test key
+                {t('Test key')}
               </Button>
             </div>
             {testResult && (
@@ -229,9 +232,9 @@ export default function VNextMapsSettings() {
         <CardContent className="flex items-start gap-3 p-4 text-sm text-muted-foreground">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-warning" />
           <p>
-            With no keys at all the product still works. Maps draw OpenStreetMap tiles, addresses
-            geocode through Nominatim, distances fall back to OpenRouteService and then to
-            straight-line maths, and lane routes are drawn by placing waypoints by hand.
+            {t(
+              'With no keys at all the product still works. Maps draw OpenStreetMap tiles, addresses\n            geocode through Nominatim, distances fall back to OpenRouteService and then to\n            straight-line maths, and lane routes are drawn by placing waypoints by hand.'
+            )}
           </p>
         </CardContent>
       </Card>
@@ -289,7 +292,7 @@ function KeyCard({
           {icon}
           {title}
         </CardTitle>
-        <Badge variant={hasKey ? 'success' : 'muted'}>{hasKey ? 'Configured' : 'Not set'}</Badge>
+        <Badge variant={hasKey ? 'success' : 'muted'}>{hasKey ? t('Configured') : t('Not set')}</Badge>
       </CardHeader>
       <CardContent className="space-y-4">
         <p className="text-sm text-muted-foreground">{summary}</p>
@@ -299,7 +302,7 @@ function KeyCard({
         </div>
 
         <div>
-          <p className="mb-2 text-xs uppercase tracking-wide text-muted-foreground">Turns on</p>
+          <p className="mb-2 text-xs uppercase tracking-wide text-muted-foreground">{t('Turns on')}</p>
           <ul className="space-y-1 text-sm">
             {unlocks.map((item) => (
               <li key={item} className="flex items-start gap-2">
@@ -316,7 +319,7 @@ function KeyCard({
             <div className="flex gap-2">
               <Button variant="outline" size="sm" onClick={() => setEditing(true)}>
                 <Pencil className="h-4 w-4" />
-                Replace
+                {t('Replace')}
               </Button>
               <Button
                 variant="outline"
@@ -324,29 +327,29 @@ function KeyCard({
                 className="text-destructive hover:text-destructive"
                 onClick={() => onSave(field, '').catch((e) => onError(e.message))}
               >
-                Remove
+                {t('Remove')}
               </Button>
             </div>
           </div>
         ) : (
           <div className="space-y-2">
-            <Label htmlFor={inputId}>{hasKey ? 'New key' : 'Key'}</Label>
+            <Label htmlFor={inputId}>{hasKey ? t('New key') : t('Key')}</Label>
             <div className="flex gap-2">
               <Input
                 id={inputId}
                 type="password"
                 autoComplete="off"
-                placeholder="AIza..."
+                placeholder={t('AIza...')}
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
               />
               <Button size="sm" onClick={save} disabled={saving || !value.trim()}>
                 {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-                Save
+                {t('Save')}
               </Button>
               {editing && (
                 <Button variant="outline" size="sm" onClick={() => { setEditing(false); setValue(''); }}>
-                  Cancel
+                  {t('Cancel')}
                 </Button>
               )}
             </div>

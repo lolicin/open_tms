@@ -10,6 +10,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
+import { t } from '@/i18n';
+
 interface Issue {
   id: string;
   title: string;
@@ -91,15 +93,15 @@ export default function CustomerIssueDetail() {
       });
       const json = await res.json();
       if (!res.ok || json.error) {
-        toast.error('Failed to post comment', { description: json.error || `HTTP ${res.status}` });
+        toast.error(t('Failed to post comment'), { description: json.error || `HTTP ${res.status}` });
         setPosting(false);
         return;
       }
       setBody('');
       await loadComments();
-      toast.success('Comment added');
+      toast.success(t('Comment added'));
     } catch (err: any) {
-      toast.error('Failed to post comment', { description: err?.message || 'Network error' });
+      toast.error(t('Failed to post comment'), { description: err?.message || 'Network error' });
     } finally {
       setPosting(false);
     }
@@ -115,7 +117,7 @@ export default function CustomerIssueDetail() {
   if (!issue) {
     return (
       <div className="rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-        Issue not found
+        {t('Issue not found')}
       </div>
     );
   }
@@ -125,7 +127,7 @@ export default function CustomerIssueDetail() {
       <div>
         <Button variant="ghost" size="sm" onClick={() => navigate('/customer-portal/issues')}>
           <ArrowLeft className="h-4 w-4" />
-          Issues
+          {t('Issues')}
         </Button>
       </div>
 
@@ -139,7 +141,7 @@ export default function CustomerIssueDetail() {
       {issue.description && (
         <Card>
           <CardHeader>
-            <CardTitle>Description</CardTitle>
+            <CardTitle>{t('Description')}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="whitespace-pre-wrap text-sm">{issue.description}</p>
@@ -150,7 +152,7 @@ export default function CustomerIssueDetail() {
       {issue.resolution && (
         <Card>
           <CardHeader>
-            <CardTitle>Resolution</CardTitle>
+            <CardTitle>{t('Resolution')}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="whitespace-pre-wrap text-sm">{issue.resolution}</p>
@@ -162,13 +164,13 @@ export default function CustomerIssueDetail() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MessageSquare className="h-5 w-5" />
-            Comments ({comments.length})
-          </CardTitle>
+            {t('Comments (')}{comments.length})
+                      </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {comments.length === 0 ? (
             <div className="py-6 text-center text-sm text-muted-foreground">
-              No comments yet. Be the first to add one.
+              {t('No comments yet. Be the first to add one.')}
             </div>
           ) : (
             <div className="space-y-3">
@@ -180,7 +182,7 @@ export default function CustomerIssueDetail() {
                   <div className="flex items-center justify-between gap-3">
                     <div className="text-sm font-semibold">{c.authorName}</div>
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Badge variant="muted">{c.authorType === 'customer' ? 'You' : 'Team'}</Badge>
+                      <Badge variant="muted">{c.authorType === 'customer' ? t('You') : t('Team')}</Badge>
                       <span>{new Date(c.createdAt).toLocaleString()}</span>
                     </div>
                   </div>
@@ -197,13 +199,13 @@ export default function CustomerIssueDetail() {
               className={TEXTAREA_CLASS}
               value={body}
               onChange={e => setBody(e.target.value)}
-              placeholder="Add a comment..."
+              placeholder={t('Add a comment...')}
               disabled={posting}
             />
             <div className="flex justify-end">
               <Button type="submit" disabled={posting || !body.trim()}>
                 {posting ? <Loader2 className="h-4 w-4 animate-spin" /> : <MessageSquare className="h-4 w-4" />}
-                {posting ? 'Posting...' : 'Post comment'}
+                {posting ? t('Posting...') : t('Post comment')}
               </Button>
             </div>
           </form>

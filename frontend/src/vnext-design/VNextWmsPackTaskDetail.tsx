@@ -16,6 +16,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface PackLineDetail {
   id: string;
   sku: string;
@@ -135,7 +137,7 @@ export default function VNextWmsPackTaskDetail() {
     return (
       <div className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
         <CircleAlert className="h-5 w-5" />
-        {error || 'Not found'}
+        {error || t('Not found')}
       </div>
     );
   }
@@ -148,18 +150,18 @@ export default function VNextWmsPackTaskDetail() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/wms/packing" className="hover:text-foreground">
-          <ArrowLeft className="inline h-4 w-4" /> Packing
+          <ArrowLeft className="inline h-4 w-4" /> {t('Packing')}
         </Link>
         <ChevronRight className="h-3 w-3" />
         <span>{task.id.slice(0, 8)}</span>
       </div>
 
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Pack Task</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Pack Task')}</h1>
         <div className="mt-2 flex flex-wrap items-center gap-2">
           <span className="font-mono text-sm font-semibold">{task.id.slice(0, 8)}</span>
           <Badge variant={statusVariant(task.status)}>{formatStatus(task.status)}</Badge>
-          {task.packStationBin && <span className="text-sm text-muted-foreground">Station: {task.packStationBin.label}</span>}
+          {task.packStationBin && <span className="text-sm text-muted-foreground">{t('Station:')} {task.packStationBin.label}</span>}
         </div>
       </div>
 
@@ -173,8 +175,8 @@ export default function VNextWmsPackTaskDetail() {
       <Card>
         <CardContent className="p-5">
           <div className="mb-2 flex justify-between text-sm">
-            <span className="font-semibold">Verification Progress</span>
-            <span className="text-muted-foreground">{packedLines}/{totalLines} items</span>
+            <span className="font-semibold">{t('Verification Progress')}</span>
+            <span className="text-muted-foreground">{packedLines}/{totalLines} {t('items')}</span>
           </div>
           <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
             <div
@@ -190,7 +192,7 @@ export default function VNextWmsPackTaskDetail() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Package className="h-4 w-4" />
-              Carton Recommendation
+              {t('Carton Recommendation')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -200,11 +202,11 @@ export default function VNextWmsPackTaskDetail() {
                   <div className="rounded-md border-2 border-primary bg-muted px-5 py-3">
                     <div className="text-lg font-bold text-primary">{cartonResult.recommended.cartonName}</div>
                     <div className="text-xs text-muted-foreground">
-                      {cartonResult.recommended.lengthMm} x {cartonResult.recommended.widthMm} x {cartonResult.recommended.heightMm} mm
+                      {cartonResult.recommended.lengthMm} {t('x')} {cartonResult.recommended.widthMm} {t('x')} {cartonResult.recommended.heightMm} {t('mm')}
                     </div>
                   </div>
                   <div>
-                    <div className="text-xs text-muted-foreground">Volume utilization</div>
+                    <div className="text-xs text-muted-foreground">{t('Volume utilization')}</div>
                     <div className="flex items-center gap-2">
                       <div className="h-2 w-20 overflow-hidden rounded-full bg-muted">
                         <div
@@ -216,7 +218,7 @@ export default function VNextWmsPackTaskDetail() {
                     </div>
                   </div>
                   <div>
-                    <div className="text-xs text-muted-foreground">Weight utilization</div>
+                    <div className="text-xs text-muted-foreground">{t('Weight utilization')}</div>
                     <div className="flex items-center gap-2">
                       <div className="h-2 w-20 overflow-hidden rounded-full bg-muted">
                         <div
@@ -229,24 +231,24 @@ export default function VNextWmsPackTaskDetail() {
                   </div>
                   {cartonResult.recommended.unitCostCents != null && (
                     <div>
-                      <div className="text-xs text-muted-foreground">Cost</div>
+                      <div className="text-xs text-muted-foreground">{t('Cost')}</div>
                       <div className="text-sm font-medium">${(cartonResult.recommended.unitCostCents / 100).toFixed(2)}</div>
                     </div>
                   )}
                 </div>
                 {cartonResult.alternatives.length > 0 && (
                   <div className="mt-3 text-xs text-muted-foreground">
-                    Alternatives: {cartonResult.alternatives.map(a => `${a.cartonName} (${a.volumeUtilization}% vol)`).join(', ')}
+                    {t('Alternatives:')} {cartonResult.alternatives.map(a => `${a.cartonName} (${a.volumeUtilization}% vol)`).join(', ')}
                   </div>
                 )}
               </div>
             ) : cartonLoading ? (
-              <div className="text-sm text-muted-foreground">Loading recommendation...</div>
+              <div className="text-sm text-muted-foreground">{t('Loading recommendation...')}</div>
             ) : (
               <div className="text-sm text-muted-foreground">
                 {cartonResult.itemsMissingDimensions.length > 0
                   ? `Cannot recommend - missing dimensions for: ${cartonResult.itemsMissingDimensions.join(', ')}`
-                  : 'No suitable carton found in catalogue'}
+                  : t('No suitable carton found in catalogue')}
               </div>
             )}
           </CardContent>
@@ -255,16 +257,16 @@ export default function VNextWmsPackTaskDetail() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Items to Verify &amp; Pack</CardTitle>
+          <CardTitle>{t('Items to Verify & Pack')}</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>SKU</TableHead>
-                <TableHead>Expected</TableHead>
-                <TableHead>Packed</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{t('SKU')}</TableHead>
+                <TableHead>{t('Expected')}</TableHead>
+                <TableHead>{t('Packed')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
                 {isActive && <TableHead></TableHead>}
               </TableRow>
             </TableHeader>
@@ -284,7 +286,7 @@ export default function VNextWmsPackTaskDetail() {
                       {line.status === 'pending' && (
                         <Button variant="gradient" size="sm" disabled={packing} onClick={() => handlePackLine(line.id, line.expectedQuantity)}>
                           <Check className="h-4 w-4" />
-                          Verify &amp; Pack
+                          {t('Verify & Pack')}
                         </Button>
                       )}
                     </TableCell>

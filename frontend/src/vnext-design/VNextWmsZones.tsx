@@ -26,6 +26,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t as translate } from '@/i18n';
+
 interface WarehouseZone {
   id: string;
   locationId: string;
@@ -128,20 +130,20 @@ export default function VNextWmsZones() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Zones &amp; Bins</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Manage warehouse location hierarchy</p>
+          <h1 className="text-3xl font-bold tracking-tight">{translate('Zones & Bins')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{translate('Manage warehouse location hierarchy')}</p>
         </div>
         <div className="flex gap-2">
           {tab === 'zones' && (
             <Button variant="gradient" onClick={() => navigate('/wms/zones/create')}>
               <Plus className="h-4 w-4" />
-              Add Zone
+              {translate('Add Zone')}
             </Button>
           )}
           {tab === 'bins' && (
             <Button variant="gradient" onClick={() => navigate('/wms/bins/create')}>
               <Plus className="h-4 w-4" />
-              Add Bin
+              {translate('Add Bin')}
             </Button>
           )}
         </div>
@@ -151,11 +153,11 @@ export default function VNextWmsZones() {
         <TabsList>
           <TabsTrigger value="zones">
             <Grid3x3 className="h-4 w-4" />
-            Zones
+            {translate('Zones')}
           </TabsTrigger>
           <TabsTrigger value="bins">
             <Boxes className="h-4 w-4" />
-            Bins
+            {translate('Bins')}
           </TabsTrigger>
         </TabsList>
       </Tabs>
@@ -179,12 +181,14 @@ export default function VNextWmsZones() {
           <Card>
             <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
               <Grid3x3 className="h-12 w-12 text-muted-foreground" />
-              <h3 className="text-base font-medium">No zones configured</h3>
+              <h3 className="text-base font-medium">{translate('No zones configured')}</h3>
               <p className="text-sm text-muted-foreground">
-                Set up warehouse zones to define receiving docks, storage areas, pick faces, and staging areas.
+                {translate(
+                  'Set up warehouse zones to define receiving docks, storage areas, pick faces, and staging areas.'
+                )}
               </p>
               <Button variant="gradient" onClick={() => navigate('/wms/zones/create')}>
-                Create First Zone
+                {translate('Create First Zone')}
               </Button>
             </CardContent>
           </Card>
@@ -193,12 +197,12 @@ export default function VNextWmsZones() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Temperature</TableHead>
-                  <TableHead>Hazmat</TableHead>
-                  <TableHead>Bins</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>{translate('Name')}</TableHead>
+                  <TableHead>{translate('Type')}</TableHead>
+                  <TableHead>{translate('Temperature')}</TableHead>
+                  <TableHead>{translate('Hazmat')}</TableHead>
+                  <TableHead>{translate('Bins')}</TableHead>
+                  <TableHead>{translate('Status')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -213,11 +217,11 @@ export default function VNextWmsZones() {
                       <Badge variant={zoneTypeVariant(zone.zoneType)}>{formatZoneType(zone.zoneType)}</Badge>
                     </TableCell>
                     <TableCell>{zone.temperatureZone ? formatZoneType(zone.temperatureZone) : '-'}</TableCell>
-                    <TableCell>{zone.hazmatCertified ? 'Yes' : 'No'}</TableCell>
+                    <TableCell>{zone.hazmatCertified ? translate('Yes') : translate('No')}</TableCell>
                     <TableCell>{zone.binCount}</TableCell>
                     <TableCell>
                       <Badge variant={zone.active ? 'success' : 'muted'}>
-                        {zone.active ? 'Active' : 'Inactive'}
+                        {zone.active ? translate('Active') : translate('Inactive')}
                       </Badge>
                     </TableCell>
                   </TableRow>
@@ -231,9 +235,11 @@ export default function VNextWmsZones() {
           <Card>
             <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
               <Boxes className="h-12 w-12 text-muted-foreground" />
-              <h3 className="text-base font-medium">No bins configured</h3>
+              <h3 className="text-base font-medium">{translate('No bins configured')}</h3>
               <p className="text-sm text-muted-foreground">
-                Bins are individual storage locations within zones. Create zones first, then add bins.
+                {translate(
+                  'Bins are individual storage locations within zones. Create zones first, then add bins.'
+                )}
               </p>
             </CardContent>
           </Card>
@@ -242,13 +248,13 @@ export default function VNextWmsZones() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Label</TableHead>
-                  <TableHead>Zone</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Level</TableHead>
-                  <TableHead>Walk Seq</TableHead>
-                  <TableHead>Utilization</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>{translate('Label')}</TableHead>
+                  <TableHead>{translate('Zone')}</TableHead>
+                  <TableHead>{translate('Type')}</TableHead>
+                  <TableHead>{translate('Level')}</TableHead>
+                  <TableHead>{translate('Walk Seq')}</TableHead>
+                  <TableHead>{translate('Utilization')}</TableHead>
+                  <TableHead>{translate('Status')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -268,7 +274,7 @@ export default function VNextWmsZones() {
                     </TableCell>
                     <TableCell>
                       <Badge variant={bin.active ? 'success' : 'muted'}>
-                        {bin.active ? 'Active' : 'Inactive'}
+                        {bin.active ? translate('Active') : translate('Inactive')}
                       </Badge>
                     </TableCell>
                   </TableRow>

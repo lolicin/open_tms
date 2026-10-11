@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface LogoProps {
   variant?: 'default' | 'mono-light' | 'mono-dark';
   size?: 'sm' | 'md' | 'lg';
@@ -75,7 +77,7 @@ export function Logo({
         <span className={cn(dims.text, wordmarkColor, 'leading-none')}>
           {wordmark ?? (
             <>
-              Open <span className={tmsColor}>TMS</span>
+              {t('Open')} <span className={tmsColor}>{t('TMS')}</span>
             </>
           )}
         </span>

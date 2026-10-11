@@ -41,6 +41,8 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface Checklist {
   id: string;
   title: string;
@@ -281,22 +283,22 @@ export default function VNextQualitySopAudits() {
   }, {} as Record<string, ChecklistItem[]>) || {};
 
   const statTiles = [
-    { label: 'Total audits', value: stats.total, icon: FileCheck, tone: 'bg-primary/10 text-primary' },
-    { label: 'Completed', value: stats.completed, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
-    { label: 'Failed', value: stats.failed, icon: XCircle, tone: 'bg-destructive/10 text-destructive' },
-    { label: 'Avg score', value: stats.avgScore != null ? `${stats.avgScore}%` : 'N/A', icon: Gauge, tone: 'bg-info/15 text-info' },
+    { label: t('Total audits'), value: stats.total, icon: FileCheck, tone: 'bg-primary/10 text-primary' },
+    { label: t('Completed'), value: stats.completed, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
+    { label: t('Failed'), value: stats.failed, icon: XCircle, tone: 'bg-destructive/10 text-destructive' },
+    { label: t('Avg score'), value: stats.avgScore != null ? `${stats.avgScore}%` : 'N/A', icon: Gauge, tone: 'bg-info/15 text-info' },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">GDP audits</h1>
-          <p className="mt-1 text-sm text-muted-foreground">SOP compliance audits and GDP reviews</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('GDP audits')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('SOP compliance audits and GDP reviews')}</p>
         </div>
         <Button variant="gradient" onClick={() => setShowStart(true)}>
           <Plus className="h-4 w-4" />
-          Start new audit
+          {t('Start new audit')}
         </Button>
       </div>
 
@@ -322,16 +324,16 @@ export default function VNextQualitySopAudits() {
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All statuses</SelectItem>
-              <SelectItem value="in_progress">In progress</SelectItem>
-              <SelectItem value="completed">Completed</SelectItem>
-              <SelectItem value="failed">Failed</SelectItem>
+              <SelectItem value="all">{t('All statuses')}</SelectItem>
+              <SelectItem value="in_progress">{t('In progress')}</SelectItem>
+              <SelectItem value="completed">{t('Completed')}</SelectItem>
+              <SelectItem value="failed">{t('Failed')}</SelectItem>
             </SelectContent>
           </Select>
           <Select value={checklistFilter} onValueChange={setChecklistFilter}>
             <SelectTrigger className="w-[240px]"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All checklists</SelectItem>
+              <SelectItem value="all">{t('All checklists')}</SelectItem>
               {checklists.map(c => <SelectItem key={c.id} value={c.id}>{c.title}</SelectItem>)}
             </SelectContent>
           </Select>
@@ -347,12 +349,12 @@ export default function VNextQualitySopAudits() {
               <div className="mt-2 flex gap-2">
                 <Badge variant={STATUS_VARIANT[detail.status] || 'muted'}>{detail.status.replace(/_/g, ' ')}</Badge>
                 <Badge variant={CATEGORY_VARIANT[detail.checklist.category] || 'muted'}>{detail.checklist.category.replace(/_/g, ' ')}</Badge>
-                {detail.score != null && <Badge variant="default">{Math.round(detail.score)}% score</Badge>}
+                {detail.score != null && <Badge variant="default">{Math.round(detail.score)}{t('% score')}</Badge>}
               </div>
             </div>
             <Button variant="outline" onClick={() => setDetail(null)}>
               <X className="h-4 w-4" />
-              Close
+              {t('Close')}
             </Button>
           </div>
 
@@ -376,8 +378,8 @@ export default function VNextQualitySopAudits() {
                             {item.question}
                           </p>
                           {item.guidance && <p className="mt-1 text-xs text-muted-foreground">{item.guidance}</p>}
-                          {item.isCritical && <span className="text-[10px] text-destructive">Critical - failure will fail the entire audit</span>}
-                          {item.evidenceRequired && <span className="block text-[10px] text-warning">Evidence required</span>}
+                          {item.isCritical && <span className="text-[10px] text-destructive">{t('Critical - failure will fail the entire audit')}</span>}
+                          {item.evidenceRequired && <span className="block text-[10px] text-warning">{t('Evidence required')}</span>}
                         </div>
                         <div className="flex gap-1">
                           {(['pass', 'fail', 'na', 'observation'] as const).map(r => (
@@ -391,7 +393,7 @@ export default function VNextQualitySopAudits() {
                               }
                               onClick={() => setResponse(item.id, 'result', r)}
                             >
-                              {r === 'na' ? 'N/A' : r.charAt(0).toUpperCase() + r.slice(1)}
+                              {r === 'na' ? t('N/A') : r.charAt(0).toUpperCase() + r.slice(1)}
                             </Button>
                           ))}
                         </div>
@@ -400,7 +402,7 @@ export default function VNextQualitySopAudits() {
                       {responses[item.id]?.result && (
                         <textarea
                           rows={2}
-                          placeholder="Notes..."
+                          placeholder={t('Notes...')}
                           value={responses[item.id]?.notes || ''}
                           onChange={e => setResponse(item.id, 'notes', e.target.value)}
                           className="mt-2 w-full rounded-md border border-input bg-background px-3 py-2 text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -410,7 +412,7 @@ export default function VNextQualitySopAudits() {
                       {(responses[item.id]?.result === 'fail' || responses[item.id]?.result === 'observation') && (
                         <textarea
                           rows={2}
-                          placeholder="Corrective action required..."
+                          placeholder={t('Corrective action required...')}
                           value={responses[item.id]?.correctiveAction || ''}
                           onChange={e => setResponse(item.id, 'correctiveAction', e.target.value)}
                           className="mt-2 w-full rounded-md border border-warning bg-background px-3 py-2 text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -422,7 +424,7 @@ export default function VNextQualitySopAudits() {
                           {responses[item.id]?.evidenceRef ? (
                             <div className="flex items-center gap-2 text-xs text-success">
                               <CheckCircle2 className="h-4 w-4" />
-                              {evidenceFiles[item.id]?.fileName || 'Evidence uploaded'}
+                              {evidenceFiles[item.id]?.fileName || t('Evidence uploaded')}
                               <Button
                                 size="sm"
                                 variant="outline"
@@ -435,13 +437,13 @@ export default function VNextQualitySopAudits() {
                                   });
                                 }}
                               >
-                                Remove
+                                {t('Remove')}
                               </Button>
                             </div>
                           ) : (
                             <label className="inline-flex cursor-pointer items-center gap-2 text-xs text-muted-foreground">
                               <Upload className="h-4 w-4" />
-                              {uploadingItem === item.id ? 'Uploading...' : (item.evidenceRequired ? 'Upload evidence (required)' : 'Upload evidence')}
+                              {uploadingItem === item.id ? t('Uploading...') : (item.evidenceRequired ? 'Upload evidence (required)' : 'Upload evidence')}
                               <input
                                 type="file"
                                 className="hidden"
@@ -463,29 +465,29 @@ export default function VNextQualitySopAudits() {
 
               <div className="grid gap-3 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>Overall findings</Label>
+                  <Label>{t('Overall findings')}</Label>
                   <textarea
                     rows={3}
                     value={completingFindings}
                     onChange={e => setCompletingFindings(e.target.value)}
-                    placeholder="Summarize audit findings..."
+                    placeholder={t('Summarize audit findings...')}
                     className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Corrective actions required</Label>
+                  <Label>{t('Corrective actions required')}</Label>
                   <textarea
                     rows={3}
                     value={completingCorrectiveActions}
                     onChange={e => setCompletingCorrectiveActions(e.target.value)}
-                    placeholder="List corrective actions needed from this audit..."
+                    placeholder={t('List corrective actions needed from this audit...')}
                     className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   />
                 </div>
               </div>
 
               <Button variant="gradient" onClick={completeAudit} disabled={submitting}>
-                {submitting ? 'Submitting...' : 'Submit audit'}
+                {submitting ? t('Submitting...') : t('Submit audit')}
               </Button>
             </div>
           ) : (
@@ -493,25 +495,25 @@ export default function VNextQualitySopAudits() {
               <div className="grid grid-cols-3 gap-4">
                 <Card className="p-4 text-center">
                   <div className="text-3xl font-bold text-success">{detail.passCount}</div>
-                  <div className="text-xs text-muted-foreground">Passed</div>
+                  <div className="text-xs text-muted-foreground">{t('Passed')}</div>
                 </Card>
                 <Card className="p-4 text-center">
                   <div className="text-3xl font-bold text-destructive">{detail.failCount}</div>
-                  <div className="text-xs text-muted-foreground">Failed</div>
+                  <div className="text-xs text-muted-foreground">{t('Failed')}</div>
                 </Card>
                 <Card className="p-4 text-center">
                   <div className="text-3xl font-bold text-muted-foreground">{detail.naCount}</div>
-                  <div className="text-xs text-muted-foreground">N/A</div>
+                  <div className="text-xs text-muted-foreground">{t('N/A')}</div>
                 </Card>
               </div>
               {detail.findings && (
                 <div className="rounded-md border border-info/30 bg-info/10 p-3 text-sm text-info">
-                  <strong>Findings:</strong> {detail.findings}
+                  <strong>{t('Findings:')}</strong> {detail.findings}
                 </div>
               )}
               {detail.correctiveActions && (
                 <div className="rounded-md border border-warning/30 bg-warning/10 p-3 text-sm text-warning">
-                  <strong>Corrective actions:</strong> {detail.correctiveActions}
+                  <strong>{t('Corrective actions:')}</strong> {detail.correctiveActions}
                 </div>
               )}
             </div>
@@ -520,23 +522,23 @@ export default function VNextQualitySopAudits() {
       ) : (
         <Card>
           {loading ? (
-            <div className="py-12 text-center text-muted-foreground">Loading...</div>
+            <div className="py-12 text-center text-muted-foreground">{t('Loading...')}</div>
           ) : audits.length === 0 ? (
             <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
               <ClipboardCheck className="h-10 w-10 opacity-40" />
-              No audits found. Start a new audit to begin.
+              {t('No audits found. Start a new audit to begin.')}
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Audit #</TableHead>
-                  <TableHead>Checklist</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Score</TableHead>
-                  <TableHead>Auditor</TableHead>
-                  <TableHead>Date</TableHead>
+                  <TableHead>{t('Audit #')}</TableHead>
+                  <TableHead>{t('Checklist')}</TableHead>
+                  <TableHead>{t('Category')}</TableHead>
+                  <TableHead>{t('Status')}</TableHead>
+                  <TableHead>{t('Score')}</TableHead>
+                  <TableHead>{t('Auditor')}</TableHead>
+                  <TableHead>{t('Date')}</TableHead>
                   <TableHead className="w-[80px]"></TableHead>
                 </TableRow>
               </TableHeader>
@@ -567,7 +569,7 @@ export default function VNextQualitySopAudits() {
                     <TableCell className="text-sm text-muted-foreground">{formatDate(a.auditDate)}</TableCell>
                     <TableCell>
                       <Button size="sm" variant="outline" onClick={() => openDetail(a.id)}>
-                        {a.status === 'in_progress' ? 'Continue' : 'View'}
+                        {a.status === 'in_progress' ? t('Continue') : t('View')}
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -580,25 +582,25 @@ export default function VNextQualitySopAudits() {
 
       <Dialog open={showStart} onOpenChange={setShowStart}>
         <DialogContent className="max-w-md">
-          <DialogHeader><DialogTitle>Start new audit</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{t('Start new audit')}</DialogTitle></DialogHeader>
           <div className="space-y-3">
             <div className="space-y-2">
-              <Label>Checklist *</Label>
+              <Label>{t('Checklist *')}</Label>
               <Select value={startChecklistId} onValueChange={setStartChecklistId}>
-                <SelectTrigger><SelectValue placeholder="Select a checklist..." /></SelectTrigger>
+                <SelectTrigger><SelectValue placeholder={t('Select a checklist...')} /></SelectTrigger>
                 <SelectContent>
                   {checklists.map(c => <SelectItem key={c.id} value={c.id}>{c.title} ({c.category})</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>Auditor name</Label>
-              <Input value={startAuditorName} onChange={e => setStartAuditorName(e.target.value)} placeholder="Who is performing this audit?" />
+              <Label>{t('Auditor name')}</Label>
+              <Input value={startAuditorName} onChange={e => setStartAuditorName(e.target.value)} placeholder={t('Who is performing this audit?')} />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowStart(false)}>Cancel</Button>
-            <Button variant="gradient" onClick={startAudit} disabled={!startChecklistId}>Start audit</Button>
+            <Button variant="outline" onClick={() => setShowStart(false)}>{t('Cancel')}</Button>
+            <Button variant="gradient" onClick={startAudit} disabled={!startChecklistId}>{t('Start audit')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

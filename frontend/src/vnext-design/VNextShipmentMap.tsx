@@ -38,6 +38,8 @@ import { cn } from '@/lib/utils';
 import { keepMapSized, worldBoundsMapOptions, capWorldZoomOut, addBaseTileLayer } from '../lib/leafletMap';
 import { getLocationTypeMeta } from './locationTypesMeta';
 
+import { t } from '@/i18n';
+
 // Fix for default markers in Leaflet with Vite
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -723,7 +725,7 @@ export default function VNextShipmentMap() {
                 onClick={() => setStatusFilter([])}
                 className="rounded-full px-2 py-0.5 text-xs text-destructive"
               >
-                Clear
+                {t('Clear')}
               </button>
             )}
           </div>
@@ -737,7 +739,7 @@ export default function VNextShipmentMap() {
             onClick={() => setShowRoutes(prev => !prev)}
           >
             <Route className="h-4 w-4" />
-            Routes
+            {t('Routes')}
           </Button>
         )}
 
@@ -748,7 +750,7 @@ export default function VNextShipmentMap() {
           onClick={() => setShowLocations(prev => !prev)}
         >
           <Warehouse className="h-4 w-4" />
-          Locations
+          {t('Locations')}
         </Button>
 
         {/* Issue/SLA overlay toggle */}
@@ -758,14 +760,14 @@ export default function VNextShipmentMap() {
           onClick={() => setShowIssues(prev => !prev)}
         >
           {showIssues ? <Bell className="h-4 w-4" /> : <BellOff className="h-4 w-4" />}
-          Issues{issueCount > 0 && showIssues ? ` (${issueCount})` : ''}
+          {t('Issues')}{issueCount > 0 && showIssues ? ` (${issueCount})` : ''}
         </Button>
 
         {/* Right side: controls + stats */}
         <div className="ml-auto flex items-center gap-2 text-sm text-muted-foreground">
           {loading && <Loader2 className="h-4 w-4 animate-spin" />}
           {!loading && (
-            <span>{total.toLocaleString()} {entityType}{truncated ? ' (limited)' : ''}</span>
+            <span>{total.toLocaleString()} {entityType}{truncated ? t(' (limited)') : ''}</span>
           )}
           {lastRefresh && !loading && (
             <span className="text-xs opacity-70">{lastRefresh.toLocaleTimeString()}</span>
@@ -781,7 +783,7 @@ export default function VNextShipmentMap() {
             title={autoRefresh ? 'Stop auto-refresh (30s)' : 'Start auto-refresh (30s)'}
           >
             {autoRefresh ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
-            {autoRefresh ? 'Live' : 'Auto'}
+            {autoRefresh ? t('Live') : t('Auto')}
           </Button>
 
           <Button
@@ -801,30 +803,30 @@ export default function VNextShipmentMap() {
       {/* Legend */}
       {entityType === 'shipments' && (
         <div className="absolute bottom-6 right-6 z-[1000] rounded-md border border-border bg-card/95 p-3 text-xs shadow-lg backdrop-blur">
-          <div className="mb-1.5 font-semibold">Legend</div>
-          <LegendItem color={COLOR_INFO} label="In Progress" Icon={Truck} />
-          <LegendItem color={COLOR_SUCCESS} label="Complete" Icon={CheckCircle2} />
-          <LegendItem color={COLOR_DESTRUCTIVE} label="Exception" Icon={AlertTriangle} />
-          <LegendItem color={COLOR_MUTED} label="Draft / Other" Icon={Edit3} />
+          <div className="mb-1.5 font-semibold">{t('Legend')}</div>
+          <LegendItem color={COLOR_INFO} label={t('In Progress')} Icon={Truck} />
+          <LegendItem color={COLOR_SUCCESS} label={t('Complete')} Icon={CheckCircle2} />
+          <LegendItem color={COLOR_DESTRUCTIVE} label={t('Exception')} Icon={AlertTriangle} />
+          <LegendItem color={COLOR_MUTED} label={t('Draft / Other')} Icon={Edit3} />
           {showRoutes && (
             <>
               <div className="mt-1 flex items-center gap-1.5">
                 <div className="h-0.5 w-4 bg-info" />
-                <span className="text-muted-foreground">Traveled</span>
+                <span className="text-muted-foreground">{t('Traveled')}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="h-0.5 w-4 border-t-2 border-dashed border-info opacity-60" />
-                <span className="text-muted-foreground">Remaining</span>
+                <span className="text-muted-foreground">{t('Remaining')}</span>
               </div>
             </>
           )}
-          {showLocations && <LegendItem color={COLOR_PRIMARY} label="Location" Icon={Warehouse} />}
+          {showLocations && <LegendItem color={COLOR_PRIMARY} label={t('Location')} Icon={Warehouse} />}
           {showIssues && (
             <>
-              <div className="mt-1.5 border-t border-border pt-1.5 font-semibold">Issues / SLA</div>
-              <LegendItem color={COLOR_DESTRUCTIVE} label="SLA Breached" Icon={AlertTriangle} />
-              <LegendItem color={COLOR_WARNING} label="SLA Warning" Icon={AlertTriangle} />
-              <LegendItem color={COLOR_INFO} label="Open Issue" Icon={Bug} />
+              <div className="mt-1.5 border-t border-border pt-1.5 font-semibold">{t('Issues / SLA')}</div>
+              <LegendItem color={COLOR_DESTRUCTIVE} label={t('SLA Breached')} Icon={AlertTriangle} />
+              <LegendItem color={COLOR_WARNING} label={t('SLA Warning')} Icon={AlertTriangle} />
+              <LegendItem color={COLOR_INFO} label={t('Open Issue')} Icon={Bug} />
             </>
           )}
         </div>

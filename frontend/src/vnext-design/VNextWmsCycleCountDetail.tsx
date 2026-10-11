@@ -26,6 +26,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface CycleCountLine {
   id: string;
   binId: string;
@@ -123,7 +125,7 @@ export default function VNextWmsCycleCountDetail() {
     return (
       <div className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
         <CircleAlert className="h-5 w-5" />
-        {error || 'Not found'}
+        {error || t('Not found')}
       </div>
     );
   }
@@ -134,14 +136,14 @@ export default function VNextWmsCycleCountDetail() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/wms/cycle-counts" className="hover:text-foreground">
-          <ArrowLeft className="inline h-4 w-4" /> Cycle Counts
+          <ArrowLeft className="inline h-4 w-4" /> {t('Cycle Counts')}
         </Link>
         <ChevronRight className="h-3 w-3" />
         <span>{count.id.slice(0, 8)}</span>
       </div>
 
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Cycle Count</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Cycle Count')}</h1>
         <div className="mt-2 flex flex-wrap items-center gap-2">
           <span className="font-mono text-sm font-semibold">{count.id.slice(0, 8)}</span>
           <Badge variant={countStatusVariant(count.status)}>{formatStatus(count.status)}</Badge>
@@ -158,9 +160,9 @@ export default function VNextWmsCycleCountDetail() {
 
       <div className="grid gap-3 sm:grid-cols-3">
         {[
-          { label: 'Total Lines', value: count.totalBins, icon: List, tone: 'bg-primary/10 text-primary' },
-          { label: 'Counted', value: count.countedBins, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
-          { label: 'Variances', value: count.varianceCount, icon: AlertTriangle, tone: count.varianceCount > 0 ? 'bg-destructive/10 text-destructive' : 'bg-muted text-muted-foreground' },
+          { label: t('Total Lines'), value: count.totalBins, icon: List, tone: 'bg-primary/10 text-primary' },
+          { label: t('Counted'), value: count.countedBins, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
+          { label: t('Variances'), value: count.varianceCount, icon: AlertTriangle, tone: count.varianceCount > 0 ? 'bg-destructive/10 text-destructive' : 'bg-muted text-muted-foreground' },
         ].map(s => {
           const Icon = s.icon;
           return (
@@ -180,7 +182,7 @@ export default function VNextWmsCycleCountDetail() {
       <Card>
         <CardContent className="p-5">
           <div className="mb-2 flex justify-between text-sm">
-            <span className="font-semibold">Progress</span>
+            <span className="font-semibold">{t('Progress')}</span>
             <span className="text-muted-foreground">{count.countedBins}/{count.totalBins}</span>
           </div>
           <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
@@ -195,12 +197,12 @@ export default function VNextWmsCycleCountDetail() {
       {countingLineId && (
         <Card className="border-l-4 border-l-primary">
           <CardHeader>
-            <CardTitle>Record Count</CardTitle>
+            <CardTitle>{t('Record Count')}</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleRecord} className="flex flex-wrap items-end gap-3">
               <div className="w-32 space-y-2">
-                <Label>Counted Qty</Label>
+                <Label>{t('Counted Qty')}</Label>
                 <Input
                   type="number"
                   min="0"
@@ -211,11 +213,11 @@ export default function VNextWmsCycleCountDetail() {
                 />
               </div>
               <div className="flex-1 space-y-2">
-                <Label>Notes</Label>
-                <Input value={countForm.notes} onChange={e => setCountForm({ ...countForm, notes: e.target.value })} placeholder="Optional" />
+                <Label>{t('Notes')}</Label>
+                <Input value={countForm.notes} onChange={e => setCountForm({ ...countForm, notes: e.target.value })} placeholder={t('Optional')} />
               </div>
-              <Button variant="gradient" type="submit" disabled={counting}>{counting ? 'Saving...' : 'Record'}</Button>
-              <Button variant="outline" type="button" onClick={() => setCountingLineId(null)}>Cancel</Button>
+              <Button variant="gradient" type="submit" disabled={counting}>{counting ? t('Saving...') : t('Record')}</Button>
+              <Button variant="outline" type="button" onClick={() => setCountingLineId(null)}>{t('Cancel')}</Button>
             </form>
           </CardContent>
         </Card>
@@ -223,18 +225,18 @@ export default function VNextWmsCycleCountDetail() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Count Lines</CardTitle>
+          <CardTitle>{t('Count Lines')}</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>SKU</TableHead>
-                <TableHead>UOM</TableHead>
-                <TableHead>Expected</TableHead>
-                <TableHead>Counted</TableHead>
-                <TableHead>Variance</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{t('SKU')}</TableHead>
+                <TableHead>{t('UOM')}</TableHead>
+                <TableHead>{t('Expected')}</TableHead>
+                <TableHead>{t('Counted')}</TableHead>
+                <TableHead>{t('Variance')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
                 {isActive && <TableHead></TableHead>}
               </TableRow>
             </TableHeader>
@@ -251,7 +253,7 @@ export default function VNextWmsCycleCountDetail() {
                         {line.variance > 0 ? '+' : ''}{line.variance}
                       </span>
                     ) : line.variance === 0 ? (
-                      <span className="text-success">OK</span>
+                      <span className="text-success">{t('OK')}</span>
                     ) : '-'}
                   </TableCell>
                   <TableCell>
@@ -265,7 +267,7 @@ export default function VNextWmsCycleCountDetail() {
                           size="sm"
                           onClick={() => { setCountingLineId(line.id); setCountForm({ countedQuantity: '', notes: '' }); }}
                         >
-                          Count
+                          {t('Count')}
                         </Button>
                       )}
                     </TableCell>

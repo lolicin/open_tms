@@ -22,6 +22,8 @@ import {
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface LineItem {
   chargeType: string;
   description: string;
@@ -104,15 +106,15 @@ export default function VNextFinanceCreateQuote() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm">
         <Button variant="ghost" size="sm" onClick={() => navigate('/finance/quotes')}>
-          <ArrowLeft className="h-4 w-4" /> Quotes
+          <ArrowLeft className="h-4 w-4" /> {t('Quotes')}
         </Button>
-        <span className="text-muted-foreground">/ New Quote</span>
+        <span className="text-muted-foreground">{t('/ New Quote')}</span>
       </div>
 
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Create Quote</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Build a quote with line items and markup</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Create Quote')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Build a quote with line items and markup')}</p>
         </div>
       </div>
 
@@ -127,12 +129,12 @@ export default function VNextFinanceCreateQuote() {
         <div className="space-y-6">
           <Card>
             <CardContent className="p-5">
-              <h3 className="mb-4 text-base font-semibold">Quote Details</h3>
+              <h3 className="mb-4 text-base font-semibold">{t('Quote Details')}</h3>
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-1.5">
-                  <Label>Customer</Label>
+                  <Label>{t('Customer')}</Label>
                   <Select value={customerId} onValueChange={setCustomerId}>
-                    <SelectTrigger><SelectValue placeholder="Select customer..." /></SelectTrigger>
+                    <SelectTrigger><SelectValue placeholder={t('Select customer...')} /></SelectTrigger>
                     <SelectContent>
                       {customers.filter(c => !c.archived).map(c => (
                         <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
@@ -141,17 +143,17 @@ export default function VNextFinanceCreateQuote() {
                   </Select>
                 </div>
                 <div className="space-y-1.5">
-                  <Label>Service Level</Label>
+                  <Label>{t('Service Level')}</Label>
                   <Select value={serviceLevel} onValueChange={setServiceLevel}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="FTL">FTL (Full Truck Load)</SelectItem>
-                      <SelectItem value="LTL">LTL (Less Than Truck Load)</SelectItem>
+                      <SelectItem value="FTL">{t('FTL (Full Truck Load)')}</SelectItem>
+                      <SelectItem value="LTL">{t('LTL (Less Than Truck Load)')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="markup">Markup %</Label>
+                  <Label htmlFor="markup">{t('Markup %')}</Label>
                   <Input
                     id="markup"
                     type="number"
@@ -162,7 +164,7 @@ export default function VNextFinanceCreateQuote() {
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="valid-days">Valid For (days)</Label>
+                  <Label htmlFor="valid-days">{t('Valid For (days)')}</Label>
                   <Input
                     id="valid-days"
                     type="number"
@@ -178,9 +180,9 @@ export default function VNextFinanceCreateQuote() {
           <Card>
             <CardContent className="p-5">
               <div className="flex items-center justify-between">
-                <h3 className="text-base font-semibold">Line Items (Cost Basis)</h3>
+                <h3 className="text-base font-semibold">{t('Line Items (Cost Basis)')}</h3>
                 <Button variant="ghost" size="sm" onClick={addLineItem}>
-                  <Plus className="h-4 w-4" /> Add Line
+                  <Plus className="h-4 w-4" /> {t('Add Line')}
                 </Button>
               </div>
 
@@ -188,27 +190,27 @@ export default function VNextFinanceCreateQuote() {
                 {lineItems.map((li, idx) => (
                   <div key={idx} className="flex flex-wrap items-end gap-3">
                     <div className="space-y-1.5" style={{ flex: '0 0 130px' }}>
-                      {idx === 0 && <Label>Type</Label>}
+                      {idx === 0 && <Label>{t('Type')}</Label>}
                       <Select value={li.chargeType} onValueChange={v => updateLineItem(idx, 'chargeType', v)}>
                         <SelectTrigger><SelectValue /></SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="linehaul">Linehaul</SelectItem>
-                          <SelectItem value="fuel_surcharge">Fuel Surcharge</SelectItem>
-                          <SelectItem value="accessorial">Accessorial</SelectItem>
-                          <SelectItem value="discount">Discount</SelectItem>
+                          <SelectItem value="linehaul">{t('Linehaul')}</SelectItem>
+                          <SelectItem value="fuel_surcharge">{t('Fuel Surcharge')}</SelectItem>
+                          <SelectItem value="accessorial">{t('Accessorial')}</SelectItem>
+                          <SelectItem value="discount">{t('Discount')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                     <div className="flex-1 min-w-[200px] space-y-1.5">
-                      {idx === 0 && <Label>Description</Label>}
+                      {idx === 0 && <Label>{t('Description')}</Label>}
                       <Input
                         value={li.description}
                         onChange={e => updateLineItem(idx, 'description', e.target.value)}
-                        placeholder="e.g. Linehaul Chicago to Dallas"
+                        placeholder={t('e.g. Linehaul Chicago to Dallas')}
                       />
                     </div>
                     <div className="space-y-1.5" style={{ flex: '0 0 130px' }}>
-                      {idx === 0 && <Label>Amount ($)</Label>}
+                      {idx === 0 && <Label>{t('Amount ($)')}</Label>}
                       <Input
                         type="number"
                         min="0"
@@ -218,7 +220,7 @@ export default function VNextFinanceCreateQuote() {
                       />
                     </div>
                     <div className="space-y-1.5" style={{ flex: '0 0 80px' }}>
-                      {idx === 0 && <Label>Qty</Label>}
+                      {idx === 0 && <Label>{t('Qty')}</Label>}
                       <Input
                         type="number"
                         min="1"
@@ -240,14 +242,14 @@ export default function VNextFinanceCreateQuote() {
           <Card>
             <CardContent className="p-5">
               <div className="space-y-1.5">
-                <Label htmlFor="notes">Notes</Label>
+                <Label htmlFor="notes">{t('Notes')}</Label>
                 <textarea
                   id="notes"
                   className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   rows={3}
                   value={notes}
                   onChange={e => setNotes(e.target.value)}
-                  placeholder="Internal or customer-facing notes..."
+                  placeholder={t('Internal or customer-facing notes...')}
                 />
               </div>
             </CardContent>
@@ -257,22 +259,22 @@ export default function VNextFinanceCreateQuote() {
         <aside className="space-y-6 lg:sticky lg:top-20 lg:self-start">
           <Card>
             <CardContent className="p-5">
-              <h3 className="mb-4 text-base font-semibold">Quote Summary</h3>
+              <h3 className="mb-4 text-base font-semibold">{t('Quote Summary')}</h3>
               <dl className="space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <dt className="text-muted-foreground">Cost (Carrier)</dt>
+                  <dt className="text-muted-foreground">{t('Cost (Carrier)')}</dt>
                   <dd className="font-mono tabular-nums">{formatMoney(totalCostCents)}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-muted-foreground">Markup ({markup}%)</dt>
+                  <dt className="text-muted-foreground">{t('Markup (')}{markup}%)</dt>
                   <dd className="font-mono tabular-nums">{formatMoney(totalRevenueCents - totalCostCents)}</dd>
                 </div>
                 <div className="flex justify-between border-t pt-3">
-                  <dt className="font-bold">Revenue (Customer)</dt>
+                  <dt className="font-bold">{t('Revenue (Customer)')}</dt>
                   <dd className="text-lg font-bold font-mono tabular-nums">{formatMoney(totalRevenueCents)}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-muted-foreground">Margin</dt>
+                  <dt className="text-muted-foreground">{t('Margin')}</dt>
                   <dd className={cn('font-mono tabular-nums', marginCents >= 0 ? 'text-success' : 'text-destructive')}>
                     {formatMoney(marginCents)}
                   </dd>
@@ -280,7 +282,7 @@ export default function VNextFinanceCreateQuote() {
               </dl>
               <Button variant="gradient" className="mt-5 w-full" onClick={createQuote} disabled={creating}>
                 <FileText className="h-4 w-4" />
-                {creating ? 'Creating...' : 'Create Quote'}
+                {creating ? t('Creating...') : t('Create Quote')}
               </Button>
             </CardContent>
           </Card>

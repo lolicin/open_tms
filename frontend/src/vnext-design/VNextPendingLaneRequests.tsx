@@ -28,6 +28,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface PendingLaneRequest {
   id: string;
   order?: { orderNumber?: string };
@@ -120,7 +122,7 @@ export default function VNextPendingLaneRequests() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -135,18 +137,18 @@ export default function VNextPendingLaneRequests() {
   }
 
   const stats = [
-    { key: 'total' as const, label: 'Total Requests', value: counts.total, icon: Route },
-    { key: 'pending' as const, label: 'Pending', value: counts.pending, icon: Hourglass },
-    { key: 'approved' as const, label: 'Approved', value: counts.approved, icon: CheckCircle2 },
-    { key: 'rejected' as const, label: 'Rejected', value: counts.rejected, icon: XCircle },
+    { key: 'total' as const, label: t('Total Requests'), value: counts.total, icon: Route },
+    { key: 'pending' as const, label: t('Pending'), value: counts.pending, icon: Hourglass },
+    { key: 'approved' as const, label: t('Approved'), value: counts.approved, icon: CheckCircle2 },
+    { key: 'rejected' as const, label: t('Rejected'), value: counts.rejected, icon: XCircle },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Pending Lane Requests</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{requests.length} requests</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Pending Lane Requests')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{requests.length} {t('requests')}</p>
         </div>
       </div>
 
@@ -170,7 +172,7 @@ export default function VNextPendingLaneRequests() {
           <div className="relative min-w-[280px] flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search by order, origin, destination..."
+              placeholder={t('Search by order, origin, destination...')}
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="pl-9"
@@ -181,11 +183,11 @@ export default function VNextPendingLaneRequests() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Statuses</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="approved">Approved</SelectItem>
-              <SelectItem value="rejected">Rejected</SelectItem>
-              <SelectItem value="lanecreated">Lane Created</SelectItem>
+              <SelectItem value="all">{t('All Statuses')}</SelectItem>
+              <SelectItem value="pending">{t('Pending')}</SelectItem>
+              <SelectItem value="approved">{t('Approved')}</SelectItem>
+              <SelectItem value="rejected">{t('Rejected')}</SelectItem>
+              <SelectItem value="lanecreated">{t('Lane Created')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -195,12 +197,12 @@ export default function VNextPendingLaneRequests() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Order</TableHead>
-              <TableHead>Route</TableHead>
-              <TableHead>Service Level</TableHead>
-              <TableHead>Requirements</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Created</TableHead>
+              <TableHead>{t('Order')}</TableHead>
+              <TableHead>{t('Route')}</TableHead>
+              <TableHead>{t('Service Level')}</TableHead>
+              <TableHead>{t('Requirements')}</TableHead>
+              <TableHead>{t('Status')}</TableHead>
+              <TableHead>{t('Created')}</TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>
@@ -208,7 +210,7 @@ export default function VNextPendingLaneRequests() {
             {filtered.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={7} className="py-8 text-center text-sm text-muted-foreground">
-                  No pending lane requests found
+                  {t('No pending lane requests found')}
                 </TableCell>
               </TableRow>
             ) : (
@@ -230,8 +232,8 @@ export default function VNextPendingLaneRequests() {
                   <TableCell className="text-sm">{r.serviceLevel || '-'}</TableCell>
                   <TableCell>
                     <div className="flex flex-wrap gap-1">
-                      {r.requiresTemperatureControl && <Badge variant="secondary">Temp Ctrl</Badge>}
-                      {r.requiresHazmat && <Badge variant="warning">Hazmat</Badge>}
+                      {r.requiresTemperatureControl && <Badge variant="secondary">{t('Temp Ctrl')}</Badge>}
+                      {r.requiresHazmat && <Badge variant="warning">{t('Hazmat')}</Badge>}
                       {!r.requiresTemperatureControl && !r.requiresHazmat && '-'}
                     </div>
                   </TableCell>
@@ -245,11 +247,11 @@ export default function VNextPendingLaneRequests() {
                         <>
                           <Button size="sm" variant="default" className="h-8">
                             <Check className="h-4 w-4" />
-                            Approve
+                            {t('Approve')}
                           </Button>
                           <Button size="sm" variant="outline" className="h-8 border-destructive/40 text-destructive">
                             <X className="h-4 w-4" />
-                            Reject
+                            {t('Reject')}
                           </Button>
                         </>
                       )}

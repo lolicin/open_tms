@@ -6,6 +6,8 @@ import { searchAddresses, resolveSuggestion, searchDebounceMs, type AddressSugge
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
+import { t } from '@/i18n';
+
 export interface AddressValue {
   address1: string;
   address2: string;
@@ -115,7 +117,7 @@ export function AddressFields({ idPrefix, value, onChange }: Props) {
         <div ref={containerRef} className="relative space-y-2">
           <Label htmlFor={`${idPrefix}-search`} className="flex items-center gap-1 text-xs text-muted-foreground">
             <Search className="h-3 w-3" />
-            Search address
+            {t('Search address')}
           </Label>
           <div className="relative">
             <Input
@@ -126,7 +128,7 @@ export function AddressFields({ idPrefix, value, onChange }: Props) {
                 setSearchOpen(true);
               }}
               onFocus={() => setSearchOpen(true)}
-              placeholder="Start typing an address..."
+              placeholder={t('Start typing an address...')}
               autoComplete="off"
               aria-describedby={hintId}
             />
@@ -151,34 +153,36 @@ export function AddressFields({ idPrefix, value, onChange }: Props) {
             </ul>
           )}
           <p id={hintId} className="text-xs text-muted-foreground">
-            Pick a suggestion to auto-fill the fields below, or fill them in manually.
+            {t(
+              'Pick a suggestion to auto-fill the fields below, or fill them in manually.'
+            )}
           </p>
         </div>
       )}
 
       <div className="space-y-2">
-        <Label htmlFor={`${idPrefix}-address1`}>Address line 1</Label>
+        <Label htmlFor={`${idPrefix}-address1`}>{t('Address line 1')}</Label>
         <Input
           id={`${idPrefix}-address1`}
           value={value.address1}
           onChange={e => update({ address1: e.target.value })}
-          placeholder="Street address"
+          placeholder={t('Street address')}
           autoComplete="address-line1"
         />
       </div>
       <div className="space-y-2">
-        <Label htmlFor={`${idPrefix}-address2`}>Address line 2</Label>
+        <Label htmlFor={`${idPrefix}-address2`}>{t('Address line 2')}</Label>
         <Input
           id={`${idPrefix}-address2`}
           value={value.address2}
           onChange={e => update({ address2: e.target.value })}
-          placeholder="Apartment, suite, unit, building, floor (optional)"
+          placeholder={t('Apartment, suite, unit, building, floor (optional)')}
           autoComplete="address-line2"
         />
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor={`${idPrefix}-city`}>City / Town</Label>
+          <Label htmlFor={`${idPrefix}-city`}>{t('City / Town')}</Label>
           <Input
             id={`${idPrefix}-city`}
             value={value.city}
@@ -187,7 +191,7 @@ export function AddressFields({ idPrefix, value, onChange }: Props) {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor={`${idPrefix}-state`}>State / Province / Region</Label>
+          <Label htmlFor={`${idPrefix}-state`}>{t('State / Province / Region')}</Label>
           <Input
             id={`${idPrefix}-state`}
             value={value.state}
@@ -198,7 +202,7 @@ export function AddressFields({ idPrefix, value, onChange }: Props) {
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor={`${idPrefix}-postal`}>Postal / ZIP code</Label>
+          <Label htmlFor={`${idPrefix}-postal`}>{t('Postal / ZIP code')}</Label>
           <Input
             id={`${idPrefix}-postal`}
             value={value.postalCode}
@@ -207,7 +211,7 @@ export function AddressFields({ idPrefix, value, onChange }: Props) {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor={`${idPrefix}-country`}>Country</Label>
+          <Label htmlFor={`${idPrefix}-country`}>{t('Country')}</Label>
           <Input
             id={`${idPrefix}-country`}
             value={value.country}

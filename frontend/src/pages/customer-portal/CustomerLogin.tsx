@@ -10,6 +10,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
+import { t } from '@/i18n';
+
 export default function CustomerLogin() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -46,13 +48,15 @@ export default function CustomerLogin() {
           <div className="mb-2 flex flex-col items-center gap-4">
             <Logo size="lg" showWordmark={false} />
             <span className="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
-              For customers &amp; shippers
+              {t('For customers & shippers')}
             </span>
             <h1 className="text-2xl font-bold tracking-tight">
-              Customer <span className="text-primary">Portal</span>
+              {t('Customer')} <span className="text-primary">{t('Portal')}</span>
             </h1>
             <p className="text-sm text-muted-foreground">
-              Track shipments, place &amp; manage orders, download invoices and documents for your account.
+              {t(
+                'Track shipments, place & manage orders, download invoices and documents for your account.'
+              )}
             </p>
           </div>
         </CardHeader>
@@ -65,7 +69,7 @@ export default function CustomerLogin() {
 
           <form onSubmit={handleSubmit} autoComplete="on" className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="customer-email">Email</Label>
+              <Label htmlFor="customer-email">{t('Email')}</Label>
               <Input
                 id="customer-email"
                 type="email"
@@ -74,11 +78,11 @@ export default function CustomerLogin() {
                 required
                 autoFocus
                 autoComplete="username"
-                placeholder="you@company.com"
+                placeholder={t('you@company.com')}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="customer-password">Password</Label>
+              <Label htmlFor="customer-password">{t('Password')}</Label>
               <Input
                 id="customer-password"
                 type="password"
@@ -86,7 +90,7 @@ export default function CustomerLogin() {
                 onChange={e => setPassword(e.target.value)}
                 required
                 autoComplete="current-password"
-                placeholder="Enter your password"
+                placeholder={t('Enter your password')}
               />
             </div>
             <Button
@@ -97,18 +101,18 @@ export default function CustomerLogin() {
               disabled={loading || !email || !password}
             >
               {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-              {loading ? 'Signing in...' : 'Sign in'}
+              {loading ? t('Signing in...') : t('Sign in')}
             </Button>
           </form>
 
           <div className="mt-6 border-t border-border pt-4 text-center text-xs text-muted-foreground">
-            Wrong portal?{' '}
+            {t('Wrong portal?')}{' '}
             <Link to="/carrier-portal/login" className="font-medium text-primary hover:underline">
-              Carrier sign in
+              {t('Carrier sign in')}
             </Link>
             {' · '}
             <Link to="/login" className="font-medium text-primary hover:underline">
-              Staff sign in
+              {t('Staff sign in')}
             </Link>
           </div>
         </CardContent>

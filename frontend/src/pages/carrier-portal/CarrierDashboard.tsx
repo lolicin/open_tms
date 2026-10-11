@@ -22,6 +22,8 @@ import {
   type CarrierSessionUser,
 } from './carrierSession';
 
+import { t as translate } from '@/i18n';
+
 function getCarrierToken() {
   return _getCarrierToken();
 }
@@ -108,7 +110,7 @@ export default function CarrierDashboard() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{translate('Loading...')}</h3>
       </div>
     );
   }
@@ -118,15 +120,15 @@ export default function CarrierDashboard() {
   const wonBids = bids.filter(b => b.status === 'accepted');
 
   const stats = [
-    { tone: 'primary' as const, icon: Gavel, label: 'Active tenders', value: activeOffers.length },
-    { tone: 'warning' as const, icon: Receipt, label: 'Pending bids', value: submittedBids.length },
-    { tone: 'success' as const, icon: Trophy, label: 'Loads won', value: wonBids.length },
+    { tone: 'primary' as const, icon: Gavel, label: translate('Active tenders'), value: activeOffers.length },
+    { tone: 'warning' as const, icon: Receipt, label: translate('Pending bids'), value: submittedBids.length },
+    { tone: 'success' as const, icon: Trophy, label: translate('Loads won'), value: wonBids.length },
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Welcome, {user.name || 'Carrier'}</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{translate('Welcome,')} {user.name || translate('Carrier')}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{user.carrierName}</p>
       </div>
 
@@ -151,14 +153,14 @@ export default function CarrierDashboard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Gavel className="h-5 w-5 text-primary" />
-            Active tenders
+            {translate('Active tenders')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           {activeOffers.length === 0 ? (
             <div className="flex flex-col items-center gap-3 py-8 text-muted-foreground">
               <Inbox className="h-8 w-8" />
-              <h3 className="text-base font-medium">No active tenders at this time</h3>
+              <h3 className="text-base font-medium">{translate('No active tenders at this time')}</h3>
             </div>
           ) : (
             <div className="grid gap-3">
@@ -180,7 +182,7 @@ export default function CarrierDashboard() {
                         {t.shipment.destination.city}{t.shipment.destination.state ? `, ${t.shipment.destination.state}` : ''}
                       </div>
                       <div className="mt-1 text-xs text-muted-foreground">
-                        {t.equipmentType || 'No equipment specified'}
+                        {t.equipmentType || translate('No equipment specified')}
                         {t.targetRate ? ` | Target: $${t.targetRate.toLocaleString()}` : ''}
                       </div>
                     </div>
@@ -192,11 +194,11 @@ export default function CarrierDashboard() {
                             timeLeft < 30 ? 'text-destructive' : 'text-muted-foreground',
                           )}
                         >
-                          {timeLeft > 60 ? `${Math.floor(timeLeft / 60)}h ${timeLeft % 60}m` : `${timeLeft}m`} left
+                          {timeLeft > 60 ? `${Math.floor(timeLeft / 60)}h ${timeLeft % 60}m` : `${timeLeft}m`} {translate('left')}
                         </div>
                       )}
                       <Button variant="gradient" size="sm" asChild>
-                        <Link to={`/carrier-portal/tenders/${t.id}`}>View &amp; bid</Link>
+                        <Link to={`/carrier-portal/tenders/${t.id}`}>{translate('View & bid')}</Link>
                       </Button>
                     </div>
                   </div>
@@ -211,23 +213,23 @@ export default function CarrierDashboard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <ReceiptText className="h-5 w-5 text-warning" />
-            Recent bids
+            {translate('Recent bids')}
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           {bids.length === 0 ? (
             <div className="flex flex-col items-center gap-3 py-8 text-muted-foreground">
               <ReceiptText className="h-8 w-8" />
-              <h3 className="text-base font-medium">No bids submitted yet</h3>
+              <h3 className="text-base font-medium">{translate('No bids submitted yet')}</h3>
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Tender</TableHead>
-                  <TableHead>Rate</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Submitted</TableHead>
+                  <TableHead>{translate('Tender')}</TableHead>
+                  <TableHead>{translate('Rate')}</TableHead>
+                  <TableHead>{translate('Status')}</TableHead>
+                  <TableHead>{translate('Submitted')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

@@ -23,6 +23,8 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface Commission {
   id: string;
   user: { id: string; email: string; firstName?: string; lastName?: string };
@@ -102,33 +104,33 @@ export default function VNextCommissions() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Commissions</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Track broker agent commissions on shipments</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Commissions')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Track broker agent commissions on shipments')}</p>
         </div>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardContent className="p-5">
-            <div className="text-sm text-muted-foreground">Total</div>
+            <div className="text-sm text-muted-foreground">{t('Total')}</div>
             <div className="mt-1 text-2xl font-bold tracking-tight font-mono tabular-nums">{formatCents(totals.total)}</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-5">
-            <div className="text-sm text-muted-foreground">Accrued</div>
+            <div className="text-sm text-muted-foreground">{t('Accrued')}</div>
             <div className="mt-1 text-2xl font-bold tracking-tight font-mono tabular-nums text-warning">{formatCents(totals.accrued)}</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-5">
-            <div className="text-sm text-muted-foreground">Approved</div>
+            <div className="text-sm text-muted-foreground">{t('Approved')}</div>
             <div className="mt-1 text-2xl font-bold tracking-tight font-mono tabular-nums text-info">{formatCents(totals.approved)}</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-5">
-            <div className="text-sm text-muted-foreground">Paid</div>
+            <div className="text-sm text-muted-foreground">{t('Paid')}</div>
             <div className="mt-1 text-2xl font-bold tracking-tight font-mono tabular-nums text-success">{formatCents(totals.paid)}</div>
           </CardContent>
         </Card>
@@ -136,30 +138,30 @@ export default function VNextCommissions() {
 
       <Tabs value={tab} onValueChange={v => setTab(v as 'list' | 'summary')}>
         <TabsList>
-          <TabsTrigger value="summary">By Agent</TabsTrigger>
-          <TabsTrigger value="list">All Commissions</TabsTrigger>
+          <TabsTrigger value="summary">{t('By Agent')}</TabsTrigger>
+          <TabsTrigger value="list">{t('All Commissions')}</TabsTrigger>
         </TabsList>
       </Tabs>
 
       {loading ? (
         <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
           <Loader2 className="h-8 w-8 animate-spin" />
-          <h3 className="text-base font-medium">Loading...</h3>
+          <h3 className="text-base font-medium">{t('Loading...')}</h3>
         </div>
       ) : tab === 'summary' ? (
         <Card>
           {summary.length === 0 ? (
-            <div className="py-12 text-center text-sm text-muted-foreground">No commissions recorded yet</div>
+            <div className="py-12 text-center text-sm text-muted-foreground">{t('No commissions recorded yet')}</div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Agent</TableHead>
-                  <TableHead className="text-right">Shipments</TableHead>
-                  <TableHead className="text-right">Total</TableHead>
-                  <TableHead className="text-right">Accrued</TableHead>
-                  <TableHead className="text-right">Approved</TableHead>
-                  <TableHead className="text-right">Paid</TableHead>
+                  <TableHead>{t('Agent')}</TableHead>
+                  <TableHead className="text-right">{t('Shipments')}</TableHead>
+                  <TableHead className="text-right">{t('Total')}</TableHead>
+                  <TableHead className="text-right">{t('Accrued')}</TableHead>
+                  <TableHead className="text-right">{t('Approved')}</TableHead>
+                  <TableHead className="text-right">{t('Paid')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -186,23 +188,23 @@ export default function VNextCommissions() {
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-[200px]"><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="accrued">Accrued</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-                <SelectItem value="paid">Paid</SelectItem>
+                <SelectItem value="all">{t('All Statuses')}</SelectItem>
+                <SelectItem value="accrued">{t('Accrued')}</SelectItem>
+                <SelectItem value="approved">{t('Approved')}</SelectItem>
+                <SelectItem value="paid">{t('Paid')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Agent</TableHead>
-                <TableHead>Shipment</TableHead>
-                <TableHead>Basis</TableHead>
-                <TableHead className="text-right">Rate</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t('Agent')}</TableHead>
+                <TableHead>{t('Shipment')}</TableHead>
+                <TableHead>{t('Basis')}</TableHead>
+                <TableHead className="text-right">{t('Rate')}</TableHead>
+                <TableHead className="text-right">{t('Amount')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead>{t('Actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -222,10 +224,10 @@ export default function VNextCommissions() {
                     </TableCell>
                     <TableCell>
                       {c.status === 'accrued' && (
-                        <Button size="sm" onClick={() => handleAction(c.id, 'approve')}>Approve</Button>
+                        <Button size="sm" onClick={() => handleAction(c.id, 'approve')}>{t('Approve')}</Button>
                       )}
                       {c.status === 'approved' && (
-                        <Button size="sm" onClick={() => handleAction(c.id, 'pay')}>Mark Paid</Button>
+                        <Button size="sm" onClick={() => handleAction(c.id, 'pay')}>{t('Mark Paid')}</Button>
                       )}
                     </TableCell>
                   </TableRow>

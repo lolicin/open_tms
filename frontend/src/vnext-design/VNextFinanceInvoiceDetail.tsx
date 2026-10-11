@@ -32,6 +32,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface InvoiceLineItem {
   id: string;
   chargeType: string;
@@ -150,7 +152,7 @@ export default function VNextFinanceInvoiceDetail() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -158,7 +160,7 @@ export default function VNextFinanceInvoiceDetail() {
     return (
       <div className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
         <CircleAlert className="h-5 w-5" />
-        {error || 'Invoice not found'}
+        {error || t('Invoice not found')}
       </div>
     );
   }
@@ -170,7 +172,7 @@ export default function VNextFinanceInvoiceDetail() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm">
         <Button variant="ghost" size="sm" onClick={() => navigate('/finance/invoices')}>
-          <ArrowLeft className="h-4 w-4" /> Invoices
+          <ArrowLeft className="h-4 w-4" /> {t('Invoices')}
         </Button>
         <span className="text-muted-foreground">/ {i.invoiceNumber}</span>
       </div>
@@ -180,34 +182,34 @@ export default function VNextFinanceInvoiceDetail() {
           <h1 className="text-3xl font-bold tracking-tight">{i.invoiceNumber}</h1>
           <div className="mt-2 flex items-center gap-2">
             <Badge variant={statusVariant(i.status)}>{i.status.replace(/_/g, ' ')}</Badge>
-            {isPastDue && <Badge variant="destructive">OVERDUE</Badge>}
+            {isPastDue && <Badge variant="destructive">{t('OVERDUE')}</Badge>}
           </div>
         </div>
         <div className="flex flex-wrap gap-2">
           {i.status === 'draft' && (
             <Button size="sm" onClick={() => doAction('approve')} disabled={!!actionLoading}>
-              {actionLoading === 'approve' ? 'Approving...' : 'Approve'}
+              {actionLoading === 'approve' ? t('Approving...') : t('Approve')}
             </Button>
           )}
           {['draft', 'approved'].includes(i.status) && (
             <Button size="sm" onClick={() => doAction('send')} disabled={!!actionLoading}>
               <Send className="h-4 w-4" />
-              {actionLoading === 'send' ? 'Sending...' : 'Send'}
+              {actionLoading === 'send' ? t('Sending...') : t('Send')}
             </Button>
           )}
           {['sent', 'partial_paid', 'overdue'].includes(i.status) && (
             <Button size="sm" variant="default" onClick={() => setShowPayment(!showPayment)}>
-              <CreditCard className="h-4 w-4" /> Record Payment
+              <CreditCard className="h-4 w-4" /> {t('Record Payment')}
             </Button>
           )}
           {i.paidCents === 0 && !['void', 'paid'].includes(i.status) && (
             <Button
               size="sm"
               variant="outline"
-              onClick={() => { if (confirm('Void this invoice?')) doAction('void', { reason: 'Voided by user' }); }}
+              onClick={() => { if (confirm(t('Void this invoice?'))) doAction('void', { reason: 'Voided by user' }); }}
               disabled={!!actionLoading}
             >
-              Void
+              {t('Void')}
             </Button>
           )}
         </div>
@@ -216,10 +218,10 @@ export default function VNextFinanceInvoiceDetail() {
       {showPayment && (
         <Card>
           <CardContent className="p-5">
-            <h3 className="mb-4 text-base font-semibold">Record Payment</h3>
+            <h3 className="mb-4 text-base font-semibold">{t('Record Payment')}</h3>
             <div className="flex flex-wrap items-end gap-3">
               <div className="space-y-1.5">
-                <Label htmlFor="payment-amount">Amount ($)</Label>
+                <Label htmlFor="payment-amount">{t('Amount ($)')}</Label>
                 <Input
                   id="payment-amount"
                   type="number"
@@ -233,31 +235,31 @@ export default function VNextFinanceInvoiceDetail() {
                 />
               </div>
               <div className="space-y-1.5">
-                <Label>Method</Label>
+                <Label>{t('Method')}</Label>
                 <Select value={paymentMethod} onValueChange={setPaymentMethod}>
                   <SelectTrigger className="w-[150px]"><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="ach">ACH</SelectItem>
-                    <SelectItem value="wire">Wire</SelectItem>
-                    <SelectItem value="check">Check</SelectItem>
-                    <SelectItem value="credit_card">Credit Card</SelectItem>
+                    <SelectItem value="ach">{t('ACH')}</SelectItem>
+                    <SelectItem value="wire">{t('Wire')}</SelectItem>
+                    <SelectItem value="check">{t('Check')}</SelectItem>
+                    <SelectItem value="credit_card">{t('Credit Card')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="payment-ref">Reference #</Label>
+                <Label htmlFor="payment-ref">{t('Reference #')}</Label>
                 <Input
                   id="payment-ref"
                   value={paymentRef}
                   onChange={e => setPaymentRef(e.target.value)}
-                  placeholder="Check #, ACH ref..."
+                  placeholder={t('Check #, ACH ref...')}
                   className="w-[200px]"
                 />
               </div>
               <Button onClick={recordPayment} disabled={!!actionLoading}>
-                {actionLoading === 'payments' ? 'Recording...' : 'Record'}
+                {actionLoading === 'payments' ? t('Recording...') : t('Record')}
               </Button>
-              <Button variant="ghost" onClick={() => setShowPayment(false)}>Cancel</Button>
+              <Button variant="ghost" onClick={() => setShowPayment(false)}>{t('Cancel')}</Button>
             </div>
           </CardContent>
         </Card>
@@ -267,17 +269,17 @@ export default function VNextFinanceInvoiceDetail() {
         <div className="space-y-6">
           <Card>
             <div className="flex items-center justify-between p-5">
-              <h2 className="text-lg font-semibold">Line Items</h2>
+              <h2 className="text-lg font-semibold">{t('Line Items')}</h2>
             </div>
             <Separator />
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Description</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead className="text-right">Qty</TableHead>
-                  <TableHead className="text-right">Unit Price</TableHead>
-                  <TableHead className="text-right">Total</TableHead>
+                  <TableHead>{t('Description')}</TableHead>
+                  <TableHead>{t('Type')}</TableHead>
+                  <TableHead className="text-right">{t('Qty')}</TableHead>
+                  <TableHead className="text-right">{t('Unit Price')}</TableHead>
+                  <TableHead className="text-right">{t('Total')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -285,7 +287,7 @@ export default function VNextFinanceInvoiceDetail() {
                   <TableRow key={li.id}>
                     <TableCell>
                       {li.description}
-                      {li.freightClass && <span className="ml-1 text-sm text-muted-foreground">(Class {li.freightClass})</span>}
+                      {li.freightClass && <span className="ml-1 text-sm text-muted-foreground">{t('(Class')} {li.freightClass})</span>}
                     </TableCell>
                     <TableCell>
                       <Badge variant="muted">{li.chargeType.replace(/_/g, ' ')}</Badge>
@@ -300,27 +302,27 @@ export default function VNextFinanceInvoiceDetail() {
             <div className="border-t p-5">
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="font-semibold">Subtotal</span>
+                  <span className="font-semibold">{t('Subtotal')}</span>
                   <span className="font-mono tabular-nums font-semibold">{formatMoney(i.subtotalCents)}</span>
                 </div>
                 {i.taxCents > 0 && (
                   <div className="flex justify-between">
-                    <span>Tax</span>
+                    <span>{t('Tax')}</span>
                     <span className="font-mono tabular-nums">{formatMoney(i.taxCents)}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-base">
-                  <span className="font-bold">Total</span>
+                  <span className="font-bold">{t('Total')}</span>
                   <span className="font-mono tabular-nums font-bold">{formatMoney(i.totalCents)}</span>
                 </div>
                 {i.paidCents > 0 && (
                   <div className="flex justify-between text-success">
-                    <span>Paid</span>
+                    <span>{t('Paid')}</span>
                     <span className="font-mono tabular-nums">-{formatMoney(i.paidCents)}</span>
                   </div>
                 )}
                 <div className={cn('flex justify-between font-bold', i.balanceCents > 0 ? 'text-destructive' : 'text-success')}>
-                  <span>Balance Due</span>
+                  <span>{t('Balance Due')}</span>
                   <span className="font-mono tabular-nums">{formatMoney(i.balanceCents)}</span>
                 </div>
               </div>
@@ -330,17 +332,17 @@ export default function VNextFinanceInvoiceDetail() {
           {i.payments.length > 0 && (
             <Card>
               <div className="p-5">
-                <h2 className="text-lg font-semibold">Payment History</h2>
+                <h2 className="text-lg font-semibold">{t('Payment History')}</h2>
               </div>
               <Separator />
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Method</TableHead>
-                    <TableHead>Reference</TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
-                    <TableHead>Notes</TableHead>
+                    <TableHead>{t('Date')}</TableHead>
+                    <TableHead>{t('Method')}</TableHead>
+                    <TableHead>{t('Reference')}</TableHead>
+                    <TableHead className="text-right">{t('Amount')}</TableHead>
+                    <TableHead>{t('Notes')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -362,45 +364,45 @@ export default function VNextFinanceInvoiceDetail() {
         <aside className="space-y-6 lg:sticky lg:top-20 lg:self-start">
           <Card>
             <CardContent className="p-5">
-              <h3 className="mb-4 text-base font-semibold">Invoice Details</h3>
+              <h3 className="mb-4 text-base font-semibold">{t('Invoice Details')}</h3>
               <dl className="space-y-3 text-sm">
                 <div>
-                  <dt className="text-xs text-muted-foreground">Customer</dt>
+                  <dt className="text-xs text-muted-foreground">{t('Customer')}</dt>
                   <dd>{i.customer.name}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-muted-foreground">Issue Date</dt>
+                  <dt className="text-xs text-muted-foreground">{t('Issue Date')}</dt>
                   <dd>{formatDate(i.issueDate)}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-muted-foreground">Due Date</dt>
+                  <dt className="text-xs text-muted-foreground">{t('Due Date')}</dt>
                   <dd className={cn(isPastDue && 'text-destructive')}>{formatDate(i.dueDate)}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-muted-foreground">Payment Terms</dt>
-                  <dd>Net {i.paymentTermsDays}</dd>
+                  <dt className="text-xs text-muted-foreground">{t('Payment Terms')}</dt>
+                  <dd>{t('Net')} {i.paymentTermsDays}</dd>
                 </div>
                 {i.sentAt && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">Sent</dt>
+                    <dt className="text-xs text-muted-foreground">{t('Sent')}</dt>
                     <dd>{formatDate(i.sentAt)}</dd>
                   </div>
                 )}
                 {i.paidAt && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">Paid</dt>
+                    <dt className="text-xs text-muted-foreground">{t('Paid')}</dt>
                     <dd>{formatDate(i.paidAt)}</dd>
                   </div>
                 )}
                 {i.notes && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">Notes</dt>
+                    <dt className="text-xs text-muted-foreground">{t('Notes')}</dt>
                     <dd>{i.notes}</dd>
                   </div>
                 )}
                 {i.internalNotes && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">Internal Notes</dt>
+                    <dt className="text-xs text-muted-foreground">{t('Internal Notes')}</dt>
                     <dd className="italic">{i.internalNotes}</dd>
                   </div>
                 )}

@@ -23,6 +23,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface Customer { id: string; name: string; }
 interface OrderLine { id: string; sku: string; description: string | null; quantity: number; unitPriceCents: number | null; }
 interface Order { id: string; orderNumber: string | null; customerId: string; customer: { name: string }; lineItems: OrderLine[]; }
@@ -138,8 +140,8 @@ export default function VNextWmsCreateReturn() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Create Return (RMA)</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Authorize a customer return and select items</p>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Create Return (RMA)')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t('Authorize a customer return and select items')}</p>
       </div>
 
       {error && (
@@ -152,14 +154,14 @@ export default function VNextWmsCreateReturn() {
       <form onSubmit={handleSubmit} className="space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle>1. Customer &amp; Order</CardTitle>
+            <CardTitle>{t('1. Customer & Order')}</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <Label>Customer *</Label>
+              <Label>{t('Customer *')}</Label>
               <Select value={selectedCustomer} onValueChange={(v) => { setSelectedCustomer(v); setSelectedOrderId(''); setLineSelections({}); }}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select customer..." />
+                  <SelectValue placeholder={t('Select customer...')} />
                 </SelectTrigger>
                 <SelectContent>
                   {customers.map(c => (
@@ -169,10 +171,10 @@ export default function VNextWmsCreateReturn() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>Order *</Label>
+              <Label>{t('Order *')}</Label>
               <Select value={selectedOrderId} onValueChange={(v) => { setSelectedOrderId(v); setLineSelections({}); }} disabled={!selectedCustomer}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select order..." />
+                  <SelectValue placeholder={t('Select order...')} />
                 </SelectTrigger>
                 <SelectContent>
                   {orders.map(o => (
@@ -188,22 +190,22 @@ export default function VNextWmsCreateReturn() {
           <>
             <Card>
               <CardHeader>
-                <CardTitle>2. Items to Return</CardTitle>
+                <CardTitle>{t('2. Items to Return')}</CardTitle>
               </CardHeader>
               <CardContent className="p-0">
                 {selectedOrder.lineItems.length === 0 ? (
-                  <p className="px-6 py-4 text-sm text-muted-foreground">Order has no line items</p>
+                  <p className="px-6 py-4 text-sm text-muted-foreground">{t('Order has no line items')}</p>
                 ) : (
                   <Table>
                     <TableHeader>
                       <TableRow>
                         <TableHead className="w-10"></TableHead>
-                        <TableHead>SKU</TableHead>
-                        <TableHead>Description</TableHead>
-                        <TableHead>Ordered</TableHead>
-                        <TableHead>Return Qty</TableHead>
-                        <TableHead>Unit Price</TableHead>
-                        <TableHead>Suggested Disposition</TableHead>
+                        <TableHead>{t('SKU')}</TableHead>
+                        <TableHead>{t('Description')}</TableHead>
+                        <TableHead>{t('Ordered')}</TableHead>
+                        <TableHead>{t('Return Qty')}</TableHead>
+                        <TableHead>{t('Unit Price')}</TableHead>
+                        <TableHead>{t('Suggested Disposition')}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -242,7 +244,7 @@ export default function VNextWmsCreateReturn() {
                                     <SelectValue />
                                   </SelectTrigger>
                                   <SelectContent>
-                                    <SelectItem value="undecided">(decide at inspection)</SelectItem>
+                                    <SelectItem value="undecided">{t('(decide at inspection)')}</SelectItem>
                                     {DISPOSITIONS.map(d => (
                                       <SelectItem key={d} value={d}>{formatStr(d)}</SelectItem>
                                     ))}
@@ -261,11 +263,11 @@ export default function VNextWmsCreateReturn() {
 
             <Card>
               <CardHeader>
-                <CardTitle>3. Reason &amp; Notes</CardTitle>
+                <CardTitle>{t('3. Reason & Notes')}</CardTitle>
               </CardHeader>
               <CardContent className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>Return Reason *</Label>
+                  <Label>{t('Return Reason *')}</Label>
                   <Select value={returnReason} onValueChange={setReturnReason}>
                     <SelectTrigger>
                       <SelectValue />
@@ -278,12 +280,12 @@ export default function VNextWmsCreateReturn() {
                   </Select>
                 </div>
                 <div className="space-y-2 md:col-span-2">
-                  <Label>Customer Notes</Label>
+                  <Label>{t('Customer Notes')}</Label>
                   <textarea
                     rows={3}
                     value={customerNotes}
                     onChange={e => setCustomerNotes(e.target.value)}
-                    placeholder="Describe the issue..."
+                    placeholder={t('Describe the issue...')}
                     className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   />
                 </div>
@@ -295,7 +297,7 @@ export default function VNextWmsCreateReturn() {
                       onChange={e => setAutoAuthorize(e.target.checked)}
                       className="h-4 w-4 rounded border border-input bg-background accent-primary"
                     />
-                    Auto-authorize (skip the "requested" state, go straight to "authorized")
+                    {t('Auto-authorize (skip the "requested" state, go straight to "authorized")')}
                   </label>
                 </div>
               </CardContent>
@@ -303,16 +305,16 @@ export default function VNextWmsCreateReturn() {
 
             <Card>
               <CardHeader>
-                <CardTitle>4. Review</CardTitle>
+                <CardTitle>{t('4. Review')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-8">
                   <div>
-                    <div className="text-xs text-muted-foreground">Lines selected</div>
+                    <div className="text-xs text-muted-foreground">{t('Lines selected')}</div>
                     <div className="text-2xl font-bold">{Object.keys(lineSelections).length}</div>
                   </div>
                   <div>
-                    <div className="text-xs text-muted-foreground">Suggested refund</div>
+                    <div className="text-xs text-muted-foreground">{t('Suggested refund')}</div>
                     <div className="text-2xl font-bold text-primary">${(calculatedRefund / 100).toFixed(2)}</div>
                   </div>
                 </div>
@@ -322,9 +324,9 @@ export default function VNextWmsCreateReturn() {
         )}
 
         <div className="flex justify-end gap-2">
-          <Button variant="outline" type="button" onClick={() => navigate('/wms/returns')}>Cancel</Button>
+          <Button variant="outline" type="button" onClick={() => navigate('/wms/returns')}>{t('Cancel')}</Button>
           <Button variant="gradient" type="submit" disabled={saving || Object.keys(lineSelections).length === 0}>
-            {saving ? 'Creating...' : 'Create RMA'}
+            {saving ? t('Creating...') : t('Create RMA')}
           </Button>
         </div>
       </form>

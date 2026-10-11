@@ -4,6 +4,8 @@ import { AlertTriangle, Info, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCameraBarcodeScanner } from './useCameraBarcodeScanner';
 
+import { t } from '@/i18n';
+
 interface CameraScannerModalProps {
   open: boolean;
   onClose: () => void;
@@ -62,7 +64,7 @@ export function CameraScannerModal({
             size="icon"
             className="h-12 w-12 text-white hover:bg-white/10 hover:text-white"
             onClick={onClose}
-            aria-label="Close scanner"
+            aria-label={t('Close scanner')}
           >
             <X className="h-6 w-6" />
           </Button>
@@ -78,8 +80,9 @@ export function CameraScannerModal({
               <p className="text-base">{error}</p>
               {!isSupported && (
                 <p className="text-sm text-white/70">
-                  This device does not support camera barcode scanning.
-                  Use the built-in hardware scanner or type manually.
+                  {t(
+                    'This device does not support camera barcode scanning.\n                  Use the built-in hardware scanner or type manually.'
+                  )}
                 </p>
               )}
               <Button
@@ -88,7 +91,7 @@ export function CameraScannerModal({
                 className="mt-2 border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
                 onClick={onClose}
               >
-                Close
+                {t('Close')}
               </Button>
             </div>
           ) : (

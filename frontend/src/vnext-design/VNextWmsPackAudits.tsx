@@ -22,6 +22,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface PackAudit {
   id: string;
   verdict: string;
@@ -77,9 +79,11 @@ export default function VNextWmsPackAudits() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Pack Audits</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Pack Audits')}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Scale and dim-weight variance checks at pack stations. Verdict beyond tolerance auto-raises a quality issue.
+          {t(
+            'Scale and dim-weight variance checks at pack stations. Verdict beyond tolerance auto-raises a quality issue.'
+          )}
         </p>
       </div>
 
@@ -87,27 +91,27 @@ export default function VNextWmsPackAudits() {
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardContent className="p-5">
-              <div className="text-xs text-muted-foreground">Last {stats.windowDays} days</div>
+              <div className="text-xs text-muted-foreground">{t('Last')} {stats.windowDays} {t('days')}</div>
               <div className="mt-1 text-2xl font-bold">{stats.total}</div>
-              <div className="text-xs text-muted-foreground">audits recorded</div>
+              <div className="text-xs text-muted-foreground">{t('audits recorded')}</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-5">
-              <div className="text-xs text-muted-foreground">Pass rate</div>
+              <div className="text-xs text-muted-foreground">{t('Pass rate')}</div>
               <div className="mt-1 text-2xl font-bold text-success">{stats.passRatePercent != null ? `${stats.passRatePercent}%` : '-'}</div>
-              <div className="text-xs text-muted-foreground">{stats.pass} / {stats.total} passed</div>
+              <div className="text-xs text-muted-foreground">{stats.pass}/ {stats.total} {t('passed')}</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-5">
-              <div className="text-xs text-muted-foreground">Warnings</div>
+              <div className="text-xs text-muted-foreground">{t('Warnings')}</div>
               <div className="mt-1 text-2xl font-bold text-warning">{stats.warning}</div>
             </CardContent>
           </Card>
           <Card>
             <CardContent className="p-5">
-              <div className="text-xs text-muted-foreground">Failures</div>
+              <div className="text-xs text-muted-foreground">{t('Failures')}</div>
               <div className="mt-1 text-2xl font-bold text-destructive">{stats.fail}</div>
             </CardContent>
           </Card>
@@ -121,10 +125,10 @@ export default function VNextWmsPackAudits() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All verdicts</SelectItem>
-              <SelectItem value="pass">Pass</SelectItem>
-              <SelectItem value="warning">Warning</SelectItem>
-              <SelectItem value="fail">Fail</SelectItem>
+              <SelectItem value="all">{t('All verdicts')}</SelectItem>
+              <SelectItem value="pass">{t('Pass')}</SelectItem>
+              <SelectItem value="warning">{t('Warning')}</SelectItem>
+              <SelectItem value="fail">{t('Fail')}</SelectItem>
             </SelectContent>
           </Select>
         </CardContent>
@@ -132,15 +136,15 @@ export default function VNextWmsPackAudits() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Pack Task</TableHead>
-              <TableHead>Verdict</TableHead>
-              <TableHead>Expected</TableHead>
-              <TableHead>Actual</TableHead>
-              <TableHead>Weight variance</TableHead>
-              <TableHead>Dim variance</TableHead>
-              <TableHead>Tolerance</TableHead>
-              <TableHead>Issue</TableHead>
-              <TableHead>Recorded</TableHead>
+              <TableHead>{t('Pack Task')}</TableHead>
+              <TableHead>{t('Verdict')}</TableHead>
+              <TableHead>{t('Expected')}</TableHead>
+              <TableHead>{t('Actual')}</TableHead>
+              <TableHead>{t('Weight variance')}</TableHead>
+              <TableHead>{t('Dim variance')}</TableHead>
+              <TableHead>{t('Tolerance')}</TableHead>
+              <TableHead>{t('Issue')}</TableHead>
+              <TableHead>{t('Recorded')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -154,7 +158,7 @@ export default function VNextWmsPackAudits() {
             {!loading && audits.length === 0 && (
               <TableRow>
                 <TableCell colSpan={9} className="py-12 text-center text-sm text-muted-foreground">
-                  No pack audits recorded yet.
+                  {t('No pack audits recorded yet.')}
                 </TableCell>
               </TableRow>
             )}
@@ -167,8 +171,8 @@ export default function VNextWmsPackAudits() {
                   <TableCell>
                     <Badge variant={variantForVerdict(a.verdict)}>{a.verdict}</Badge>
                   </TableCell>
-                  <TableCell>{(a.expectedWeightGrams / 1000).toFixed(2)} kg</TableCell>
-                  <TableCell>{(a.actualWeightGrams / 1000).toFixed(2)} kg</TableCell>
+                  <TableCell>{(a.expectedWeightGrams / 1000).toFixed(2)} {t('kg')}</TableCell>
+                  <TableCell>{(a.actualWeightGrams / 1000).toFixed(2)} {t('kg')}</TableCell>
                   <TableCell
                     className={cn(
                       'font-semibold',
@@ -183,7 +187,7 @@ export default function VNextWmsPackAudits() {
                   <TableCell><span className="text-muted-foreground">+/-{Number(a.weightTolerancePercent).toFixed(0)}%</span></TableCell>
                   <TableCell>
                     {a.issueId
-                      ? <Link to={`/issues/${a.issueId}`} className="font-mono text-sm text-primary hover:underline">View issue</Link>
+                      ? <Link to={`/issues/${a.issueId}`} className="font-mono text-sm text-primary hover:underline">{t('View issue')}</Link>
                       : <span className="text-muted-foreground">-</span>}
                   </TableCell>
                   <TableCell className="text-sm text-muted-foreground">{new Date(a.createdAt).toLocaleString()}</TableCell>

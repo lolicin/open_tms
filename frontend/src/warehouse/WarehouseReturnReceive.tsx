@@ -15,6 +15,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface RmaLine {
   id: string;
   sku: string;
@@ -80,7 +82,7 @@ export default function WarehouseReturnReceive() {
   if (!rma) {
     return (
       <Card className="mx-auto mt-4 max-w-2xl p-6 text-center">
-        <p className="text-base text-destructive">{error || 'Not found'}</p>
+        <p className="text-base text-destructive">{error || t('Not found')}</p>
       </Card>
     );
   }
@@ -97,7 +99,7 @@ export default function WarehouseReturnReceive() {
           size="icon"
           className="h-12 w-12 shrink-0"
           onClick={() => navigate('/warehouse/tasks')}
-          aria-label="Back to tasks"
+          aria-label={t('Back to tasks')}
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
@@ -114,7 +116,7 @@ export default function WarehouseReturnReceive() {
       <Card>
         <CardContent className="pt-6">
           <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Return Receipt
+            {t('Return Receipt')}
           </div>
           <div className="mt-1 text-xl font-bold">{rma.rmaNumber}</div>
           <div className="text-sm text-muted-foreground capitalize">
@@ -122,7 +124,7 @@ export default function WarehouseReturnReceive() {
           </div>
           {rma.returnTrackingNumber && (
             <div className="mt-1 text-sm text-muted-foreground">
-              Tracking: {rma.returnTrackingNumber}
+              {t('Tracking:')} {rma.returnTrackingNumber}
             </div>
           )}
           {rma.customerNotes && (
@@ -137,8 +139,8 @@ export default function WarehouseReturnReceive() {
         <Card className="text-center">
           <CardContent className="flex flex-col items-center gap-2 py-10">
             <CheckCircle2 className="h-12 w-12 text-success" />
-            <p className="text-lg font-semibold">All lines received</p>
-            <p className="text-sm text-muted-foreground">Ready for inspection</p>
+            <p className="text-lg font-semibold">{t('All lines received')}</p>
+            <p className="text-sm text-muted-foreground">{t('Ready for inspection')}</p>
             <Button
               type="button"
               variant="gradient"
@@ -146,7 +148,7 @@ export default function WarehouseReturnReceive() {
               className="mt-4"
               onClick={() => navigate(`/warehouse/tasks/return-inspect/${rma.id}`)}
             >
-              Start Inspection
+              {t('Start Inspection')}
             </Button>
           </CardContent>
         </Card>
@@ -166,7 +168,7 @@ export default function WarehouseReturnReceive() {
                     <div className="min-w-0 flex-1">
                       <div className="text-base font-semibold">{line.sku}</div>
                       <div className="text-sm text-muted-foreground">
-                        <span className="tabular-nums">{line.receivedQuantity} / {line.requestedQuantity}</span> received
+                        <span className="tabular-nums">{line.receivedQuantity} / {line.requestedQuantity}</span> {t('received')}
                         {done && <Check className="ml-1 inline h-4 w-4 text-success" />}
                       </div>
                     </div>
@@ -176,7 +178,7 @@ export default function WarehouseReturnReceive() {
                         size="lg"
                         onClick={() => { setActiveLineId(line.id); setReceiveQty(String(remaining)); }}
                       >
-                        Receive
+                        {t('Receive')}
                       </Button>
                     )}
                   </div>
@@ -202,7 +204,7 @@ export default function WarehouseReturnReceive() {
                         disabled={busy}
                       >
                         {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
-                        {busy ? '...' : 'Confirm'}
+                        {busy ? '...' : t('Confirm')}
                       </Button>
                       <Button
                         type="button"
@@ -211,7 +213,7 @@ export default function WarehouseReturnReceive() {
                         className="h-12 w-12"
                         onClick={() => { setActiveLineId(null); setReceiveQty(''); }}
                         disabled={busy}
-                        aria-label="Cancel"
+                        aria-label={t('Cancel')}
                       >
                         <X className="h-5 w-5" />
                       </Button>

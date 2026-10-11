@@ -34,6 +34,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface LoadPlan {
   id: string;
   shipmentId: string | null;
@@ -152,12 +154,14 @@ export default function VNextWmsLoadPlan() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Load Plans</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Plan outbound loads with reverse load-sequence and automatic BOL generation</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Load Plans')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t(
+            'Plan outbound loads with reverse load-sequence and automatic BOL generation'
+          )}</p>
         </div>
         <Button variant="gradient" onClick={() => setShowCreate(true)} disabled={staged.length === 0}>
           <Plus className="h-4 w-4" />
-          New Load Plan
+          {t('New Load Plan')}
         </Button>
       </div>
 
@@ -181,22 +185,22 @@ export default function VNextWmsLoadPlan() {
       <Dialog open={showCreate} onOpenChange={setShowCreate}>
         <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
-            <DialogTitle>New Load Plan</DialogTitle>
+            <DialogTitle>{t('New Load Plan')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>Trailer #</Label>
+                <Label>{t('Trailer #')}</Label>
                 <Input value={createForm.trailerNumber} onChange={e => setCreateForm({ ...createForm, trailerNumber: e.target.value })} />
               </div>
               <div className="space-y-2">
-                <Label>Dock Door</Label>
+                <Label>{t('Dock Door')}</Label>
                 <Select value={createForm.dockBinId} onValueChange={v => setCreateForm({ ...createForm, dockBinId: v })}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="none">None</SelectItem>
+                    <SelectItem value="none">{t('None')}</SelectItem>
                     {dockBins.map(b => (
                       <SelectItem key={b.id} value={b.id}>{b.label}</SelectItem>
                     ))}
@@ -204,15 +208,15 @@ export default function VNextWmsLoadPlan() {
                 </Select>
               </div>
             </div>
-            <h4 className="font-semibold">Select Staged Units ({selectedAssignments.size} selected)</h4>
+            <h4 className="font-semibold">{t('Select Staged Units (')}{selectedAssignments.size} {t('selected)')}</h4>
             <div className="max-h-72 overflow-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead></TableHead>
-                    <TableHead>Unit</TableHead>
-                    <TableHead>Order</TableHead>
-                    <TableHead>Staging Bin</TableHead>
+                    <TableHead>{t('Unit')}</TableHead>
+                    <TableHead>{t('Order')}</TableHead>
+                    <TableHead>{t('Staging Bin')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -240,9 +244,9 @@ export default function VNextWmsLoadPlan() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowCreate(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setShowCreate(false)}>{t('Cancel')}</Button>
             <Button variant="gradient" disabled={creating || selectedAssignments.size === 0} onClick={handleCreate}>
-              {creating ? 'Creating...' : `Create Plan (${selectedAssignments.size} units)`}
+              {creating ? t('Creating...') : `Create Plan (${selectedAssignments.size} units)`}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -251,20 +255,22 @@ export default function VNextWmsLoadPlan() {
       <Dialog open={!!completing} onOpenChange={(o) => !o && setCompleting(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Complete Load</DialogTitle>
+            <DialogTitle>{t('Complete Load')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label>Seal Number</Label>
-              <Input value={sealNumber} onChange={e => setSealNumber(e.target.value)} placeholder="Enter trailer seal number" autoFocus />
+              <Label>{t('Seal Number')}</Label>
+              <Input value={sealNumber} onChange={e => setSealNumber(e.target.value)} placeholder={t('Enter trailer seal number')} autoFocus />
             </div>
             <p className="text-sm text-muted-foreground">
-              Completing the load will mark all units as loaded, clear their warehouse location, and auto-generate a Bill of Lading.
+              {t(
+                'Completing the load will mark all units as loaded, clear their warehouse location, and auto-generate a Bill of Lading.'
+              )}
             </p>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setCompleting(null)}>Cancel</Button>
-            <Button variant="gradient" onClick={() => completing && handleComplete(completing)}>Complete &amp; Generate BOL</Button>
+            <Button variant="outline" onClick={() => setCompleting(null)}>{t('Cancel')}</Button>
+            <Button variant="gradient" onClick={() => completing && handleComplete(completing)}>{t('Complete & Generate BOL')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -277,9 +283,9 @@ export default function VNextWmsLoadPlan() {
         <Card>
           <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
             <Truck className="h-12 w-12 text-muted-foreground" />
-            <h3 className="text-base font-medium">No load plans</h3>
+            <h3 className="text-base font-medium">{t('No load plans')}</h3>
             <p className="text-sm text-muted-foreground">
-              {staged.length > 0 ? `${staged.length} units staged and ready. Create a load plan to sequence the load and generate a BOL.` : 'Stage packed units first, then create a load plan.'}
+              {staged.length > 0 ? `${staged.length} units staged and ready. Create a load plan to sequence the load and generate a BOL.` : t('Stage packed units first, then create a load plan.')}
             </p>
           </CardContent>
         </Card>
@@ -288,14 +294,14 @@ export default function VNextWmsLoadPlan() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Plan</TableHead>
-                <TableHead>Shipment</TableHead>
-                <TableHead>Trailer</TableHead>
-                <TableHead>Units</TableHead>
-                <TableHead>Seal</TableHead>
-                <TableHead>BOL</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead>{t('Plan')}</TableHead>
+                <TableHead>{t('Shipment')}</TableHead>
+                <TableHead>{t('Trailer')}</TableHead>
+                <TableHead>{t('Units')}</TableHead>
+                <TableHead>{t('Seal')}</TableHead>
+                <TableHead>{t('BOL')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead>{t('Actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -306,7 +312,7 @@ export default function VNextWmsLoadPlan() {
                   <TableCell>{p.trailerNumber ?? '-'}</TableCell>
                   <TableCell>{p.loadedUnits}/{p.totalUnits}</TableCell>
                   <TableCell>{p.sealNumber ?? '-'}</TableCell>
-                  <TableCell>{p.bolDocumentId ? <Badge variant="success">Generated</Badge> : '-'}</TableCell>
+                  <TableCell>{p.bolDocumentId ? <Badge variant="success">{t('Generated')}</Badge> : '-'}</TableCell>
                   <TableCell>
                     <Badge variant={statusVariant(p.status)}>{formatStatus(p.status)}</Badge>
                   </TableCell>
@@ -314,12 +320,12 @@ export default function VNextWmsLoadPlan() {
                     <div className="flex gap-1">
                       {p.status === 'planning' && (
                         <Button variant="gradient" size="sm" onClick={() => { setCompleting(p.id); setSealNumber(''); }}>
-                          Complete
+                          {t('Complete')}
                         </Button>
                       )}
                       {p.bolDocumentId && (
                         <Button variant="outline" size="sm" onClick={() => navigate(`/documents/${p.bolDocumentId}/view`)}>
-                          BOL
+                          {t('BOL')}
                         </Button>
                       )}
                     </div>

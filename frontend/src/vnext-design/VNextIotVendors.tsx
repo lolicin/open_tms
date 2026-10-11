@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface IotVendor {
   vendorKey: string;
   name: string;
@@ -71,7 +73,7 @@ export default function VNextIotVendors() {
       setSecretInput(s => ({ ...s, [vendor.vendorKey]: '' }));
       toast.success(value ? 'Webhook secret saved' : 'Webhook secret cleared');
     } catch {
-      toast.error('Failed to save secret');
+      toast.error(t('Failed to save secret'));
     } finally {
       setSavingSecret(null);
     }
@@ -94,7 +96,7 @@ export default function VNextIotVendors() {
       setVendors(vs => vs.map(v => v.vendorKey === vendor.vendorKey ? { ...v, enabled: next } : v));
       toast.success(`${vendor.name} ${next ? 'enabled' : 'disabled'}`);
     } catch {
-      toast.error('Failed to update vendor');
+      toast.error(t('Failed to update vendor'));
     } finally {
       setSaving(null);
     }
@@ -103,25 +105,25 @@ export default function VNextIotVendors() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">IoT Vendors</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t('IoT Vendors')}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Switch IoT tracking vendors on or off. When a vendor is enabled, its devices can be added to
-          shipments and its inbound webhooks are processed. When disabled, its webhooks are ignored and
-          the IoT section is hidden on the shipment form.
+          {t(
+            'Switch IoT tracking vendors on or off. When a vendor is enabled, its devices can be added to\n          shipments and its inbound webhooks are processed. When disabled, its webhooks are ignored and\n          the IoT section is hidden on the shipment form.'
+          )}
         </p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Vendors</CardTitle>
+          <CardTitle className="text-base">{t('Vendors')}</CardTitle>
         </CardHeader>
         <CardContent>
           {loading ? (
             <div className="flex items-center gap-2 py-8 text-sm text-muted-foreground">
-              <Loader2 className="h-4 w-4 animate-spin" /> Loading...
+              <Loader2 className="h-4 w-4 animate-spin" /> {t('Loading...')}
             </div>
           ) : vendors.length === 0 ? (
-            <p className="py-6 text-sm text-muted-foreground">No IoT vendors available.</p>
+            <p className="py-6 text-sm text-muted-foreground">{t('No IoT vendors available.')}</p>
           ) : (
             <ul className="divide-y divide-border">
               {vendors.map(vendor => (
@@ -134,7 +136,7 @@ export default function VNextIotVendors() {
                       <div>
                         <div className="text-sm font-medium">{vendor.name}</div>
                         <div className="text-xs text-muted-foreground">
-                          {vendor.enabled ? 'Enabled' : 'Disabled'}
+                          {vendor.enabled ? t('Enabled') : t('Disabled')}
                         </div>
                       </div>
                     </div>
@@ -147,9 +149,9 @@ export default function VNextIotVendors() {
                   <div className="flex flex-wrap items-center gap-2 pl-14">
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                       <KeyRound className="h-3.5 w-3.5" />
-                      Webhook secret
+                      {t('Webhook secret')}
                       <span className={cn('rounded px-1.5 py-0.5', vendor.hasWebhookSecret ? 'bg-success/15 text-success' : 'bg-muted text-muted-foreground')}>
-                        {vendor.hasWebhookSecret ? 'Configured' : 'Not set'}
+                        {vendor.hasWebhookSecret ? t('Configured') : t('Not set')}
                       </span>
                     </div>
                     <Input
@@ -165,7 +167,7 @@ export default function VNextIotVendors() {
                       disabled={savingSecret === vendor.vendorKey || (secretInput[vendor.vendorKey] ?? '').trim() === ''}
                       onClick={() => saveSecret(vendor, secretInput[vendor.vendorKey] ?? '')}
                     >
-                      {savingSecret === vendor.vendorKey ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Save'}
+                      {savingSecret === vendor.vendorKey ? <Loader2 className="h-4 w-4 animate-spin" /> : t('Save')}
                     </Button>
                     {vendor.hasWebhookSecret && (
                       <Button
@@ -174,7 +176,7 @@ export default function VNextIotVendors() {
                         disabled={savingSecret === vendor.vendorKey}
                         onClick={() => saveSecret(vendor, '')}
                       >
-                        Clear
+                        {t('Clear')}
                       </Button>
                     )}
                   </div>

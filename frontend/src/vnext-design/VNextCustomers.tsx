@@ -39,6 +39,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface Customer {
   id: string;
   name: string;
@@ -94,7 +96,7 @@ export default function VNextCustomers() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -109,25 +111,25 @@ export default function VNextCustomers() {
   }
 
   const statTiles = [
-    { label: 'Total customers', value: stats.total, icon: Users, tone: 'bg-primary/10 text-primary' },
-    { label: 'Active', value: stats.active, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
-    { label: 'Total shipments', value: stats.totalShipments, icon: Truck, tone: 'bg-info/15 text-info' },
-    { label: 'Total orders', value: stats.totalOrders, icon: FileText, tone: 'bg-warning/15 text-warning' },
+    { label: t('Total customers'), value: stats.total, icon: Users, tone: 'bg-primary/10 text-primary' },
+    { label: t('Active'), value: stats.active, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
+    { label: t('Total shipments'), value: stats.totalShipments, icon: Truck, tone: 'bg-info/15 text-info' },
+    { label: t('Total orders'), value: stats.totalOrders, icon: FileText, tone: 'bg-warning/15 text-warning' },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Customers</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Customers')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {customers.length} customers in your account
+            {customers.length} {t('customers in your account')}
           </p>
         </div>
         {hasPermission('customers:write') && (
           <Button variant="gradient" onClick={() => navigate('/customers/create')}>
             <Plus className="h-4 w-4" />
-            New customer
+            {t('New customer')}
           </Button>
         )}
       </div>
@@ -154,7 +156,7 @@ export default function VNextCustomers() {
           <div className="relative min-w-[280px] flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search by name, contact, or email..."
+              placeholder={t('Search by name, contact, or email...')}
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="pl-9"
@@ -165,9 +167,9 @@ export default function VNextCustomers() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All statuses ({stats.total})</SelectItem>
-              <SelectItem value="active">Active ({stats.active})</SelectItem>
-              <SelectItem value="inactive">Inactive ({customers.filter(c => c.archived).length})</SelectItem>
+              <SelectItem value="all">{t('All statuses (')}{stats.total})</SelectItem>
+              <SelectItem value="active">{t('Active (')}{stats.active})</SelectItem>
+              <SelectItem value="inactive">{t('Inactive (')}{customers.filter(c => c.archived).length})</SelectItem>
             </SelectContent>
           </Select>
           <div className="ml-auto inline-flex rounded-md border border-input">
@@ -205,7 +207,7 @@ export default function VNextCustomers() {
                     <div className="flex items-center justify-between gap-2">
                       <span className="truncate text-base font-semibold">{c.name}</span>
                       <Badge variant={c.archived ? 'destructive' : 'success'}>
-                        {c.archived ? 'Inactive' : 'Active'}
+                        {c.archived ? t('Inactive') : t('Active')}
                       </Badge>
                     </div>
                     <div className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
@@ -216,11 +218,11 @@ export default function VNextCustomers() {
                 </div>
                 <div className="grid grid-cols-2 gap-3 border-t border-border pt-3">
                   <div>
-                    <div className="text-xs text-muted-foreground">Shipments</div>
+                    <div className="text-xs text-muted-foreground">{t('Shipments')}</div>
                     <div className="text-sm font-semibold">{c._count?.shipments ?? 0}</div>
                   </div>
                   <div>
-                    <div className="text-xs text-muted-foreground">Orders</div>
+                    <div className="text-xs text-muted-foreground">{t('Orders')}</div>
                     <div className="text-sm font-semibold">{c._count?.orders ?? 0}</div>
                   </div>
                 </div>
@@ -231,8 +233,8 @@ export default function VNextCustomers() {
             <Card className="col-span-full">
               <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
                 <SearchX className="h-8 w-8" />
-                <h3 className="text-base font-medium">No customers found</h3>
-                <p className="text-sm">Try adjusting your search or filters</p>
+                <h3 className="text-base font-medium">{t('No customers found')}</h3>
+                <p className="text-sm">{t('Try adjusting your search or filters')}</p>
               </div>
             </Card>
           )}
@@ -242,11 +244,11 @@ export default function VNextCustomers() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Shipments</TableHead>
-                <TableHead>Orders</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{t('Name')}</TableHead>
+                <TableHead>{t('Email')}</TableHead>
+                <TableHead>{t('Shipments')}</TableHead>
+                <TableHead>{t('Orders')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -268,7 +270,7 @@ export default function VNextCustomers() {
                   <TableCell className="text-sm font-semibold text-primary">{c._count?.orders ?? 0}</TableCell>
                   <TableCell>
                     <Badge variant={c.archived ? 'destructive' : 'success'}>
-                      {c.archived ? 'Inactive' : 'Active'}
+                      {c.archived ? t('Inactive') : t('Active')}
                     </Badge>
                   </TableCell>
                 </TableRow>
@@ -278,7 +280,7 @@ export default function VNextCustomers() {
                   <TableCell colSpan={5}>
                     <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
                       <SearchX className="h-8 w-8" />
-                      <h3 className="text-base font-medium">No customers found</h3>
+                      <h3 className="text-base font-medium">{t('No customers found')}</h3>
                     </div>
                   </TableCell>
                 </TableRow>

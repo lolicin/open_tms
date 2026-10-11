@@ -27,6 +27,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 
+import { t } from '@/i18n';
+
 interface ShareView {
   sections: string[];
   overview?: any;
@@ -74,7 +76,7 @@ export default function ShipmentSharePage() {
       } catch {
         if (!cancelled) {
           setGate('unknown');
-          setGateMessage('We could not reach the shipment right now');
+          setGateMessage(t('We could not reach the shipment right now'));
         }
       }
     })();
@@ -96,7 +98,7 @@ export default function ShipmentSharePage() {
         }
         setView(json.data);
       } catch {
-        setViewError('We could not load the shipment right now');
+        setViewError(t('We could not load the shipment right now'));
       }
     },
     []
@@ -123,7 +125,7 @@ export default function ShipmentSharePage() {
       }
       setSession(json.data.sessionToken);
     } catch {
-      setAuthError('We could not check that code right now');
+      setAuthError(t('We could not check that code right now'));
     } finally {
       setSubmitting(false);
     }
@@ -134,7 +136,7 @@ export default function ShipmentSharePage() {
       <ShareShell>
         <div className="flex items-center justify-center gap-2 p-10 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" />
-          Checking this link
+          {t('Checking this link')}
         </div>
       </ShareShell>
     );
@@ -148,7 +150,7 @@ export default function ShipmentSharePage() {
             <AlertTriangle className="h-8 w-8 text-muted-foreground" />
             <p className="font-medium">{gateMessage}</p>
             <p className="text-sm text-muted-foreground">
-              Ask whoever sent it for a new link.
+              {t('Ask whoever sent it for a new link.')}
             </p>
           </CardContent>
         </Card>
@@ -163,13 +165,13 @@ export default function ShipmentSharePage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Lock className="h-4 w-4" />
-              Enter your access code
+              {t('Enter your access code')}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={submit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="share-email">Your email address</Label>
+                <Label htmlFor="share-email">{t('Your email address')}</Label>
                 <Input
                   id="share-email"
                   type="email"
@@ -179,11 +181,11 @@ export default function ShipmentSharePage() {
                   onChange={(e) => setEmail(e.target.value)}
                 />
                 <p className="text-xs text-muted-foreground">
-                  Recorded so the sender knows who opened the shipment.
+                  {t('Recorded so the sender knows who opened the shipment.')}
                 </p>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="share-code">Access code</Label>
+                <Label htmlFor="share-code">{t('Access code')}</Label>
                 <Input
                   id="share-code"
                   required
@@ -200,7 +202,7 @@ export default function ShipmentSharePage() {
               )}
               <Button type="submit" className="w-full" disabled={submitting}>
                 {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
-                View shipment
+                {t('View shipment')}
               </Button>
             </form>
           </CardContent>
@@ -227,7 +229,7 @@ export default function ShipmentSharePage() {
       <ShareShell>
         <div className="flex items-center justify-center gap-2 p-10 text-sm text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" />
-          Loading shipment
+          {t('Loading shipment')}
         </div>
       </ShareShell>
     );
@@ -253,8 +255,8 @@ function ShareShell({ children, reference }: { children: React.ReactNode; refere
     <div className="min-h-screen bg-background px-4 py-10">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <p className="text-sm text-muted-foreground">Shipment</p>
-          <h1 className="text-2xl font-bold tracking-tight">{reference || 'Shared shipment'}</h1>
+          <p className="text-sm text-muted-foreground">{t('Shipment')}</p>
+          <h1 className="text-2xl font-bold tracking-tight">{reference || t('Shared shipment')}</h1>
         </div>
         {children}
       </div>
@@ -268,21 +270,21 @@ function OverviewCard({ overview }: { overview: any }) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <MapPin className="h-4 w-4" />
-          Overview
+          {t('Overview')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex flex-wrap items-center gap-2">
           <Badge>{overview.status}</Badge>
-          {overview.hasException && <Badge variant="destructive">Exception</Badge>}
+          {overview.hasException && <Badge variant="destructive">{t('Exception')}</Badge>}
           {overview.serviceLevel && <Badge variant="muted">{overview.serviceLevel}</Badge>}
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="From" value={placeLabel(overview.origin)} />
-          <Field label="To" value={placeLabel(overview.destination)} />
-          <Field label="Pickup" value={dateLabel(overview.pickupDate)} />
-          <Field label="Delivery" value={dateLabel(overview.deliveryDate)} />
-          {overview.proNumber && <Field label="PRO number" value={overview.proNumber} />}
+          <Field label={t('From')} value={placeLabel(overview.origin)} />
+          <Field label={t('To')} value={placeLabel(overview.destination)} />
+          <Field label={t('Pickup')} value={dateLabel(overview.pickupDate)} />
+          <Field label={t('Delivery')} value={dateLabel(overview.deliveryDate)} />
+          {overview.proNumber && <Field label={t('PRO number')} value={overview.proNumber} />}
         </div>
         {overview.stops?.length > 0 && (
           <>
@@ -309,13 +311,13 @@ function CarrierCard({ carrier }: { carrier: any }) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Truck className="h-4 w-4" />
-          Carrier
+          {t('Carrier')}
         </CardTitle>
       </CardHeader>
       <CardContent>
         <p className="font-medium">{carrier.name}</p>
         {carrier.scacCode && (
-          <p className="text-sm text-muted-foreground">SCAC {carrier.scacCode}</p>
+          <p className="text-sm text-muted-foreground">{t('SCAC')} {carrier.scacCode}</p>
         )}
       </CardContent>
     </Card>
@@ -326,11 +328,11 @@ function EventsCard({ events }: { events: any[] }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Tracking events</CardTitle>
+        <CardTitle>{t('Tracking events')}</CardTitle>
       </CardHeader>
       <CardContent>
         {events.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No tracking events yet.</p>
+          <p className="text-sm text-muted-foreground">{t('No tracking events yet.')}</p>
         ) : (
           <div className="space-y-3">
             {events.map((event, index) => (
@@ -354,14 +356,14 @@ function CargoCard({ cargo }: { cargo: any }) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Package className="h-4 w-4" />
-          Cargo
+          {t('Cargo')}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="grid gap-4 sm:grid-cols-3">
-          <Field label="Lines" value={String(cargo.lineCount)} />
-          <Field label="Pieces" value={String(cargo.totalPieces)} />
-          <Field label="Weight" value={`${cargo.totalWeightKg} kg`} />
+          <Field label={t('Lines')} value={String(cargo.lineCount)} />
+          <Field label={t('Pieces')} value={String(cargo.totalPieces)} />
+          <Field label={t('Weight')} value={`${cargo.totalWeightKg} kg`} />
         </div>
         {cargo.lines?.length > 0 && (
           <>
@@ -386,18 +388,18 @@ function OrdersCard({ orders }: { orders: any[] }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Orders</CardTitle>
+        <CardTitle>{t('Orders')}</CardTitle>
       </CardHeader>
       <CardContent>
         {orders.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No orders on this shipment.</p>
+          <p className="text-sm text-muted-foreground">{t('No orders on this shipment.')}</p>
         ) : (
           <div className="space-y-3">
             {orders.map((order, index) => (
               <div key={index} className="flex items-center gap-3 text-sm">
                 <span className="font-medium">{order.orderNumber}</span>
                 {order.poNumber && (
-                  <span className="text-muted-foreground">PO {order.poNumber}</span>
+                  <span className="text-muted-foreground">{t('PO')} {order.poNumber}</span>
                 )}
                 <Badge variant="muted" className="ml-auto">
                   {order.status}
@@ -417,12 +419,12 @@ function TelemetryCard({ readings }: { readings: any[] }) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Thermometer className="h-4 w-4" />
-          Telemetry
+          {t('Telemetry')}
         </CardTitle>
       </CardHeader>
       <CardContent>
         {readings.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No readings recorded.</p>
+          <p className="text-sm text-muted-foreground">{t('No readings recorded.')}</p>
         ) : (
           <div className="space-y-2">
             {readings.slice(0, 25).map((reading, index) => (
@@ -433,7 +435,7 @@ function TelemetryCard({ readings }: { readings: any[] }) {
                 <span className="tabular-nums">
                   {reading.temperature === null ? '—' : `${reading.temperature} °C`}
                 </span>
-                {reading.isAlert && <Badge variant="destructive">Alert</Badge>}
+                {reading.isAlert && <Badge variant="destructive">{t('Alert')}</Badge>}
               </div>
             ))}
           </div>
@@ -449,12 +451,12 @@ function DocumentsCard({ documents }: { documents: any[] }) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <FileText className="h-4 w-4" />
-          Documents
+          {t('Documents')}
         </CardTitle>
       </CardHeader>
       <CardContent>
         {documents.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No documents yet.</p>
+          <p className="text-sm text-muted-foreground">{t('No documents yet.')}</p>
         ) : (
           <div className="space-y-2">
             {documents.map((doc) => (

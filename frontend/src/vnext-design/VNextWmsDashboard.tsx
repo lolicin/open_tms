@@ -29,6 +29,8 @@ import {
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 
+import { t as translate } from '@/i18n';
+
 interface WarehouseStats {
   zones: number;
   bins: number;
@@ -69,31 +71,31 @@ export default function VNextWmsDashboard() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <p>Loading warehouse dashboard...</p>
+        <p>{translate('Loading warehouse dashboard...')}</p>
       </div>
     );
   }
 
   const tiles = [
-    { label: 'Zones', value: stats?.zones ?? 0, icon: Grid3x3, tone: 'primary' as const, onClick: () => navigate('/wms/zones') },
-    { label: 'Active Bins', value: stats?.activeBins ?? 0, icon: Boxes, tone: 'info' as const, onClick: () => navigate('/wms/zones') },
-    { label: 'SKUs in Stock', value: stats?.totalSkus ?? 0, icon: Package, tone: 'success' as const, onClick: () => navigate('/wms/inventory') },
-    { label: 'Receiving Tasks', value: stats?.receivingTasks ?? 0, icon: PackageOpen, tone: 'warning' as const, onClick: () => navigate('/wms/receiving') },
+    { label: translate('Zones'), value: stats?.zones ?? 0, icon: Grid3x3, tone: 'primary' as const, onClick: () => navigate('/wms/zones') },
+    { label: translate('Active Bins'), value: stats?.activeBins ?? 0, icon: Boxes, tone: 'info' as const, onClick: () => navigate('/wms/zones') },
+    { label: translate('SKUs in Stock'), value: stats?.totalSkus ?? 0, icon: Package, tone: 'success' as const, onClick: () => navigate('/wms/inventory') },
+    { label: translate('Receiving Tasks'), value: stats?.receivingTasks ?? 0, icon: PackageOpen, tone: 'warning' as const, onClick: () => navigate('/wms/receiving') },
   ];
 
   const tilesRow2 = [
-    { label: 'Putaway Tasks', value: stats?.putawayTasks ?? 0, icon: PackagePlus, tone: 'info' as const, onClick: () => navigate('/wms/putaway') },
-    { label: 'Pick Tasks', value: stats?.pickTasks ?? 0, icon: ShoppingCart, tone: 'primary' as const, onClick: () => navigate('/wms/picking') },
-    { label: 'Pack Tasks', value: stats?.packTasks ?? 0, icon: Package, tone: 'warning' as const, onClick: () => navigate('/wms/packing') },
-    { label: 'Loading', value: 0, icon: Truck, tone: 'success' as const, onClick: () => navigate('/wms/loading') },
+    { label: translate('Putaway Tasks'), value: stats?.putawayTasks ?? 0, icon: PackagePlus, tone: 'info' as const, onClick: () => navigate('/wms/putaway') },
+    { label: translate('Pick Tasks'), value: stats?.pickTasks ?? 0, icon: ShoppingCart, tone: 'primary' as const, onClick: () => navigate('/wms/picking') },
+    { label: translate('Pack Tasks'), value: stats?.packTasks ?? 0, icon: Package, tone: 'warning' as const, onClick: () => navigate('/wms/packing') },
+    { label: translate('Loading'), value: 0, icon: Truck, tone: 'success' as const, onClick: () => navigate('/wms/loading') },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Warehouse Operations</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Overview of warehouse activity and performance</p>
+          <h1 className="text-3xl font-bold tracking-tight">{translate('Warehouse Operations')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{translate('Overview of warehouse activity and performance')}</p>
         </div>
         <FacilitySelect facilities={facilities} value={facilityId} onChange={setFacilityId} loading={facilitiesLoading} error={facilitiesError} className="w-[260px]" />
       </div>
@@ -141,24 +143,24 @@ export default function VNextWmsDashboard() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
+          <CardTitle>{translate('Quick Actions')}</CardTitle>
         </CardHeader>
         <CardContent className="flex flex-wrap gap-2">
           <Button variant="gradient" onClick={() => navigate('/wms/zones')}>
             <Plus className="h-4 w-4" />
-            Set Up Zones
+            {translate('Set Up Zones')}
           </Button>
           <Button variant="outline" onClick={() => navigate('/wms/receiving')}>
             <PackageOpen className="h-4 w-4" />
-            New Receiving Task
+            {translate('New Receiving Task')}
           </Button>
           <Button variant="outline" onClick={() => navigate('/wms/waves')}>
             <Waves className="h-4 w-4" />
-            Create Wave
+            {translate('Create Wave')}
           </Button>
           <Button variant="outline" onClick={() => navigate('/wms/inventory')}>
             <Search className="h-4 w-4" />
-            Search Inventory
+            {translate('Search Inventory')}
           </Button>
         </CardContent>
       </Card>
@@ -166,21 +168,25 @@ export default function VNextWmsDashboard() {
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Dock Activity</CardTitle>
+            <CardTitle>{translate('Dock Activity')}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              Dock utilization and appointment schedule will appear here once receiving is configured.
+              {translate(
+                'Dock utilization and appointment schedule will appear here once receiving is configured.'
+              )}
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Pick Performance</CardTitle>
+            <CardTitle>{translate('Pick Performance')}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              Pick rate, accuracy, and wave progress will appear here once picking is active.
+              {translate(
+                'Pick rate, accuracy, and wave progress will appear here once picking is active.'
+              )}
             </p>
           </CardContent>
         </Card>

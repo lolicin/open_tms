@@ -23,6 +23,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 type PackagingKind = 'pallet' | 'carton' | 'crate' | 'drum' | 'roll' | 'bag' | 'tote' | 'loose' | 'custom';
 
 interface PackagingType {
@@ -123,13 +125,17 @@ export default function VNextPackagingTypes() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Delete this packaging type? If it is referenced by any trackable units it will be deactivated instead.')) return;
+    if (!confirm(t(
+      'Delete this packaging type? If it is referenced by any trackable units it will be deactivated instead.'
+    ))) return;
     await fetch(`${API_URL}/api/v1/packaging-types/${id}`, { method: 'DELETE' });
     load();
   };
 
   const handleSeed = async () => {
-    if (!confirm('Add any missing standard packaging types (pallets + cartons + crates + drums + ...) to your catalogue?')) return;
+    if (!confirm(t(
+      'Add any missing standard packaging types (pallets + cartons + crates + drums + ...) to your catalogue?'
+    ))) return;
     setSeeding(true);
     try {
       const res = await fetch(`${API_URL}/api/v1/packaging-types/seed-standards`, { method: 'POST' });
@@ -145,30 +151,32 @@ export default function VNextPackagingTypes() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Packaging Types</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Packaging Types')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Catalogue of pallets, cartons, crates, drums, totes, and more. Used for cartonization, palletization planning, and BOL totals.
+            {t(
+              'Catalogue of pallets, cartons, crates, drums, totes, and more. Used for cartonization, palletization planning, and BOL totals.'
+            )}
           </p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={handleSeed} disabled={seeding}>
-            {seeding ? 'Seeding...' : 'Load standard types'}
+            {seeding ? t('Seeding...') : t('Load standard types')}
           </Button>
           <Button variant="gradient" onClick={openCreate}>
             <Plus className="h-4 w-4" />
-            New type
+            {t('New type')}
           </Button>
         </div>
       </div>
 
       <div className="flex items-center gap-2 text-sm">
-        <span className="text-muted-foreground">Filter by kind:</span>
+        <span className="text-muted-foreground">{t('Filter by kind:')}</span>
         <Select value={kindFilter} onValueChange={v => setKindFilter(v as any)}>
           <SelectTrigger className="w-40">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All kinds</SelectItem>
+            <SelectItem value="all">{t('All kinds')}</SelectItem>
             {KINDS.map(k => (<SelectItem key={k} value={k}>{k}</SelectItem>))}
           </SelectContent>
         </Select>
@@ -184,12 +192,12 @@ export default function VNextPackagingTypes() {
       {showForm && (
         <Card>
           <CardHeader>
-            <CardTitle>{editing ? 'Edit packaging type' : 'New packaging type'}</CardTitle>
+            <CardTitle>{editing ? t('Edit packaging type') : t('New packaging type')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>Kind</Label>
+                <Label>{t('Kind')}</Label>
                 <Select value={form.kind} onValueChange={v => setForm(f => ({ ...f, kind: v as PackagingKind }))}>
                   <SelectTrigger>
                     <SelectValue />
@@ -200,49 +208,49 @@ export default function VNextPackagingTypes() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Code</Label>
-                <Input value={form.code} onChange={e => setForm(f => ({ ...f, code: e.target.value }))} placeholder="EUR1, CARTON_M, DRUM_55GAL..." disabled={!!editing} />
+                <Label>{t('Code')}</Label>
+                <Input value={form.code} onChange={e => setForm(f => ({ ...f, code: e.target.value }))} placeholder={t('EUR1, CARTON_M, DRUM_55GAL...')} disabled={!!editing} />
               </div>
               <div className="space-y-2 md:col-span-2">
-                <Label>Name</Label>
+                <Label>{t('Name')}</Label>
                 <Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
               </div>
               <div className="space-y-2 md:col-span-2">
-                <Label>Description</Label>
+                <Label>{t('Description')}</Label>
                 <Input value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} />
               </div>
               <div className="space-y-2">
-                <Label>Length (mm)</Label>
+                <Label>{t('Length (mm)')}</Label>
                 <Input type="number" value={form.lengthMm} onChange={e => setForm(f => ({ ...f, lengthMm: e.target.value }))} />
               </div>
               <div className="space-y-2">
-                <Label>Width (mm)</Label>
+                <Label>{t('Width (mm)')}</Label>
                 <Input type="number" value={form.widthMm} onChange={e => setForm(f => ({ ...f, widthMm: e.target.value }))} />
               </div>
               <div className="space-y-2">
-                <Label>Height (mm)</Label>
+                <Label>{t('Height (mm)')}</Label>
                 <Input type="number" value={form.heightMm} onChange={e => setForm(f => ({ ...f, heightMm: e.target.value }))} />
               </div>
               <div className="space-y-2">
-                <Label>Max stack height (mm, optional)</Label>
-                <Input type="number" value={form.maxStackHeightMm} onChange={e => setForm(f => ({ ...f, maxStackHeightMm: e.target.value }))} placeholder="unlimited" />
+                <Label>{t('Max stack height (mm, optional)')}</Label>
+                <Input type="number" value={form.maxStackHeightMm} onChange={e => setForm(f => ({ ...f, maxStackHeightMm: e.target.value }))} placeholder={t('unlimited')} />
               </div>
               <div className="space-y-2">
-                <Label>Tare weight (g, optional)</Label>
-                <Input type="number" value={form.tareWeightGrams} onChange={e => setForm(f => ({ ...f, tareWeightGrams: e.target.value }))} placeholder="n/a" />
+                <Label>{t('Tare weight (g, optional)')}</Label>
+                <Input type="number" value={form.tareWeightGrams} onChange={e => setForm(f => ({ ...f, tareWeightGrams: e.target.value }))} placeholder={t('n/a')} />
               </div>
               <div className="space-y-2">
-                <Label>Max load (g, SWL, optional)</Label>
-                <Input type="number" value={form.maxLoadGrams} onChange={e => setForm(f => ({ ...f, maxLoadGrams: e.target.value }))} placeholder="n/a" />
+                <Label>{t('Max load (g, SWL, optional)')}</Label>
+                <Input type="number" value={form.maxLoadGrams} onChange={e => setForm(f => ({ ...f, maxLoadGrams: e.target.value }))} placeholder={t('n/a')} />
               </div>
               <div className="space-y-2">
-                <Label>Material (optional)</Label>
+                <Label>{t('Material (optional)')}</Label>
                 <Select value={form.material || 'none'} onValueChange={v => setForm(f => ({ ...f, material: v === 'none' ? '' : v }))}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="none">- none -</SelectItem>
+                    <SelectItem value="none">{t('- none -')}</SelectItem>
                     {MATERIALS.map(m => (
                       <SelectItem key={m} value={m}>{m}</SelectItem>
                     ))}
@@ -252,21 +260,21 @@ export default function VNextPackagingTypes() {
             </div>
             <div className="mt-4 flex flex-wrap gap-3">
               <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" checked={form.reusable} onChange={e => setForm(f => ({ ...f, reusable: e.target.checked }))} className="h-4 w-4 rounded border border-input bg-background accent-primary" /> Reusable
+                <input type="checkbox" checked={form.reusable} onChange={e => setForm(f => ({ ...f, reusable: e.target.checked }))} className="h-4 w-4 rounded border border-input bg-background accent-primary" /> {t('Reusable')}
               </label>
               <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" checked={form.isoCertified} onChange={e => setForm(f => ({ ...f, isoCertified: e.target.checked }))} className="h-4 w-4 rounded border border-input bg-background accent-primary" /> ISPM-15 certified
+                <input type="checkbox" checked={form.isoCertified} onChange={e => setForm(f => ({ ...f, isoCertified: e.target.checked }))} className="h-4 w-4 rounded border border-input bg-background accent-primary" /> {t('ISPM-15 certified')}
               </label>
               <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" checked={form.stackable} onChange={e => setForm(f => ({ ...f, stackable: e.target.checked }))} className="h-4 w-4 rounded border border-input bg-background accent-primary" /> Stackable
+                <input type="checkbox" checked={form.stackable} onChange={e => setForm(f => ({ ...f, stackable: e.target.checked }))} className="h-4 w-4 rounded border border-input bg-background accent-primary" /> {t('Stackable')}
               </label>
               <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" checked={form.active} onChange={e => setForm(f => ({ ...f, active: e.target.checked }))} className="h-4 w-4 rounded border border-input bg-background accent-primary" /> Active
+                <input type="checkbox" checked={form.active} onChange={e => setForm(f => ({ ...f, active: e.target.checked }))} className="h-4 w-4 rounded border border-input bg-background accent-primary" /> {t('Active')}
               </label>
             </div>
             <div className="mt-4 flex gap-2">
-              <Button variant="gradient" onClick={handleSave}>{editing ? 'Save' : 'Create'}</Button>
-              <Button variant="outline" onClick={() => setShowForm(false)}>Cancel</Button>
+              <Button variant="gradient" onClick={handleSave}>{editing ? t('Save') : t('Create')}</Button>
+              <Button variant="outline" onClick={() => setShowForm(false)}>{t('Cancel')}</Button>
             </div>
           </CardContent>
         </Card>
@@ -276,16 +284,16 @@ export default function VNextPackagingTypes() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Kind</TableHead>
-              <TableHead>Code</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Size (L x W x H cm)</TableHead>
-              <TableHead>Tare</TableHead>
-              <TableHead>Max load</TableHead>
-              <TableHead>Max stack</TableHead>
-              <TableHead>Material</TableHead>
-              <TableHead>Flags</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>{t('Kind')}</TableHead>
+              <TableHead>{t('Code')}</TableHead>
+              <TableHead>{t('Name')}</TableHead>
+              <TableHead>{t('Size (L x W x H cm)')}</TableHead>
+              <TableHead>{t('Tare')}</TableHead>
+              <TableHead>{t('Max load')}</TableHead>
+              <TableHead>{t('Max stack')}</TableHead>
+              <TableHead>{t('Material')}</TableHead>
+              <TableHead>{t('Flags')}</TableHead>
+              <TableHead>{t('Status')}</TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>
@@ -300,7 +308,7 @@ export default function VNextPackagingTypes() {
             {!loading && filteredRows.length === 0 && (
               <TableRow>
                 <TableCell colSpan={11} className="py-12 text-center text-sm text-muted-foreground">
-                  No packaging types yet. Click <strong>Load standard types</strong> to seed EUR pallets, cartons, drums, totes, and more.
+                  {t('No packaging types yet. Click')} <strong>{t('Load standard types')}</strong> {t('to seed EUR pallets, cartons, drums, totes, and more.')}
                 </TableCell>
               </TableRow>
             )}
@@ -312,25 +320,25 @@ export default function VNextPackagingTypes() {
                   <div className="font-semibold">{p.name}</div>
                   {p.description && <div className="text-xs text-muted-foreground">{p.description}</div>}
                 </TableCell>
-                <TableCell>{cm(p.lengthMm)}x{cm(p.widthMm)}x{cm(p.heightMm)}</TableCell>
+                <TableCell>{cm(p.lengthMm)}{t('x')}{cm(p.widthMm)}{t('x')}{cm(p.heightMm)}</TableCell>
                 <TableCell>{kg(p.tareWeightGrams)}</TableCell>
                 <TableCell>{kg(p.maxLoadGrams)}</TableCell>
                 <TableCell>{p.maxStackHeightMm ? `${cm(p.maxStackHeightMm)} cm` : '-'}</TableCell>
                 <TableCell>{p.material ?? '-'}</TableCell>
                 <TableCell>
                   <div className="flex flex-wrap gap-1">
-                    {p.reusable && <Badge variant="secondary">reusable</Badge>}
-                    {p.isoCertified && <Badge variant="info">ISPM-15</Badge>}
-                    {p.stackable && <Badge variant="secondary">stackable</Badge>}
+                    {p.reusable && <Badge variant="secondary">{t('reusable')}</Badge>}
+                    {p.isoCertified && <Badge variant="info">{t('ISPM-15')}</Badge>}
+                    {p.stackable && <Badge variant="secondary">{t('stackable')}</Badge>}
                   </div>
                 </TableCell>
                 <TableCell>
-                  <Badge variant={p.active ? 'success' : 'muted'}>{p.active ? 'Active' : 'Inactive'}</Badge>
+                  <Badge variant={p.active ? 'success' : 'muted'}>{p.active ? t('Active') : t('Inactive')}</Badge>
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="inline-flex gap-2">
-                    <Button variant="outline" size="sm" onClick={() => openEdit(p)}>Edit</Button>
-                    <Button variant="outline" size="sm" className="text-destructive" onClick={() => handleDelete(p.id)}>Delete</Button>
+                    <Button variant="outline" size="sm" onClick={() => openEdit(p)}>{t('Edit')}</Button>
+                    <Button variant="outline" size="sm" className="text-destructive" onClick={() => handleDelete(p.id)}>{t('Delete')}</Button>
                   </div>
                 </TableCell>
               </TableRow>

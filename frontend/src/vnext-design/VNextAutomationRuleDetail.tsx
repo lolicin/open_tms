@@ -45,6 +45,8 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface AutomationRule {
   id: string;
   name: string;
@@ -85,10 +87,10 @@ const OPERATORS = [
   { value: 'lessThan', label: '<' },
   { value: 'greaterThanOrEqual', label: '>=' },
   { value: 'lessThanOrEqual', label: '<=' },
-  { value: 'contains', label: 'contains' },
-  { value: 'in', label: 'in' },
-  { value: 'exists', label: 'exists' },
-  { value: 'notExists', label: 'not exists' },
+  { value: 'contains', label: t('contains') },
+  { value: 'in', label: t('in') },
+  { value: 'exists', label: t('exists') },
+  { value: 'notExists', label: t('not exists') },
 ];
 
 function timeAgo(dateStr: string | null): string {
@@ -243,7 +245,7 @@ export default function VNextAutomationRuleDetail() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading rule...</h3>
+        <h3 className="text-lg font-medium">{t('Loading rule...')}</h3>
       </div>
     );
   }
@@ -252,7 +254,7 @@ export default function VNextAutomationRuleDetail() {
     return (
       <div className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
         <CircleAlert className="h-5 w-5" />
-        Rule not found
+        {t('Rule not found')}
       </div>
     );
   }
@@ -262,7 +264,7 @@ export default function VNextAutomationRuleDetail() {
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="sm" onClick={() => navigate('/automation-rules')}>
           <ArrowLeft className="h-4 w-4" />
-          Rules
+          {t('Rules')}
         </Button>
         <span className="text-sm text-muted-foreground">/ {rule.name}</span>
       </div>
@@ -287,31 +289,31 @@ export default function VNextAutomationRuleDetail() {
         <div className="flex flex-wrap gap-2">
           <Button variant="outline" onClick={() => setShowTest(true)}>
             <Beaker className="h-4 w-4" />
-            Test rule
+            {t('Test rule')}
           </Button>
           <Button variant="outline" onClick={() => setEditing(!editing)}>
             {editing ? <X className="h-4 w-4" /> : <Pencil className="h-4 w-4" />}
-            {editing ? 'Cancel' : 'Edit'}
+            {editing ? t('Cancel') : t('Edit')}
           </Button>
           <Button variant={rule.enabled ? 'outline' : 'default'} onClick={toggleRule}>
-            {rule.enabled ? 'Disable' : 'Enable'}
+            {rule.enabled ? t('Disable') : t('Enable')}
           </Button>
         </div>
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <Badge variant={rule.enabled ? 'success' : 'secondary'}>{rule.enabled ? 'Active' : 'Disabled'}</Badge>
-        <Badge variant="info">Priority {rule.priority}</Badge>
-        <Badge variant="secondary">{rule.executionCount} executions</Badge>
-        {rule.sourceDecisionId && <Badge>Promoted from agent</Badge>}
+        <Badge variant={rule.enabled ? 'success' : 'secondary'}>{rule.enabled ? t('Active') : t('Disabled')}</Badge>
+        <Badge variant="info">{t('Priority')} {rule.priority}</Badge>
+        <Badge variant="secondary">{rule.executionCount} {t('executions')}</Badge>
+        {rule.sourceDecisionId && <Badge>{t('Promoted from agent')}</Badge>}
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
         <div className="space-y-4">
           <Card>
-            <CardHeader><CardTitle>When: {rule.eventPattern}</CardTitle></CardHeader>
+            <CardHeader><CardTitle>{t('When:')} {rule.eventPattern}</CardTitle></CardHeader>
             <CardContent>
-              <h3 className="mb-3 text-xs font-semibold text-primary">Given these conditions match:</h3>
+              <h3 className="mb-3 text-xs font-semibold text-primary">{t('Given these conditions match:')}</h3>
               {editing ? (
                 <div className="space-y-2">
                   {editConditions.map((c, i) => (
@@ -361,7 +363,7 @@ export default function VNextAutomationRuleDetail() {
                   ))}
                   <Button variant="ghost" size="sm" onClick={() => setEditConditions([...editConditions, { field: '', operator: 'equals', value: '' }])}>
                     <Plus className="h-4 w-4" />
-                    Add condition
+                    {t('Add condition')}
                   </Button>
                 </div>
               ) : (
@@ -379,7 +381,7 @@ export default function VNextAutomationRuleDetail() {
           </Card>
 
           <Card>
-            <CardHeader><CardTitle>Then: {rule.actionType.replace(/_/g, ' ')}</CardTitle></CardHeader>
+            <CardHeader><CardTitle>{t('Then:')} {rule.actionType.replace(/_/g, ' ')}</CardTitle></CardHeader>
             <CardContent>
               {editing ? (
                 <div className="grid gap-3 md:grid-cols-2">
@@ -400,33 +402,33 @@ export default function VNextAutomationRuleDetail() {
 
           {editing && (
             <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setEditing(false)}>Cancel</Button>
+              <Button variant="outline" onClick={() => setEditing(false)}>{t('Cancel')}</Button>
               <Button variant="gradient" onClick={saveEdit} disabled={saving}>
-                {saving ? 'Saving...' : 'Save changes'}
+                {saving ? t('Saving...') : t('Save changes')}
               </Button>
             </div>
           )}
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Execution log</CardTitle>
-              <span className="text-sm text-muted-foreground">{executions.length} recent</span>
+              <CardTitle>{t('Execution log')}</CardTitle>
+              <span className="text-sm text-muted-foreground">{executions.length} {t('recent')}</span>
             </CardHeader>
             {executions.length === 0 ? (
               <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
                 <History className="h-10 w-10 opacity-40" />
-                <h3 className="text-base font-medium">No executions yet</h3>
-                <p className="text-sm">This rule has not matched any events yet.</p>
+                <h3 className="text-base font-medium">{t('No executions yet')}</h3>
+                <p className="text-sm">{t('This rule has not matched any events yet.')}</p>
               </div>
             ) : (
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Event</TableHead>
-                    <TableHead>Entity</TableHead>
-                    <TableHead>Result</TableHead>
-                    <TableHead>Time</TableHead>
-                    <TableHead>Speed</TableHead>
+                    <TableHead>{t('Event')}</TableHead>
+                    <TableHead>{t('Entity')}</TableHead>
+                    <TableHead>{t('Result')}</TableHead>
+                    <TableHead>{t('Time')}</TableHead>
+                    <TableHead>{t('Speed')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -436,7 +438,7 @@ export default function VNextAutomationRuleDetail() {
                       <TableCell className="text-sm">{ex.entityType}/{ex.entityId.slice(0, 8)}</TableCell>
                       <TableCell>
                         <Badge variant={ex.conditionsMatched ? 'success' : 'secondary'}>
-                          {ex.conditionsMatched ? 'Matched' : 'No match'}
+                          {ex.conditionsMatched ? t('Matched') : t('No match')}
                         </Badge>
                       </TableCell>
                       <TableCell className="text-sm text-muted-foreground">{timeAgo(ex.createdAt)}</TableCell>
@@ -451,11 +453,11 @@ export default function VNextAutomationRuleDetail() {
 
         <div className="space-y-3">
           <Card>
-            <CardHeader><CardTitle>Details</CardTitle></CardHeader>
+            <CardHeader><CardTitle>{t('Details')}</CardTitle></CardHeader>
             <CardContent>
-              <InfoRow label="Event pattern" value={<code className="rounded bg-muted px-1.5 py-0.5 text-xs">{rule.eventPattern}</code>} />
+              <InfoRow label={t('Event pattern')} value={<code className="rounded bg-muted px-1.5 py-0.5 text-xs">{rule.eventPattern}</code>} />
               <InfoRow
-                label="Priority"
+                label={t('Priority')}
                 value={
                   editing ? (
                     <Input
@@ -469,19 +471,19 @@ export default function VNextAutomationRuleDetail() {
                   ) : String(rule.priority)
                 }
               />
-              <InfoRow label="Executions" value={String(rule.executionCount)} />
-              <InfoRow label="Last run" value={timeAgo(rule.lastExecutedAt)} />
-              <InfoRow label="Created" value={new Date(rule.createdAt).toLocaleDateString()} />
+              <InfoRow label={t('Executions')} value={String(rule.executionCount)} />
+              <InfoRow label={t('Last run')} value={timeAgo(rule.lastExecutedAt)} />
+              <InfoRow label={t('Created')} value={new Date(rule.createdAt).toLocaleDateString()} />
             </CardContent>
           </Card>
 
           {rule.sourceDecisionId && (
             <Card>
-              <CardHeader><CardTitle>Source decision</CardTitle></CardHeader>
+              <CardHeader><CardTitle>{t('Source decision')}</CardTitle></CardHeader>
               <CardContent>
                 <Button variant="outline" className="w-full" onClick={() => navigate(`/agent-decisions/${rule.sourceDecisionId}`)}>
                   <ExternalLink className="h-4 w-4" />
-                  View decision
+                  {t('View decision')}
                 </Button>
               </CardContent>
             </Card>
@@ -492,15 +494,15 @@ export default function VNextAutomationRuleDetail() {
       <Dialog open={showTest} onOpenChange={open => { setShowTest(open); if (!open) setTestResult(null); }}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Test rule (dry run)</DialogTitle>
+            <DialogTitle>{t('Test rule (dry run)')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label>Event type</Label>
-              <Input value={testEventType} onChange={e => setTestEventType(e.target.value)} placeholder="shipment.exception" />
+              <Label>{t('Event type')}</Label>
+              <Input value={testEventType} onChange={e => setTestEventType(e.target.value)} placeholder={t('shipment.exception')} />
             </div>
             <div className="space-y-2">
-              <Label>Event payload (JSON)</Label>
+              <Label>{t('Event payload (JSON)')}</Label>
               <textarea
                 rows={6}
                 value={testPayload}
@@ -518,10 +520,10 @@ export default function VNextAutomationRuleDetail() {
                     : 'border-warning/30 bg-warning/10 text-warning',
                 )}>
                   {testResult.allConditionsMatched ? <CheckCircle2 className="h-4 w-4" /> : <Info className="h-4 w-4" />}
-                  {testResult.allConditionsMatched ? 'Rule would fire and execute action' : 'Rule would NOT fire - conditions not met'}
+                  {testResult.allConditionsMatched ? t('Rule would fire and execute action') : t('Rule would NOT fire - conditions not met')}
                 </div>
 
-                <h3 className="text-sm font-semibold">Condition results:</h3>
+                <h3 className="text-sm font-semibold">{t('Condition results:')}</h3>
                 <div className="flex flex-col gap-1.5">
                   {(testResult.conditionResults as Array<{ field: string; operator: string; expected: unknown; actual: unknown; matched: boolean }>)?.map((cr, i) => (
                     <div
@@ -535,7 +537,7 @@ export default function VNextAutomationRuleDetail() {
                     >
                       {cr.matched ? <Check className="h-4 w-4" /> : <X className="h-4 w-4" />}
                       <span>{cr.field} {cr.operator} {JSON.stringify(cr.expected)}</span>
-                      <span className="ml-auto opacity-70">actual: {JSON.stringify(cr.actual)}</span>
+                      <span className="ml-auto opacity-70">{t('actual:')} {JSON.stringify(cr.actual)}</span>
                     </div>
                   ))}
                 </div>
@@ -543,9 +545,9 @@ export default function VNextAutomationRuleDetail() {
             )}
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowTest(false)}>Close</Button>
+            <Button variant="outline" onClick={() => setShowTest(false)}>{t('Close')}</Button>
             <Button variant="gradient" onClick={runTest} disabled={testing}>
-              {testing ? 'Testing...' : 'Run test'}
+              {testing ? t('Testing...') : t('Run test')}
             </Button>
           </DialogFooter>
         </DialogContent>

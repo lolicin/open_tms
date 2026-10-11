@@ -45,6 +45,8 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface CAPAReport {
   id: string;
   reportNumber: string;
@@ -242,22 +244,22 @@ export default function VNextQualityCapa() {
   const formatDate = (d: string) => new Date(d).toLocaleDateString();
 
   const statTiles = [
-    { label: 'Total CAPAs', value: stats.total, icon: ClipboardList, tone: 'bg-primary/10 text-primary' },
-    { label: 'Open', value: stats.open, icon: Hourglass, tone: 'bg-warning/15 text-warning' },
-    { label: 'In verification', value: stats.verification, icon: BadgeCheck, tone: 'bg-info/15 text-info' },
-    { label: 'Closed', value: stats.closed, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
+    { label: t('Total CAPAs'), value: stats.total, icon: ClipboardList, tone: 'bg-primary/10 text-primary' },
+    { label: t('Open'), value: stats.open, icon: Hourglass, tone: 'bg-warning/15 text-warning' },
+    { label: t('In verification'), value: stats.verification, icon: BadgeCheck, tone: 'bg-info/15 text-info' },
+    { label: t('Closed'), value: stats.closed, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">CAPA management</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Corrective and preventive action reports with follow-up tracking</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('CAPA management')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Corrective and preventive action reports with follow-up tracking')}</p>
         </div>
         <Button variant="gradient" onClick={() => setShowCreateCapa(true)}>
           <Plus className="h-4 w-4" />
-          Create CAPA
+          {t('Create CAPA')}
         </Button>
       </div>
 
@@ -281,23 +283,23 @@ export default function VNextQualityCapa() {
       <Card>
         <div className="flex flex-wrap items-center gap-3 p-4">
           <div className="min-w-[240px] flex-1">
-            <Input placeholder="Search by title or report number..." value={search} onChange={e => setSearch(e.target.value)} />
+            <Input placeholder={t('Search by title or report number...')} value={search} onChange={e => setSearch(e.target.value)} />
           </div>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-[200px]"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All statuses</SelectItem>
+              <SelectItem value="all">{t('All statuses')}</SelectItem>
               {Object.keys(STATUS_VARIANT).map(s => <SelectItem key={s} value={s}>{s.replace(/_/g, ' ')}</SelectItem>)}
             </SelectContent>
           </Select>
           <Select value={priorityFilter} onValueChange={setPriorityFilter}>
             <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All priorities</SelectItem>
-              <SelectItem value="critical">Critical</SelectItem>
-              <SelectItem value="high">High</SelectItem>
-              <SelectItem value="medium">Medium</SelectItem>
-              <SelectItem value="low">Low</SelectItem>
+              <SelectItem value="all">{t('All priorities')}</SelectItem>
+              <SelectItem value="critical">{t('Critical')}</SelectItem>
+              <SelectItem value="high">{t('High')}</SelectItem>
+              <SelectItem value="medium">{t('Medium')}</SelectItem>
+              <SelectItem value="low">{t('Low')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -307,19 +309,19 @@ export default function VNextQualityCapa() {
       <div className={cn('grid gap-6', selectedCapa ? 'lg:grid-cols-2' : 'grid-cols-1')}>
         <Card>
           {loading ? (
-            <div className="py-12 text-center text-muted-foreground">Loading...</div>
+            <div className="py-12 text-center text-muted-foreground">{t('Loading...')}</div>
           ) : filtered.length === 0 ? (
-            <div className="py-12 text-center text-muted-foreground">No CAPA reports found</div>
+            <div className="py-12 text-center text-muted-foreground">{t('No CAPA reports found')}</div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Report #</TableHead>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Priority</TableHead>
-                  <TableHead>Root cause</TableHead>
-                  <TableHead>Created</TableHead>
+                  <TableHead>{t('Report #')}</TableHead>
+                  <TableHead>{t('Title')}</TableHead>
+                  <TableHead>{t('Status')}</TableHead>
+                  <TableHead>{t('Priority')}</TableHead>
+                  <TableHead>{t('Root cause')}</TableHead>
+                  <TableHead>{t('Created')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -362,22 +364,24 @@ export default function VNextQualityCapa() {
             <div className="mb-4 flex flex-wrap gap-2">
               <Button size="sm" variant="default" onClick={schedule30_60_90}>
                 <CalendarClock className="h-4 w-4" />
-                Schedule 30/60/90
+                {t('Schedule 30/60/90')}
               </Button>
               <Button size="sm" variant="outline" onClick={() => setShowAddFollowUp(true)}>
                 <Plus className="h-4 w-4" />
-                Add follow-up
+                {t('Add follow-up')}
               </Button>
             </div>
 
-            <h4 className="mb-3 text-sm font-semibold">Follow-up timeline</h4>
+            <h4 className="mb-3 text-sm font-semibold">{t('Follow-up timeline')}</h4>
 
             {loadingFollowUps ? (
-              <div className="py-6 text-center text-muted-foreground">Loading...</div>
+              <div className="py-6 text-center text-muted-foreground">{t('Loading...')}</div>
             ) : followUps.length === 0 ? (
               <div className="flex items-start gap-3 rounded-md border border-info/30 bg-info/10 p-3 text-sm text-info">
                 <Info className="mt-0.5 h-4 w-4" />
-                No follow-ups scheduled yet. Click "Schedule 30/60/90" to create automatic review checkpoints.
+                {t(
+                  'No follow-ups scheduled yet. Click "Schedule 30/60/90" to create automatic review checkpoints.'
+                )}
               </div>
             ) : (
               <div className="flex flex-col gap-3">
@@ -394,19 +398,19 @@ export default function VNextQualityCapa() {
                       <div className="mb-2 flex items-center justify-between">
                         <div className="flex flex-wrap gap-1">
                           <Badge variant="default">{FOLLOW_UP_LABELS[fu.followUpType] || fu.followUpType}</Badge>
-                          {fu.status === 'completed' && <Badge variant="success">Completed</Badge>}
-                          {overdue && <Badge variant="destructive">Overdue</Badge>}
-                          {fu.status === 'pending' && !overdue && <Badge variant="secondary">Pending</Badge>}
+                          {fu.status === 'completed' && <Badge variant="success">{t('Completed')}</Badge>}
+                          {overdue && <Badge variant="destructive">{t('Overdue')}</Badge>}
+                          {fu.status === 'pending' && !overdue && <Badge variant="secondary">{t('Pending')}</Badge>}
                         </div>
-                        <span className="text-xs text-muted-foreground">Due: {formatDate(fu.dueDate)}</span>
+                        <span className="text-xs text-muted-foreground">{t('Due:')} {formatDate(fu.dueDate)}</span>
                       </div>
 
                       {fu.notes && <p className="my-1 text-xs text-muted-foreground">{fu.notes}</p>}
-                      {fu.outcome && <p className="my-1 text-xs">Outcome: <strong>{OUTCOME_LABELS[fu.outcome] || fu.outcome}</strong></p>}
-                      {fu.actionItems && <p className="my-1 text-xs text-muted-foreground">Actions: {fu.actionItems}</p>}
+                      {fu.outcome && <p className="my-1 text-xs">{t('Outcome:')} <strong>{OUTCOME_LABELS[fu.outcome] || fu.outcome}</strong></p>}
+                      {fu.actionItems && <p className="my-1 text-xs text-muted-foreground">{t('Actions:')} {fu.actionItems}</p>}
                       {fu.completedAt && (
                         <p className="my-1 text-[11px] text-muted-foreground">
-                          Completed: {formatDate(fu.completedAt)}{fu.completedByName ? ` by ${fu.completedByName}` : ''}
+                          {t('Completed:')} {formatDate(fu.completedAt)}{fu.completedByName ? ` by ${fu.completedByName}` : ''}
                         </p>
                       )}
 
@@ -422,7 +426,7 @@ export default function VNextQualityCapa() {
                           }}
                         >
                           <Check className="h-3 w-3" />
-                          Complete review
+                          {t('Complete review')}
                         </Button>
                       )}
                     </div>
@@ -436,10 +440,10 @@ export default function VNextQualityCapa() {
 
       <Dialog open={!!completingFollowUp} onOpenChange={open => { if (!open) setCompletingFollowUp(null); }}>
         <DialogContent className="max-w-md">
-          <DialogHeader><DialogTitle>Complete follow-up</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{t('Complete follow-up')}</DialogTitle></DialogHeader>
           <div className="space-y-3">
             <div className="space-y-2">
-              <Label>Outcome</Label>
+              <Label>{t('Outcome')}</Label>
               <Select value={completeOutcome} onValueChange={setCompleteOutcome}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
@@ -448,29 +452,29 @@ export default function VNextQualityCapa() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>Notes</Label>
+              <Label>{t('Notes')}</Label>
               <textarea
                 rows={3}
                 value={completeNotes}
                 onChange={e => setCompleteNotes(e.target.value)}
-                placeholder="Review notes..."
+                placeholder={t('Review notes...')}
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setCompletingFollowUp(null)}>Cancel</Button>
-            <Button onClick={completeFollowUp}>Complete</Button>
+            <Button variant="outline" onClick={() => setCompletingFollowUp(null)}>{t('Cancel')}</Button>
+            <Button onClick={completeFollowUp}>{t('Complete')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       <Dialog open={showAddFollowUp} onOpenChange={setShowAddFollowUp}>
         <DialogContent className="max-w-md">
-          <DialogHeader><DialogTitle>Add follow-up</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{t('Add follow-up')}</DialogTitle></DialogHeader>
           <div className="space-y-3">
             <div className="space-y-2">
-              <Label>Type</Label>
+              <Label>{t('Type')}</Label>
               <Select value={newFollowUpType} onValueChange={setNewFollowUpType}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
@@ -479,68 +483,68 @@ export default function VNextQualityCapa() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>Due date</Label>
+              <Label>{t('Due date')}</Label>
               <DatePicker type="date" value={newFollowUpDue} onChange={e => setNewFollowUpDue(e.target.value)} />
             </div>
             <div className="space-y-2">
-              <Label>Notes</Label>
+              <Label>{t('Notes')}</Label>
               <textarea
                 rows={3}
                 value={newFollowUpNotes}
                 onChange={e => setNewFollowUpNotes(e.target.value)}
-                placeholder="Optional notes..."
+                placeholder={t('Optional notes...')}
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowAddFollowUp(false)}>Cancel</Button>
-            <Button variant="gradient" onClick={addFollowUp}>Add follow-up</Button>
+            <Button variant="outline" onClick={() => setShowAddFollowUp(false)}>{t('Cancel')}</Button>
+            <Button variant="gradient" onClick={addFollowUp}>{t('Add follow-up')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       <Dialog open={showCreateCapa} onOpenChange={setShowCreateCapa}>
         <DialogContent className="max-w-lg">
-          <DialogHeader><DialogTitle>Create CAPA report</DialogTitle></DialogHeader>
+          <DialogHeader><DialogTitle>{t('Create CAPA report')}</DialogTitle></DialogHeader>
           <div className="space-y-3">
             <div className="grid gap-3 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>Issue ID *</Label>
-                <Input value={createIssueId} onChange={e => setCreateIssueId(e.target.value)} placeholder="Issue ID" />
+                <Label>{t('Issue ID *')}</Label>
+                <Input value={createIssueId} onChange={e => setCreateIssueId(e.target.value)} placeholder={t('Issue ID')} />
               </div>
               <div className="space-y-2">
-                <Label>Priority</Label>
+                <Label>{t('Priority')}</Label>
                 <Select value={createPriority} onValueChange={setCreatePriority}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="low">Low</SelectItem>
-                    <SelectItem value="medium">Medium</SelectItem>
-                    <SelectItem value="high">High</SelectItem>
-                    <SelectItem value="critical">Critical</SelectItem>
+                    <SelectItem value="low">{t('Low')}</SelectItem>
+                    <SelectItem value="medium">{t('Medium')}</SelectItem>
+                    <SelectItem value="high">{t('High')}</SelectItem>
+                    <SelectItem value="critical">{t('Critical')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
             <div className="space-y-2">
-              <Label>Title *</Label>
-              <Input value={createTitle} onChange={e => setCreateTitle(e.target.value)} placeholder="CAPA report title" />
+              <Label>{t('Title *')}</Label>
+              <Input value={createTitle} onChange={e => setCreateTitle(e.target.value)} placeholder={t('CAPA report title')} />
             </div>
             <div className="space-y-2">
-              <Label>Description *</Label>
+              <Label>{t('Description *')}</Label>
               <textarea
                 rows={4}
                 value={createDescription}
                 onChange={e => setCreateDescription(e.target.value)}
-                placeholder="Describe the issue..."
+                placeholder={t('Describe the issue...')}
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowCreateCapa(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setShowCreateCapa(false)}>{t('Cancel')}</Button>
             <Button variant="gradient" onClick={createCapa} disabled={!createIssueId || !createTitle || !createDescription}>
-              Create CAPA
+              {t('Create CAPA')}
             </Button>
           </DialogFooter>
         </DialogContent>

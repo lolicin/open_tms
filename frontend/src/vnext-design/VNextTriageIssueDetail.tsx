@@ -23,6 +23,8 @@ import {
   TriageLoading, TriageError, TriageEmpty, ConfidenceMeter, SlaPill, StatTile, StatGrid,
 } from './triage/components';
 
+import { t } from '@/i18n';
+
 export default function VNextTriageIssueDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -72,17 +74,17 @@ export default function VNextTriageIssueDetail() {
     <div className="grid gap-4">
       <header className="flex flex-wrap items-center gap-3">
         <Button size="sm" variant="ghost" onClick={() => navigate('/triage/board')}>
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Board
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" /> {t('Board')}
         </Button>
         <h1 className="m-0 flex-1 text-lg font-semibold">{issue?.title ?? 'Issue'}</h1>
         {issue && (
           <Button size="sm" variant="outline" onClick={() => navigate(`/issues/${issue.id}`)}>
-            <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /> Full detail
+            <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /> {t('Full detail')}
           </Button>
         )}
       </header>
 
-      {loading && <TriageLoading label="Loading issue" />}
+      {loading && <TriageLoading label={t('Loading issue')} />}
       {error && !loading && <TriageError message={error} onRetry={load} />}
 
       {issue && !loading && !error && (
@@ -94,12 +96,12 @@ export default function VNextTriageIssueDetail() {
             <Badge variant="secondary">{STATUS_LABEL[issue.status] ?? issue.status}</Badge>
             {issue.latched && (
               <Badge variant="outline" className="gap-1">
-                <Lock className="h-3 w-3" aria-hidden="true" /> latched
+                <Lock className="h-3 w-3" aria-hidden="true" /> {t('latched')}
               </Badge>
             )}
             {issue.isNoise && (
               <Badge variant="outline" className="gap-1">
-                <EyeOff className="h-3 w-3" aria-hidden="true" /> suppressed
+                <EyeOff className="h-3 w-3" aria-hidden="true" /> {t('suppressed')}
               </Badge>
             )}
             <SlaPill
@@ -107,8 +109,8 @@ export default function VNextTriageIssueDetail() {
               breached={!!issue.slaBreach}
             />
             <span className="text-sm text-muted-foreground">
-              raised {timeAgo(issue.createdAt)}
-              {issue.assigneeName ? ` · ${issue.assigneeName}` : ' · unassigned'}
+              {t('raised')} {timeAgo(issue.createdAt)}
+              {issue.assigneeName ? ` · ${issue.assigneeName}` : t(' · unassigned')}
             </span>
           </div>
 
@@ -118,31 +120,34 @@ export default function VNextTriageIssueDetail() {
 
           {issue.isNoise && issue.noiseReason && (
             <Card className="border-warning p-3 text-sm">
-              <strong>Suppressed as noise.</strong> {issue.noiseReason}
+              <strong>{t('Suppressed as noise.')}</strong> {issue.noiseReason}
             </Card>
           )}
 
           <StatGrid>
             <StatTile
-              label="Confidence"
+              label={t('Confidence')}
               value={`${issue.signalScore ?? 0}/100`}
               sub={`${issue.signalCount ?? 0} signal${issue.signalCount === 1 ? '' : 's'}`}
             />
-            <StatTile label="First response" value={fmtDuration(issue.timeToFirstResponseMins)} />
-            <StatTile label="Time to resolve" value={fmtDuration(issue.timeToResolutionMins)} />
-            <StatTile label="Open siblings" value={ctx!.siblingIssues.length} />
+            <StatTile label={t('First response')} value={fmtDuration(issue.timeToFirstResponseMins)} />
+            <StatTile label={t('Time to resolve')} value={fmtDuration(issue.timeToResolutionMins)} />
+            <StatTile label={t('Open siblings')} value={ctx!.siblingIssues.length} />
           </StatGrid>
 
           {ctx!.issueTypeDef && (
             <Card className="p-4">
-              <h2 className="mb-2 mt-0 text-[15px] font-semibold">Why this was raised</h2>
+              <h2 className="mb-2 mt-0 text-[15px] font-semibold">{t('Why this was raised')}</h2>
               <p className="mb-3 mt-0 text-sm text-muted-foreground">
-                <strong>{ctx!.issueTypeDef.name}</strong> starts at{' '}
-                {ctx!.issueTypeDef.baseConfidence}/100 confidence for a single signal, and gains
-                confidence as corroborating signals arrive.
+                <strong>{ctx!.issueTypeDef.name}</strong> {t('starts at')}{' '}
+                {ctx!.issueTypeDef.baseConfidence}{t(
+                  '/100 confidence for a single signal, and gains\n                confidence as corroborating signals arrive.'
+                )}
                 {ctx!.issueTypeDef.latched
-                  ? ' It is latched: it describes something that already happened, so it never auto-resolves and cannot be dismissed as noise.'
-                  : ' It is unlatched: it auto-resolves when the underlying condition clears.'}
+                  ? t(
+                  ' It is latched: it describes something that already happened, so it never auto-resolves and cannot be dismissed as noise.'
+                )
+                  : t(' It is unlatched: it auto-resolves when the underlying condition clears.')}
                 {ctx!.issueTypeDef.slaMinutes
                   ? ` Target resolution: ${fmtDuration(ctx!.issueTypeDef.slaMinutes)}.`
                   : ''}
@@ -155,10 +160,10 @@ export default function VNextTriageIssueDetail() {
 
           <Card className="p-4">
             <h2 className="mb-3 mt-0 flex items-center gap-2 text-[15px] font-semibold">
-              <Radio className="h-4 w-4" aria-hidden="true" /> Contributing signals
+              <Radio className="h-4 w-4" aria-hidden="true" /> {t('Contributing signals')}
             </h2>
             {ctx!.signals.length === 0
-              ? <TriageEmpty title="No signals attached" hint="This issue was created manually." />
+              ? <TriageEmpty title={t('No signals attached')} hint="This issue was created manually." />
               : (
                 <div className="grid gap-1.5">
                   {ctx!.signals.map((s) => (
@@ -177,13 +182,13 @@ export default function VNextTriageIssueDetail() {
 
           <Card className="p-4">
             <h2 className="mb-1 mt-0 text-[15px] font-semibold">
-              Other open issues on this {issue.sourceEntityType ?? 'entity'}
+              {t('Other open issues on this')} {issue.sourceEntityType ?? 'entity'}
             </h2>
             <p className="mb-3 mt-0 text-sm text-muted-foreground">
-              Is this the only thing wrong, or one of several?
+              {t('Is this the only thing wrong, or one of several?')}
             </p>
             {ctx!.siblingIssues.length === 0
-              ? <TriageEmpty title="Nothing else open" hint="This is the only open issue on this entity." />
+              ? <TriageEmpty title={t('Nothing else open')} hint="This is the only open issue on this entity." />
               : (
                 <div className="grid gap-1.5">
                   {ctx!.siblingIssues.map((s) => (
@@ -209,13 +214,13 @@ export default function VNextTriageIssueDetail() {
               size="sm" disabled={acting || issue.status === 'in_progress'}
               onClick={() => act(() => triageApi.batchTransition([issue.id], 'in_progress'))}
             >
-              Start work
+              {t('Start work')}
             </Button>
             <Button
               size="sm" variant="outline" disabled={acting || issue.status === 'resolved'}
               onClick={() => act(() => triageApi.batchTransition([issue.id], 'resolved', 'Resolved from the triage detail view'))}
             >
-              Resolve
+              {t('Resolve')}
             </Button>
             <Button
               size="sm" variant="outline"
@@ -223,7 +228,7 @@ export default function VNextTriageIssueDetail() {
               title={issue.latched ? 'Latched safety issues cannot be dismissed as noise' : undefined}
               onClick={() => act(() => triageApi.batchDismissNoise([issue.id]))}
             >
-              Dismiss as noise
+              {t('Dismiss as noise')}
             </Button>
           </Card>
         </>

@@ -11,6 +11,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface Shipment {
   id: string;
   reference: string;
@@ -101,7 +103,7 @@ export default function CreateTender() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Create Tender</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Create Tender')}</h1>
       </div>
 
       {error && (
@@ -134,7 +136,7 @@ export default function CreateTender() {
       {/* Step 1: Select Shipment */}
       {step === 1 && (
         <Card>
-          <CardHeader><CardTitle>Select Shipment</CardTitle></CardHeader>
+          <CardHeader><CardTitle>{t('Select Shipment')}</CardTitle></CardHeader>
           <CardContent>
             <div className="grid max-h-[400px] gap-2 overflow-y-auto">
               {shipments.map(s => (
@@ -162,11 +164,11 @@ export default function CreateTender() {
                 </label>
               ))}
               {shipments.length === 0 && (
-                <p className="text-center text-muted-foreground">No draft/planned shipments available</p>
+                <p className="text-center text-muted-foreground">{t('No draft/planned shipments available')}</p>
               )}
             </div>
             <div className="mt-4 flex justify-end gap-2">
-              <Button variant="gradient" onClick={() => setStep(2)} disabled={!shipmentId}>Next</Button>
+              <Button variant="gradient" onClick={() => setStep(2)} disabled={!shipmentId}>{t('Next')}</Button>
             </div>
           </CardContent>
         </Card>
@@ -175,7 +177,7 @@ export default function CreateTender() {
       {/* Step 2: Strategy */}
       {step === 2 && (
         <Card>
-          <CardHeader><CardTitle>Tendering Strategy</CardTitle></CardHeader>
+          <CardHeader><CardTitle>{t('Tendering Strategy')}</CardTitle></CardHeader>
           <CardContent>
             <div className="grid gap-4 md:grid-cols-2">
               <label
@@ -193,10 +195,12 @@ export default function CreateTender() {
                 />
                 <div className="mb-2 flex items-center gap-2">
                   <Megaphone className="h-5 w-5" />
-                  <strong>Broadcast</strong>
+                  <strong>{t('Broadcast')}</strong>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Send to all carriers simultaneously. Carriers submit competitive bids. Review and award the best bid.
+                  {t(
+                    'Send to all carriers simultaneously. Carriers submit competitive bids. Review and award the best bid.'
+                  )}
                 </p>
               </label>
               <label
@@ -214,16 +218,18 @@ export default function CreateTender() {
                 />
                 <div className="mb-2 flex items-center gap-2">
                   <Waves className="h-5 w-5" />
-                  <strong>Waterfall</strong>
+                  <strong>{t('Waterfall')}</strong>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Offer to carriers in ranked order. If one declines or times out, automatically move to the next.
+                  {t(
+                    'Offer to carriers in ranked order. If one declines or times out, automatically move to the next.'
+                  )}
                 </p>
               </label>
             </div>
             <div className="mt-4 flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setStep(1)}>Back</Button>
-              <Button variant="gradient" onClick={() => setStep(3)}>Next</Button>
+              <Button variant="outline" onClick={() => setStep(1)}>{t('Back')}</Button>
+              <Button variant="gradient" onClick={() => setStep(3)}>{t('Next')}</Button>
             </div>
           </CardContent>
         </Card>
@@ -234,13 +240,13 @@ export default function CreateTender() {
         <Card>
           <CardHeader>
             <CardTitle>
-              Select Carriers {strategy === 'waterfall' && '(reorder priority)'}
+              {t('Select Carriers')} {strategy === 'waterfall' && '(reorder priority)'}
             </CardTitle>
           </CardHeader>
           <CardContent>
             {selectedCarriers.length > 0 && (
               <div className="mb-4">
-                <Label className="mb-2 block">Selected ({selectedCarriers.length}):</Label>
+                <Label className="mb-2 block">{t('Selected (')}{selectedCarriers.length}):</Label>
                 {selectedCarriers.map((cId, idx) => {
                   const carrier = carriers.find(c => c.id === cId);
                   return (
@@ -252,15 +258,15 @@ export default function CreateTender() {
                       <span className="text-xs text-muted-foreground">{carrier?.scacCode || carrier?.mcNumber || ''}</span>
                       {strategy === 'waterfall' && (
                         <>
-                          <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => moveCarrier(idx, 'up')} disabled={idx === 0} title="Move up">
+                          <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => moveCarrier(idx, 'up')} disabled={idx === 0} title={t('Move up')}>
                             <ArrowUp className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => moveCarrier(idx, 'down')} disabled={idx === selectedCarriers.length - 1} title="Move down">
+                          <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => moveCarrier(idx, 'down')} disabled={idx === selectedCarriers.length - 1} title={t('Move down')}>
                             <ArrowDown className="h-4 w-4" />
                           </Button>
                         </>
                       )}
-                      <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive" onClick={() => toggleCarrier(cId)} title="Remove">
+                      <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive" onClick={() => toggleCarrier(cId)} title={t('Remove')}>
                         <X className="h-4 w-4" />
                       </Button>
                     </div>
@@ -269,7 +275,7 @@ export default function CreateTender() {
               </div>
             )}
 
-            <Label className="mb-2 block">Available Carriers:</Label>
+            <Label className="mb-2 block">{t('Available Carriers:')}</Label>
             <div className="grid max-h-[300px] gap-1 overflow-y-auto">
               {carriers.filter(c => !selectedCarriers.includes(c.id)).map(c => (
                 <label key={c.id} className="flex cursor-pointer items-center gap-2 rounded-md border border-border px-3 py-1.5 hover:border-primary/40">
@@ -287,8 +293,8 @@ export default function CreateTender() {
               ))}
             </div>
             <div className="mt-4 flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setStep(2)}>Back</Button>
-              <Button variant="gradient" onClick={() => setStep(4)} disabled={selectedCarriers.length === 0}>Next</Button>
+              <Button variant="outline" onClick={() => setStep(2)}>{t('Back')}</Button>
+              <Button variant="gradient" onClick={() => setStep(4)} disabled={selectedCarriers.length === 0}>{t('Next')}</Button>
             </div>
           </CardContent>
         </Card>
@@ -297,71 +303,71 @@ export default function CreateTender() {
       {/* Step 4: Parameters */}
       {step === 4 && (
         <Card>
-          <CardHeader><CardTitle>Tender Parameters</CardTitle></CardHeader>
+          <CardHeader><CardTitle>{t('Tender Parameters')}</CardTitle></CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 md:grid-cols-3">
               <div className="space-y-2">
-                <Label>Tender Duration (minutes)</Label>
+                <Label>{t('Tender Duration (minutes)')}</Label>
                 <Input
                   type="number"
                   min="1"
                   value={durationMinutes}
                   onChange={e => setDurationMinutes(parseInt(e.target.value) || 120)}
                 />
-                <div className="text-xs text-muted-foreground">How long carriers have to respond</div>
+                <div className="text-xs text-muted-foreground">{t('How long carriers have to respond')}</div>
               </div>
               <div className="space-y-2">
-                <Label>Target Rate ($)</Label>
+                <Label>{t('Target Rate ($)')}</Label>
                 <Input
                   type="number"
                   min="0"
                   step="0.01"
                   value={targetRate}
                   onChange={e => setTargetRate(e.target.value)}
-                  placeholder="Optional"
+                  placeholder={t('Optional')}
                 />
               </div>
               <div className="space-y-2">
-                <Label>Equipment Type</Label>
+                <Label>{t('Equipment Type')}</Label>
                 <Select value={equipmentType || 'none'} onValueChange={v => setEquipmentType(v === 'none' ? '' : v)}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="none">Not specified</SelectItem>
-                    <SelectItem value="53' Dry Van">53' Dry Van</SelectItem>
-                    <SelectItem value="53' Reefer">53' Reefer</SelectItem>
-                    <SelectItem value="Flatbed">Flatbed</SelectItem>
-                    <SelectItem value="Step Deck">Step Deck</SelectItem>
-                    <SelectItem value="LTL Shared">LTL Shared</SelectItem>
-                    <SelectItem value="Tanker">Tanker</SelectItem>
+                    <SelectItem value="none">{t('Not specified')}</SelectItem>
+                    <SelectItem value="53' Dry Van">{t('53\' Dry Van')}</SelectItem>
+                    <SelectItem value="53' Reefer">{t('53\' Reefer')}</SelectItem>
+                    <SelectItem value="Flatbed">{t('Flatbed')}</SelectItem>
+                    <SelectItem value="Step Deck">{t('Step Deck')}</SelectItem>
+                    <SelectItem value="LTL Shared">{t('LTL Shared')}</SelectItem>
+                    <SelectItem value="Tanker">{t('Tanker')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
             <div className="space-y-2">
-              <Label>Notes</Label>
+              <Label>{t('Notes')}</Label>
               <textarea
                 className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 rows={2}
                 value={notes}
                 onChange={e => setNotes(e.target.value)}
-                placeholder="Optional notes for carriers"
+                placeholder={t('Optional notes for carriers')}
               />
             </div>
             <div className="space-y-2">
-              <Label>Special Instructions</Label>
+              <Label>{t('Special Instructions')}</Label>
               <textarea
                 className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 rows={2}
                 value={specialInstructions}
                 onChange={e => setSpecialInstructions(e.target.value)}
-                placeholder="Loading/unloading instructions, hazmat, etc."
+                placeholder={t('Loading/unloading instructions, hazmat, etc.')}
               />
             </div>
             <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setStep(3)}>Back</Button>
-              <Button variant="gradient" onClick={() => setStep(5)}>Review</Button>
+              <Button variant="outline" onClick={() => setStep(3)}>{t('Back')}</Button>
+              <Button variant="gradient" onClick={() => setStep(5)}>{t('Review')}</Button>
             </div>
           </CardContent>
         </Card>
@@ -370,28 +376,28 @@ export default function CreateTender() {
       {/* Step 5: Review */}
       {step === 5 && (
         <Card>
-          <CardHeader><CardTitle>Review &amp; Create</CardTitle></CardHeader>
+          <CardHeader><CardTitle>{t('Review & Create')}</CardTitle></CardHeader>
           <CardContent className="space-y-3">
             <div className="space-y-2 text-sm">
-              <div><strong>Shipment:</strong> {selectedShipment?.reference} - {selectedShipment?.origin?.city} -&gt; {selectedShipment?.destination?.city}</div>
+              <div><strong>{t('Shipment:')}</strong> {selectedShipment?.reference} - {selectedShipment?.origin?.city} -&gt; {selectedShipment?.destination?.city}</div>
               <div className="flex items-center gap-2">
-                <strong>Strategy:</strong>
+                <strong>{t('Strategy:')}</strong>
                 <Badge variant={strategy === 'broadcast' ? 'info' : 'muted'}>{strategy}</Badge>
               </div>
-              <div><strong>Carriers:</strong> {selectedCarriers.map(id => carriers.find(c => c.id === id)?.name).join(', ')}</div>
-              <div><strong>Duration:</strong> {durationMinutes} minutes</div>
-              {targetRate && <div><strong>Target Rate:</strong> ${parseFloat(targetRate).toLocaleString()}</div>}
-              {equipmentType && <div><strong>Equipment:</strong> {equipmentType}</div>}
-              {notes && <div><strong>Notes:</strong> {notes}</div>}
-              {specialInstructions && <div><strong>Instructions:</strong> {specialInstructions}</div>}
+              <div><strong>{t('Carriers:')}</strong> {selectedCarriers.map(id => carriers.find(c => c.id === id)?.name).join(', ')}</div>
+              <div><strong>{t('Duration:')}</strong> {durationMinutes} {t('minutes')}</div>
+              {targetRate && <div><strong>{t('Target Rate:')}</strong> ${parseFloat(targetRate).toLocaleString()}</div>}
+              {equipmentType && <div><strong>{t('Equipment:')}</strong> {equipmentType}</div>}
+              {notes && <div><strong>{t('Notes:')}</strong> {notes}</div>}
+              {specialInstructions && <div><strong>{t('Instructions:')}</strong> {specialInstructions}</div>}
             </div>
             <div className="rounded-md border border-info/30 bg-info/10 p-3 text-sm text-info">
-              The tender will be created in <strong>draft</strong> status. You can review it before opening it to carriers.
+              {t('The tender will be created in')} <strong>{t('draft')}</strong> {t('status. You can review it before opening it to carriers.')}
             </div>
             <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setStep(4)}>Back</Button>
+              <Button variant="outline" onClick={() => setStep(4)}>{t('Back')}</Button>
               <Button variant="gradient" onClick={handleSubmit} disabled={loading}>
-                {loading ? 'Creating...' : 'Create Tender'}
+                {loading ? t('Creating...') : t('Create Tender')}
               </Button>
             </div>
           </CardContent>

@@ -16,6 +16,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { t } from '@/i18n';
+
 export default function WarehouseCreateShipment() {
   const navigate = useNavigate();
   const [reference, setReference] = useState('');
@@ -94,11 +96,11 @@ export default function WarehouseCreateShipment() {
           size="icon"
           className="h-12 w-12 shrink-0"
           onClick={() => navigate('/warehouse')}
-          aria-label="Back"
+          aria-label={t('Back')}
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
-        <h1 className="text-2xl font-bold tracking-tight">Create Shipment</h1>
+        <h1 className="text-2xl font-bold tracking-tight">{t('Create Shipment')}</h1>
       </div>
 
       {error && (
@@ -112,13 +114,13 @@ export default function WarehouseCreateShipment() {
         <CardContent className="pt-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="wh-reference" className="text-base">Reference *</Label>
+              <Label htmlFor="wh-reference" className="text-base">{t('Reference *')}</Label>
               <Input
                 id="wh-reference"
                 type="text"
                 value={reference}
                 onChange={e => setReference(e.target.value)}
-                placeholder="SH-001"
+                placeholder={t('SH-001')}
                 required
                 data-manual-input="true"
                 className="h-12 text-base"
@@ -126,10 +128,10 @@ export default function WarehouseCreateShipment() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="wh-customer" className="text-base">Customer *</Label>
+              <Label htmlFor="wh-customer" className="text-base">{t('Customer *')}</Label>
               <Select value={customerId} onValueChange={setCustomerId}>
                 <SelectTrigger id="wh-customer" className="h-12 text-base">
-                  <SelectValue placeholder="Select customer" />
+                  <SelectValue placeholder={t('Select customer')} />
                 </SelectTrigger>
                 <SelectContent>
                   {customers.map(c => (
@@ -142,10 +144,10 @@ export default function WarehouseCreateShipment() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="wh-origin" className="text-base">Origin *</Label>
+              <Label htmlFor="wh-origin" className="text-base">{t('Origin *')}</Label>
               <Select value={originId} onValueChange={setOriginId}>
                 <SelectTrigger id="wh-origin" className="h-12 text-base">
-                  <SelectValue placeholder="Select origin" />
+                  <SelectValue placeholder={t('Select origin')} />
                 </SelectTrigger>
                 <SelectContent>
                   {locations.map(l => (
@@ -158,10 +160,10 @@ export default function WarehouseCreateShipment() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="wh-destination" className="text-base">Destination *</Label>
+              <Label htmlFor="wh-destination" className="text-base">{t('Destination *')}</Label>
               <Select value={destinationId} onValueChange={setDestinationId}>
                 <SelectTrigger id="wh-destination" className="h-12 text-base">
-                  <SelectValue placeholder="Select destination" />
+                  <SelectValue placeholder={t('Select destination')} />
                 </SelectTrigger>
                 <SelectContent>
                   {locations.map(l => (
@@ -174,7 +176,7 @@ export default function WarehouseCreateShipment() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="wh-pickup" className="text-base">Pickup Date</Label>
+              <Label htmlFor="wh-pickup" className="text-base">{t('Pickup Date')}</Label>
               <DatePicker
                 id="wh-pickup"
                 type="date"
@@ -185,10 +187,10 @@ export default function WarehouseCreateShipment() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="wh-carrier" className="text-base">Carrier</Label>
+              <Label htmlFor="wh-carrier" className="text-base">{t('Carrier')}</Label>
               <Select value={carrierId} onValueChange={setCarrierId}>
                 <SelectTrigger id="wh-carrier" className="h-12 text-base">
-                  <SelectValue placeholder="None" />
+                  <SelectValue placeholder={t('None')} />
                 </SelectTrigger>
                 <SelectContent>
                   {carriers.map(c => (
@@ -208,7 +210,7 @@ export default function WarehouseCreateShipment() {
               disabled={loading}
             >
               {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-              {loading ? 'Creating...' : 'Create Shipment'}
+              {loading ? t('Creating...') : t('Create Shipment')}
             </Button>
           </form>
         </CardContent>

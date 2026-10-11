@@ -11,6 +11,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
+import { t } from '@/i18n';
+
 export default function ForgotPassword() {
   const { hasLogo, logoUrl, systemName } = useTheme();
   const [email, setEmail] = useState('');
@@ -49,24 +51,28 @@ export default function ForgotPassword() {
                 systemName
               ) : (
                 <>
-                  Open <GradientText>TMS</GradientText>
+                  {t('Open')} <GradientText>{t('TMS')}</GradientText>
                 </>
               )}
             </h1>
             <p className="text-sm text-muted-foreground">
-              Self-service reset is not yet available. For now, your administrator can reset your password from the Users admin page.
+              {t(
+                'Self-service reset is not yet available. For now, your administrator can reset your password from the Users admin page.'
+              )}
             </p>
           </div>
         </CardHeader>
         <CardContent>
           {submitted ? (
             <div className="mb-4 rounded-md border border-info/30 bg-info/10 px-3 py-2 text-sm text-info">
-              Your request has been logged. Please contact your administrator to complete the reset.
+              {t(
+                'Your request has been logged. Please contact your administrator to complete the reset.'
+              )}
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="fp-email">Email</Label>
+                <Label htmlFor="fp-email">{t('Email')}</Label>
                 <Input
                   id="fp-email"
                   type="email"
@@ -74,7 +80,7 @@ export default function ForgotPassword() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   autoFocus
-                  placeholder="you@company.com"
+                  placeholder={t('you@company.com')}
                 />
               </div>
               <Button
@@ -85,7 +91,7 @@ export default function ForgotPassword() {
                 disabled={loading || !email}
               >
                 {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-                {loading ? 'Submitting...' : 'Request reset'}
+                {loading ? t('Submitting...') : t('Request reset')}
               </Button>
             </form>
           )}
@@ -95,7 +101,7 @@ export default function ForgotPassword() {
               to="/login"
               className="text-muted-foreground transition-colors hover:text-primary"
             >
-              Back to sign in
+              {t('Back to sign in')}
             </Link>
           </div>
         </CardContent>

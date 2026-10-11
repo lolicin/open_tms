@@ -18,6 +18,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface Webhook {
   id: string;
   name: string;
@@ -99,13 +101,13 @@ export default function CustomerWebhooks() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Delete this webhook?')) return;
+    if (!confirm(t('Delete this webhook?'))) return;
     await customerFetch(`${API_URL}/api/v1/customer-portal/developer/webhooks/${id}`, { method: 'DELETE' });
     load();
   };
 
   const handleRotate = async (id: string) => {
-    if (!confirm('Rotate the signing secret? The old secret will stop working immediately.')) return;
+    if (!confirm(t('Rotate the signing secret? The old secret will stop working immediately.'))) return;
     setBusy(id);
     const res = await customerFetch(`${API_URL}/api/v1/customer-portal/developer/webhooks/${id}/rotate-secret`, { method: 'POST' });
     const data = await res.json();
@@ -142,14 +144,14 @@ export default function CustomerWebhooks() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Webhooks</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Webhooks')}</h1>
           <p className="text-sm text-muted-foreground">
-            Subscribe to events from your orders, shipments, invoices, and returns.
+            {t('Subscribe to events from your orders, shipments, invoices, and returns.')}
           </p>
         </div>
         <Button variant="gradient" onClick={() => setShowCreate(v => !v)}>
           <Plus className="h-4 w-4" />
-          New webhook
+          {t('New webhook')}
         </Button>
       </div>
 
@@ -162,40 +164,40 @@ export default function CustomerWebhooks() {
       {showCreate && (
         <Card>
           <CardHeader>
-            <CardTitle>New webhook</CardTitle>
+            <CardTitle>{t('New webhook')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="hook-name">Name</Label>
+                <Label htmlFor="hook-name">{t('Name')}</Label>
                 <Input
                   id="hook-name"
                   value={form.name}
                   onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                  placeholder="Shipment tracker"
+                  placeholder={t('Shipment tracker')}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="hook-url">Endpoint URL</Label>
+                <Label htmlFor="hook-url">{t('Endpoint URL')}</Label>
                 <Input
                   id="hook-url"
                   value={form.url}
                   onChange={e => setForm(f => ({ ...f, url: e.target.value }))}
-                  placeholder="https://yourdomain.com/webhooks/open-tms"
+                  placeholder={t('https://yourdomain.com/webhooks/open-tms')}
                 />
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="hook-description">Description</Label>
+              <Label htmlFor="hook-description">{t('Description')}</Label>
               <Input
                 id="hook-description"
                 value={form.description}
                 onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-                placeholder="Optional notes for your team"
+                placeholder={t('Optional notes for your team')}
               />
             </div>
             <div>
-              <div className="mb-2 text-sm font-semibold">Subscribed events</div>
+              <div className="mb-2 text-sm font-semibold">{t('Subscribed events')}</div>
               <div className="flex flex-wrap gap-2">
                 {events.map(ev => {
                   const active = form.events.includes(ev);
@@ -217,15 +219,15 @@ export default function CustomerWebhooks() {
                 })}
               </div>
               <div className="mt-2 text-xs text-muted-foreground">
-                Use <code className="rounded bg-muted px-1">*</code> for everything,{' '}
-                <code className="rounded bg-muted px-1">rma.*</code> for all RMA events, or exact patterns.
+                {t('Use')} <code className="rounded bg-muted px-1">*</code> {t('for everything,')}{' '}
+                <code className="rounded bg-muted px-1">{t('rma.*')}</code> {t('for all RMA events, or exact patterns.')}
               </div>
             </div>
             <div className="flex gap-2">
               <Button variant="gradient" onClick={handleCreate} disabled={busy === 'create'}>
-                {busy === 'create' ? 'Creating...' : 'Create'}
+                {busy === 'create' ? t('Creating...') : t('Create')}
               </Button>
-              <Button variant="outline" onClick={() => setShowCreate(false)}>Cancel</Button>
+              <Button variant="outline" onClick={() => setShowCreate(false)}>{t('Cancel')}</Button>
             </div>
           </CardContent>
         </Card>
@@ -236,7 +238,7 @@ export default function CustomerWebhooks() {
       ) : hooks.length === 0 ? (
         <Card>
           <CardContent className="p-8 text-center text-sm text-muted-foreground">
-            No webhooks yet. Create one above to start receiving events.
+            {t('No webhooks yet. Create one above to start receiving events.')}
           </CardContent>
         </Card>
       ) : (
@@ -249,7 +251,7 @@ export default function CustomerWebhooks() {
                     <div className="flex items-center gap-2">
                       <h3 className="text-base font-semibold">{h.name}</h3>
                       <Badge variant={h.enabled ? 'success' : 'secondary'}>
-                        {h.enabled ? 'Enabled' : 'Disabled'}
+                        {h.enabled ? t('Enabled') : t('Disabled')}
                       </Badge>
                     </div>
                     <div className="mt-1 truncate text-sm text-muted-foreground">{h.url}</div>
@@ -262,31 +264,31 @@ export default function CustomerWebhooks() {
                       <div className="mt-2 text-xs text-muted-foreground">{h.description}</div>
                     )}
                     <div className="mt-2 text-xs text-muted-foreground">
-                      {h.deliveryCount} deliveries &middot; {h.failureCount} failures
+                      {h.deliveryCount} {t('deliveries ·')} {h.failureCount} {t('failures')}
                       {h.lastDeliveryAt && (
-                        <> &middot; last at {new Date(h.lastDeliveryAt).toLocaleString()} (HTTP {h.lastStatusCode ?? '-'})</>
+                        <> {t('· last at')} {new Date(h.lastDeliveryAt).toLocaleString()} {t('(HTTP')} {h.lastStatusCode ?? '-'})</>
                       )}
                     </div>
                     <details className="mt-2">
-                      <summary className="cursor-pointer text-xs text-muted-foreground">Reveal signing secret</summary>
+                      <summary className="cursor-pointer text-xs text-muted-foreground">{t('Reveal signing secret')}</summary>
                       <code className="mt-1 block break-all rounded bg-muted px-2 py-1 text-xs">{h.secret}</code>
                     </details>
                   </div>
                   <div className="flex shrink-0 flex-col gap-1.5">
                     <Button variant="outline" size="sm" onClick={() => handleTest(h.id)} disabled={busy === h.id}>
-                      Send test
+                      {t('Send test')}
                     </Button>
                     <Button variant="outline" size="sm" onClick={() => toggleExpanded(h.id)}>
-                      {expanded === h.id ? 'Hide log' : 'View log'}
+                      {expanded === h.id ? t('Hide log') : t('View log')}
                     </Button>
                     <Button variant="outline" size="sm" onClick={() => handleToggle(h)} disabled={busy === h.id}>
-                      {h.enabled ? 'Disable' : 'Enable'}
+                      {h.enabled ? t('Disable') : t('Enable')}
                     </Button>
                     <Button variant="outline" size="sm" onClick={() => handleRotate(h.id)} disabled={busy === h.id}>
-                      Rotate secret
+                      {t('Rotate secret')}
                     </Button>
                     <Button variant="outline" size="sm" className="text-destructive" onClick={() => handleDelete(h.id)}>
-                      Delete
+                      {t('Delete')}
                     </Button>
                   </div>
                 </div>
@@ -296,18 +298,18 @@ export default function CustomerWebhooks() {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Event</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead>HTTP</TableHead>
-                          <TableHead>Time</TableHead>
-                          <TableHead>Error</TableHead>
+                          <TableHead>{t('Event')}</TableHead>
+                          <TableHead>{t('Status')}</TableHead>
+                          <TableHead>{t('HTTP')}</TableHead>
+                          <TableHead>{t('Time')}</TableHead>
+                          <TableHead>{t('Error')}</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {(deliveries[h.id] || []).length === 0 && (
                           <TableRow>
                             <TableCell colSpan={5} className="py-6 text-center text-sm text-muted-foreground">
-                              No deliveries yet
+                              {t('No deliveries yet')}
                             </TableCell>
                           </TableRow>
                         )}

@@ -29,6 +29,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface FinancialQuery {
   id: string;
   queryNumber: string;
@@ -117,7 +119,7 @@ export default function VNextFinanceQueries() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -134,8 +136,8 @@ export default function VNextFinanceQueries() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Queries &amp; Disputes</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{stats.open} open queries</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Queries & Disputes')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{stats.open} {t('open queries')}</p>
         </div>
       </div>
 
@@ -146,7 +148,7 @@ export default function VNextFinanceQueries() {
               <HelpCircle className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight">{stats.total}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Total</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Total')}</div>
           </CardContent>
         </Card>
         <Card>
@@ -155,7 +157,7 @@ export default function VNextFinanceQueries() {
               <Clock className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight">{stats.open}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Open</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Open')}</div>
           </CardContent>
         </Card>
         <Card>
@@ -164,7 +166,7 @@ export default function VNextFinanceQueries() {
               <CheckCircle2 className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight">{stats.adjusted}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Adjusted</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Adjusted')}</div>
           </CardContent>
         </Card>
         <Card>
@@ -173,7 +175,7 @@ export default function VNextFinanceQueries() {
               <DollarSign className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight font-mono tabular-nums">{formatMoney(stats.totalDisputed)}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Amount Disputed</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Amount Disputed')}</div>
           </CardContent>
         </Card>
       </div>
@@ -185,12 +187,12 @@ export default function VNextFinanceQueries() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="raised">Raised</SelectItem>
-              <SelectItem value="investigating">Investigating</SelectItem>
-              <SelectItem value="resolved_adjusted">Resolved (Adjusted)</SelectItem>
-              <SelectItem value="resolved_upheld">Resolved (Upheld)</SelectItem>
-              <SelectItem value="closed">Closed</SelectItem>
+              <SelectItem value="all">{t('All Status')}</SelectItem>
+              <SelectItem value="raised">{t('Raised')}</SelectItem>
+              <SelectItem value="investigating">{t('Investigating')}</SelectItem>
+              <SelectItem value="resolved_adjusted">{t('Resolved (Adjusted)')}</SelectItem>
+              <SelectItem value="resolved_upheld">{t('Resolved (Upheld)')}</SelectItem>
+              <SelectItem value="closed">{t('Closed')}</SelectItem>
             </SelectContent>
           </Select>
           <Select value={typeFilter} onValueChange={setTypeFilter}>
@@ -198,9 +200,9 @@ export default function VNextFinanceQueries() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
-              <SelectItem value="customer_dispute">Customer Disputes</SelectItem>
-              <SelectItem value="carrier_dispute">Carrier Disputes</SelectItem>
+              <SelectItem value="all">{t('All Types')}</SelectItem>
+              <SelectItem value="customer_dispute">{t('Customer Disputes')}</SelectItem>
+              <SelectItem value="carrier_dispute">{t('Carrier Disputes')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -208,19 +210,19 @@ export default function VNextFinanceQueries() {
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <HelpCircle className="h-8 w-8" />
-            <h3 className="text-base font-medium">No queries found</h3>
+            <h3 className="text-base font-medium">{t('No queries found')}</h3>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Query #</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Reason</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Disputed</TableHead>
-                <TableHead className="text-right">Adjustment</TableHead>
-                <TableHead>Created</TableHead>
+                <TableHead>{t('Query #')}</TableHead>
+                <TableHead>{t('Type')}</TableHead>
+                <TableHead>{t('Reason')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead className="text-right">{t('Disputed')}</TableHead>
+                <TableHead className="text-right">{t('Adjustment')}</TableHead>
+                <TableHead>{t('Created')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -231,7 +233,7 @@ export default function VNextFinanceQueries() {
                   </TableCell>
                   <TableCell>
                     <Badge variant={q.queryType === 'customer_dispute' ? 'default' : 'warning'}>
-                      {q.queryType === 'customer_dispute' ? 'Customer' : 'Carrier'}
+                      {q.queryType === 'customer_dispute' ? t('Customer') : t('Carrier')}
                     </Badge>
                   </TableCell>
                   <TableCell>{reasonLabel(q.reason)}</TableCell>

@@ -15,6 +15,8 @@ import {
 import { ErrorBoundary } from '../components/ErrorBoundary';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface Tab {
   to: string;
   label: string;
@@ -23,14 +25,14 @@ interface Tab {
 }
 
 const TABS: Tab[] = [
-  { to: '/integrations', label: 'Dashboard', icon: LayoutDashboard, end: true },
-  { to: '/integrations/api-keys', label: 'API Keys', icon: Key, end: false },
-  { to: '/integrations/webhook-logs', label: 'Webhooks', icon: Webhook, end: false },
-  { to: '/integrations/edi', label: 'EDI Dashboard', icon: Network, end: true },
-  { to: '/integrations/edi/partners', label: 'Trading Partners', icon: Handshake, end: false },
-  { to: '/integrations/edi/logs', label: 'Transaction Log', icon: ClipboardList, end: false },
-  { to: '/integrations/edi/import', label: 'EDI Import', icon: Upload, end: false },
-  { to: '/integrations/carrier-tracking', label: 'Carrier Tracking', icon: Locate, end: false },
+  { to: '/integrations', label: t('Dashboard'), icon: LayoutDashboard, end: true },
+  { to: '/integrations/api-keys', label: t('API Keys'), icon: Key, end: false },
+  { to: '/integrations/webhook-logs', label: t('Webhooks'), icon: Webhook, end: false },
+  { to: '/integrations/edi', label: t('EDI Dashboard'), icon: Network, end: true },
+  { to: '/integrations/edi/partners', label: t('Trading Partners'), icon: Handshake, end: false },
+  { to: '/integrations/edi/logs', label: t('Transaction Log'), icon: ClipboardList, end: false },
+  { to: '/integrations/edi/import', label: t('EDI Import'), icon: Upload, end: false },
+  { to: '/integrations/carrier-tracking', label: t('Carrier Tracking'), icon: Locate, end: false },
 ];
 
 export default function VNextIntegrationsLayout() {

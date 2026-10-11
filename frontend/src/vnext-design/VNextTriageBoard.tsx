@@ -39,6 +39,8 @@ import {
 } from './triage/components';
 import { CreateIssueDialog } from './triage/CreateIssueDialog';
 
+import { t as translate } from '@/i18n';
+
 const PER_PAGE = 100;
 
 export default function VNextTriageBoard() {
@@ -241,39 +243,39 @@ export default function VNextTriageBoard() {
     <div className="grid gap-4">
       <header className="flex flex-wrap items-center gap-3">
         <Bug className="h-5 w-5" aria-hidden="true" />
-        <h1 className="m-0 text-xl font-semibold">All Issues</h1>
+        <h1 className="m-0 text-xl font-semibold">{translate('All Issues')}</h1>
         <Badge variant="secondary">{total}</Badge>
         <div className="flex-1" />
 
-        <div className="flex gap-1" role="group" aria-label="View mode">
+        <div className="flex gap-1" role="group" aria-label={translate('View mode')}>
           <Button
             size="sm"
             variant={view === 'kanban' ? 'default' : 'outline'}
             onClick={() => setView('kanban')}
           >
-            <Columns3 className="h-3.5 w-3.5" aria-hidden="true" /> Board
+            <Columns3 className="h-3.5 w-3.5" aria-hidden="true" /> {translate('Board')}
           </Button>
           <Button
             size="sm"
             variant={view === 'list' ? 'default' : 'outline'}
             onClick={() => setView('list')}
           >
-            <LayoutList className="h-3.5 w-3.5" aria-hidden="true" /> List
+            <LayoutList className="h-3.5 w-3.5" aria-hidden="true" /> {translate('List')}
           </Button>
         </div>
 
         <Button size="sm" onClick={() => setCreating(true)}>
-          <Plus className="h-3.5 w-3.5" aria-hidden="true" /> Report issue
+          <Plus className="h-3.5 w-3.5" aria-hidden="true" /> {translate('Report issue')}
         </Button>
 
         <Button size="sm" variant="outline" onClick={() => setSavingBoard((v) => !v)}>
-          <Save className="h-3.5 w-3.5" aria-hidden="true" /> Save as board
+          <Save className="h-3.5 w-3.5" aria-hidden="true" /> {translate('Save as board')}
         </Button>
       </header>
 
       {boards.length > 0 && (
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="text-xs text-muted-foreground">Saved boards:</span>
+          <span className="text-xs text-muted-foreground">{translate('Saved boards:')}</span>
           {boards.map((b) => (
             <Button
               key={b.id}
@@ -286,7 +288,7 @@ export default function VNextTriageBoard() {
           ))}
           {boardId && (
             <Button size="sm" variant="ghost" onClick={() => navigate('/triage/board')}>
-              <X className="h-3.5 w-3.5" aria-hidden="true" /> Clear
+              <X className="h-3.5 w-3.5" aria-hidden="true" /> {translate('Clear')}
             </Button>
           )}
         </div>
@@ -295,16 +297,16 @@ export default function VNextTriageBoard() {
       {savingBoard && (
         <Card className="flex flex-wrap items-center gap-2 p-3">
           <Input
-            placeholder="Board name, e.g. Cold chain critical"
+            placeholder={translate('Board name, e.g. Cold chain critical')}
             value={boardName}
-            aria-label="Board name"
+            aria-label={translate('Board name')}
             onChange={(e) => setBoardName(e.target.value)}
             className="max-w-xs"
           />
-          <Button size="sm" onClick={saveBoard} disabled={!boardName.trim()}>Save</Button>
-          <Button size="sm" variant="ghost" onClick={() => setSavingBoard(false)}>Cancel</Button>
+          <Button size="sm" onClick={saveBoard} disabled={!boardName.trim()}>{translate('Save')}</Button>
+          <Button size="sm" variant="ghost" onClick={() => setSavingBoard(false)}>{translate('Cancel')}</Button>
           <span className="text-xs text-muted-foreground">
-            Saves the current filters and view mode.
+            {translate('Saves the current filters and view mode.')}
           </span>
         </Card>
       )}
@@ -319,32 +321,32 @@ export default function VNextTriageBoard() {
 
       {selected.size > 0 && (
         <Card className="flex flex-wrap items-center gap-2 p-3">
-          <strong className="text-sm">{selected.size} selected</strong>
+          <strong className="text-sm">{selected.size} {translate('selected')}</strong>
           <Button size="sm" variant="outline"
             onClick={() => runBatch(ids, () => triageApi.batchTransition(ids, 'in_progress'), 'Started', { status: 'in_progress' })}>
-            <Users className="h-3.5 w-3.5" aria-hidden="true" /> Start
+            <Users className="h-3.5 w-3.5" aria-hidden="true" /> {translate('Start')}
           </Button>
           <Button size="sm" variant="outline"
             onClick={() => runBatch(ids, () => triageApi.batchTransition(ids, 'resolved', 'Bulk resolved from the triage board'), 'Resolved', { status: 'resolved' })}>
-            <CheckCheck className="h-3.5 w-3.5" aria-hidden="true" /> Resolve
+            <CheckCheck className="h-3.5 w-3.5" aria-hidden="true" /> {translate('Resolve')}
           </Button>
           <Button size="sm" variant="outline"
             onClick={() => runBatch(ids, () => triageApi.batchDismissNoise(ids), 'Dismissed', { status: 'closed', isNoise: true })}>
-            <EyeOff className="h-3.5 w-3.5" aria-hidden="true" /> Dismiss as noise
+            <EyeOff className="h-3.5 w-3.5" aria-hidden="true" /> {translate('Dismiss as noise')}
           </Button>
-          <Button size="sm" variant="ghost" onClick={() => setSelected(new Set())}>Clear</Button>
+          <Button size="sm" variant="ghost" onClick={() => setSelected(new Set())}>{translate('Clear')}</Button>
           <span className="text-xs text-muted-foreground">
-            Latched safety issues cannot be dismissed as noise.
+            {translate('Latched safety issues cannot be dismissed as noise.')}
           </span>
         </Card>
       )}
 
-      {loading && <TriageLoading label="Loading issues" />}
+      {loading && <TriageLoading label={translate('Loading issues')} />}
       {error && !loading && <TriageError message={error} onRetry={load} />}
 
       {!loading && !error && issues.length === 0 && (
         <TriageEmpty
-          title="No issues match these filters"
+          title={translate('No issues match these filters')}
           hint="Try widening the window, or tick 'Show suppressed' to include noise."
         />
       )}
@@ -373,7 +375,7 @@ export default function VNextTriageBoard() {
                 ))}
                 {(columns[col] ?? []).length === 0 && (
                   <div className="rounded-md border border-dashed border-border/60 p-3 text-center text-xs text-muted-foreground">
-                    Drop an issue here
+                    {translate('Drop an issue here')}
                   </div>
                 )}
               </DroppableColumn>
@@ -405,19 +407,19 @@ export default function VNextTriageBoard() {
                 <th className="w-8 p-2.5">
                   <input
                     type="checkbox"
-                    aria-label="Select all on this page"
+                    aria-label={translate('Select all on this page')}
                     checked={selected.size === issues.length && issues.length > 0}
                     onChange={(e) => setSelected(e.target.checked ? new Set(issues.map((i) => i.id)) : new Set())}
                   />
                 </th>
-                <th className="p-2.5">Issue</th>
-                <th className="p-2.5">Type</th>
-                <th className="p-2.5">Status</th>
-                <th className="p-2.5">Priority</th>
-                <th className="p-2.5">Confidence</th>
-                <th className="p-2.5">SLA</th>
-                <th className="p-2.5">Assignee</th>
-                <th className="p-2.5">Age</th>
+                <th className="p-2.5">{translate('Issue')}</th>
+                <th className="p-2.5">{translate('Type')}</th>
+                <th className="p-2.5">{translate('Status')}</th>
+                <th className="p-2.5">{translate('Priority')}</th>
+                <th className="p-2.5">{translate('Confidence')}</th>
+                <th className="p-2.5">{translate('SLA')}</th>
+                <th className="p-2.5">{translate('Assignee')}</th>
+                <th className="p-2.5">{translate('Age')}</th>
               </tr>
             </thead>
             <tbody>
@@ -464,10 +466,10 @@ export default function VNextTriageBoard() {
             disabled={page <= 1}
             onClick={() => { setPage((p) => p - 1); setSelected(new Set()); }}
           >
-            Previous
+            {translate('Previous')}
           </Button>
           <span className="text-sm text-muted-foreground">
-            Page {page} of {Math.ceil(total / PER_PAGE)}
+            {translate('Page')} {page} {translate('of')} {Math.ceil(total / PER_PAGE)}
           </span>
           <Button
             size="sm"
@@ -475,7 +477,7 @@ export default function VNextTriageBoard() {
             disabled={page >= Math.ceil(total / PER_PAGE)}
             onClick={() => { setPage((p) => p + 1); setSelected(new Set()); }}
           >
-            Next
+            {translate('Next')}
           </Button>
         </div>
       )}

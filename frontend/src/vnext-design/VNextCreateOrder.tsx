@@ -27,6 +27,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { t } from '@/i18n';
+
 interface LineItem {
   id: number;
   sku: string;
@@ -159,7 +161,7 @@ export default function VNextCreateOrder() {
       const newId = json.data?.id;
       const ref = json.data?.orderNumber || newId?.slice(0, 8);
       toast.success(`Order ${ref} created`, {
-        action: newId ? { label: 'View', onClick: () => navigate(`/orders/${newId}`) } : undefined,
+        action: newId ? { label: t('View'), onClick: () => navigate(`/orders/${newId}`) } : undefined,
       });
       navigate('/orders');
     } catch (err: any) {
@@ -185,16 +187,16 @@ export default function VNextCreateOrder() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/orders" className="hover:text-foreground">
-          <ArrowLeft className="inline h-4 w-4" /> Orders
+          <ArrowLeft className="inline h-4 w-4" /> {t('Orders')}
         </Link>
         <ChevronRight className="h-3 w-3" />
-        <span>{isEdit ? 'Edit order' : 'New order'}</span>
+        <span>{isEdit ? t('Edit order') : t('New order')}</span>
       </div>
 
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">{isEdit ? 'Edit order' : 'New order'}</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{isEdit ? t('Edit order') : t('New order')}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          {isEdit ? 'Update the order details below.' : 'Create a customer order from scratch.'}
+          {isEdit ? t('Update the order details below.') : t('Create a customer order from scratch.')}
         </p>
       </div>
 
@@ -202,15 +204,15 @@ export default function VNextCreateOrder() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Receipt className="h-4 w-4 text-primary" />
-            Order details
+            {t('Order details')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="customer">Customer</Label>
+            <Label htmlFor="customer">{t('Customer')}</Label>
             <Select value={customer} onValueChange={setCustomer} disabled={isEdit}>
               <SelectTrigger id="customer">
-                <SelectValue placeholder="Select customer..." />
+                <SelectValue placeholder={t('Select customer...')} />
               </SelectTrigger>
               <SelectContent>
                 {customers.map((c: any) => (
@@ -219,36 +221,36 @@ export default function VNextCreateOrder() {
               </SelectContent>
             </Select>
             {isEdit && (
-              <p className="text-xs text-muted-foreground">Customer cannot be changed after creation</p>
+              <p className="text-xs text-muted-foreground">{t('Customer cannot be changed after creation')}</p>
             )}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="po">PO number</Label>
+            <Label htmlFor="po">{t('PO number')}</Label>
             <Input
               id="po"
               type="text"
-              placeholder="Enter PO number"
+              placeholder={t('Enter PO number')}
               value={poNumber}
               onChange={e => setPoNumber(e.target.value)}
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="orderDate">Order date</Label>
+            <Label htmlFor="orderDate">{t('Order date')}</Label>
             <DatePicker id="orderDate" type="date" value={orderDate} onChange={e => setOrderDate(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="reqDel">Requested delivery date</Label>
+            <Label htmlFor="reqDel">{t('Requested delivery date')}</Label>
             <DatePicker id="reqDel" type="date" value={requestedDelivery} onChange={e => setRequestedDelivery(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="svc">Service level</Label>
+            <Label htmlFor="svc">{t('Service level')}</Label>
             <Select value={serviceLevel} onValueChange={setServiceLevel}>
               <SelectTrigger id="svc">
-                <SelectValue placeholder="Select service level..." />
+                <SelectValue placeholder={t('Select service level...')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="FTL">FTL</SelectItem>
-                <SelectItem value="LTL">LTL</SelectItem>
+                <SelectItem value="FTL">{t('FTL')}</SelectItem>
+                <SelectItem value="LTL">{t('LTL')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -259,15 +261,15 @@ export default function VNextCreateOrder() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Route className="h-4 w-4 text-primary" />
-            Origin &amp; destination
+            {t('Origin & destination')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="origin">Origin location</Label>
+            <Label htmlFor="origin">{t('Origin location')}</Label>
             <Select value={originLocation} onValueChange={setOriginLocation}>
               <SelectTrigger id="origin">
-                <SelectValue placeholder="Select origin..." />
+                <SelectValue placeholder={t('Select origin...')} />
               </SelectTrigger>
               <SelectContent>
                 {locations.map((l: any) => (
@@ -277,10 +279,10 @@ export default function VNextCreateOrder() {
             </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="dest">Destination location</Label>
+            <Label htmlFor="dest">{t('Destination location')}</Label>
             <Select value={destLocation} onValueChange={setDestLocation}>
               <SelectTrigger id="dest">
-                <SelectValue placeholder="Select destination..." />
+                <SelectValue placeholder={t('Select destination...')} />
               </SelectTrigger>
               <SelectContent>
                 {locations.map((l: any) => (
@@ -296,20 +298,20 @@ export default function VNextCreateOrder() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <ListChecks className="h-4 w-4 text-primary" />
-            Requirements
+            {t('Requirements')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="temp">Temperature control</Label>
+            <Label htmlFor="temp">{t('Temperature control')}</Label>
             <Select value={tempControl} onValueChange={setTempControl}>
               <SelectTrigger id="temp">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="ambient">Ambient</SelectItem>
-                <SelectItem value="refrigerated">Refrigerated</SelectItem>
-                <SelectItem value="frozen">Frozen</SelectItem>
+                <SelectItem value="ambient">{t('Ambient')}</SelectItem>
+                <SelectItem value="refrigerated">{t('Refrigerated')}</SelectItem>
+                <SelectItem value="frozen">{t('Frozen')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -321,15 +323,15 @@ export default function VNextCreateOrder() {
                 onChange={e => setHazmat(e.target.checked)}
                 className="h-4 w-4 rounded border border-input bg-background accent-primary"
               />
-              Hazmat
+              {t('Hazmat')}
             </label>
           </div>
           <div className="space-y-2 md:col-span-2">
-            <Label htmlFor="instructions">Special instructions</Label>
+            <Label htmlFor="instructions">{t('Special instructions')}</Label>
             <textarea
               id="instructions"
               rows={3}
-              placeholder="Enter any special instructions..."
+              placeholder={t('Enter any special instructions...')}
               value={specialInstructions}
               onChange={e => setSpecialInstructions(e.target.value)}
               className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -343,7 +345,7 @@ export default function VNextCreateOrder() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <ListChecks className="h-4 w-4 text-primary" />
-              Line items
+              {t('Line items')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -351,10 +353,10 @@ export default function VNextCreateOrder() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border text-xs uppercase tracking-wider text-muted-foreground">
-                    <th className="px-2 py-2 text-left">SKU</th>
-                    <th className="px-2 py-2 text-left">Description</th>
-                    <th className="px-2 py-2 text-left">Qty</th>
-                    <th className="px-2 py-2 text-left">Weight (lb)</th>
+                    <th className="px-2 py-2 text-left">{t('SKU')}</th>
+                    <th className="px-2 py-2 text-left">{t('Description')}</th>
+                    <th className="px-2 py-2 text-left">{t('Qty')}</th>
+                    <th className="px-2 py-2 text-left">{t('Weight (lb)')}</th>
                     <th className="px-2 py-2 w-12"></th>
                   </tr>
                 </thead>
@@ -364,7 +366,7 @@ export default function VNextCreateOrder() {
                       <td className="px-2 py-2">
                         <Input
                           type="text"
-                          placeholder="SKU"
+                          placeholder={t('SKU')}
                           value={item.sku}
                           onChange={e => updateLineItem(item.id, 'sku', e.target.value)}
                         />
@@ -372,7 +374,7 @@ export default function VNextCreateOrder() {
                       <td className="px-2 py-2">
                         <Input
                           type="text"
-                          placeholder="Description"
+                          placeholder={t('Description')}
                           value={item.description}
                           onChange={e => updateLineItem(item.id, 'description', e.target.value)}
                         />
@@ -400,7 +402,7 @@ export default function VNextCreateOrder() {
                           size="icon"
                           onClick={() => removeLineItem(item.id)}
                           className="text-destructive"
-                          aria-label="Remove item"
+                          aria-label={t('Remove item')}
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -413,7 +415,7 @@ export default function VNextCreateOrder() {
             <div className="mt-4">
               <Button variant="outline" size="sm" onClick={addLineItem}>
                 <Plus className="h-4 w-4" />
-                Add item
+                {t('Add item')}
               </Button>
             </div>
           </CardContent>
@@ -429,7 +431,7 @@ export default function VNextCreateOrder() {
 
       <div className="flex flex-wrap items-center justify-end gap-2">
         <Button variant="outline" asChild>
-          <Link to={isEdit && id ? `/orders/${id}` : '/orders'}>Cancel</Link>
+          <Link to={isEdit && id ? `/orders/${id}` : '/orders'}>{t('Cancel')}</Link>
         </Button>
         <Button variant="gradient" onClick={handleSubmit} disabled={submitting}>
           {isEdit ? <Save className="h-4 w-4" /> : <Plus className="h-4 w-4" />}

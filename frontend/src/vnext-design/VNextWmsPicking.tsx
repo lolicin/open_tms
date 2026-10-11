@@ -23,6 +23,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t as translate } from '@/i18n';
+
 interface PickTask {
   id: string;
   status: string;
@@ -84,8 +86,8 @@ export default function VNextWmsPicking() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Picking</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Pick tasks for fulfilling orders</p>
+        <h1 className="text-3xl font-bold tracking-tight">{translate('Picking')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{translate('Pick tasks for fulfilling orders')}</p>
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
@@ -95,12 +97,12 @@ export default function VNextWmsPicking() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Statuses</SelectItem>
-            <SelectItem value="pending">Pending</SelectItem>
-            <SelectItem value="assigned">Assigned</SelectItem>
-            <SelectItem value="in_progress">In Progress</SelectItem>
-            <SelectItem value="completed">Completed</SelectItem>
-            <SelectItem value="short_pick">Short Pick</SelectItem>
+            <SelectItem value="all">{translate('All Statuses')}</SelectItem>
+            <SelectItem value="pending">{translate('Pending')}</SelectItem>
+            <SelectItem value="assigned">{translate('Assigned')}</SelectItem>
+            <SelectItem value="in_progress">{translate('In Progress')}</SelectItem>
+            <SelectItem value="completed">{translate('Completed')}</SelectItem>
+            <SelectItem value="short_pick">{translate('Short Pick')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -113,9 +115,11 @@ export default function VNextWmsPicking() {
         <Card>
           <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
             <ShoppingCart className="h-12 w-12 text-muted-foreground" />
-            <h3 className="text-base font-medium">No pick tasks</h3>
+            <h3 className="text-base font-medium">{translate('No pick tasks')}</h3>
             <p className="text-sm text-muted-foreground">
-              Pick tasks are generated when waves are released. Create a wave and release it to generate pick lists.
+              {translate(
+                'Pick tasks are generated when waves are released. Create a wave and release it to generate pick lists.'
+              )}
             </p>
           </CardContent>
         </Card>
@@ -124,14 +128,14 @@ export default function VNextWmsPicking() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Task</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Wave</TableHead>
-                <TableHead>Order</TableHead>
-                <TableHead>Zone</TableHead>
-                <TableHead>Progress</TableHead>
-                <TableHead>Assigned To</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{translate('Task')}</TableHead>
+                <TableHead>{translate('Type')}</TableHead>
+                <TableHead>{translate('Wave')}</TableHead>
+                <TableHead>{translate('Order')}</TableHead>
+                <TableHead>{translate('Zone')}</TableHead>
+                <TableHead>{translate('Progress')}</TableHead>
+                <TableHead>{translate('Assigned To')}</TableHead>
+                <TableHead>{translate('Status')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -143,7 +147,7 @@ export default function VNextWmsPicking() {
                   </TableCell>
                   <TableCell>{task.waveNumber || '-'}</TableCell>
                   <TableCell>{task.orderRef || '-'}</TableCell>
-                  <TableCell>{task.zoneName || 'All'}</TableCell>
+                  <TableCell>{task.zoneName || translate('All')}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
                       <div className="h-2 w-32 overflow-hidden rounded-full bg-muted">
@@ -155,7 +159,7 @@ export default function VNextWmsPicking() {
                       <span className="text-xs text-muted-foreground">{task.completedLines}/{task.totalLines}</span>
                     </div>
                   </TableCell>
-                  <TableCell>{task.assignedTo || 'Unassigned'}</TableCell>
+                  <TableCell>{task.assignedTo || translate('Unassigned')}</TableCell>
                   <TableCell>
                     <Badge variant={statusVariant(task.status)}>{formatStatus(task.status)}</Badge>
                   </TableCell>

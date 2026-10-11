@@ -39,6 +39,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { t } from '@/i18n';
+
 type BadgeVariant = 'default' | 'secondary' | 'destructive' | 'outline' | 'success' | 'warning' | 'info' | 'muted';
 
 const LOCATION_TYPE_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -231,7 +233,7 @@ export default function VNextCreateLocation() {
         toast.success(`Location ${label} updated`);
       } else {
         toast.success(`Location ${label} created`, {
-          action: newId ? { label: 'View', onClick: () => navigate(`/locations/${newId}/edit`) } : undefined,
+          action: newId ? { label: t('View'), onClick: () => navigate(`/locations/${newId}/edit`) } : undefined,
         });
       }
       navigate('/locations');
@@ -258,60 +260,60 @@ export default function VNextCreateLocation() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/locations" className="hover:text-foreground">
-          <ArrowLeft className="inline h-4 w-4" /> Locations
+          <ArrowLeft className="inline h-4 w-4" /> {t('Locations')}
         </Link>
         <ChevronRight className="h-3 w-3" />
-        <span>{isEdit ? 'Edit location' : 'New location'}</span>
+        <span>{isEdit ? t('Edit location') : t('New location')}</span>
       </div>
 
-      <h1 className="text-3xl font-bold tracking-tight">{isEdit ? 'Edit location' : 'New location'}</h1>
+      <h1 className="text-3xl font-bold tracking-tight">{isEdit ? t('Edit location') : t('New location')}</h1>
 
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MapPin className="h-4 w-4 text-primary" />
-            Location details
+            {t('Location details')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label>Name</Label>
-            <Input type="text" placeholder="Location name" value={name} onChange={e => setName(e.target.value)} />
+            <Label>{t('Name')}</Label>
+            <Input type="text" placeholder={t('Location name')} value={name} onChange={e => setName(e.target.value)} />
           </div>
           <div className="space-y-2 md:col-span-2">
-            <Label>Address line 1</Label>
-            <Input type="text" placeholder="Street address" value={address1} onChange={e => setAddress1(e.target.value)} />
+            <Label>{t('Address line 1')}</Label>
+            <Input type="text" placeholder={t('Street address')} value={address1} onChange={e => setAddress1(e.target.value)} />
           </div>
           <div className="space-y-2 md:col-span-2">
-            <Label>Address line 2</Label>
-            <Input type="text" placeholder="Suite, unit, floor, etc." value={address2} onChange={e => setAddress2(e.target.value)} />
+            <Label>{t('Address line 2')}</Label>
+            <Input type="text" placeholder={t('Suite, unit, floor, etc.')} value={address2} onChange={e => setAddress2(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>City</Label>
-            <Input type="text" placeholder="City" value={city} onChange={e => setCity(e.target.value)} />
+            <Label>{t('City')}</Label>
+            <Input type="text" placeholder={t('City')} value={city} onChange={e => setCity(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>State</Label>
-            <Input type="text" placeholder="State / Province" value={state} onChange={e => setState(e.target.value)} />
+            <Label>{t('State')}</Label>
+            <Input type="text" placeholder={t('State / Province')} value={state} onChange={e => setState(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>Postal code</Label>
-            <Input type="text" placeholder="ZIP / Postal code" value={postalCode} onChange={e => setPostalCode(e.target.value)} />
+            <Label>{t('Postal code')}</Label>
+            <Input type="text" placeholder={t('ZIP / Postal code')} value={postalCode} onChange={e => setPostalCode(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>Country</Label>
+            <Label>{t('Country')}</Label>
             <Select value={country} onValueChange={setCountry}>
               <SelectTrigger>
-                <SelectValue placeholder="Select country..." />
+                <SelectValue placeholder={t('Select country...')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="US">United States</SelectItem>
-                <SelectItem value="CA">Canada</SelectItem>
-                <SelectItem value="MX">Mexico</SelectItem>
-                <SelectItem value="UK">United Kingdom</SelectItem>
-                <SelectItem value="DE">Germany</SelectItem>
-                <SelectItem value="FR">France</SelectItem>
-                <SelectItem value="AU">Australia</SelectItem>
+                <SelectItem value="US">{t('United States')}</SelectItem>
+                <SelectItem value="CA">{t('Canada')}</SelectItem>
+                <SelectItem value="MX">{t('Mexico')}</SelectItem>
+                <SelectItem value="UK">{t('United Kingdom')}</SelectItem>
+                <SelectItem value="DE">{t('Germany')}</SelectItem>
+                <SelectItem value="FR">{t('France')}</SelectItem>
+                <SelectItem value="AU">{t('Australia')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -322,17 +324,17 @@ export default function VNextCreateLocation() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Tag className="h-4 w-4 text-primary" />
-            Classification &amp; facility
+            {t('Classification & facility')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label>Location type</Label>
+            <Label>{t('Location type')}</Label>
             <div className="flex items-center gap-3">
               <div className="flex-1">
                 <Select value={locationType} onValueChange={setLocationType}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select type..." />
+                    <SelectValue placeholder={t('Select type...')} />
                   </SelectTrigger>
                   <SelectContent>
                     {Object.entries(LOCATION_TYPE_META).map(([value, meta]) => (
@@ -350,12 +352,12 @@ export default function VNextCreateLocation() {
             </div>
           </div>
           <div className="space-y-2">
-            <Label>Dock count</Label>
-            <Input type="number" min="0" step="1" placeholder="Number of docks" value={dockCount} onChange={e => setDockCount(e.target.value)} />
+            <Label>{t('Dock count')}</Label>
+            <Input type="number" min="0" step="1" placeholder={t('Number of docks')} value={dockCount} onChange={e => setDockCount(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>Max trailer length (ft)</Label>
-            <Input type="number" min="0" step="1" placeholder="e.g. 53" value={maxTrailerLengthFt} onChange={e => setMaxTrailerLengthFt(e.target.value)} />
+            <Label>{t('Max trailer length (ft)')}</Label>
+            <Input type="number" min="0" step="1" placeholder={t('e.g. 53')} value={maxTrailerLengthFt} onChange={e => setMaxTrailerLengthFt(e.target.value)} />
           </div>
           <div className="flex items-end">
             <label className="flex items-center gap-2 text-sm">
@@ -365,7 +367,7 @@ export default function VNextCreateLocation() {
                 onChange={e => setAppointmentRequired(e.target.checked)}
                 className="h-4 w-4 rounded border border-input bg-background accent-primary"
               />
-              Appointment required
+              {t('Appointment required')}
             </label>
           </div>
         </CardContent>
@@ -375,7 +377,7 @@ export default function VNextCreateLocation() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <ShieldCheck className="h-4 w-4 text-primary" />
-            Facility capabilities
+            {t('Facility capabilities')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -387,7 +389,7 @@ export default function VNextCreateLocation() {
                 onChange={e => setCrossDockCapable(e.target.checked)}
                 className="h-4 w-4 rounded border border-input bg-background accent-primary"
               />
-              Cross-dock capable
+              {t('Cross-dock capable')}
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -396,7 +398,7 @@ export default function VNextCreateLocation() {
                 onChange={e => setHasColdStorage(e.target.checked)}
                 className="h-4 w-4 rounded border border-input bg-background accent-primary"
               />
-              Cold storage
+              {t('Cold storage')}
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -405,7 +407,7 @@ export default function VNextCreateLocation() {
                 onChange={e => setHasHazmatCert(e.target.checked)}
                 className="h-4 w-4 rounded border border-input bg-background accent-primary"
               />
-              Hazmat certified
+              {t('Hazmat certified')}
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -414,7 +416,7 @@ export default function VNextCreateLocation() {
                 onChange={e => setHasBondedStorage(e.target.checked)}
                 className="h-4 w-4 rounded border border-input bg-background accent-primary"
               />
-              Bonded storage
+              {t('Bonded storage')}
             </label>
           </div>
         </CardContent>
@@ -424,17 +426,17 @@ export default function VNextCreateLocation() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Crosshair className="h-4 w-4 text-primary" />
-            Coordinates
+            {t('Coordinates')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label>Latitude</Label>
-            <Input type="number" step="any" placeholder="e.g. 41.8827" value={latitude} onChange={e => setLatitude(e.target.value)} />
+            <Label>{t('Latitude')}</Label>
+            <Input type="number" step="any" placeholder={t('e.g. 41.8827')} value={latitude} onChange={e => setLatitude(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>Longitude</Label>
-            <Input type="number" step="any" placeholder="e.g. -87.6588" value={longitude} onChange={e => setLongitude(e.target.value)} />
+            <Label>{t('Longitude')}</Label>
+            <Input type="number" step="any" placeholder={t('e.g. -87.6588')} value={longitude} onChange={e => setLongitude(e.target.value)} />
           </div>
         </CardContent>
       </Card>
@@ -443,7 +445,7 @@ export default function VNextCreateLocation() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Shapes className="h-4 w-4 text-primary" />
-            Geofence
+            {t('Geofence')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -462,21 +464,21 @@ export default function VNextCreateLocation() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <User className="h-4 w-4 text-primary" />
-            Contact
+            {t('Contact')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-3">
           <div className="space-y-2">
-            <Label>Contact name</Label>
-            <Input type="text" placeholder="Full name" value={contactName} onChange={e => setContactName(e.target.value)} />
+            <Label>{t('Contact name')}</Label>
+            <Input type="text" placeholder={t('Full name')} value={contactName} onChange={e => setContactName(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>Phone</Label>
+            <Label>{t('Phone')}</Label>
             <Input type="tel" placeholder="(555) 123-4567" value={phone} onChange={e => setPhone(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>Email</Label>
-            <Input type="email" placeholder="email@example.com" value={email} onChange={e => setEmail(e.target.value)} />
+            <Label>{t('Email')}</Label>
+            <Input type="email" placeholder={t('email@example.com')} value={email} onChange={e => setEmail(e.target.value)} />
           </div>
         </CardContent>
       </Card>
@@ -490,11 +492,11 @@ export default function VNextCreateLocation() {
 
       <div className="flex flex-wrap items-center justify-end gap-2">
         <Button variant="outline" asChild>
-          <Link to="/locations">Cancel</Link>
+          <Link to="/locations">{t('Cancel')}</Link>
         </Button>
         <Button variant="gradient" onClick={handleSubmit} disabled={submitting}>
           <Save className="h-4 w-4" />
-          {submitting ? 'Saving...' : isEdit ? 'Update location' : 'Save location'}
+          {submitting ? t('Saving...') : isEdit ? 'Update location' : 'Save location'}
         </Button>
       </div>
     </div>

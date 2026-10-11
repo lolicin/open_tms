@@ -26,11 +26,13 @@ import { cn } from '@/lib/utils';
 import { useBarcodeScanner } from './useBarcodeScanner';
 import { CameraScannerModal } from './CameraScannerModal';
 
+import { t } from '@/i18n';
+
 const STATUS_FILTERS = [
-  { value: 'all', label: 'All' },
-  { value: 'pending', label: 'To Do' },
-  { value: 'launched', label: 'Launched' },
-  { value: 'flagged', label: 'Flagged' },
+  { value: 'all', label: t('All') },
+  { value: 'pending', label: t('To Do') },
+  { value: 'launched', label: t('Launched') },
+  { value: 'flagged', label: t('Flagged') },
 ] as const;
 
 type StatusFilter = (typeof STATUS_FILTERS)[number]['value'];
@@ -115,7 +117,7 @@ export default function WarehouseShipments() {
           <Input
             ref={searchRef}
             type="text"
-            placeholder="Search or scan shipment..."
+            placeholder={t('Search or scan shipment...')}
             value={search}
             onChange={e => setSearch(e.target.value)}
             inputMode="none"
@@ -125,7 +127,7 @@ export default function WarehouseShipments() {
             <button
               type="button"
               onClick={() => setSearch('')}
-              aria-label="Clear search"
+              aria-label={t('Clear search')}
               className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-md text-muted-foreground hover:bg-muted/40 hover:text-foreground"
             >
               <X className="h-4 w-4" />
@@ -137,7 +139,7 @@ export default function WarehouseShipments() {
           size="icon"
           className="h-12 w-12 shrink-0"
           onClick={() => setCameraOpen(true)}
-          aria-label="Scan with camera"
+          aria-label={t('Scan with camera')}
         >
           <Camera className="h-5 w-5" />
         </Button>
@@ -151,7 +153,7 @@ export default function WarehouseShipments() {
               searchRef.current.inputMode = 'text';
             }
           }}
-          aria-label="Type to search"
+          aria-label={t('Type to search')}
         >
           <Keyboard className="h-5 w-5" />
         </Button>
@@ -162,7 +164,7 @@ export default function WarehouseShipments() {
         open={cameraOpen}
         onClose={() => setCameraOpen(false)}
         onScan={(barcode) => setSearch(barcode)}
-        title="Scan Shipment"
+        title={t('Scan Shipment')}
         hint="Point camera at a shipment barcode"
       />
 
@@ -198,10 +200,10 @@ export default function WarehouseShipments() {
             <CheckCircle2 className="h-12 w-12 text-success" />
           )}
           <p className="text-base font-semibold">
-            {search ? 'No matches' : "You're all caught up"}
+            {search ? t('No matches') : t('You\'re all caught up')}
           </p>
           <p className="px-6 text-sm text-muted-foreground">
-            {search ? 'Try a different search or scan.' : 'No shipments need attention right now.'}
+            {search ? t('Try a different search or scan.') : t('No shipments need attention right now.')}
           </p>
         </Card>
       )}
@@ -255,25 +257,25 @@ export default function WarehouseShipments() {
                 {orderCount > 0 && (
                   <span className="inline-flex items-center gap-1.5">
                     <Receipt className="h-4 w-4" />
-                    {orderCount} order{orderCount !== 1 ? 's' : ''}
+                    {orderCount} {t('order')}{orderCount !== 1 ? t('s') : ''}
                   </span>
                 )}
                 {unitCount > 0 && (
                   <span className="inline-flex items-center gap-1.5">
                     <Package className="h-4 w-4" />
-                    {unitCount} unit{unitCount !== 1 ? 's' : ''}
+                    {unitCount} {t('unit')}{unitCount !== 1 ? t('s') : ''}
                   </span>
                 )}
                 {deviceCount > 0 && (
                   <span className="inline-flex items-center gap-1.5">
                     <Radio className="h-4 w-4" />
-                    {deviceCount} tracker{deviceCount !== 1 ? 's' : ''}
+                    {deviceCount} {t('tracker')}{deviceCount !== 1 ? t('s') : ''}
                   </span>
                 )}
                 {hasFlags && (
                   <span className="inline-flex items-center gap-1.5 text-destructive">
                     <Flag className="h-4 w-4" />
-                    {s.flags.length} flag{s.flags.length !== 1 ? 's' : ''}
+                    {s.flags.length} {t('flag')}{s.flags.length !== 1 ? t('s') : ''}
                   </span>
                 )}
               </div>
@@ -286,7 +288,7 @@ export default function WarehouseShipments() {
       <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
         {filtered.length > 0 && (
           <span>
-            {filtered.length} shipment{filtered.length !== 1 ? 's' : ''}
+            {filtered.length} {t('shipment')}{filtered.length !== 1 ? t('s') : ''}
           </span>
         )}
         {filtered.length > 0 && <span>·</span>}
@@ -295,7 +297,7 @@ export default function WarehouseShipments() {
           onClick={loadShipments}
           className="text-primary underline-offset-2 hover:underline"
         >
-          Refresh
+          {t('Refresh')}
         </button>
       </div>
     </div>

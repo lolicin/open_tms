@@ -31,6 +31,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+import { t } from '@/i18n';
+
 const GEOFENCE_COLOUR = '#3b82f6';
 const DEFAULT_RADIUS_METERS = 250;
 const DEFAULT_VIEW: [number, number] = [39.5, -98.5];
@@ -399,27 +401,27 @@ export default function GeofenceEditor({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Tabs value={shapeType} onValueChange={handleTabChange}>
           <TabsList>
-            <TabsTrigger value="radial">Radial</TabsTrigger>
-            <TabsTrigger value="polygon">Polygon</TabsTrigger>
+            <TabsTrigger value="radial">{t('Radial')}</TabsTrigger>
+            <TabsTrigger value="polygon">{t('Polygon')}</TabsTrigger>
           </TabsList>
         </Tabs>
         <div className="flex gap-2">
           {shapeType === 'radial' && centerLat != null && centerLng != null && (
             <Button variant="outline" size="sm" onClick={handleSnapToLocation}>
               <LocateFixed className="h-4 w-4" />
-              {center ? 'Move to location' : 'Place at location'}
+              {center ? t('Move to location') : t('Place at location')}
             </Button>
           )}
           {centerLat != null && centerLng != null && (
             <Button variant="outline" size="sm" onClick={handleCenterOnLocation}>
               <Crosshair className="h-4 w-4" />
-              Center on location
+              {t('Center on location')}
             </Button>
           )}
           {shapeType === 'polygon' && (
             <Button variant="outline" size="sm" onClick={handleUndoPoint} disabled={points.length === 0}>
               <Undo2 className="h-4 w-4" />
-              Undo point
+              {t('Undo point')}
             </Button>
           )}
           <Button
@@ -429,24 +431,24 @@ export default function GeofenceEditor({
             disabled={!center && points.length === 0}
           >
             <Trash2 className="h-4 w-4" />
-            Clear
+            {t('Clear')}
           </Button>
         </div>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label>Name (optional)</Label>
+          <Label>{t('Name (optional)')}</Label>
           <Input
             type="text"
-            placeholder="e.g. Yard boundary"
+            placeholder={t('e.g. Yard boundary')}
             value={name}
             onChange={(e) => handleNameChange(e.target.value)}
           />
         </div>
         {shapeType === 'radial' && (
           <div className="space-y-2">
-            <Label>Radius (meters)</Label>
+            <Label>{t('Radius (meters)')}</Label>
             <Input
               type="number"
               min={GEOFENCE_MIN_RADIUS_METERS}

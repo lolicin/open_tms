@@ -23,17 +23,19 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 type StatusVariant = 'success' | 'warning' | 'destructive' | 'info' | 'muted';
 
 function statusChip(status: string): { label: string; variant: StatusVariant } {
   switch ((status || '').toLowerCase()) {
-    case 'in_transit': return { label: 'In Transit', variant: 'info' };
-    case 'delivered': return { label: 'Delivered', variant: 'success' };
-    case 'delayed': return { label: 'Delayed', variant: 'warning' };
+    case 'in_transit': return { label: t('In Transit'), variant: 'info' };
+    case 'delivered': return { label: t('Delivered'), variant: 'success' };
+    case 'delayed': return { label: t('Delayed'), variant: 'warning' };
     case 'picked_up':
-    case 'pickup': return { label: 'Pickup', variant: 'warning' };
-    case 'cancelled': return { label: 'Cancelled', variant: 'destructive' };
-    case 'booked': return { label: 'Booked', variant: 'muted' };
+    case 'pickup': return { label: t('Pickup'), variant: 'warning' };
+    case 'cancelled': return { label: t('Cancelled'), variant: 'destructive' };
+    case 'booked': return { label: t('Booked'), variant: 'muted' };
     default: return { label: status || 'Unknown', variant: 'muted' };
   }
 }
@@ -88,7 +90,7 @@ export default function VNextDailyReport() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -111,27 +113,27 @@ export default function VNextDailyReport() {
   const deliveriesDue = shipments.filter((s: any) => s.status === 'in_transit' || s.status === 'delivered').slice(0, 10);
 
   const stats = [
-    { tone: 'primary' as const, label: 'Total Shipments', value: shipments.length, icon: Truck },
-    { tone: 'success' as const, label: 'Delivered', value: `${deliveredPct}%`, icon: CheckCircle2 },
-    { tone: 'info' as const, label: 'In Transit', value: inTransit.length, icon: Package },
-    { tone: 'warning' as const, label: 'Delivered Today', value: delivered.length, icon: CheckCircle2 },
+    { tone: 'primary' as const, label: t('Total Shipments'), value: shipments.length, icon: Truck },
+    { tone: 'success' as const, label: t('Delivered'), value: `${deliveredPct}%`, icon: CheckCircle2 },
+    { tone: 'info' as const, label: t('In Transit'), value: inTransit.length, icon: Package },
+    { tone: 'warning' as const, label: t('Delivered Today'), value: delivered.length, icon: CheckCircle2 },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Daily Report</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Daily Report')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">{today}</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline">
             <Download className="h-4 w-4" />
-            Export PDF
+            {t('Export PDF')}
           </Button>
           <Button variant="outline">
             <Mail className="h-4 w-4" />
-            Email Report
+            {t('Email Report')}
           </Button>
         </div>
       </div>
@@ -155,25 +157,25 @@ export default function VNextDailyReport() {
         {/* Shipments In Transit */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0">
-            <CardTitle className="text-base">Shipments In Transit</CardTitle>
-            <Badge variant="info">{inTransit.length} active</Badge>
+            <CardTitle className="text-base">{t('Shipments In Transit')}</CardTitle>
+            <Badge variant="info">{inTransit.length} {t('active')}</Badge>
           </CardHeader>
           <CardContent className="p-0">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Ref</TableHead>
-                  <TableHead>Origin</TableHead>
-                  <TableHead>Destination</TableHead>
-                  <TableHead>ETA</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>{t('Ref')}</TableHead>
+                  <TableHead>{t('Origin')}</TableHead>
+                  <TableHead>{t('Destination')}</TableHead>
+                  <TableHead>{t('ETA')}</TableHead>
+                  <TableHead>{t('Status')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {inTransit.length === 0 && (
                   <TableRow>
                     <TableCell colSpan={5} className="text-center text-sm text-muted-foreground">
-                      No shipments in transit
+                      {t('No shipments in transit')}
                     </TableCell>
                   </TableRow>
                 )}
@@ -200,24 +202,24 @@ export default function VNextDailyReport() {
         {/* Deliveries Due Today */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0">
-            <CardTitle className="text-base">Deliveries Due Today</CardTitle>
-            <Badge variant="success">{deliveriesDue.length} expected</Badge>
+            <CardTitle className="text-base">{t('Deliveries Due Today')}</CardTitle>
+            <Badge variant="success">{deliveriesDue.length} {t('expected')}</Badge>
           </CardHeader>
           <CardContent className="p-0">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Ref</TableHead>
-                  <TableHead>Destination</TableHead>
-                  <TableHead>Carrier</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>{t('Ref')}</TableHead>
+                  <TableHead>{t('Destination')}</TableHead>
+                  <TableHead>{t('Carrier')}</TableHead>
+                  <TableHead>{t('Status')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {deliveriesDue.length === 0 && (
                   <TableRow>
                     <TableCell colSpan={4} className="text-center text-sm text-muted-foreground">
-                      No deliveries due today
+                      {t('No deliveries due today')}
                     </TableCell>
                   </TableRow>
                 )}
@@ -242,14 +244,14 @@ export default function VNextDailyReport() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Delivery Performance</CardTitle>
+          <CardTitle className="text-base">{t('Delivery Performance')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {[
-              { label: 'Delivered', value: deliveredPct, color: 'bg-success' },
-              { label: 'In Transit', value: inTransitPct, color: 'bg-info' },
-              { label: 'Other', value: parseFloat((100 - deliveredPct - inTransitPct).toFixed(1)), color: 'bg-warning' },
+              { label: t('Delivered'), value: deliveredPct, color: 'bg-success' },
+              { label: t('In Transit'), value: inTransitPct, color: 'bg-info' },
+              { label: t('Other'), value: parseFloat((100 - deliveredPct - inTransitPct).toFixed(1)), color: 'bg-warning' },
             ].map(row => (
               <div key={row.label}>
                 <div className="mb-1.5 flex justify-between text-sm">

@@ -39,6 +39,8 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
 
+import { t as translate } from '@/i18n';
+
 export interface HUEditorLineItem {
   id: string;
   sku: string;
@@ -174,10 +176,10 @@ function DraggableLineItem({ line, disabled }: { line: HUEditorLineItem; disable
         </div>
         <div className="text-right text-muted-foreground">
           <div>{line.quantity}×</div>
-          {line.weight != null && <div>{line.weight} {line.weightUnit || 'kg'}</div>}
+          {line.weight != null && <div>{line.weight} {line.weightUnit || translate('kg')}</div>}
         </div>
       </div>
-      {line.freightClass && <Badge variant="secondary" className="mt-1 text-xs">cls {line.freightClass}</Badge>}
+      {line.freightClass && <Badge variant="secondary" className="mt-1 text-xs">{translate('cls')} {line.freightClass}</Badge>}
     </div>
   );
 }
@@ -429,29 +431,29 @@ export default function HandlingUnitsEditor({
       {error && (
         <div className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
           {error}
-          <button className="ml-2 underline" onClick={() => setError('')}>dismiss</button>
+          <button className="ml-2 underline" onClick={() => setError('')}>{translate('dismiss')}</button>
         </div>
       )}
 
       {carton && (
         <div className="grid gap-3 rounded-md border border-border bg-muted/30 p-3 text-sm sm:grid-cols-2 lg:grid-cols-6">
-          <div><div className="text-xs text-muted-foreground">Units</div><div className="font-semibold">{carton.unitCount ?? 0}</div></div>
-          <div><div className="text-xs text-muted-foreground">Total weight</div><div className="font-semibold">{(carton.totalWeightLbs ?? 0).toFixed(1)} lb</div></div>
-          <div><div className="text-xs text-muted-foreground">Total cube</div><div className="font-semibold">{(carton.totalCubeFt ?? 0).toFixed(2)} ft³</div></div>
-          <div><div className="text-xs text-muted-foreground">Rolled-up class</div><div className="font-semibold">{carton.rolledUpFreightClass ?? '-'}</div></div>
-          <div><div className="text-xs text-muted-foreground">Pallet positions</div><div className="font-semibold">{carton.palletPositions ?? '-'}</div></div>
-          <div><div className="text-xs text-muted-foreground">Linear feet</div><div className="font-semibold">{(carton.linearFeet ?? 0).toFixed(1)}</div></div>
+          <div><div className="text-xs text-muted-foreground">{translate('Units')}</div><div className="font-semibold">{carton.unitCount ?? 0}</div></div>
+          <div><div className="text-xs text-muted-foreground">{translate('Total weight')}</div><div className="font-semibold">{(carton.totalWeightLbs ?? 0).toFixed(1)} {translate('lb')}</div></div>
+          <div><div className="text-xs text-muted-foreground">{translate('Total cube')}</div><div className="font-semibold">{(carton.totalCubeFt ?? 0).toFixed(2)} {translate('ft³')}</div></div>
+          <div><div className="text-xs text-muted-foreground">{translate('Rolled-up class')}</div><div className="font-semibold">{carton.rolledUpFreightClass ?? '-'}</div></div>
+          <div><div className="text-xs text-muted-foreground">{translate('Pallet positions')}</div><div className="font-semibold">{carton.palletPositions ?? '-'}</div></div>
+          <div><div className="text-xs text-muted-foreground">{translate('Linear feet')}</div><div className="font-semibold">{(carton.linearFeet ?? 0).toFixed(1)}</div></div>
         </div>
       )}
 
       {!readOnly && (
         <div className="flex flex-wrap items-center gap-2">
           <Button variant="outline" size="sm" onClick={() => setShowNewUnit(s => !s)}>
-            <Plus className="h-4 w-4" /> New handling unit
+            <Plus className="h-4 w-4" /> {translate('New handling unit')}
           </Button>
           {mergeFrom && (
             <Badge variant="warning">
-              Merge mode: select a target unit. <button className="ml-2 underline" onClick={cancelMerge}>cancel</button>
+              {translate('Merge mode: select a target unit.')} <button className="ml-2 underline" onClick={cancelMerge}>{translate('cancel')}</button>
             </Badge>
           )}
         </div>
@@ -459,67 +461,67 @@ export default function HandlingUnitsEditor({
 
       {showNewUnit && !readOnly && (
         <Card>
-          <CardHeader><CardTitle>New handling unit</CardTitle></CardHeader>
+          <CardHeader><CardTitle>{translate('New handling unit')}</CardTitle></CardHeader>
           <CardContent>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               <div className="space-y-1">
-                <Label className="text-xs">Identifier *</Label>
-                <Input value={newDraft.identifier} onChange={e => setNewDraft(d => ({ ...d, identifier: e.target.value }))} placeholder="PALLET-001" />
+                <Label className="text-xs">{translate('Identifier *')}</Label>
+                <Input value={newDraft.identifier} onChange={e => setNewDraft(d => ({ ...d, identifier: e.target.value }))} placeholder={translate('PALLET-001')} />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">Unit type</Label>
+                <Label className="text-xs">{translate('Unit type')}</Label>
                 <Input value={newDraft.unitType} onChange={e => setNewDraft(d => ({ ...d, unitType: e.target.value }))} />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">Packaging type</Label>
+                <Label className="text-xs">{translate('Packaging type')}</Label>
                 <Select value={newDraft.packagingTypeId || 'none'} onValueChange={v => setNewDraft(d => ({ ...d, packagingTypeId: v === 'none' ? '' : v }))}>
-                  <SelectTrigger><SelectValue placeholder="select" /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder={translate('select')} /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="none">- none -</SelectItem>
+                    <SelectItem value="none">{translate('- none -')}</SelectItem>
                     {packagingTypes.map(p => <SelectItem key={p.id} value={p.id}>{p.kind}: {p.code}</SelectItem>)}
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">Stackable</Label>
+                <Label className="text-xs">{translate('Stackable')}</Label>
                 <Select value={String(newDraft.stackable)} onValueChange={v => setNewDraft(d => ({ ...d, stackable: v === 'true' }))}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="true">Yes</SelectItem>
-                    <SelectItem value="false">No</SelectItem>
+                    <SelectItem value="true">{translate('Yes')}</SelectItem>
+                    <SelectItem value="false">{translate('No')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">Weight override</Label>
+                <Label className="text-xs">{translate('Weight override')}</Label>
                 <div className="flex gap-1">
                   <Input type="number" step="0.1" value={newDraft.weight} onChange={e => setNewDraft(d => ({ ...d, weight: e.target.value }))} />
                   <Select value={newDraft.weightUnit} onValueChange={v => setNewDraft(d => ({ ...d, weightUnit: v }))}>
                     <SelectTrigger className="w-20"><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="kg">kg</SelectItem><SelectItem value="lb">lb</SelectItem><SelectItem value="g">g</SelectItem>
+                      <SelectItem value="kg">{translate('kg')}</SelectItem><SelectItem value="lb">{translate('lb')}</SelectItem><SelectItem value="g">{translate('g')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">L × W × H override</Label>
+                <Label className="text-xs">{translate('L × W × H override')}</Label>
                 <div className="flex gap-1">
-                  <Input type="number" placeholder="L" value={newDraft.length} onChange={e => setNewDraft(d => ({ ...d, length: e.target.value }))} />
-                  <Input type="number" placeholder="W" value={newDraft.width} onChange={e => setNewDraft(d => ({ ...d, width: e.target.value }))} />
-                  <Input type="number" placeholder="H" value={newDraft.height} onChange={e => setNewDraft(d => ({ ...d, height: e.target.value }))} />
+                  <Input type="number" placeholder={translate('L')} value={newDraft.length} onChange={e => setNewDraft(d => ({ ...d, length: e.target.value }))} />
+                  <Input type="number" placeholder={translate('W')} value={newDraft.width} onChange={e => setNewDraft(d => ({ ...d, width: e.target.value }))} />
+                  <Input type="number" placeholder={translate('H')} value={newDraft.height} onChange={e => setNewDraft(d => ({ ...d, height: e.target.value }))} />
                   <Select value={newDraft.dimUnit} onValueChange={v => setNewDraft(d => ({ ...d, dimUnit: v }))}>
                     <SelectTrigger className="w-20"><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="cm">cm</SelectItem><SelectItem value="in">in</SelectItem><SelectItem value="mm">mm</SelectItem>
+                      <SelectItem value="cm">{translate('cm')}</SelectItem><SelectItem value="in">{translate('in')}</SelectItem><SelectItem value="mm">{translate('mm')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
             </div>
             <div className="mt-3 flex gap-2">
-              <Button size="sm" onClick={createUnit}>Create unit</Button>
-              <Button size="sm" variant="outline" onClick={() => { setShowNewUnit(false); setNewDraft(emptyDraft()); }}>Cancel</Button>
+              <Button size="sm" onClick={createUnit}>{translate('Create unit')}</Button>
+              <Button size="sm" variant="outline" onClick={() => { setShowNewUnit(false); setNewDraft(emptyDraft()); }}>{translate('Cancel')}</Button>
             </div>
           </CardContent>
         </Card>
@@ -530,14 +532,14 @@ export default function HandlingUnitsEditor({
           {/* Unassigned lines column */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Unassigned line items</CardTitle>
-              <p className="text-xs text-muted-foreground">Drag these onto a handling unit to allocate them.</p>
+              <CardTitle className="text-base">{translate('Unassigned line items')}</CardTitle>
+              <p className="text-xs text-muted-foreground">{translate('Drag these onto a handling unit to allocate them.')}</p>
             </CardHeader>
             <CardContent>
               <UnitDropZone id={UNASSIGNED_ZONE_ID}>
                 <div className="space-y-1">
                   {(linesByUnit[UNASSIGNED_ZONE_ID] ?? []).length === 0 && (
-                    <div className="text-xs text-muted-foreground">All lines are allocated.</div>
+                    <div className="text-xs text-muted-foreground">{translate('All lines are allocated.')}</div>
                   )}
                   {(linesByUnit[UNASSIGNED_ZONE_ID] ?? []).map(li => (
                     <DraggableLineItem key={li.id} line={li} disabled={readOnly} />
@@ -568,20 +570,20 @@ export default function HandlingUnitsEditor({
                     <div className="flex flex-wrap items-center gap-1">
                       {isMergeTarget ? (
                         <Button size="sm" variant="default" onClick={() => finishMerge(u.id)}>
-                          <Combine className="h-3 w-3" /> Merge into this
+                          <Combine className="h-3 w-3" /> {translate('Merge into this')}
                         </Button>
                       ) : (
                         <>
-                          <Button size="sm" variant="ghost" onClick={() => generateBarcode(u.id)} title="Generate barcode">
+                          <Button size="sm" variant="ghost" onClick={() => generateBarcode(u.id)} title={translate('Generate barcode')}>
                             <Wand2 className="h-3 w-3" />
                           </Button>
-                          <Button size="sm" variant="ghost" onClick={() => openSplit(u.id)} title="Split unit">
+                          <Button size="sm" variant="ghost" onClick={() => openSplit(u.id)} title={translate('Split unit')}>
                             <Split className="h-3 w-3" />
                           </Button>
-                          <Button size="sm" variant="ghost" onClick={() => beginMerge(u.id)} title="Merge into another">
+                          <Button size="sm" variant="ghost" onClick={() => beginMerge(u.id)} title={translate('Merge into another')}>
                             <Combine className="h-3 w-3" />
                           </Button>
-                          <Button size="sm" variant="ghost" className="text-destructive" onClick={() => deleteUnit(u.id)} title="Delete">
+                          <Button size="sm" variant="ghost" className="text-destructive" onClick={() => deleteUnit(u.id)} title={translate('Delete')}>
                             <X className="h-3 w-3" />
                           </Button>
                         </>
@@ -592,17 +594,17 @@ export default function HandlingUnitsEditor({
                 <CardContent className="space-y-3">
                   {carUnit && (
                     <div className="rounded border border-dashed border-border bg-muted/30 px-2 py-1 text-xs text-muted-foreground">
-                      {carUnit.totalWeightLbs > 0 && <span>{carUnit.totalWeightLbs.toFixed(1)} lb ({carUnit.weightSource}) · </span>}
-                      {carUnit.totalCubeFt > 0 && <span>{carUnit.totalCubeFt.toFixed(2)} ft³ ({carUnit.dimsSource}) · </span>}
-                      {carUnit.densityLbsPerCubeFt != null && <span>density {carUnit.densityLbsPerCubeFt.toFixed(1)} · </span>}
-                      {carUnit.rolledUpFreightClass && <span>class {carUnit.rolledUpFreightClass}</span>}
+                      {carUnit.totalWeightLbs > 0 && <span>{carUnit.totalWeightLbs.toFixed(1)} {translate('lb (')}{carUnit.weightSource}) · </span>}
+                      {carUnit.totalCubeFt > 0 && <span>{carUnit.totalCubeFt.toFixed(2)} {translate('ft³ (')}{carUnit.dimsSource}) · </span>}
+                      {carUnit.densityLbsPerCubeFt != null && <span>{translate('density')} {carUnit.densityLbsPerCubeFt.toFixed(1)}· </span>}
+                      {carUnit.rolledUpFreightClass && <span>{translate('class')} {carUnit.rolledUpFreightClass}</span>}
                     </div>
                   )}
 
                   {!readOnly && (
                     <div className="grid gap-2 sm:grid-cols-3">
                       <div className="space-y-1">
-                        <Label className="text-xs">Weight (override)</Label>
+                        <Label className="text-xs">{translate('Weight (override)')}</Label>
                         <div className="flex gap-1">
                           <Input
                             type="number"
@@ -612,42 +614,42 @@ export default function HandlingUnitsEditor({
                           />
                           <Select value={(isEditing ? e.weightUnit : u.weightUnit) ?? 'kg'} onValueChange={v => setUnitField(u.id, 'weightUnit', v)}>
                             <SelectTrigger className="w-16"><SelectValue /></SelectTrigger>
-                            <SelectContent><SelectItem value="kg">kg</SelectItem><SelectItem value="lb">lb</SelectItem><SelectItem value="g">g</SelectItem></SelectContent>
+                            <SelectContent><SelectItem value="kg">{translate('kg')}</SelectItem><SelectItem value="lb">{translate('lb')}</SelectItem><SelectItem value="g">{translate('g')}</SelectItem></SelectContent>
                           </Select>
                         </div>
                       </div>
                       <div className="space-y-1">
-                        <Label className="text-xs">L × W × H</Label>
+                        <Label className="text-xs">{translate('L × W × H')}</Label>
                         <div className="flex gap-1">
-                          <Input type="number" placeholder="L" value={(isEditing ? e.length : u.length) ?? ''} onChange={ev => setUnitField(u.id, 'length', ev.target.value === '' ? null : parseFloat(ev.target.value))} />
-                          <Input type="number" placeholder="W" value={(isEditing ? e.width  : u.width)  ?? ''} onChange={ev => setUnitField(u.id, 'width',  ev.target.value === '' ? null : parseFloat(ev.target.value))} />
-                          <Input type="number" placeholder="H" value={(isEditing ? e.height : u.height) ?? ''} onChange={ev => setUnitField(u.id, 'height', ev.target.value === '' ? null : parseFloat(ev.target.value))} />
+                          <Input type="number" placeholder={translate('L')} value={(isEditing ? e.length : u.length) ?? ''} onChange={ev => setUnitField(u.id, 'length', ev.target.value === '' ? null : parseFloat(ev.target.value))} />
+                          <Input type="number" placeholder={translate('W')} value={(isEditing ? e.width  : u.width)  ?? ''} onChange={ev => setUnitField(u.id, 'width',  ev.target.value === '' ? null : parseFloat(ev.target.value))} />
+                          <Input type="number" placeholder={translate('H')} value={(isEditing ? e.height : u.height) ?? ''} onChange={ev => setUnitField(u.id, 'height', ev.target.value === '' ? null : parseFloat(ev.target.value))} />
                           <Select value={(isEditing ? e.dimUnit : u.dimUnit) ?? 'cm'} onValueChange={v => setUnitField(u.id, 'dimUnit', v)}>
                             <SelectTrigger className="w-16"><SelectValue /></SelectTrigger>
-                            <SelectContent><SelectItem value="cm">cm</SelectItem><SelectItem value="in">in</SelectItem><SelectItem value="mm">mm</SelectItem></SelectContent>
+                            <SelectContent><SelectItem value="cm">{translate('cm')}</SelectItem><SelectItem value="in">{translate('in')}</SelectItem><SelectItem value="mm">{translate('mm')}</SelectItem></SelectContent>
                           </Select>
                         </div>
                       </div>
                       <div className="space-y-1">
-                        <Label className="text-xs">Stackable</Label>
+                        <Label className="text-xs">{translate('Stackable')}</Label>
                         <Select value={String((isEditing ? e.stackable : u.stackable) ?? true)} onValueChange={v => setUnitField(u.id, 'stackable', v === 'true')}>
                           <SelectTrigger><SelectValue /></SelectTrigger>
-                          <SelectContent><SelectItem value="true">Yes</SelectItem><SelectItem value="false">No</SelectItem></SelectContent>
+                          <SelectContent><SelectItem value="true">{translate('Yes')}</SelectItem><SelectItem value="false">{translate('No')}</SelectItem></SelectContent>
                         </Select>
                       </div>
                       {isEditing && (
                         <div className="sm:col-span-3 flex gap-2">
-                          <Button size="sm" onClick={() => saveUnit(u.id)}>Save unit</Button>
-                          <Button size="sm" variant="outline" onClick={() => cancelUnitEdit(u.id)}>Cancel</Button>
+                          <Button size="sm" onClick={() => saveUnit(u.id)}>{translate('Save unit')}</Button>
+                          <Button size="sm" variant="outline" onClick={() => cancelUnitEdit(u.id)}>{translate('Cancel')}</Button>
                         </div>
                       )}
                     </div>
                   )}
 
-                  <UnitDropZone id={u.id} label="Line items">
+                  <UnitDropZone id={u.id} label={translate('Line items')}>
                     <div className="space-y-1">
                       {(linesByUnit[u.id] ?? []).length === 0 && (
-                        <div className="text-xs text-muted-foreground">No lines yet — drag here from another unit or the unassigned list.</div>
+                        <div className="text-xs text-muted-foreground">{translate('No lines yet — drag here from another unit or the unassigned list.')}</div>
                       )}
                       {(linesByUnit[u.id] ?? []).map(li => (
                         <DraggableLineItem key={li.id} line={li} disabled={readOnly} />
@@ -668,8 +670,8 @@ export default function HandlingUnitsEditor({
       {splitDialog && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="w-full max-w-lg rounded-md border border-border bg-background p-4 shadow-lg">
-            <h3 className="text-lg font-semibold">Split handling unit</h3>
-            <p className="mt-1 text-sm text-muted-foreground">Pick the line items to peel off onto a new unit.</p>
+            <h3 className="text-lg font-semibold">{translate('Split handling unit')}</h3>
+            <p className="mt-1 text-sm text-muted-foreground">{translate('Pick the line items to peel off onto a new unit.')}</p>
             <div className="my-4 max-h-80 space-y-1 overflow-auto">
               {(linesByUnit[splitDialog.unitId] ?? []).map(li => (
                 <label key={li.id} className="flex cursor-pointer items-start gap-2 rounded-md border border-border p-2 text-xs">
@@ -687,12 +689,12 @@ export default function HandlingUnitsEditor({
                 </label>
               ))}
               {(linesByUnit[splitDialog.unitId] ?? []).length === 0 && (
-                <div className="text-xs text-muted-foreground">This unit has no line items yet.</div>
+                <div className="text-xs text-muted-foreground">{translate('This unit has no line items yet.')}</div>
               )}
             </div>
             <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setSplitDialog(null)}>Cancel</Button>
-              <Button onClick={doSplit}>Split</Button>
+              <Button variant="outline" onClick={() => setSplitDialog(null)}>{translate('Cancel')}</Button>
+              <Button onClick={doSplit}>{translate('Split')}</Button>
             </div>
           </div>
         </div>

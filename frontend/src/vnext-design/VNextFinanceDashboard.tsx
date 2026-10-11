@@ -20,6 +20,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface FinancialSummary {
   invoices: { total: number; draft: number; sent: number; overdue: number; totalCents: number; paidCents: number; balanceCents: number };
   carrierInvoices: { total: number; received: number; discrepancy: number; approved: number; totalCents: number };
@@ -134,7 +136,7 @@ export default function VNextFinanceDashboard() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -154,14 +156,14 @@ export default function VNextFinanceDashboard() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Finance Dashboard</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Accounts receivable, payable, quotes, and disputes</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Finance Dashboard')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Accounts receivable, payable, quotes, and disputes')}</p>
         </div>
         <div className="flex gap-2">
           <Button variant="gradient" asChild>
             <Link to="/finance/quotes">
               <Plus className="h-4 w-4" />
-              New Quote
+              {t('New Quote')}
             </Link>
           </Button>
         </div>
@@ -169,69 +171,69 @@ export default function VNextFinanceDashboard() {
 
       <div>
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          Accounts Receivable
+          {t('Accounts Receivable')}
         </h3>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard icon={Receipt} tone="primary" value={formatMoney(s.invoices.balanceCents)} label="Outstanding Balance" />
-          <StatCard icon={FileEdit} tone="warning" value={s.invoices.draft} label="Draft Invoices" />
-          <StatCard icon={Send} tone="info" value={s.invoices.sent} label="Sent / Awaiting Payment" />
-          <StatCard icon={AlertTriangle} tone="destructive" value={s.invoices.overdue} label="Overdue" />
+          <StatCard icon={Receipt} tone="primary" value={formatMoney(s.invoices.balanceCents)} label={t('Outstanding Balance')} />
+          <StatCard icon={FileEdit} tone="warning" value={s.invoices.draft} label={t('Draft Invoices')} />
+          <StatCard icon={Send} tone="info" value={s.invoices.sent} label={t('Sent / Awaiting Payment')} />
+          <StatCard icon={AlertTriangle} tone="destructive" value={s.invoices.overdue} label={t('Overdue')} />
         </div>
       </div>
 
       <div>
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          Accounts Payable
+          {t('Accounts Payable')}
         </h3>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard icon={Truck} tone="primary" value={formatMoney(s.carrierInvoices.totalCents)} label="Total Carrier Invoices" />
-          <StatCard icon={Inbox} tone="warning" value={s.carrierInvoices.received} label="Pending Review" />
-          <StatCard icon={CircleAlert} tone="destructive" value={s.carrierInvoices.discrepancy} label="Discrepancies" />
-          <StatCard icon={CheckCircle2} tone="success" value={s.carrierInvoices.approved} label="Approved for Payment" />
+          <StatCard icon={Truck} tone="primary" value={formatMoney(s.carrierInvoices.totalCents)} label={t('Total Carrier Invoices')} />
+          <StatCard icon={Inbox} tone="warning" value={s.carrierInvoices.received} label={t('Pending Review')} />
+          <StatCard icon={CircleAlert} tone="destructive" value={s.carrierInvoices.discrepancy} label={t('Discrepancies')} />
+          <StatCard icon={CheckCircle2} tone="success" value={s.carrierInvoices.approved} label={t('Approved for Payment')} />
         </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
         <Card>
           <CardContent className="p-5">
-            <h3 className="text-base font-semibold">Quotes</h3>
+            <h3 className="text-base font-semibold">{t('Quotes')}</h3>
             <div className="mt-4 flex gap-6">
               <div>
                 <div className="text-2xl font-bold tracking-tight">{s.quotes.total}</div>
-                <div className="text-xs text-muted-foreground">Total</div>
+                <div className="text-xs text-muted-foreground">{t('Total')}</div>
               </div>
               <div>
                 <div className="text-2xl font-bold tracking-tight">{s.quotes.draft}</div>
-                <div className="text-xs text-muted-foreground">Draft</div>
+                <div className="text-xs text-muted-foreground">{t('Draft')}</div>
               </div>
               <div>
                 <div className="text-2xl font-bold tracking-tight">{s.quotes.accepted}</div>
-                <div className="text-xs text-muted-foreground">Accepted</div>
+                <div className="text-xs text-muted-foreground">{t('Accepted')}</div>
               </div>
             </div>
             <Button variant="outline" className="mt-4 w-full" asChild>
-              <Link to="/finance/quotes">View Quotes</Link>
+              <Link to="/finance/quotes">{t('View Quotes')}</Link>
             </Button>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-5">
-            <h3 className="text-base font-semibold">Queries &amp; Disputes</h3>
+            <h3 className="text-base font-semibold">{t('Queries & Disputes')}</h3>
             <div className="mt-4 flex gap-6">
               <div>
                 <div className="text-2xl font-bold tracking-tight">{s.queries.raised}</div>
-                <div className="text-xs text-muted-foreground">Open</div>
+                <div className="text-xs text-muted-foreground">{t('Open')}</div>
               </div>
               <div>
                 <div className="text-2xl font-bold tracking-tight">{s.queries.investigating}</div>
-                <div className="text-xs text-muted-foreground">Investigating</div>
+                <div className="text-xs text-muted-foreground">{t('Investigating')}</div>
               </div>
             </div>
             <Button variant="outline" className="mt-4 w-full" asChild>
               <Link to="/finance/queries">
                 <HandCoins className="h-4 w-4" />
-                View Queries
+                {t('View Queries')}
               </Link>
             </Button>
           </CardContent>

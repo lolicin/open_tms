@@ -28,6 +28,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface EdiStats {
   total: number;
   pending: number;
@@ -117,37 +119,37 @@ export default function VNextEdiDashboard() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
 
   const statTiles = [
-    { label: 'Total transactions', value: stats.total, icon: Repeat, tone: 'bg-primary/10 text-primary' },
-    { label: 'Successful', value: stats.success, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
-    { label: 'Errors', value: stats.error, icon: CircleAlert, tone: 'bg-destructive/10 text-destructive' },
-    { label: 'Pending', value: stats.pending + stats.processing, icon: Hourglass, tone: 'bg-warning/15 text-warning' },
-    { label: 'Entities created', value: stats.totalEntitiesCreated, icon: Package, tone: 'bg-info/15 text-info' },
+    { label: t('Total transactions'), value: stats.total, icon: Repeat, tone: 'bg-primary/10 text-primary' },
+    { label: t('Successful'), value: stats.success, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
+    { label: t('Errors'), value: stats.error, icon: CircleAlert, tone: 'bg-destructive/10 text-destructive' },
+    { label: t('Pending'), value: stats.pending + stats.processing, icon: Hourglass, tone: 'bg-warning/15 text-warning' },
+    { label: t('Entities created'), value: stats.totalEntitiesCreated, icon: Package, tone: 'bg-info/15 text-info' },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">EDI dashboard</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Overview of EDI transaction activity and processing status</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('EDI dashboard')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Overview of EDI transaction activity and processing status')}</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" asChild>
             <Link to="/integrations/edi/partners">
               <Handshake className="h-4 w-4" />
-              Trading partners
+              {t('Trading partners')}
             </Link>
           </Button>
           <Button variant="gradient" asChild>
             <Link to="/integrations/edi/logs">
               <ListChecks className="h-4 w-4" />
-              Transaction log
+              {t('Transaction log')}
             </Link>
           </Button>
         </div>
@@ -179,10 +181,10 @@ export default function VNextEdiDashboard() {
 
       <Card>
         <div className="flex items-center justify-between p-4">
-          <h2 className="text-base font-semibold">Recent activity</h2>
+          <h2 className="text-base font-semibold">{t('Recent activity')}</h2>
           <Button variant="ghost" size="sm" asChild>
             <Link to="/integrations/edi/logs">
-              View all
+              {t('View all')}
               <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
@@ -191,19 +193,21 @@ export default function VNextEdiDashboard() {
         {recentLogs.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <Inbox className="h-8 w-8" />
-            <h3 className="text-base font-medium">No EDI transactions yet</h3>
-            <p className="text-sm">Transactions will appear here once trading partners begin sending or receiving EDI files.</p>
+            <h3 className="text-base font-medium">{t('No EDI transactions yet')}</h3>
+            <p className="text-sm">{t(
+              'Transactions will appear here once trading partners begin sending or receiving EDI files.'
+            )}</p>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Date</TableHead>
-                <TableHead>Partner</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Direction</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Reference</TableHead>
+                <TableHead>{t('Date')}</TableHead>
+                <TableHead>{t('Partner')}</TableHead>
+                <TableHead>{t('Type')}</TableHead>
+                <TableHead>{t('Direction')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead>{t('Reference')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

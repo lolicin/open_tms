@@ -15,6 +15,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t as translate } from '@/i18n';
+
 interface Doc {
   id: string; documentType: string; fileName: string;
   mimeType: string; fileSize: number; createdAt: string; shipmentId?: string;
@@ -64,27 +66,27 @@ export default function CustomerDocuments() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">Documents</h1>
+      <h1 className="text-3xl font-bold tracking-tight">{translate('Documents')}</h1>
       <Card>
         {loading ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <Loader2 className="h-6 w-6 animate-spin" />
-            <span className="text-sm">Loading...</span>
+            <span className="text-sm">{translate('Loading...')}</span>
           </div>
         ) : docs.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <FolderOpen className="h-10 w-10 opacity-40" />
-            <p className="text-sm">No documents available</p>
+            <p className="text-sm">{translate('No documents available')}</p>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Document</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Size</TableHead>
-                <TableHead>Created</TableHead>
-                <TableHead>Action</TableHead>
+                <TableHead>{translate('Document')}</TableHead>
+                <TableHead>{translate('Type')}</TableHead>
+                <TableHead>{translate('Size')}</TableHead>
+                <TableHead>{translate('Created')}</TableHead>
+                <TableHead>{translate('Action')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -99,7 +101,7 @@ export default function CustomerDocuments() {
                   <TableCell>
                     <Button variant="outline" size="sm" onClick={() => handleDownload(d)}>
                       <Download className="h-4 w-4" />
-                      Download
+                      {translate('Download')}
                     </Button>
                   </TableCell>
                 </TableRow>

@@ -9,6 +9,8 @@ import { Label } from '@/components/ui/label';
 import { useBarcodeScanner } from '../warehouse/useBarcodeScanner';
 import { CameraScannerModal } from '../warehouse/CameraScannerModal';
 
+import { t } from '@/i18n';
+
 interface Bin {
   id: string;
   label: string;
@@ -106,7 +108,7 @@ export default function InventoryAppScan() {
       setSku(''); setQuantity(''); setLotNumber(''); setNotes('');
       loadRecent();
     } catch {
-      setFormError('Network error. Check your connection.');
+      setFormError(t('Network error. Check your connection.'));
     } finally {
       setSubmitting(false);
     }
@@ -116,7 +118,7 @@ export default function InventoryAppScan() {
     return (
       <Card className="flex flex-col items-center gap-3 p-8 text-center">
         <AlertTriangle className="h-10 w-10 text-muted-foreground" />
-        <p className="text-base font-semibold">No site selected</p>
+        <p className="text-base font-semibold">{t('No site selected')}</p>
       </Card>
     );
   }
@@ -125,9 +127,9 @@ export default function InventoryAppScan() {
     return (
       <div className="space-y-4">
         <div>
-          <h2 className="text-lg font-bold tracking-tight">Scan a bin</h2>
+          <h2 className="text-lg font-bold tracking-tight">{t('Scan a bin')}</h2>
           <p className="text-sm text-muted-foreground">
-            Scan a bin label with a handheld scanner, or search and pick one below.
+            {t('Scan a bin label with a handheld scanner, or search and pick one below.')}
           </p>
         </div>
 
@@ -137,18 +139,18 @@ export default function InventoryAppScan() {
             <Input
               value={binSearch}
               onChange={e => setBinSearch(e.target.value)}
-              placeholder="Bin label..."
+              placeholder={t('Bin label...')}
               className="h-12 pl-9 text-base"
               data-manual-input="true"
             />
           </div>
-          <Button type="button" variant="outline" size="icon" className="h-12 w-12 shrink-0" onClick={() => setCameraOpen(true)} aria-label="Scan with camera">
+          <Button type="button" variant="outline" size="icon" className="h-12 w-12 shrink-0" onClick={() => setCameraOpen(true)} aria-label={t('Scan with camera')}>
             <Camera className="h-5 w-5" />
           </Button>
         </div>
 
         {bins.length === 0 ? (
-          <Card className="p-6 text-center text-sm text-muted-foreground">No bins set up at this site yet.</Card>
+          <Card className="p-6 text-center text-sm text-muted-foreground">{t('No bins set up at this site yet.')}</Card>
         ) : (
           <div className="space-y-2">
             {filteredBins.slice(0, 50).map(bin => (
@@ -172,7 +174,7 @@ export default function InventoryAppScan() {
             if (match) setSelectedBin(match);
             else setBinSearch(code);
           }}
-          title="Scan Bin"
+          title={t('Scan Bin')}
           hint="Point the camera at the bin label"
         />
 
@@ -188,7 +190,7 @@ export default function InventoryAppScan() {
         onClick={() => { setSelectedBin(null); setSuccess(false); setFormError(''); }}
         className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground"
       >
-        <ChevronLeft className="h-4 w-4" /> Change bin
+        <ChevronLeft className="h-4 w-4" /> {t('Change bin')}
       </button>
 
       <Card className="p-3">
@@ -199,7 +201,7 @@ export default function InventoryAppScan() {
       {success && (
         <div className="flex items-start gap-2 rounded-md border border-success/30 bg-success/10 px-3 py-2 text-sm text-success">
           <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
-          <span>Observation recorded.</span>
+          <span>{t('Observation recorded.')}</span>
         </div>
       )}
       {formError && (
@@ -211,12 +213,12 @@ export default function InventoryAppScan() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="obs-sku" className="text-base">SKU</Label>
+          <Label htmlFor="obs-sku" className="text-base">{t('SKU')}</Label>
           <Input
             id="obs-sku"
             value={sku}
             onChange={e => setSku(e.target.value)}
-            placeholder="Scan or type SKU"
+            placeholder={t('Scan or type SKU')}
             required
             className="h-12 text-base"
             data-manual-input="true"
@@ -224,20 +226,20 @@ export default function InventoryAppScan() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="obs-qty" className="text-base">Quantity observed (optional)</Label>
+          <Label htmlFor="obs-qty" className="text-base">{t('Quantity observed (optional)')}</Label>
           <Input
             id="obs-qty"
             type="number"
             min={0}
             value={quantity}
             onChange={e => setQuantity(e.target.value)}
-            placeholder="Leave blank if just spotting the SKU"
+            placeholder={t('Leave blank if just spotting the SKU')}
             className="h-12 text-base"
             data-manual-input="true"
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="obs-lot" className="text-base">Lot number (optional)</Label>
+          <Label htmlFor="obs-lot" className="text-base">{t('Lot number (optional)')}</Label>
           <Input
             id="obs-lot"
             value={lotNumber}
@@ -247,7 +249,7 @@ export default function InventoryAppScan() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="obs-notes" className="text-base">Notes (optional)</Label>
+          <Label htmlFor="obs-notes" className="text-base">{t('Notes (optional)')}</Label>
           <Input
             id="obs-notes"
             value={notes}
@@ -258,7 +260,7 @@ export default function InventoryAppScan() {
         </div>
         <Button type="submit" variant="gradient" size="lg" className="w-full text-base" disabled={submitting || !sku.trim()}>
           {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
-          {submitting ? 'Recording...' : 'Record observation'}
+          {submitting ? t('Recording...') : t('Record observation')}
         </Button>
       </form>
     </div>
@@ -268,13 +270,13 @@ export default function InventoryAppScan() {
 function RecentObservations({ items, loading }: { items: Observation[]; loading: boolean }) {
   return (
     <div className="space-y-2">
-      <h3 className="text-sm font-semibold text-muted-foreground">Recent observations</h3>
+      <h3 className="text-sm font-semibold text-muted-foreground">{t('Recent observations')}</h3>
       {loading ? (
         <div className="flex justify-center py-6">
           <Loader2 className="h-6 w-6 animate-spin text-primary" />
         </div>
       ) : items.length === 0 ? (
-        <p className="text-sm text-muted-foreground">No observations recorded yet at this site.</p>
+        <p className="text-sm text-muted-foreground">{t('No observations recorded yet at this site.')}</p>
       ) : (
         <div className="space-y-2">
           {items.slice(0, 20).map(o => (
@@ -287,7 +289,7 @@ function RecentObservations({ items, loading }: { items: Observation[]; loading:
                   </div>
                 </div>
                 <div className="text-sm font-medium">
-                  {o.observedQuantity != null ? `${o.observedQuantity} ${o.uomCode}` : 'Seen'}
+                  {o.observedQuantity != null ? `${o.observedQuantity} ${o.uomCode}` : t('Seen')}
                 </div>
               </div>
             </Card>

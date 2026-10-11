@@ -15,6 +15,8 @@ import {
 import { cn } from '@/lib/utils';
 import { clearWarehouseSession, getWarehouseToken, getWarehouseUser } from './warehouse-session';
 
+import { t } from '@/i18n';
+
 interface WarehouseUser {
   email?: string;
   roles?: string[];
@@ -29,12 +31,12 @@ interface BottomNavItem {
 }
 
 const NAV: BottomNavItem[] = [
-  { to: '/warehouse', icon: ListChecks, label: 'Shipments', end: true },
-  { to: '/warehouse/tasks', icon: ClipboardList, label: 'Tasks' },
-  { to: '/warehouse/appointments', icon: Calendar, label: 'Arrivals' },
-  { to: '/warehouse/archive', icon: Package, label: 'Archive' },
-  { to: '/warehouse/create', icon: PlusSquare, label: 'Create', adminOnly: true },
-  { to: '/warehouse/settings', icon: Settings, label: 'Settings' },
+  { to: '/warehouse', icon: ListChecks, label: t('Shipments'), end: true },
+  { to: '/warehouse/tasks', icon: ClipboardList, label: t('Tasks') },
+  { to: '/warehouse/appointments', icon: Calendar, label: t('Arrivals') },
+  { to: '/warehouse/archive', icon: Package, label: t('Archive') },
+  { to: '/warehouse/create', icon: PlusSquare, label: t('Create'), adminOnly: true },
+  { to: '/warehouse/settings', icon: Settings, label: t('Settings') },
 ];
 
 export function WarehouseLayout() {
@@ -77,7 +79,7 @@ export function WarehouseLayout() {
       <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-3 border-b border-border bg-background px-4">
         <div className="flex items-center gap-2 text-base font-semibold">
           <WarehouseIcon className="h-5 w-5 text-primary" />
-          <span>Warehouse</span>
+          <span>{t('Warehouse')}</span>
           {locationName && (
             <span className="text-xs font-normal text-muted-foreground">| {locationName}</span>
           )}
@@ -85,7 +87,7 @@ export function WarehouseLayout() {
         <button
           type="button"
           onClick={handleLogout}
-          aria-label="Logout"
+          aria-label={t('Logout')}
           className="inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground hover:bg-muted/40 hover:text-foreground active:bg-muted/60"
         >
           <LogOut className="h-5 w-5" />

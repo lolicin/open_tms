@@ -18,6 +18,8 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface Role {
   id: string;
   name: string;
@@ -113,12 +115,12 @@ function PermissionPicker({
     <div className="space-y-3">
       <div className="flex items-center gap-2">
         <PermissionToggle
-          label="Full access (*)"
+          label={t('Full access (*)')}
           selected={hasFullAccess}
           implied={false}
           onToggle={() => toggle(FULL_ACCESS)}
         />
-        <span className="text-xs text-muted-foreground">Grants everything, including future permissions.</span>
+        <span className="text-xs text-muted-foreground">{t('Grants everything, including future permissions.')}</span>
       </div>
       <Separator />
       <div className="max-h-72 space-y-3 overflow-y-auto pr-1">
@@ -235,11 +237,11 @@ export default function VNextRoles() {
   const handleSave = async () => {
     if (!editor) return;
     if (editor.mode === 'create' && !editor.name.trim()) {
-      setEditorError('Role name is required');
+      setEditorError(t('Role name is required'));
       return;
     }
     if (editor.permissions.size === 0) {
-      setEditorError('Select at least one permission');
+      setEditorError(t('Select at least one permission'));
       return;
     }
     setSaving(true);
@@ -294,17 +296,17 @@ export default function VNextRoles() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Roles and permissions</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Manage user roles and their associated permissions</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Roles and permissions')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Manage user roles and their associated permissions')}</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={handleSeedRoles} disabled={seeding}>
             {seeding ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
-            {seeding ? 'Seeding...' : 'Seed system roles'}
+            {seeding ? t('Seeding...') : t('Seed system roles')}
           </Button>
           <Button variant="gradient" onClick={openCreate}>
             <Plus className="h-4 w-4" />
-            New role
+            {t('New role')}
           </Button>
         </div>
       </div>
@@ -320,11 +322,11 @@ export default function VNextRoles() {
         <Card>
           <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
             <ShieldCheck className="h-10 w-10 text-muted-foreground" />
-            <h3 className="text-lg font-medium">No roles defined</h3>
-            <p className="text-sm text-muted-foreground">Seed the system roles, or create a custom role from scratch.</p>
+            <h3 className="text-lg font-medium">{t('No roles defined')}</h3>
+            <p className="text-sm text-muted-foreground">{t('Seed the system roles, or create a custom role from scratch.')}</p>
             <div className="flex gap-2">
-              <Button variant="outline" onClick={handleSeedRoles} disabled={seeding}>Seed system roles</Button>
-              <Button variant="gradient" onClick={openCreate}>New role</Button>
+              <Button variant="outline" onClick={handleSeedRoles} disabled={seeding}>{t('Seed system roles')}</Button>
+              <Button variant="gradient" onClick={openCreate}>{t('New role')}</Button>
             </div>
           </CardContent>
         </Card>
@@ -337,12 +339,12 @@ export default function VNextRoles() {
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-base font-semibold">{role.name}</span>
-                      <Badge variant={roleBadgeVariant(role.name)}>{role.isSystem ? 'System' : 'Custom'}</Badge>
+                      <Badge variant={roleBadgeVariant(role.name)}>{role.isSystem ? t('System') : t('Custom')}</Badge>
                     </div>
-                    <p className="mt-1 text-sm text-muted-foreground">{role.description || 'No description'}</p>
+                    <p className="mt-1 text-sm text-muted-foreground">{role.description || t('No description')}</p>
                   </div>
                   <div className="text-xs text-muted-foreground">
-                    {role._count?.users ?? 0} user{(role._count?.users ?? 0) !== 1 ? 's' : ''}
+                    {role._count?.users ?? 0} {t('user')}{(role._count?.users ?? 0) !== 1 ? t('s') : ''}
                   </div>
                 </div>
                 <div className="mb-3 flex flex-wrap gap-1">
@@ -350,25 +352,24 @@ export default function VNextRoles() {
                     <Badge key={i} variant="secondary" className="text-[10px]">{p}</Badge>
                   ))}
                   {role.permissions.length > 8 && (
-                    <Badge variant="secondary" className="text-[10px]">
-                      +{role.permissions.length - 8} more
+                    <Badge variant="secondary" className="text-[10px]">+{role.permissions.length - 8} {t('more')}
                     </Badge>
                   )}
                 </div>
                 {role.isSystem ? (
                   <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <Lock className="h-3 w-3" aria-hidden />
-                    Managed in code and re-synced on startup
+                    {t('Managed in code and re-synced on startup')}
                   </div>
                 ) : (
                   <div className="flex gap-2">
                     <Button variant="outline" size="sm" onClick={() => openEdit(role)}>
                       <Pencil className="h-3.5 w-3.5" />
-                      Edit
+                      {t('Edit')}
                     </Button>
                     <Button variant="outline" size="sm" onClick={() => setDeleting(role)}>
                       <Trash2 className="h-3.5 w-3.5" />
-                      Delete
+                      {t('Delete')}
                     </Button>
                   </div>
                 )}
@@ -382,38 +383,40 @@ export default function VNextRoles() {
       <Dialog open={editor !== null} onOpenChange={(open) => { if (!open) setEditor(null); }}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>{editor?.mode === 'create' ? 'New role' : `Edit ${editor?.name}`}</DialogTitle>
+            <DialogTitle>{editor?.mode === 'create' ? t('New role') : `Edit ${editor?.name}`}</DialogTitle>
             <DialogDescription>
               {editor?.mode === 'create'
-                ? 'Name the role and pick its permissions. Wildcards cover every action on a resource.'
-                : 'Change the description or permissions. The name is fixed once created.'}
+                ? t(
+                'Name the role and pick its permissions. Wildcards cover every action on a resource.'
+              )
+                : t('Change the description or permissions. The name is fixed once created.')}
             </DialogDescription>
           </DialogHeader>
           {editor && (
             <div className="space-y-4">
               {editor.mode === 'create' && (
                 <div className="space-y-1.5">
-                  <Label htmlFor="role-name">Name</Label>
+                  <Label htmlFor="role-name">{t('Name')}</Label>
                   <Input
                     id="role-name"
                     value={editor.name}
                     onChange={(e) => setEditor({ ...editor, name: e.target.value })}
-                    placeholder="e.g. wms-supervisor"
+                    placeholder={t('e.g. wms-supervisor')}
                     maxLength={50}
                   />
                 </div>
               )}
               <div className="space-y-1.5">
-                <Label htmlFor="role-description">Description</Label>
+                <Label htmlFor="role-description">{t('Description')}</Label>
                 <Input
                   id="role-description"
                   value={editor.description}
                   onChange={(e) => setEditor({ ...editor, description: e.target.value })}
-                  placeholder="What this role is for"
+                  placeholder={t('What this role is for')}
                 />
               </div>
               <div className="space-y-1.5">
-                <Label>Permissions</Label>
+                <Label>{t('Permissions')}</Label>
                 <PermissionPicker
                   catalogue={catalogue}
                   selected={editor.permissions}
@@ -424,10 +427,10 @@ export default function VNextRoles() {
             </div>
           )}
           <DialogFooter>
-            <Button variant="outline" onClick={() => setEditor(null)} disabled={saving}>Cancel</Button>
+            <Button variant="outline" onClick={() => setEditor(null)} disabled={saving}>{t('Cancel')}</Button>
             <Button variant="gradient" onClick={handleSave} disabled={saving}>
               {saving && <Loader2 className="h-4 w-4 animate-spin" />}
-              {editor?.mode === 'create' ? 'Create role' : 'Save changes'}
+              {editor?.mode === 'create' ? t('Create role') : t('Save changes')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -437,18 +440,18 @@ export default function VNextRoles() {
       <Dialog open={deleting !== null} onOpenChange={(open) => { if (!open) setDeleting(null); }}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Delete {deleting?.name}?</DialogTitle>
+            <DialogTitle>{t('Delete')} {deleting?.name}?</DialogTitle>
             <DialogDescription>
               {deleting?._count?.users
                 ? `${deleting._count.users} user${deleting._count.users !== 1 ? 's' : ''} currently hold this role and will lose its permissions.`
-                : 'No users currently hold this role.'}
+                : t('No users currently hold this role.')}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleting(null)} disabled={saving}>Cancel</Button>
+            <Button variant="outline" onClick={() => setDeleting(null)} disabled={saving}>{t('Cancel')}</Button>
             <Button variant="destructive" onClick={handleDelete} disabled={saving}>
               {saving && <Loader2 className="h-4 w-4 animate-spin" />}
-              Delete role
+              {t('Delete role')}
             </Button>
           </DialogFooter>
         </DialogContent>

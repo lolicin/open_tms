@@ -9,6 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { stopTypeLabel } from '@open-tms/shared';
 
+import { t } from '@/i18n';
+
 type StatusVariant = 'success' | 'info' | 'warning' | 'destructive' | 'muted' | 'secondary';
 
 function statusVariant(s: string): StatusVariant {
@@ -53,7 +55,7 @@ export default function CustomerShipmentDetail() {
   if (!shipment) {
     return (
       <div className="rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-        Shipment not found
+        {t('Shipment not found')}
       </div>
     );
   }
@@ -63,7 +65,7 @@ export default function CustomerShipmentDetail() {
       <div>
         <Button variant="ghost" size="sm" onClick={() => navigate('/customer-portal/shipments')}>
           <ArrowLeft className="h-4 w-4" />
-          Shipments
+          {t('Shipments')}
         </Button>
       </div>
 
@@ -75,7 +77,7 @@ export default function CustomerShipmentDetail() {
       <div className="grid gap-6 sm:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Origin</CardTitle>
+            <CardTitle>{t('Origin')}</CardTitle>
           </CardHeader>
           <CardContent>
             {shipment.origin ? (
@@ -93,7 +95,7 @@ export default function CustomerShipmentDetail() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Destination</CardTitle>
+            <CardTitle>{t('Destination')}</CardTitle>
           </CardHeader>
           <CardContent>
             {shipment.destination ? (
@@ -113,24 +115,24 @@ export default function CustomerShipmentDetail() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Details</CardTitle>
+          <CardTitle>{t('Details')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <div className="text-xs text-muted-foreground">Carrier</div>
+              <div className="text-xs text-muted-foreground">{t('Carrier')}</div>
               <div className="font-semibold">{shipment.carrier?.name || '-'}</div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground">Pickup date</div>
+              <div className="text-xs text-muted-foreground">{t('Pickup date')}</div>
               <div className="font-semibold">{shipment.pickupDate ? new Date(shipment.pickupDate).toLocaleDateString() : '-'}</div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground">Delivery date</div>
+              <div className="text-xs text-muted-foreground">{t('Delivery date')}</div>
               <div className="font-semibold">{shipment.deliveryDate ? new Date(shipment.deliveryDate).toLocaleDateString() : '-'}</div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground">PRO number</div>
+              <div className="text-xs text-muted-foreground">{t('PRO number')}</div>
               <div className="font-semibold">{shipment.proNumber || '-'}</div>
             </div>
           </div>
@@ -140,7 +142,7 @@ export default function CustomerShipmentDetail() {
       {shipment.stops && shipment.stops.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Stops</CardTitle>
+            <CardTitle>{t('Stops')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             {shipment.stops.map((stop: any, i: number) => (
@@ -152,7 +154,7 @@ export default function CustomerShipmentDetail() {
                   {i + 1}
                 </span>
                 <div className="flex-1">
-                  <div className="text-sm font-semibold">{stop.location?.name || 'Unknown'}</div>
+                  <div className="text-sm font-semibold">{stop.location?.name || t('Unknown')}</div>
                   <div className="text-xs text-muted-foreground">
                     {stop.location?.city}, {stop.location?.state} - {stopTypeLabel(stop)}
                   </div>
@@ -167,7 +169,7 @@ export default function CustomerShipmentDetail() {
       {shipment.events && shipment.events.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Tracking events</CardTitle>
+            <CardTitle>{t('Tracking events')}</CardTitle>
           </CardHeader>
           <CardContent>
             {shipment.events.map((evt: any) => (

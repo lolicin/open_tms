@@ -27,6 +27,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { t } from '@/i18n';
+
 export default function VNextCreateCustomer() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -103,7 +105,7 @@ export default function VNextCreateCustomer() {
         toast.success(`Customer ${label} updated`);
       } else {
         toast.success(`Customer ${label} created`, {
-          action: newId ? { label: 'View', onClick: () => navigate(`/customers/${newId}/edit`) } : undefined,
+          action: newId ? { label: t('View'), onClick: () => navigate(`/customers/${newId}/edit`) } : undefined,
         });
       }
       navigate('/customers');
@@ -126,38 +128,38 @@ export default function VNextCreateCustomer() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/customers" className="hover:text-foreground">
-          <ArrowLeft className="inline h-4 w-4" /> Customers
+          <ArrowLeft className="inline h-4 w-4" /> {t('Customers')}
         </Link>
         <ChevronRight className="h-3 w-3" />
-        <span>{isEdit ? 'Edit customer' : 'New customer'}</span>
+        <span>{isEdit ? t('Edit customer') : t('New customer')}</span>
       </div>
 
-      <h1 className="text-3xl font-bold tracking-tight">{isEdit ? 'Edit customer' : 'New customer'}</h1>
+      <h1 className="text-3xl font-bold tracking-tight">{isEdit ? t('Edit customer') : t('New customer')}</h1>
 
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Building2 className="h-4 w-4 text-primary" />
-            Company information
+            {t('Company information')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label>Company name</Label>
-            <Input type="text" placeholder="Company name" value={companyName} onChange={e => setCompanyName(e.target.value)} />
+            <Label>{t('Company name')}</Label>
+            <Input type="text" placeholder={t('Company name')} value={companyName} onChange={e => setCompanyName(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>Industry</Label>
+            <Label>{t('Industry')}</Label>
             <Select value={industry} onValueChange={setIndustry}>
               <SelectTrigger>
-                <SelectValue placeholder="Select industry..." />
+                <SelectValue placeholder={t('Select industry...')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Manufacturing">Manufacturing</SelectItem>
-                <SelectItem value="Retail">Retail</SelectItem>
-                <SelectItem value="Logistics">Logistics</SelectItem>
-                <SelectItem value="Food &amp; Beverage">Food &amp; Beverage</SelectItem>
-                <SelectItem value="Other">Other</SelectItem>
+                <SelectItem value="Manufacturing">{t('Manufacturing')}</SelectItem>
+                <SelectItem value="Retail">{t('Retail')}</SelectItem>
+                <SelectItem value="Logistics">{t('Logistics')}</SelectItem>
+                <SelectItem value="Food &amp; Beverage">{t('Food & Beverage')}</SelectItem>
+                <SelectItem value="Other">{t('Other')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -168,20 +170,20 @@ export default function VNextCreateCustomer() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <User className="h-4 w-4 text-primary" />
-            Primary contact
+            {t('Primary contact')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-3">
           <div className="space-y-2">
-            <Label>Contact name</Label>
-            <Input type="text" placeholder="Full name" value={contactName} onChange={e => setContactName(e.target.value)} />
+            <Label>{t('Contact name')}</Label>
+            <Input type="text" placeholder={t('Full name')} value={contactName} onChange={e => setContactName(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>Email</Label>
-            <Input type="email" placeholder="email@example.com" value={email} onChange={e => setEmail(e.target.value)} />
+            <Label>{t('Email')}</Label>
+            <Input type="email" placeholder={t('email@example.com')} value={email} onChange={e => setEmail(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>Phone</Label>
+            <Label>{t('Phone')}</Label>
             <Input type="tel" placeholder="(555) 000-0000" value={phone} onChange={e => setPhone(e.target.value)} />
           </div>
         </CardContent>
@@ -191,62 +193,62 @@ export default function VNextCreateCustomer() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <CreditCard className="h-4 w-4 text-primary" />
-            Billing
+            {t('Billing')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label>Payment terms</Label>
+            <Label>{t('Payment terms')}</Label>
             <Select value={paymentTerms} onValueChange={setPaymentTerms}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Net 30">Net 30</SelectItem>
-                <SelectItem value="Net 60">Net 60</SelectItem>
-                <SelectItem value="Net 90">Net 90</SelectItem>
-                <SelectItem value="Prepaid">Prepaid</SelectItem>
+                <SelectItem value="Net 30">{t('Net 30')}</SelectItem>
+                <SelectItem value="Net 60">{t('Net 60')}</SelectItem>
+                <SelectItem value="Net 90">{t('Net 90')}</SelectItem>
+                <SelectItem value="Prepaid">{t('Prepaid')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2">
-            <Label>Billing email</Label>
-            <Input type="email" placeholder="billing@example.com" value={billingEmail} onChange={e => setBillingEmail(e.target.value)} />
+            <Label>{t('Billing email')}</Label>
+            <Input type="email" placeholder={t('billing@example.com')} value={billingEmail} onChange={e => setBillingEmail(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>Currency</Label>
+            <Label>{t('Currency')}</Label>
             <Select value={currency} onValueChange={setCurrency}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="USD">USD</SelectItem>
-                <SelectItem value="EUR">EUR</SelectItem>
-                <SelectItem value="GBP">GBP</SelectItem>
-                <SelectItem value="CAD">CAD</SelectItem>
+                <SelectItem value="USD">{t('USD')}</SelectItem>
+                <SelectItem value="EUR">{t('EUR')}</SelectItem>
+                <SelectItem value="GBP">{t('GBP')}</SelectItem>
+                <SelectItem value="CAD">{t('CAD')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2">
-            <Label>Credit limit ($)</Label>
-            <Input type="number" min="0" step="100" placeholder="No limit" value={creditLimit} onChange={e => setCreditLimit(e.target.value)} />
+            <Label>{t('Credit limit ($)')}</Label>
+            <Input type="number" min="0" step="100" placeholder={t('No limit')} value={creditLimit} onChange={e => setCreditLimit(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>Invoice consolidation</Label>
+            <Label>{t('Invoice consolidation')}</Label>
             <Select value={invoiceConsolidation} onValueChange={setInvoiceConsolidation}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="per_shipment">Per shipment</SelectItem>
-                <SelectItem value="weekly">Weekly</SelectItem>
-                <SelectItem value="monthly">Monthly</SelectItem>
+                <SelectItem value="per_shipment">{t('Per shipment')}</SelectItem>
+                <SelectItem value="weekly">{t('Weekly')}</SelectItem>
+                <SelectItem value="monthly">{t('Monthly')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2">
-            <Label>Tax ID (VAT/EIN)</Label>
-            <Input type="text" placeholder="e.g. 12-3456789" value={taxId} onChange={e => setTaxId(e.target.value)} />
+            <Label>{t('Tax ID (VAT/EIN)')}</Label>
+            <Input type="text" placeholder={t('e.g. 12-3456789')} value={taxId} onChange={e => setTaxId(e.target.value)} />
           </div>
           <div className="flex items-end">
             <label className="flex items-center gap-2 text-sm">
@@ -256,7 +258,7 @@ export default function VNextCreateCustomer() {
                 onChange={e => setAutoInvoice(e.target.checked)}
                 className="h-4 w-4 rounded border border-input bg-background accent-primary"
               />
-              Auto-generate draft invoices on delivery
+              {t('Auto-generate draft invoices on delivery')}
             </label>
           </div>
         </CardContent>
@@ -266,27 +268,27 @@ export default function VNextCreateCustomer() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Settings2 className="h-4 w-4 text-primary" />
-            Preferences
+            {t('Preferences')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label>Default mode</Label>
+            <Label>{t('Default mode')}</Label>
             <Select value={defaultMode} onValueChange={setDefaultMode}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="FTL">FTL</SelectItem>
-                <SelectItem value="LTL">LTL</SelectItem>
+                <SelectItem value="FTL">{t('FTL')}</SelectItem>
+                <SelectItem value="LTL">{t('LTL')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2 md:col-span-2">
-            <Label>Notes</Label>
+            <Label>{t('Notes')}</Label>
             <textarea
               rows={3}
-              placeholder="Additional notes about this customer..."
+              placeholder={t('Additional notes about this customer...')}
               value={notes}
               onChange={e => setNotes(e.target.value)}
               className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -304,11 +306,11 @@ export default function VNextCreateCustomer() {
 
       <div className="flex flex-wrap items-center justify-end gap-2">
         <Button variant="outline" asChild>
-          <Link to="/customers">Cancel</Link>
+          <Link to="/customers">{t('Cancel')}</Link>
         </Button>
         <Button variant="gradient" onClick={handleSubmit} disabled={submitting}>
           <Save className="h-4 w-4" />
-          {submitting ? 'Saving...' : isEdit ? 'Update customer' : 'Create customer'}
+          {submitting ? t('Saving...') : isEdit ? 'Update customer' : 'Create customer'}
         </Button>
       </div>
 

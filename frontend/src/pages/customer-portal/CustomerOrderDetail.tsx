@@ -19,6 +19,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 type StatusVariant = 'success' | 'info' | 'warning' | 'destructive' | 'muted' | 'default' | 'secondary';
 
 function statusVariant(s: string): StatusVariant {
@@ -87,14 +89,14 @@ export default function CustomerOrderDetail() {
       const res = await customerFetch(`${API_URL}/api/v1/customer-portal/orders/${id}`, { method: 'DELETE' });
       const json = await res.json();
       if (!res.ok || json.error) {
-        toast.error('Failed to archive order', { description: json.error || `HTTP ${res.status}` });
+        toast.error(t('Failed to archive order'), { description: json.error || `HTTP ${res.status}` });
         setArchiving(false);
         return;
       }
       toast.success(`Order ${order.orderNumber} archived`);
       navigate('/customer-portal/orders');
     } catch (err: any) {
-      toast.error('Failed to archive order', { description: err?.message || 'Network error' });
+      toast.error(t('Failed to archive order'), { description: err?.message || 'Network error' });
       setArchiving(false);
     }
   }
@@ -109,7 +111,7 @@ export default function CustomerOrderDetail() {
   if (!order) {
     return (
       <div className="rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-        Order not found
+        {t('Order not found')}
       </div>
     );
   }
@@ -119,7 +121,7 @@ export default function CustomerOrderDetail() {
       <div>
         <Button variant="ghost" size="sm" onClick={() => navigate('/customer-portal/orders')}>
           <ArrowLeft className="h-4 w-4" />
-          Orders
+          {t('Orders')}
         </Button>
       </div>
 
@@ -130,27 +132,29 @@ export default function CustomerOrderDetail() {
         {order.archived && (
           <Badge variant="muted" className="gap-1">
             <Archive className="h-3 w-3" />
-            Archived
+            {t('Archived')}
           </Badge>
         )}
         {canArchive && (
           <Button variant="outline" size="sm" className="ml-auto" onClick={handleArchive} disabled={archiving}>
             {archiving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Archive className="h-4 w-4" />}
-            {archiving ? 'Archiving...' : 'Archive'}
+            {archiving ? t('Archiving...') : t('Archive')}
           </Button>
         )}
       </div>
 
       {order.archived && (
         <div className="rounded-md border border-border bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
-          This order is archived{order.archivedAt ? ` (${new Date(order.archivedAt).toLocaleDateString()})` : ''} and no longer appears in your active orders list. It remains accessible by its order number.
+          {t('This order is archived')}{order.archivedAt ? ` (${new Date(order.archivedAt).toLocaleDateString()})` : ''} {t(
+            'and no longer appears in your active orders list. It remains accessible by its order number.'
+          )}
         </div>
       )}
 
       <div className="grid gap-6 sm:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Origin</CardTitle>
+            <CardTitle>{t('Origin')}</CardTitle>
           </CardHeader>
           <CardContent>
             {order.origin ? (
@@ -168,7 +172,7 @@ export default function CustomerOrderDetail() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Destination</CardTitle>
+            <CardTitle>{t('Destination')}</CardTitle>
           </CardHeader>
           <CardContent>
             {order.destination ? (
@@ -188,40 +192,40 @@ export default function CustomerOrderDetail() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Details</CardTitle>
+          <CardTitle>{t('Details')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <div className="text-xs text-muted-foreground">PO number</div>
+              <div className="text-xs text-muted-foreground">{t('PO number')}</div>
               <div className="font-semibold">{order.poNumber || '-'}</div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground">Service level</div>
+              <div className="text-xs text-muted-foreground">{t('Service level')}</div>
               <div className="font-semibold">{order.serviceLevel || '-'}</div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground">Temperature</div>
+              <div className="text-xs text-muted-foreground">{t('Temperature')}</div>
               <div className="font-semibold">{order.temperatureControl || '-'}</div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground">Hazmat</div>
-              <div className="font-semibold">{order.requiresHazmat ? 'Yes' : 'No'}</div>
+              <div className="text-xs text-muted-foreground">{t('Hazmat')}</div>
+              <div className="font-semibold">{order.requiresHazmat ? t('Yes') : t('No')}</div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground">Order date</div>
+              <div className="text-xs text-muted-foreground">{t('Order date')}</div>
               <div className="font-semibold">{formatDate(order.orderDate)}</div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground">Requested pickup</div>
+              <div className="text-xs text-muted-foreground">{t('Requested pickup')}</div>
               <div className="font-semibold">{formatDate(order.requestedPickupDate)}</div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground">Requested delivery</div>
+              <div className="text-xs text-muted-foreground">{t('Requested delivery')}</div>
               <div className="font-semibold">{formatDate(order.requestedDeliveryDate)}</div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground">Delivered at</div>
+              <div className="text-xs text-muted-foreground">{t('Delivered at')}</div>
               <div className="font-semibold">{order.deliveredAt ? new Date(order.deliveredAt).toLocaleString() : '-'}</div>
             </div>
           </div>
@@ -229,13 +233,13 @@ export default function CustomerOrderDetail() {
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               {order.specialInstructions && (
                 <div>
-                  <div className="text-xs text-muted-foreground">Special instructions</div>
+                  <div className="text-xs text-muted-foreground">{t('Special instructions')}</div>
                   <div className="text-sm">{order.specialInstructions}</div>
                 </div>
               )}
               {order.notes && (
                 <div>
-                  <div className="text-xs text-muted-foreground">Notes</div>
+                  <div className="text-xs text-muted-foreground">{t('Notes')}</div>
                   <div className="text-sm">{order.notes}</div>
                 </div>
               )}
@@ -247,21 +251,21 @@ export default function CustomerOrderDetail() {
       {order.lineItems && order.lineItems.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Line items</CardTitle>
+            <CardTitle>{t('Line items')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>SKU</TableHead>
-                  <TableHead>Description</TableHead>
-                  <TableHead className="text-right">Qty</TableHead>
-                  <TableHead>UoM</TableHead>
-                  <TableHead className="text-right">Weight</TableHead>
-                  <TableHead>Dims</TableHead>
-                  <TableHead>Class</TableHead>
-                  <TableHead className="text-right">Unit price</TableHead>
-                  <TableHead className="text-right">Total</TableHead>
+                  <TableHead>{t('SKU')}</TableHead>
+                  <TableHead>{t('Description')}</TableHead>
+                  <TableHead className="text-right">{t('Qty')}</TableHead>
+                  <TableHead>{t('UoM')}</TableHead>
+                  <TableHead className="text-right">{t('Weight')}</TableHead>
+                  <TableHead>{t('Dims')}</TableHead>
+                  <TableHead>{t('Class')}</TableHead>
+                  <TableHead className="text-right">{t('Unit price')}</TableHead>
+                  <TableHead className="text-right">{t('Total')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -289,15 +293,15 @@ export default function CustomerOrderDetail() {
 
             {order.lineItems.some((li: any) => li.hazmat) && (
               <div className="rounded-md border border-warning/40 bg-warning/10 p-3">
-                <div className="mb-2 text-sm font-semibold">Hazardous materials</div>
+                <div className="mb-2 text-sm font-semibold">{t('Hazardous materials')}</div>
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>SKU</TableHead>
-                      <TableHead>UN number</TableHead>
-                      <TableHead>Class</TableHead>
-                      <TableHead>Packing group</TableHead>
-                      <TableHead>Proper shipping name</TableHead>
+                      <TableHead>{t('SKU')}</TableHead>
+                      <TableHead>{t('UN number')}</TableHead>
+                      <TableHead>{t('Class')}</TableHead>
+                      <TableHead>{t('Packing group')}</TableHead>
+                      <TableHead>{t('Proper shipping name')}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -317,13 +321,13 @@ export default function CustomerOrderDetail() {
 
             {order.lineItems.some((li: any) => li.hsCode || li.countryOfOrigin) && (
               <div className="rounded-md border border-border p-3">
-                <div className="mb-2 text-sm font-semibold">Customs</div>
+                <div className="mb-2 text-sm font-semibold">{t('Customs')}</div>
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>SKU</TableHead>
-                      <TableHead>HS code</TableHead>
-                      <TableHead>Country of origin</TableHead>
+                      <TableHead>{t('SKU')}</TableHead>
+                      <TableHead>{t('HS code')}</TableHead>
+                      <TableHead>{t('Country of origin')}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -341,13 +345,13 @@ export default function CustomerOrderDetail() {
 
             {order.lineItems.some((li: any) => li.tempMinC != null || li.tempMaxC != null) && (
               <div className="rounded-md border border-info/40 bg-info/10 p-3">
-                <div className="mb-2 text-sm font-semibold">Temperature requirements</div>
+                <div className="mb-2 text-sm font-semibold">{t('Temperature requirements')}</div>
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>SKU</TableHead>
-                      <TableHead>Temp min (°C)</TableHead>
-                      <TableHead>Temp max (°C)</TableHead>
+                      <TableHead>{t('SKU')}</TableHead>
+                      <TableHead>{t('Temp min (°C)')}</TableHead>
+                      <TableHead>{t('Temp max (°C)')}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -368,11 +372,11 @@ export default function CustomerOrderDetail() {
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Handling units</CardTitle>
+          <CardTitle>{t('Handling units')}</CardTitle>
           {!order.archived && (
             <Button variant="outline" size="sm" onClick={() => setEditingUnits(e => !e)}>
               <Boxes className="h-4 w-4" />
-              {editingUnits ? 'Done editing' : 'Edit handling units'}
+              {editingUnits ? t('Done editing') : t('Edit handling units')}
             </Button>
           )}
         </CardHeader>
@@ -406,11 +410,11 @@ export default function CustomerOrderDetail() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Identifier</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Packaging</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Weight</TableHead>
+                  <TableHead>{t('Identifier')}</TableHead>
+                  <TableHead>{t('Type')}</TableHead>
+                  <TableHead>{t('Packaging')}</TableHead>
+                  <TableHead>{t('Status')}</TableHead>
+                  <TableHead className="text-right">{t('Weight')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -430,7 +434,7 @@ export default function CustomerOrderDetail() {
               </TableBody>
             </Table>
           ) : (
-            <div className="text-sm text-muted-foreground">No handling units yet. Click "Edit handling units" to build them.</div>
+            <div className="text-sm text-muted-foreground">{t('No handling units yet. Click "Edit handling units" to build them.')}</div>
           )}
         </CardContent>
       </Card>

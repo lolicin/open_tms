@@ -21,6 +21,8 @@ import {
   fmtDuration, timeAgo, scoreTone, PRIORITY_VARIANT, STATUS_LABEL,
 } from './api';
 
+import { t as translate } from '@/i18n';
+
 /* ── State surfaces ──────────────────────────────────────────────────── */
 
 export function TriageLoading({ label = 'Loading' }: { label?: string }) {
@@ -42,11 +44,11 @@ export function TriageError({ message, onRetry }: { message: string; onRetry?: (
       <div className="flex items-start gap-3">
         <AlertTriangle className="h-5 w-5 shrink-0 text-destructive" aria-hidden="true" />
         <div className="flex-1">
-          <div className="mb-1 font-semibold">Could not load this view</div>
+          <div className="mb-1 font-semibold">{translate('Could not load this view')}</div>
           <div className="text-sm text-muted-foreground">{message}</div>
           {onRetry && (
             <Button variant="outline" size="sm" onClick={onRetry} className="mt-3">
-              Try again
+              {translate('Try again')}
             </Button>
           )}
         </div>
@@ -114,7 +116,7 @@ export function SlaPill({
   if (breached) {
     return (
       <Badge variant="destructive" className="gap-1">
-        <Clock className="h-3 w-3" aria-hidden="true" />SLA breached
+        <Clock className="h-3 w-3" aria-hidden="true" />{translate('SLA breached')}
       </Badge>
     );
   }
@@ -124,14 +126,14 @@ export function SlaPill({
   if (mins < 0) {
     return (
       <Badge variant="destructive" className="gap-1">
-        <Clock className="h-3 w-3" aria-hidden="true" />Overdue {fmtDuration(-mins)}
+        <Clock className="h-3 w-3" aria-hidden="true" />{translate('Overdue')} {fmtDuration(-mins)}
       </Badge>
     );
   }
   // Under an hour left is worth flagging visually.
   return (
     <Badge variant={mins <= 60 ? 'destructive' : 'secondary'} className="gap-1">
-      <Clock className="h-3 w-3" aria-hidden="true" />{fmtDuration(mins)} left
+      <Clock className="h-3 w-3" aria-hidden="true" />{fmtDuration(mins)} {translate('left')}
     </Badge>
   );
 }
@@ -184,14 +186,14 @@ export function IssueCard({
               <Badge
                 variant="outline"
                 className="gap-1"
-                title="Latched: cannot be auto-resolved or dismissed as noise"
+                title={translate('Latched: cannot be auto-resolved or dismissed as noise')}
               >
-                <Lock className="h-2.5 w-2.5" aria-hidden="true" />latched
+                <Lock className="h-2.5 w-2.5" aria-hidden="true" />{translate('latched')}
               </Badge>
             )}
             {issue.isNoise && (
               <Badge variant="outline" className="gap-1" title={issue.noiseReason ?? 'Suppressed as noise'}>
-                <EyeOff className="h-2.5 w-2.5" aria-hidden="true" />noise
+                <EyeOff className="h-2.5 w-2.5" aria-hidden="true" />{translate('noise')}
               </Badge>
             )}
             <SlaPill
@@ -211,7 +213,7 @@ export function IssueCard({
 
           <div className="mb-2 text-xs text-muted-foreground">
             {typeName ?? issue.issueType ?? issue.category} · {timeAgo(issue.createdAt)}
-            {issue.assigneeName ? ` · ${issue.assigneeName}` : ' · unassigned'}
+            {issue.assigneeName ? ` · ${issue.assigneeName}` : translate(' · unassigned')}
           </div>
 
           <ConfidenceMeter score={issue.signalScore} signalCount={issue.signalCount} />
@@ -299,15 +301,15 @@ export function TriageFilterBar({
     <Card className="grid gap-2.5 p-3">
       {showQuery && (
         <Input
-          placeholder="Search titles and descriptions…"
+          placeholder={translate('Search titles and descriptions…')}
           value={filters.query ?? ''}
-          aria-label="Search issues"
+          aria-label={translate('Search issues')}
           onChange={(e) => set({ query: e.target.value || undefined })}
         />
       )}
 
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-        <span className="text-xs text-muted-foreground">Status</span>
+        <span className="text-xs text-muted-foreground">{translate('Status')}</span>
         <Chips
           options={STATUSES}
           selected={filters.status}
@@ -317,13 +319,13 @@ export function TriageFilterBar({
       </div>
 
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-        <span className="text-xs text-muted-foreground">Priority</span>
+        <span className="text-xs text-muted-foreground">{translate('Priority')}</span>
         <Chips options={PRIORITIES} selected={filters.priority} onChange={(v) => set({ priority: v })} />
       </div>
 
       {issueTypes.length > 0 && (
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-          <span className="text-xs text-muted-foreground">Type</span>
+          <span className="text-xs text-muted-foreground">{translate('Type')}</span>
           <Chips
             options={issueTypes.map((t) => t.key)}
             selected={filters.issueType}
@@ -340,7 +342,7 @@ export function TriageFilterBar({
             checked={!!filters.showNoise}
             onChange={(e) => set({ showNoise: e.target.checked || undefined })}
           />
-          Show suppressed (noise)
+          {translate('Show suppressed (noise)')}
         </label>
 
         <label className="flex cursor-pointer items-center gap-1.5">
@@ -349,17 +351,17 @@ export function TriageFilterBar({
             checked={filters.slaBreach === true}
             onChange={(e) => set({ slaBreach: e.target.checked ? true : undefined })}
           />
-          SLA breached only
+          {translate('SLA breached only')}
         </label>
 
         <label className="flex items-center gap-1.5">
-          Min confidence
+          {translate('Min confidence')}
           <Input
             type="number"
             min={0}
             max={100}
             value={filters.signalScoreMin ?? ''}
-            aria-label="Minimum confidence score"
+            aria-label={translate('Minimum confidence score')}
             onChange={(e) => set({
               signalScoreMin: e.target.value ? Number(e.target.value) : undefined,
             })}
@@ -368,17 +370,17 @@ export function TriageFilterBar({
         </label>
 
         <label className="flex items-center gap-1.5">
-          Window
+          {translate('Window')}
           <PlainSelect
-            label="Date range"
+            label={translate('Date range')}
             value={filters.dateRange ?? ''}
             onChange={(v) => set({ dateRange: v || undefined })}
           >
-            <option value="">All time</option>
-            <option value="24h">Last 24h</option>
-            <option value="7d">Last 7 days</option>
-            <option value="30d">Last 30 days</option>
-            <option value="90d">Last 90 days</option>
+            <option value="">{translate('All time')}</option>
+            <option value="24h">{translate('Last 24h')}</option>
+            <option value="7d">{translate('Last 7 days')}</option>
+            <option value="30d">{translate('Last 30 days')}</option>
+            <option value="90d">{translate('Last 90 days')}</option>
           </PlainSelect>
         </label>
       </div>

@@ -8,6 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 export default function CustomerProfile() {
   const user = getCustomerUser();
   const [currentPw, setCurrentPw] = useState('');
@@ -39,28 +41,28 @@ export default function CustomerProfile() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">Profile</h1>
+      <h1 className="text-3xl font-bold tracking-tight">{t('Profile')}</h1>
 
       <Card>
         <CardHeader>
-          <CardTitle>Account information</CardTitle>
+          <CardTitle>{t('Account information')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <div className="text-xs text-muted-foreground">Name</div>
+              <div className="text-xs text-muted-foreground">{t('Name')}</div>
               <div className="font-semibold">{user.name}</div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground">Email</div>
+              <div className="text-xs text-muted-foreground">{t('Email')}</div>
               <div className="font-semibold">{user.email}</div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground">Company</div>
+              <div className="text-xs text-muted-foreground">{t('Company')}</div>
               <div className="font-semibold">{user.customerName}</div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground">Role</div>
+              <div className="text-xs text-muted-foreground">{t('Role')}</div>
               <div className="font-semibold">{user.role}</div>
             </div>
           </div>
@@ -69,7 +71,7 @@ export default function CustomerProfile() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Change password</CardTitle>
+          <CardTitle>{t('Change password')}</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleChangePassword} className="max-w-md space-y-4">
@@ -86,20 +88,20 @@ export default function CustomerProfile() {
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="current-pw">Current password</Label>
+              <Label htmlFor="current-pw">{t('Current password')}</Label>
               <Input id="current-pw" type="password" value={currentPw} onChange={e => setCurrentPw(e.target.value)} required />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="new-pw">New password</Label>
+              <Label htmlFor="new-pw">{t('New password')}</Label>
               <Input id="new-pw" type="password" value={newPw} onChange={e => setNewPw(e.target.value)} required />
-              <div className="text-xs text-muted-foreground">8+ characters, uppercase, lowercase, number</div>
+              <div className="text-xs text-muted-foreground">{t('8+ characters, uppercase, lowercase, number')}</div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirm-pw">Confirm new password</Label>
+              <Label htmlFor="confirm-pw">{t('Confirm new password')}</Label>
               <Input id="confirm-pw" type="password" value={confirmPw} onChange={e => setConfirmPw(e.target.value)} required />
             </div>
             <Button type="submit" variant="gradient" disabled={saving}>
-              {saving ? 'Changing...' : 'Change password'}
+              {saving ? t('Changing...') : t('Change password')}
             </Button>
           </form>
         </CardContent>

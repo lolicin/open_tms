@@ -31,6 +31,8 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface SkillDefinition {
   type: string;
   name: string;
@@ -85,7 +87,7 @@ function Banner({ variant, message, onClose }: { variant: 'success' | 'error'; m
     <div className={`flex items-start justify-between gap-3 rounded-md border p-3 text-sm ${tone}`}>
       <span>{message}</span>
       {onClose && (
-        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">Dismiss</button>
+        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">{t('Dismiss')}</button>
       )}
     </div>
   );
@@ -193,8 +195,8 @@ export default function VNextSkillsConfig() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Skills configuration</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Configure available skills for automation rules and chains</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Skills configuration')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Configure available skills for automation rules and chains')}</p>
         </div>
       </div>
 
@@ -218,7 +220,7 @@ export default function VNextSkillsConfig() {
                     <div className="flex items-center gap-2">
                       <h3 className="text-base font-semibold">{def.name}</h3>
                       <Badge variant={isConfigured ? 'success' : 'secondary'}>
-                        {isConfigured ? 'Ready' : 'Needs setup'}
+                        {isConfigured ? t('Ready') : t('Needs setup')}
                       </Badge>
                     </div>
                     <p className="mt-1 text-xs text-muted-foreground">{def.description}</p>
@@ -226,7 +228,7 @@ export default function VNextSkillsConfig() {
                 </div>
 
                 <div className="mb-3 text-xs text-muted-foreground">
-                  <strong>Fields:</strong> {def.fields.map(f => f.label).join(', ') || 'None'}
+                  <strong>{t('Fields:')}</strong> {def.fields.map(f => f.label).join(', ') || t('None')}
                 </div>
 
                 {skillConfigs.length > 0 && (
@@ -250,7 +252,7 @@ export default function VNextSkillsConfig() {
                 {def.requiresConfig && (
                   <Button variant="outline" size="sm" className="w-full" onClick={() => openConfigForm(def.type)}>
                     <Plus className="h-4 w-4" />
-                    {skillConfigs.length > 0 ? 'Add another config' : 'Configure'}
+                    {skillConfigs.length > 0 ? t('Add another config') : t('Configure')}
                   </Button>
                 )}
               </CardContent>
@@ -262,12 +264,12 @@ export default function VNextSkillsConfig() {
       <Dialog open={showConfigForm} onOpenChange={setShowConfigForm}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Configure {selectedDef?.name || configSkillType}</DialogTitle>
+            <DialogTitle>{t('Configure')} {selectedDef?.name || configSkillType}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label>Configuration name</Label>
-              <Input value={configName} onChange={e => setConfigName(e.target.value)} placeholder="e.g. Ops Webhook" />
+              <Label>{t('Configuration name')}</Label>
+              <Input value={configName} onChange={e => setConfigName(e.target.value)} placeholder={t('e.g. Ops Webhook')} />
             </div>
 
             {selectedDef?.configSchema.map(field => (
@@ -283,9 +285,9 @@ export default function VNextSkillsConfig() {
             ))}
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowConfigForm(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setShowConfigForm(false)}>{t('Cancel')}</Button>
             <Button variant="gradient" onClick={saveConfig} disabled={saving}>
-              {saving ? 'Saving...' : 'Save configuration'}
+              {saving ? t('Saving...') : t('Save configuration')}
             </Button>
           </DialogFooter>
         </DialogContent>

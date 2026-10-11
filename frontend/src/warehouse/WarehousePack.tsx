@@ -17,6 +17,8 @@ import {
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface PackLine {
   id: string;
   sku: string;
@@ -130,7 +132,7 @@ export default function WarehousePack() {
   if (!task) {
     return (
       <div className="rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-        {error || 'Not found'}
+        {error || t('Not found')}
       </div>
     );
   }
@@ -142,7 +144,7 @@ export default function WarehousePack() {
     <div className="space-y-4 pb-24">
       <Button variant="ghost" size="sm" onClick={() => navigate('/warehouse/tasks')} className="-ml-2">
         <ArrowLeft className="h-5 w-5" />
-        <span className="text-base">Tasks</span>
+        <span className="text-base">{t('Tasks')}</span>
       </Button>
 
       {error && (
@@ -154,11 +156,11 @@ export default function WarehousePack() {
       <Card>
         <CardContent className="space-y-1 p-5">
           <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Pack task
+            {t('Pack task')}
           </div>
           <div className="text-xl font-bold">{task.id.slice(0, 8)}</div>
           <div className="text-sm text-muted-foreground">
-            Station: <strong>{task.packStationBin?.label ?? 'any'}</strong> &middot; {task.packLines.length} line{task.packLines.length === 1 ? '' : 's'}
+            {t('Station:')} <strong>{task.packStationBin?.label ?? 'any'}</strong>· {task.packLines.length} {t('line')}{task.packLines.length === 1 ? '' : t('s')}
           </div>
         </CardContent>
       </Card>
@@ -166,17 +168,17 @@ export default function WarehousePack() {
       <Card>
         <CardContent className="space-y-3 p-5">
           <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Carton
+            {t('Carton')}
           </Label>
           <Select value={selectedCartonId} onValueChange={setSelectedCartonId}>
             <SelectTrigger className="h-12 text-base">
-              <SelectValue placeholder="Select a carton..." />
+              <SelectValue placeholder={t('Select a carton...')} />
             </SelectTrigger>
             <SelectContent>
               {cartons.map(c => (
                 <SelectItem key={c.id} value={c.id}>
-                  {c.name} - {(c.lengthMm / 10).toFixed(0)}x{(c.widthMm / 10).toFixed(0)}x{(c.heightMm / 10).toFixed(0)}cm,
-                  {' '}max {(c.maxWeightGrams / 1000).toFixed(0)}kg
+                  {c.name}- {(c.lengthMm / 10).toFixed(0)}{t('x')}{(c.widthMm / 10).toFixed(0)}{t('x')}{(c.heightMm / 10).toFixed(0)}{t('cm,')}
+                  {' '}{t('max')} {(c.maxWeightGrams / 1000).toFixed(0)}{t('kg')}
                   {c.temperatureZone !== 'any' ? ` (${c.temperatureZone})` : ''}
                 </SelectItem>
               ))}
@@ -189,7 +191,7 @@ export default function WarehousePack() {
               className="w-full text-base"
               onClick={() => navigate(`/warehouse/tasks/pack-audit/${task.id}`)}
             >
-              Run pack audit
+              {t('Run pack audit')}
             </Button>
           )}
         </CardContent>
@@ -201,14 +203,14 @@ export default function WarehousePack() {
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-success/15 text-success">
               <CheckCircle2 className="h-8 w-8" />
             </div>
-            <div className="text-lg font-semibold">All items packed</div>
-            <div className="text-sm text-muted-foreground">Run a pack audit to verify weight before ship.</div>
+            <div className="text-lg font-semibold">{t('All items packed')}</div>
+            <div className="text-sm text-muted-foreground">{t('Run a pack audit to verify weight before ship.')}</div>
           </CardContent>
         </Card>
       ) : (
         <>
           <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Scan item to pack
+            {t('Scan item to pack')}
           </Label>
           <div className="space-y-2">
             {task.packLines.map(line => {
@@ -222,7 +224,7 @@ export default function WarehousePack() {
                       <div className="flex-1">
                         <div className="text-base font-semibold">{line.sku}</div>
                         <div className="text-sm text-muted-foreground">
-                          {line.packedQuantity} / {line.expectedQuantity} packed
+                          {line.packedQuantity}/ {line.expectedQuantity} {t('packed')}
                           {done && <CheckCircle2 className="ml-2 inline h-4 w-4 text-success" />}
                         </div>
                       </div>
@@ -234,7 +236,7 @@ export default function WarehousePack() {
                             setPackQty(String(remaining));
                           }}
                         >
-                          Pack
+                          {t('Pack')}
                         </Button>
                       )}
                     </div>
@@ -258,7 +260,7 @@ export default function WarehousePack() {
                           onClick={() => handlePack(line.id)}
                           disabled={busy}
                         >
-                          {busy ? '...' : 'Confirm'}
+                          {busy ? '...' : t('Confirm')}
                         </Button>
                         <Button
                           variant="outline"
@@ -269,7 +271,7 @@ export default function WarehousePack() {
                             setPackQty('');
                           }}
                           disabled={busy}
-                          aria-label="Cancel"
+                          aria-label={t('Cancel')}
                         >
                           <X className="h-5 w-5" />
                         </Button>

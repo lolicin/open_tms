@@ -52,6 +52,8 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface ChecklistItem {
   id?: string;
   question: string;
@@ -79,24 +81,24 @@ interface SopChecklist {
 }
 
 const CATEGORIES = [
-  { value: 'gdp', label: 'GDP' },
-  { value: 'cold_chain', label: 'Cold Chain' },
-  { value: 'warehouse', label: 'Warehouse' },
-  { value: 'transport', label: 'Transport' },
-  { value: 'general', label: 'General' },
+  { value: 'gdp', label: t('GDP') },
+  { value: 'cold_chain', label: t('Cold Chain') },
+  { value: 'warehouse', label: t('Warehouse') },
+  { value: 'transport', label: t('Transport') },
+  { value: 'general', label: t('General') },
 ];
 
 const FREQUENCIES = [
-  { value: 'monthly', label: 'Monthly' },
-  { value: 'quarterly', label: 'Quarterly' },
-  { value: 'annual', label: 'Annual' },
-  { value: 'one_off', label: 'One Off' },
+  { value: 'monthly', label: t('Monthly') },
+  { value: 'quarterly', label: t('Quarterly') },
+  { value: 'annual', label: t('Annual') },
+  { value: 'one_off', label: t('One Off') },
 ];
 
 const STATUSES = [
-  { value: 'draft', label: 'Draft' },
-  { value: 'active', label: 'Active' },
-  { value: 'archived', label: 'Archived' },
+  { value: 'draft', label: t('Draft') },
+  { value: 'active', label: t('Active') },
+  { value: 'archived', label: t('Archived') },
 ];
 
 type BadgeVariant = 'success' | 'destructive' | 'warning' | 'info' | 'secondary' | 'muted' | 'default';
@@ -275,7 +277,7 @@ function ChecklistFormModal({ open, onClose, onSaved, editChecklist }: Checklist
     <Dialog open={open} onOpenChange={open => { if (!open) onClose(); }}>
       <DialogContent className="max-w-3xl max-h-[85vh] overflow-auto">
         <DialogHeader>
-          <DialogTitle>{editChecklist ? 'Edit checklist' : 'Create checklist'}</DialogTitle>
+          <DialogTitle>{editChecklist ? t('Edit checklist') : t('Create checklist')}</DialogTitle>
         </DialogHeader>
 
         {error && (
@@ -289,15 +291,15 @@ function ChecklistFormModal({ open, onClose, onSaved, editChecklist }: Checklist
         <div className="space-y-4">
           <div className="grid gap-3 md:grid-cols-2">
             <div className="space-y-2">
-              <Label>Title <span className="text-destructive">*</span></Label>
-              <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. GDP Warehouse Compliance" />
+              <Label>{t('Title')} <span className="text-destructive">*</span></Label>
+              <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t('e.g. GDP Warehouse Compliance')} />
             </div>
             <div className="space-y-2">
-              <Label>SOP reference</Label>
-              <Input value={sopReference} onChange={(e) => setSopReference(e.target.value)} placeholder="e.g. SOP-WH-001" />
+              <Label>{t('SOP reference')}</Label>
+              <Input value={sopReference} onChange={(e) => setSopReference(e.target.value)} placeholder={t('e.g. SOP-WH-001')} />
             </div>
             <div className="space-y-2">
-              <Label>Category</Label>
+              <Label>{t('Category')}</Label>
               <Select value={category} onValueChange={setCategory}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
@@ -306,7 +308,7 @@ function ChecklistFormModal({ open, onClose, onSaved, editChecklist }: Checklist
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>Frequency</Label>
+              <Label>{t('Frequency')}</Label>
               <Select value={frequency} onValueChange={setFrequency}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
@@ -315,16 +317,16 @@ function ChecklistFormModal({ open, onClose, onSaved, editChecklist }: Checklist
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>Next due date</Label>
+              <Label>{t('Next due date')}</Label>
               <DatePicker type="date" value={nextDueDate} onChange={(e) => setNextDueDate(e.target.value)} />
             </div>
             <div className="md:col-span-2 space-y-2">
-              <Label>Description</Label>
+              <Label>{t('Description')}</Label>
               <textarea
                 rows={2}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Optional description of this checklist"
+                placeholder={t('Optional description of this checklist')}
                 className="w-full resize-y rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               />
             </div>
@@ -333,17 +335,17 @@ function ChecklistFormModal({ open, onClose, onSaved, editChecklist }: Checklist
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="text-base font-semibold">
-                Checklist items ({items.filter((it) => it.question.trim()).length})
-              </h3>
+                {t('Checklist items (')}{items.filter((it) => it.question.trim()).length})
+                              </h3>
               <Button variant="ghost" size="sm" onClick={addItem}>
                 <Plus className="h-4 w-4" />
-                Add item
+                {t('Add item')}
               </Button>
             </div>
 
             {sections.length > 0 && (
               <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-                <span>Sections:</span>
+                <span>{t('Sections:')}</span>
                 {sections.map(s => <Badge key={s} variant="secondary">{s}</Badge>)}
               </div>
             )}
@@ -373,29 +375,29 @@ function ChecklistFormModal({ open, onClose, onSaved, editChecklist }: Checklist
                       <span className="min-w-[24px] pt-2 text-sm font-semibold text-muted-foreground">{idx + 1}.</span>
                       <div className="flex-1 space-y-2">
                         <div className="space-y-2">
-                          <Label>Question <span className="text-destructive">*</span></Label>
+                          <Label>{t('Question')} <span className="text-destructive">*</span></Label>
                           <Input
                             value={item.question}
                             onChange={(e) => updateItem(idx, 'question', e.target.value)}
-                            placeholder="e.g. Are temperature records maintained for the last 30 days?"
+                            placeholder={t('e.g. Are temperature records maintained for the last 30 days?')}
                           />
                         </div>
                         <div className="grid gap-2 md:grid-cols-2">
                           <div className="space-y-2">
-                            <Label>Section</Label>
+                            <Label>{t('Section')}</Label>
                             <Input
                               value={item.section}
                               onChange={(e) => updateItem(idx, 'section', e.target.value)}
-                              placeholder="e.g. Documentation"
+                              placeholder={t('e.g. Documentation')}
                               list="section-suggestions"
                             />
                           </div>
                           <div className="space-y-2">
-                            <Label>Guidance</Label>
+                            <Label>{t('Guidance')}</Label>
                             <Input
                               value={item.guidance}
                               onChange={(e) => updateItem(idx, 'guidance', e.target.value)}
-                              placeholder="Hint or reference for the auditor"
+                              placeholder={t('Hint or reference for the auditor')}
                             />
                           </div>
                         </div>
@@ -406,7 +408,7 @@ function ChecklistFormModal({ open, onClose, onSaved, editChecklist }: Checklist
                               checked={item.evidenceRequired}
                               onChange={(e) => updateItem(idx, 'evidenceRequired', e.target.checked)}
                             />
-                            Evidence required
+                            {t('Evidence required')}
                           </label>
                           <label className={cn('flex items-center gap-2 cursor-pointer', item.isCritical ? 'text-destructive' : 'text-muted-foreground')}>
                             <input
@@ -414,15 +416,15 @@ function ChecklistFormModal({ open, onClose, onSaved, editChecklist }: Checklist
                               checked={item.isCritical}
                               onChange={(e) => updateItem(idx, 'isCritical', e.target.checked)}
                             />
-                            Critical item
+                            {t('Critical item')}
                           </label>
                         </div>
                       </div>
                       <div className="flex flex-col gap-1">
-                        <Button variant="ghost" size="icon" onClick={() => moveItem(idx, -1)} disabled={idx === 0} title="Move up">
+                        <Button variant="ghost" size="icon" onClick={() => moveItem(idx, -1)} disabled={idx === 0} title={t('Move up')}>
                           <ArrowUp className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" onClick={() => moveItem(idx, 1)} disabled={idx === items.length - 1} title="Move down">
+                        <Button variant="ghost" size="icon" onClick={() => moveItem(idx, 1)} disabled={idx === items.length - 1} title={t('Move down')}>
                           <ArrowDown className="h-4 w-4" />
                         </Button>
                         <Button
@@ -430,7 +432,7 @@ function ChecklistFormModal({ open, onClose, onSaved, editChecklist }: Checklist
                           size="icon"
                           onClick={() => removeItem(idx)}
                           disabled={items.length <= 1}
-                          title="Remove item"
+                          title={t('Remove item')}
                           className="text-destructive hover:text-destructive"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -449,9 +451,9 @@ function ChecklistFormModal({ open, onClose, onSaved, editChecklist }: Checklist
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={onClose}>Cancel</Button>
+          <Button variant="outline" onClick={onClose}>{t('Cancel')}</Button>
           <Button variant="gradient" onClick={handleSubmit} disabled={saving || !title.trim()}>
-            {saving ? 'Saving...' : editChecklist ? 'Save changes' : 'Create checklist'}
+            {saving ? t('Saving...') : editChecklist ? 'Save changes' : 'Create checklist'}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -537,27 +539,27 @@ export default function VNextQualitySopChecklists() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading checklists...</h3>
+        <h3 className="text-lg font-medium">{t('Loading checklists...')}</h3>
       </div>
     );
   }
 
   const stats = [
-    { label: 'Total active', value: totalActive, icon: ListChecks, tone: 'bg-primary/10 text-primary' },
-    { label: 'Due this month', value: dueThisMonth, icon: Calendar, tone: 'bg-warning/15 text-warning' },
-    { label: 'Overdue', value: overdue, icon: AlertTriangle, tone: 'bg-destructive/10 text-destructive' },
+    { label: t('Total active'), value: totalActive, icon: ListChecks, tone: 'bg-primary/10 text-primary' },
+    { label: t('Due this month'), value: dueThisMonth, icon: Calendar, tone: 'bg-warning/15 text-warning' },
+    { label: t('Overdue'), value: overdue, icon: AlertTriangle, tone: 'bg-destructive/10 text-destructive' },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">SOP checklists</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{checklists.length} checklists</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('SOP checklists')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{checklists.length} {t('checklists')}</p>
         </div>
         <Button variant="gradient" onClick={openCreate}>
           <Plus className="h-4 w-4" />
-          Create checklist
+          {t('Create checklist')}
         </Button>
       </div>
 
@@ -596,19 +598,19 @@ export default function VNextQualitySopChecklists() {
       <Card>
         <div className="flex flex-wrap items-center gap-3 p-4">
           <div className="min-w-[240px] flex-1">
-            <Input placeholder="Search checklists..." value={search} onChange={e => setSearch(e.target.value)} />
+            <Input placeholder={t('Search checklists...')} value={search} onChange={e => setSearch(e.target.value)} />
           </div>
           <Select value={filterCategory} onValueChange={setFilterCategory}>
             <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All categories</SelectItem>
+              <SelectItem value="all">{t('All categories')}</SelectItem>
               {CATEGORIES.map(c => <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}
             </SelectContent>
           </Select>
           <Select value={filterStatus} onValueChange={setFilterStatus}>
             <SelectTrigger className="w-[160px]"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All statuses</SelectItem>
+              <SelectItem value="all">{t('All statuses')}</SelectItem>
               {STATUSES.map(s => <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>)}
             </SelectContent>
           </Select>
@@ -619,21 +621,21 @@ export default function VNextQualitySopChecklists() {
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <ClipboardCheck className="h-10 w-10 opacity-40" />
-            <h3 className="text-base font-medium">No checklists found</h3>
-            <p className="text-sm">Create your first SOP checklist to start tracking compliance audits.</p>
+            <h3 className="text-base font-medium">{t('No checklists found')}</h3>
+            <p className="text-sm">{t('Create your first SOP checklist to start tracking compliance audits.')}</p>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Title</TableHead>
-                <TableHead>SOP ref</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Frequency</TableHead>
-                <TableHead>Next due</TableHead>
-                <TableHead>Last completed</TableHead>
-                <TableHead>Audits</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{t('Title')}</TableHead>
+                <TableHead>{t('SOP ref')}</TableHead>
+                <TableHead>{t('Category')}</TableHead>
+                <TableHead>{t('Frequency')}</TableHead>
+                <TableHead>{t('Next due')}</TableHead>
+                <TableHead>{t('Last completed')}</TableHead>
+                <TableHead>{t('Audits')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
                 <TableHead className="w-[60px]"></TableHead>
               </TableRow>
             </TableHeader>
@@ -661,7 +663,7 @@ export default function VNextQualitySopChecklists() {
                       <span className={cn('text-sm', overdueRow && 'font-semibold text-destructive')}>
                         {formatDate(cl.nextDueDate)}
                       </span>
-                      {overdueRow && <div className="text-[10px] font-semibold text-destructive">OVERDUE</div>}
+                      {overdueRow && <div className="text-[10px] font-semibold text-destructive">{t('OVERDUE')}</div>}
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">{formatDate(cl.lastCompletedAt)}</TableCell>
                     <TableCell className="font-semibold">{cl._count?.audits ?? 0}</TableCell>
@@ -671,7 +673,7 @@ export default function VNextQualitySopChecklists() {
                       </Badge>
                     </TableCell>
                     <TableCell onClick={e => e.stopPropagation()}>
-                      <Button variant="ghost" size="icon" onClick={() => openEdit(cl.id)} title="Edit checklist">
+                      <Button variant="ghost" size="icon" onClick={() => openEdit(cl.id)} title={t('Edit checklist')}>
                         <Pencil className="h-4 w-4" />
                       </Button>
                     </TableCell>

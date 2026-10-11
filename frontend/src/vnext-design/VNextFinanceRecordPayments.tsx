@@ -31,6 +31,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface OutstandingInvoice {
   id: string;
   invoiceNumber: string;
@@ -157,7 +159,7 @@ export default function VNextFinanceRecordPayments() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -174,22 +176,24 @@ export default function VNextFinanceRecordPayments() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm">
         <Button variant="ghost" size="sm" onClick={() => navigate('/finance/invoices')}>
-          <ArrowLeft className="h-4 w-4" /> Invoices
+          <ArrowLeft className="h-4 w-4" /> {t('Invoices')}
         </Button>
-        <span className="text-muted-foreground">/ Record Payments</span>
+        <span className="text-muted-foreground">{t('/ Record Payments')}</span>
       </div>
 
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Record Payments</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Enter payment amounts against outstanding invoices. Process a bank statement in one go.</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Record Payments')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t(
+            'Enter payment amounts against outstanding invoices. Process a bank statement in one go.'
+          )}</p>
         </div>
       </div>
 
       {results.length > 0 && (
         <Card>
           <CardContent className="p-4">
-            <h3 className="mb-2 text-base font-semibold">Payment Results</h3>
+            <h3 className="mb-2 text-base font-semibold">{t('Payment Results')}</h3>
             <div className="space-y-1">
               {results.map((r, i) => (
                 <div key={i} className="flex items-center gap-2 py-1 text-sm">
@@ -201,7 +205,7 @@ export default function VNextFinanceRecordPayments() {
                 </div>
               ))}
             </div>
-            <Button variant="ghost" size="sm" onClick={() => setResults([])} className="mt-2">Dismiss</Button>
+            <Button variant="ghost" size="sm" onClick={() => setResults([])} className="mt-2">{t('Dismiss')}</Button>
           </CardContent>
         </Card>
       )}
@@ -212,17 +216,17 @@ export default function VNextFinanceRecordPayments() {
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               className="pl-9"
-              placeholder="Search by invoice # or customer..."
+              placeholder={t('Search by invoice # or customer...')}
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
           </div>
           {entriesWithAmount.length > 0 && (
             <div className="flex items-center gap-3">
-              <span className="text-sm font-medium">{entriesWithAmount.length} payment{entriesWithAmount.length > 1 ? 's' : ''} - {formatMoney(totalToApply)}</span>
+              <span className="text-sm font-medium">{entriesWithAmount.length} {t('payment')}{entriesWithAmount.length > 1 ? t('s') : ''}- {formatMoney(totalToApply)}</span>
               <Button onClick={processPayments} disabled={processing}>
                 <CreditCard className="h-4 w-4" />
-                {processing ? 'Processing...' : 'Apply All Payments'}
+                {processing ? t('Processing...') : t('Apply All Payments')}
               </Button>
             </div>
           )}
@@ -231,19 +235,19 @@ export default function VNextFinanceRecordPayments() {
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <CheckCircle2 className="h-8 w-8" />
-            <h3 className="text-base font-medium">No outstanding invoices</h3>
+            <h3 className="text-base font-medium">{t('No outstanding invoices')}</h3>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Invoice #</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Due Date</TableHead>
-                <TableHead className="text-right">Balance</TableHead>
-                <TableHead className="w-[140px]">Amount ($)</TableHead>
-                <TableHead className="w-[110px]">Method</TableHead>
-                <TableHead className="w-[140px]">Reference</TableHead>
+                <TableHead>{t('Invoice #')}</TableHead>
+                <TableHead>{t('Customer')}</TableHead>
+                <TableHead>{t('Due Date')}</TableHead>
+                <TableHead className="text-right">{t('Balance')}</TableHead>
+                <TableHead className="w-[140px]">{t('Amount ($)')}</TableHead>
+                <TableHead className="w-[110px]">{t('Method')}</TableHead>
+                <TableHead className="w-[140px]">{t('Reference')}</TableHead>
                 <TableHead className="w-[60px]" />
               </TableRow>
             </TableHeader>
@@ -282,9 +286,9 @@ export default function VNextFinanceRecordPayments() {
                       <Select value={p.method} onValueChange={v => setPaymentField(inv.id, 'method', v)}>
                         <SelectTrigger className="h-9 text-xs"><SelectValue /></SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="ach">ACH</SelectItem>
-                          <SelectItem value="wire">Wire</SelectItem>
-                          <SelectItem value="check">Check</SelectItem>
+                          <SelectItem value="ach">{t('ACH')}</SelectItem>
+                          <SelectItem value="wire">{t('Wire')}</SelectItem>
+                          <SelectItem value="check">{t('Check')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </TableCell>
@@ -292,7 +296,7 @@ export default function VNextFinanceRecordPayments() {
                       <Input
                         value={p.ref}
                         onChange={e => setPaymentField(inv.id, 'ref', e.target.value)}
-                        placeholder="Ref #"
+                        placeholder={t('Ref #')}
                         className="text-xs"
                       />
                     </TableCell>
@@ -300,7 +304,7 @@ export default function VNextFinanceRecordPayments() {
                       <Button
                         variant="ghost"
                         size="icon"
-                        title="Pay full balance"
+                        title={t('Pay full balance')}
                         onClick={() => payFullBalance(inv)}
                       >
                         <CheckCircle2 className="h-4 w-4" />

@@ -14,6 +14,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t as translate } from '@/i18n';
+
 interface PartnerTransaction {
   id: string;
   transactionType: string;
@@ -62,9 +64,11 @@ export default function CustomerEdiSetup() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">EDI setup</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{translate('EDI setup')}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Your trading partner configuration for EDI file exchange. This view is read-only - contact support to change connection settings.
+          {translate(
+            'Your trading partner configuration for EDI file exchange. This view is read-only - contact support to change connection settings.'
+          )}
         </p>
       </div>
 
@@ -73,7 +77,9 @@ export default function CustomerEdiSetup() {
       ) : partners.length === 0 ? (
         <Card>
           <CardContent className="p-8 text-center text-sm text-muted-foreground">
-            No trading partner is configured for your account. If you exchange EDI documents with us, reach out to have a partner provisioned.
+            {translate(
+              'No trading partner is configured for your account. If you exchange EDI documents with us, reach out to have a partner provisioned.'
+            )}
           </CardContent>
         </Card>
       ) : (
@@ -82,78 +88,78 @@ export default function CustomerEdiSetup() {
             <Card key={p.id}>
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>{p.name}</CardTitle>
-                <Badge variant={p.active ? 'success' : 'secondary'}>{p.active ? 'Active' : 'Inactive'}</Badge>
+                <Badge variant={p.active ? 'success' : 'secondary'}>{p.active ? translate('Active') : translate('Inactive')}</Badge>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid gap-2 text-sm sm:grid-cols-2">
-                  <div><strong>Entity type:</strong> {p.entityType}</div>
-                  <div><strong>EDI version:</strong> {p.ediVersion}</div>
+                  <div><strong>{translate('Entity type:')}</strong> {p.entityType}</div>
+                  <div><strong>{translate('EDI version:')}</strong> {p.ediVersion}</div>
                   <div>
-                    <strong>Sender ID (ISA06):</strong>{' '}
+                    <strong>{translate('Sender ID (ISA06):')}</strong>{' '}
                     <code className="rounded bg-muted px-1">{p.senderId ?? '-'}</code>
                   </div>
                   <div>
-                    <strong>Receiver ID (ISA08):</strong>{' '}
+                    <strong>{translate('Receiver ID (ISA08):')}</strong>{' '}
                     <code className="rounded bg-muted px-1">{p.receiverId ?? '-'}</code>
                   </div>
                 </div>
 
                 {(p.sftpHost || p.sftpUsername) && (
                   <div className="rounded-md bg-muted/50 p-3 text-sm">
-                    <div className="mb-2 font-semibold">SFTP</div>
+                    <div className="mb-2 font-semibold">{translate('SFTP')}</div>
                     <div className="grid gap-2 sm:grid-cols-2">
-                      <div><strong>Host:</strong> {p.sftpHost ?? '-'}</div>
-                      <div><strong>Port:</strong> {p.sftpPort}</div>
-                      <div><strong>Username:</strong> {p.sftpUsername ?? '-'}</div>
-                      <div><strong>Credential:</strong> {p.sftpPassword || p.sftpPrivateKey ? 'Configured' : 'None'}</div>
+                      <div><strong>{translate('Host:')}</strong> {p.sftpHost ?? '-'}</div>
+                      <div><strong>{translate('Port:')}</strong> {p.sftpPort}</div>
+                      <div><strong>{translate('Username:')}</strong> {p.sftpUsername ?? '-'}</div>
+                      <div><strong>{translate('Credential:')}</strong> {p.sftpPassword || p.sftpPrivateKey ? translate('Configured') : translate('None')}</div>
                     </div>
                   </div>
                 )}
 
                 {p.httpUrl && (
                   <div className="rounded-md bg-muted/50 p-3 text-sm">
-                    <div className="mb-2 font-semibold">HTTP</div>
+                    <div className="mb-2 font-semibold">{translate('HTTP')}</div>
                     <div className="grid gap-2 sm:grid-cols-2">
                       <div className="sm:col-span-2">
-                        <strong>URL:</strong>{' '}
+                        <strong>{translate('URL:')}</strong>{' '}
                         <code className="rounded bg-muted px-1">{p.httpUrl}</code>
                       </div>
-                      <div><strong>Auth type:</strong> {p.httpAuthType ?? 'none'}</div>
-                      <div><strong>Auth header:</strong> {p.httpAuthHeader ?? '-'}</div>
+                      <div><strong>{translate('Auth type:')}</strong> {p.httpAuthType ?? 'none'}</div>
+                      <div><strong>{translate('Auth header:')}</strong> {p.httpAuthHeader ?? '-'}</div>
                     </div>
                   </div>
                 )}
 
                 <div className="rounded-md bg-muted/50 p-3 text-sm">
-                  <div className="mb-2 font-semibold">File exchange</div>
+                  <div className="mb-2 font-semibold">{translate('File exchange')}</div>
                   <div className="grid gap-2 sm:grid-cols-2">
-                    <div><strong>Inbound:</strong> {p.inboundEnabled ? 'Enabled' : 'Disabled'}</div>
+                    <div><strong>{translate('Inbound:')}</strong> {p.inboundEnabled ? translate('Enabled') : translate('Disabled')}</div>
                     <div>
-                      <strong>Inbound dir:</strong>{' '}
+                      <strong>{translate('Inbound dir:')}</strong>{' '}
                       <code className="rounded bg-muted px-1">{p.inboundDir}</code>
                     </div>
-                    <div><strong>Outbound:</strong> {p.outboundEnabled ? 'Enabled' : 'Disabled'}</div>
-                    <div><strong>Outbound transport:</strong> {p.outboundTransport}</div>
+                    <div><strong>{translate('Outbound:')}</strong> {p.outboundEnabled ? translate('Enabled') : translate('Disabled')}</div>
+                    <div><strong>{translate('Outbound transport:')}</strong> {p.outboundTransport}</div>
                     <div className="sm:col-span-2">
-                      <strong>Outbound dir:</strong>{' '}
+                      <strong>{translate('Outbound dir:')}</strong>{' '}
                       <code className="rounded bg-muted px-1">{p.outboundDir ?? '-'}</code>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <div className="mb-2 text-sm font-semibold">Supported transactions</div>
+                  <div className="mb-2 text-sm font-semibold">{translate('Supported transactions')}</div>
                   {p.transactions.length === 0 ? (
-                    <div className="text-sm text-muted-foreground">None configured</div>
+                    <div className="text-sm text-muted-foreground">{translate('None configured')}</div>
                   ) : (
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Type</TableHead>
-                          <TableHead>Direction</TableHead>
-                          <TableHead>Enabled</TableHead>
-                          <TableHead>Auto-process</TableHead>
-                          <TableHead>Requires 997</TableHead>
+                          <TableHead>{translate('Type')}</TableHead>
+                          <TableHead>{translate('Direction')}</TableHead>
+                          <TableHead>{translate('Enabled')}</TableHead>
+                          <TableHead>{translate('Auto-process')}</TableHead>
+                          <TableHead>{translate('Requires 997')}</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -161,9 +167,9 @@ export default function CustomerEdiSetup() {
                           <TableRow key={t.id}>
                             <TableCell className="font-semibold">{t.transactionType}</TableCell>
                             <TableCell>{t.direction}</TableCell>
-                            <TableCell>{t.enabled ? 'Yes' : 'No'}</TableCell>
-                            <TableCell>{t.autoProcess ? 'Yes' : 'No'}</TableCell>
-                            <TableCell>{t.ack997Required ? 'Yes' : 'No'}</TableCell>
+                            <TableCell>{t.enabled ? translate('Yes') : translate('No')}</TableCell>
+                            <TableCell>{t.autoProcess ? translate('Yes') : translate('No')}</TableCell>
+                            <TableCell>{t.ack997Required ? translate('Yes') : translate('No')}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>

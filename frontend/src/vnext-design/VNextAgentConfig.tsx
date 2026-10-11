@@ -24,6 +24,8 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface AgentConfig {
   id: string;
   agentType: string;
@@ -79,7 +81,7 @@ function Banner({ variant, message, onClose }: { variant: 'success' | 'error'; m
     <div className={`flex items-start justify-between gap-3 rounded-md border p-3 text-sm ${tone}`}>
       <span>{message}</span>
       {onClose && (
-        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">Dismiss</button>
+        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">{t('Dismiss')}</button>
       )}
     </div>
   );
@@ -268,13 +270,13 @@ export default function VNextAgentConfig() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Agent configuration</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Configure AI agent prompts and behaviour</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Agent configuration')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Configure AI agent prompts and behaviour')}</p>
         </div>
         <Button variant="outline" onClick={() => setShowVersions(true)}>
           <History className="h-4 w-4" />
-          Version history ({versions.length})
-        </Button>
+          {t('Version history (')}{versions.length})
+                  </Button>
       </div>
 
       {successMsg && <Banner variant="success" message={successMsg} onClose={() => setSuccessMsg('')} />}
@@ -287,14 +289,14 @@ export default function VNextAgentConfig() {
               <Bot className="h-7 w-7" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold">{config?.name || 'Triage Agent'}</h2>
+              <h2 className="text-lg font-semibold">{config?.name || t('Triage Agent')}</h2>
               <p className="text-sm text-muted-foreground">
-                {config?.description || 'Analyzes shipment exceptions and creates issues'}
+                {config?.description || t('Analyzes shipment exceptions and creates issues')}
               </p>
             </div>
           </div>
           <label className="flex cursor-pointer items-center gap-2">
-            <span className="text-sm text-muted-foreground">{enabled ? 'Enabled' : 'Disabled'}</span>
+            <span className="text-sm text-muted-foreground">{enabled ? t('Enabled') : t('Disabled')}</span>
             <input
               type="checkbox"
               checked={enabled}
@@ -310,18 +312,18 @@ export default function VNextAgentConfig() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>
-                System prompt
+                {t('System prompt')}
                 {promptChanged && (
-                  <span className="ml-2 text-xs font-normal text-warning">(unsaved changes)</span>
+                  <span className="ml-2 text-xs font-normal text-warning">{t('(unsaved changes)')}</span>
                 )}
               </CardTitle>
               <div className="flex items-center gap-2">
                 <Button variant="ghost" size="sm" onClick={handlePreviewPrompt}>
                   <Eye className="h-4 w-4" />
-                  Preview
+                  {t('Preview')}
                 </Button>
                 {activeVersion && (
-                  <span className="text-xs text-muted-foreground">v{activeVersion.versionNumber}</span>
+                  <span className="text-xs text-muted-foreground">{t('v')}{activeVersion.versionNumber}</span>
                 )}
               </div>
             </CardHeader>
@@ -338,7 +340,7 @@ export default function VNextAgentConfig() {
                   <Input
                     value={changeNote}
                     onChange={e => setChangeNote(e.target.value)}
-                    placeholder="Change note (optional) - e.g. 'Made more aggressive on cold chain'"
+                    placeholder={t('Change note (optional) - e.g. \'Made more aggressive on cold chain\'')}
                   />
                 </div>
               )}
@@ -347,11 +349,13 @@ export default function VNextAgentConfig() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Event subscriptions</CardTitle>
+              <CardTitle>{t('Event subscriptions')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                Select which events trigger this agent. Unchecked events are ignored without restarting the worker.
+                {t(
+                  'Select which events trigger this agent. Unchecked events are ignored without restarting the worker.'
+                )}
               </p>
               {Object.entries(eventsByDomain).map(([domain, events]) => (
                 <div key={domain}>
@@ -395,13 +399,13 @@ export default function VNextAgentConfig() {
               className="flex cursor-pointer flex-row items-center justify-between"
               onClick={() => setShowAdvanced(!showAdvanced)}
             >
-              <CardTitle>Advanced settings</CardTitle>
+              <CardTitle>{t('Advanced settings')}</CardTitle>
               {showAdvanced ? <ChevronUp className="h-5 w-5 text-muted-foreground" /> : <ChevronDown className="h-5 w-5 text-muted-foreground" />}
             </CardHeader>
             {showAdvanced && (
               <CardContent className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>Temperature ({temperature})</Label>
+                  <Label>{t('Temperature (')}{temperature})</Label>
                   <input
                     type="range"
                     min="0"
@@ -411,15 +415,15 @@ export default function VNextAgentConfig() {
                     onChange={e => setTemperature(parseFloat(e.target.value))}
                     className="w-full"
                   />
-                  <p className="text-xs text-muted-foreground">Lower = more deterministic, higher = more creative</p>
+                  <p className="text-xs text-muted-foreground">{t('Lower = more deterministic, higher = more creative')}</p>
                 </div>
                 <div className="space-y-2">
-                  <Label>Max tokens</Label>
+                  <Label>{t('Max tokens')}</Label>
                   <Input type="number" min="64" max="4096" value={maxTokens} onChange={e => setMaxTokens(parseInt(e.target.value, 10))} />
-                  <p className="text-xs text-muted-foreground">Maximum response length (tokens)</p>
+                  <p className="text-xs text-muted-foreground">{t('Maximum response length (tokens)')}</p>
                 </div>
                 <div className="space-y-2">
-                  <Label>Confidence threshold ({confidenceThreshold || 'Off'})</Label>
+                  <Label>{t('Confidence threshold (')}{confidenceThreshold || t('Off')})</Label>
                   <input
                     type="range"
                     min="0"
@@ -430,13 +434,15 @@ export default function VNextAgentConfig() {
                     className="w-full"
                   />
                   <p className="text-xs text-muted-foreground">
-                    Decisions below this confidence are overridden to "no action" (0 = accept all)
+                    {t(
+                      'Decisions below this confidence are overridden to "no action" (0 = accept all)'
+                    )}
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <Label>Deduplication window (minutes)</Label>
+                  <Label>{t('Deduplication window (minutes)')}</Label>
                   <Input type="number" min="1" max="1440" value={deduplicationMinutes} onChange={e => setDeduplicationMinutes(parseInt(e.target.value, 10))} />
-                  <p className="text-xs text-muted-foreground">Suppress duplicate decisions for the same entity within this window</p>
+                  <p className="text-xs text-muted-foreground">{t('Suppress duplicate decisions for the same entity within this window')}</p>
                 </div>
               </CardContent>
             )}
@@ -445,7 +451,7 @@ export default function VNextAgentConfig() {
           <div className="flex justify-end">
             <Button variant="gradient" onClick={handleSaveSettings} disabled={saving}>
               <Save className="h-4 w-4" />
-              {saving ? 'Saving...' : 'Save configuration'}
+              {saving ? t('Saving...') : t('Save configuration')}
             </Button>
           </div>
         </div>
@@ -453,11 +459,13 @@ export default function VNextAgentConfig() {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Template variables</CardTitle>
+              <CardTitle>{t('Template variables')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="text-xs text-muted-foreground">
-                Click to insert into your prompt. These are replaced with real data at runtime.
+                {t(
+                  'Click to insert into your prompt. These are replaced with real data at runtime.'
+                )}
               </p>
               {templateVars.map(v => (
                 <div key={v.name}>
@@ -481,7 +489,7 @@ export default function VNextAgentConfig() {
       <Dialog open={showPreview} onOpenChange={setShowPreview}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>
-            <DialogTitle>Prompt preview (with sample data)</DialogTitle>
+            <DialogTitle>{t('Prompt preview (with sample data)')}</DialogTitle>
           </DialogHeader>
           <pre className="max-h-[500px] overflow-auto whitespace-pre-wrap rounded-md bg-muted p-4 text-xs leading-relaxed">
             {previewContent}
@@ -492,10 +500,10 @@ export default function VNextAgentConfig() {
       <Dialog open={showVersions} onOpenChange={setShowVersions}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>
-            <DialogTitle>Prompt version history</DialogTitle>
+            <DialogTitle>{t('Prompt version history')}</DialogTitle>
           </DialogHeader>
           {versions.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No versions yet.</p>
+            <p className="text-sm text-muted-foreground">{t('No versions yet.')}</p>
           ) : (
             <div className="space-y-3">
               {versions.map(v => (
@@ -506,12 +514,12 @@ export default function VNextAgentConfig() {
                   <CardContent className="p-4">
                     <div className="mb-2 flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <span className="font-semibold">Version {v.versionNumber}</span>
-                        {v.isActive && <Badge variant="info">Active</Badge>}
+                        <span className="font-semibold">{t('Version')} {v.versionNumber}</span>
+                        {v.isActive && <Badge variant="info">{t('Active')}</Badge>}
                       </div>
                       {!v.isActive && (
                         <Button variant="outline" size="sm" onClick={() => activateVersion(v.id)}>
-                          Activate
+                          {t('Activate')}
                         </Button>
                       )}
                     </div>

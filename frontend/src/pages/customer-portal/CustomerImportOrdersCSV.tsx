@@ -20,6 +20,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface ImportError {
   row: number;
   orderNumber?: string;
@@ -102,7 +104,7 @@ export default function CustomerImportOrdersCSV() {
       }
     } catch (err: any) {
       setError(err.message || 'Import failed');
-      toast.error('Failed to import CSV', { description: err?.message || 'Network error' });
+      toast.error(t('Failed to import CSV'), { description: err?.message || 'Network error' });
       setStage('idle');
     }
   }
@@ -122,7 +124,7 @@ export default function CustomerImportOrdersCSV() {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch (err: any) {
-      toast.error('Failed to download template', { description: err?.message || 'Network error' });
+      toast.error(t('Failed to download template'), { description: err?.message || 'Network error' });
     }
   }
 
@@ -139,15 +141,15 @@ export default function CustomerImportOrdersCSV() {
       <div>
         <Button variant="ghost" size="sm" onClick={() => navigate('/customer-portal/orders')}>
           <ArrowLeft className="h-4 w-4" />
-          Orders
+          {t('Orders')}
         </Button>
       </div>
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Bulk upload orders</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Bulk upload orders')}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Upload a CSV to create orders in bulk. Each line is validated against the active mode rules
-          (LTL needs dimensions and class, hazmat needs UN/class/packing group/proper shipping name, etc.).
-          Orders with any failing line are rejected with row-level errors; sibling orders still go through.
+          {t(
+            'Upload a CSV to create orders in bulk. Each line is validated against the active mode rules\n          (LTL needs dimensions and class, hazmat needs UN/class/packing group/proper shipping name, etc.).\n          Orders with any failing line are rejected with row-level errors; sibling orders still go through.'
+          )}
         </p>
       </div>
 
@@ -155,7 +157,7 @@ export default function CustomerImportOrdersCSV() {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Upload file</CardTitle>
+              <CardTitle>{t('Upload file')}</CardTitle>
             </CardHeader>
             <CardContent>
               {!file ? (
@@ -170,8 +172,8 @@ export default function CustomerImportOrdersCSV() {
                   )}
                 >
                   <CloudUpload className="mx-auto h-12 w-12 text-muted-foreground/60" />
-                  <div className="mt-3 text-base font-medium">Drop your CSV file here</div>
-                  <div className="mt-1 text-sm text-muted-foreground">or press Enter to browse</div>
+                  <div className="mt-3 text-base font-medium">{t('Drop your CSV file here')}</div>
+                  <div className="mt-1 text-sm text-muted-foreground">{t('or press Enter to browse')}</div>
                   <input
                     ref={fileInputRef}
                     id="csv-file-input-portal"
@@ -191,7 +193,7 @@ export default function CustomerImportOrdersCSV() {
                   {!importing && (
                     <Button variant="ghost" size="sm" onClick={removeFile}>
                       <X className="h-4 w-4" />
-                      Remove
+                      {t('Remove')}
                     </Button>
                   )}
                 </div>
@@ -200,7 +202,7 @@ export default function CustomerImportOrdersCSV() {
               <div className="mt-4 flex items-center gap-3">
                 <Button variant="gradient" disabled={!file || importing} onClick={handleImport}>
                   {importing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
-                  {importing ? 'Importing...' : 'Import orders'}
+                  {importing ? t('Importing...') : t('Import orders')}
                 </Button>
                 {importing && (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -222,7 +224,7 @@ export default function CustomerImportOrdersCSV() {
           {result && (
             <Card>
               <CardHeader>
-                <CardTitle>Import results</CardTitle>
+                <CardTitle>{t('Import results')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-3 sm:grid-cols-2">
@@ -231,26 +233,26 @@ export default function CustomerImportOrdersCSV() {
                       <CheckCircle2 className="h-5 w-5" />
                     </div>
                     <div className="mt-3 text-2xl font-bold tracking-tight">{result.ordersCreated}</div>
-                    <div className="mt-1 text-sm text-muted-foreground">Orders created</div>
+                    <div className="mt-1 text-sm text-muted-foreground">{t('Orders created')}</div>
                   </Card>
                   <Card className="p-5">
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-destructive/10 text-destructive">
                       <XCircle className="h-5 w-5" />
                     </div>
                     <div className="mt-3 text-2xl font-bold tracking-tight">{result.errors.length}</div>
-                    <div className="mt-1 text-sm text-muted-foreground">Errors</div>
+                    <div className="mt-1 text-sm text-muted-foreground">{t('Errors')}</div>
                   </Card>
                 </div>
 
                 {result.errors.length > 0 && (
                   <div className="mt-6">
-                    <div className="mb-2 text-sm font-semibold">Error details</div>
+                    <div className="mb-2 text-sm font-semibold">{t('Error details')}</div>
                     <div className="max-h-96 space-y-1 overflow-auto">
                       {result.errors.map((err, i) => (
                         <div key={i} className="flex items-start gap-2 rounded-md bg-muted/30 px-3 py-2 text-sm">
                           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-destructive" />
                           <div className="flex-1">
-                            <span className="font-semibold">Row {err.row}</span>
+                            <span className="font-semibold">{t('Row')} {err.row}</span>
                             {err.orderNumber && <span className="ml-2 text-muted-foreground">({err.orderNumber})</span>}
                             <span className="ml-2">{err.message}</span>
                           </div>
@@ -263,13 +265,13 @@ export default function CustomerImportOrdersCSV() {
                 {result.ordersCreated > 0 && result.errors.length === 0 && (
                   <div className="mt-4 flex items-center gap-3 rounded-md border border-success/30 bg-success/10 p-3 text-sm text-success">
                     <CheckCircle2 className="h-5 w-5" />
-                    All orders imported successfully.
+                    {t('All orders imported successfully.')}
                   </div>
                 )}
 
                 {result.orders.length > 0 && (
                   <div className="mt-4">
-                    <div className="mb-2 text-sm font-semibold">Created orders</div>
+                    <div className="mb-2 text-sm font-semibold">{t('Created orders')}</div>
                     <div className="flex flex-wrap gap-2">
                       {result.orders.map(o => (
                         <Button key={o.id} variant="outline" size="sm" onClick={() => navigate(`/customer-portal/orders/${o.id}`)}>
@@ -287,22 +289,23 @@ export default function CustomerImportOrdersCSV() {
         <div>
           <Card>
             <CardHeader>
-              <CardTitle>CSV format</CardTitle>
+              <CardTitle>{t('CSV format')}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Download the template to see every column the importer accepts. Required fields depend on the mode and flags:
-                LTL needs dimensions and class; hazmat needs UN/class/packing group/proper shipping name; international needs HS code and country of origin; temperature-controlled needs min/max degrees C.
+                {t(
+                  'Download the template to see every column the importer accepts. Required fields depend on the mode and flags:\n                LTL needs dimensions and class; hazmat needs UN/class/packing group/proper shipping name; international needs HS code and country of origin; temperature-controlled needs min/max degrees C.'
+                )}
               </p>
               <Button variant="outline" className="mt-4 w-full" onClick={downloadTemplate}>
                 <Download className="h-4 w-4" />
-                Download template
+                {t('Download template')}
               </Button>
               <div className="mt-6 space-y-2 text-xs text-muted-foreground">
-                <div><span className="font-semibold">Per row:</span> orderNumber, sku, quantity (required)</div>
-                <div><span className="font-semibold">Per order:</span> always include weight + unitOfMeasure</div>
-                <div><span className="font-semibold">Group rows for one order</span> by repeating the same orderNumber</div>
-                <div><span className="font-semibold">customerId</span> is forced to your account, you can omit it</div>
+                <div><span className="font-semibold">{t('Per row:')}</span> {t('orderNumber, sku, quantity (required)')}</div>
+                <div><span className="font-semibold">{t('Per order:')}</span> {t('always include weight + unitOfMeasure')}</div>
+                <div><span className="font-semibold">{t('Group rows for one order')}</span> {t('by repeating the same orderNumber')}</div>
+                <div><span className="font-semibold">{t('customerId')}</span> {t('is forced to your account, you can omit it')}</div>
               </div>
             </CardContent>
           </Card>

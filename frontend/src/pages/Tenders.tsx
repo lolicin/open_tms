@@ -16,6 +16,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t as translate } from '@/i18n';
+
 interface Tender {
   id: string;
   reference: string;
@@ -88,20 +90,20 @@ export default function Tenders() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Tenders</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Manage carrier tender requests and bids</p>
+          <h1 className="text-3xl font-bold tracking-tight">{translate('Tenders')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{translate('Manage carrier tender requests and bids')}</p>
         </div>
         <Button asChild variant="gradient">
           <Link to="/tenders/create">
             <Plus className="h-4 w-4" />
-            Create Tender
+            {translate('Create Tender')}
           </Link>
         </Button>
       </div>
 
       <Card className="p-4">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm font-medium">Status:</span>
+          <span className="text-sm font-medium">{translate('Status:')}</span>
           {STATUS_OPTIONS.map(s => (
             <Button
               key={s}
@@ -109,18 +111,18 @@ export default function Tenders() {
               variant={statusFilter === s ? 'default' : 'outline'}
               onClick={() => setStatusFilter(s)}
             >
-              {s || 'All'}
+              {s || translate('All')}
             </Button>
           ))}
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-2">
-          <span className="text-sm font-medium">Carrier:</span>
+          <span className="text-sm font-medium">{translate('Carrier:')}</span>
           <Select value={carrierFilter || 'all'} onValueChange={v => setCarrierFilter(v === 'all' ? '' : v)}>
             <SelectTrigger className="w-[240px]">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Carriers</SelectItem>
+              <SelectItem value="all">{translate('All Carriers')}</SelectItem>
               {carriers.map(c => (
                 <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
               ))}
@@ -128,7 +130,7 @@ export default function Tenders() {
           </Select>
           {carrierFilter && (
             <Button variant="outline" size="sm" onClick={() => setCarrierFilter('')}>
-              Clear
+              {translate('Clear')}
             </Button>
           )}
         </div>
@@ -138,15 +140,15 @@ export default function Tenders() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Reference</TableHead>
-              <TableHead>Shipment</TableHead>
-              <TableHead>Route</TableHead>
-              <TableHead>Strategy</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Carriers</TableHead>
-              <TableHead>Bids</TableHead>
-              <TableHead>Target Rate</TableHead>
-              <TableHead>Created</TableHead>
+              <TableHead>{translate('Reference')}</TableHead>
+              <TableHead>{translate('Shipment')}</TableHead>
+              <TableHead>{translate('Route')}</TableHead>
+              <TableHead>{translate('Strategy')}</TableHead>
+              <TableHead>{translate('Status')}</TableHead>
+              <TableHead>{translate('Carriers')}</TableHead>
+              <TableHead>{translate('Bids')}</TableHead>
+              <TableHead>{translate('Target Rate')}</TableHead>
+              <TableHead>{translate('Created')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -159,7 +161,7 @@ export default function Tenders() {
             ) : tenders.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={9} className="py-12 text-center text-muted-foreground">
-                  No tenders found
+                  {translate('No tenders found')}
                 </TableCell>
               </TableRow>
             ) : tenders.map(t => (

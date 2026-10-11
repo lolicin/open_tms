@@ -30,6 +30,8 @@ import {
 import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 export interface ShareLink {
   id: string;
   shipmentId: string;
@@ -104,7 +106,7 @@ export function ShipmentShareLinksTab({
       toast.error(json.error || 'Could not withdraw the link');
       return;
     }
-    toast.success('Link withdrawn');
+    toast.success(t('Link withdrawn'));
     load();
   };
 
@@ -112,7 +114,7 @@ export function ShipmentShareLinksTab({
     return (
       <div className="flex items-center gap-2 p-6 text-sm text-muted-foreground">
         <Loader2 className="h-4 w-4 animate-spin" />
-        Loading share links
+        {t('Loading share links')}
       </div>
     );
   }
@@ -123,7 +125,7 @@ export function ShipmentShareLinksTab({
         <CardContent className="space-y-3 p-6">
           <p className="text-sm text-destructive">{error}</p>
           <Button variant="outline" size="sm" onClick={load}>
-            Try again
+            {t('Try again')}
           </Button>
         </CardContent>
       </Card>
@@ -134,15 +136,16 @@ export function ShipmentShareLinksTab({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold">Shared links</h3>
+          <h3 className="text-lg font-semibold">{t('Shared links')}</h3>
           <p className="text-sm text-muted-foreground">
-            Public links to this shipment. Each one needs its access code and an email address to
-            open.
+            {t(
+              'Public links to this shipment. Each one needs its access code and an email address to\n            open.'
+            )}
           </p>
         </div>
         <Button size="sm" onClick={onShareClick}>
           <Share2 className="h-4 w-4" />
-          New link
+          {t('New link')}
         </Button>
       </div>
 
@@ -151,14 +154,14 @@ export function ShipmentShareLinksTab({
           <CardContent className="flex flex-col items-center gap-3 p-10 text-center">
             <Link2 className="h-8 w-8 text-muted-foreground" />
             <div>
-              <p className="font-medium">No links yet</p>
+              <p className="font-medium">{t('No links yet')}</p>
               <p className="text-sm text-muted-foreground">
-                Share this shipment to give a customer or consignee a read-only view.
+                {t('Share this shipment to give a customer or consignee a read-only view.')}
               </p>
             </div>
             <Button size="sm" onClick={onShareClick}>
               <Share2 className="h-4 w-4" />
-              Share shipment
+              {t('Share shipment')}
             </Button>
           </CardContent>
         </Card>
@@ -169,12 +172,12 @@ export function ShipmentShareLinksTab({
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-8" />
-                  <TableHead>Note</TableHead>
-                  <TableHead>Shows</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Opened</TableHead>
-                  <TableHead>Last opened</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t('Note')}</TableHead>
+                  <TableHead>{t('Shows')}</TableHead>
+                  <TableHead>{t('Status')}</TableHead>
+                  <TableHead className="text-right">{t('Opened')}</TableHead>
+                  <TableHead>{t('Last opened')}</TableHead>
+                  <TableHead className="text-right">{t('Actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -241,7 +244,7 @@ function ShareLinkRow({
             )}
           </Button>
         </TableCell>
-        <TableCell className="font-medium">{link.label || 'Untitled link'}</TableCell>
+        <TableCell className="font-medium">{link.label || t('Untitled link')}</TableCell>
         <TableCell>
           <div className="flex flex-wrap gap-1">
             {link.sections.map((section) => (
@@ -256,7 +259,7 @@ function ShareLinkRow({
         </TableCell>
         <TableCell className="text-right tabular-nums">{link.accessCount}</TableCell>
         <TableCell className="text-sm text-muted-foreground">
-          {link.lastAccessedAt ? new Date(link.lastAccessedAt).toLocaleString() : 'Never'}
+          {link.lastAccessedAt ? new Date(link.lastAccessedAt).toLocaleString() : t('Never')}
         </TableCell>
         <TableCell className="text-right">
           <div className="flex justify-end gap-1">
@@ -266,7 +269,7 @@ function ShareLinkRow({
               onClick={onEdit}
               disabled={Boolean(link.revokedAt)}
             >
-              Edit
+              {t('Edit')}
             </Button>
             <Button
               variant="ghost"
@@ -274,7 +277,7 @@ function ShareLinkRow({
               className="h-8 w-8 text-destructive hover:text-destructive"
               onClick={onRevoke}
               disabled={Boolean(link.revokedAt)}
-              aria-label="Withdraw link"
+              aria-label={t('Withdraw link')}
             >
               <Trash2 className="h-4 w-4" />
             </Button>
@@ -323,13 +326,13 @@ function AccessLog({ shareLinkId }: { shareLinkId: string }) {
     return (
       <div className="flex items-center gap-2 p-3 text-sm text-muted-foreground">
         <Loader2 className="h-4 w-4 animate-spin" />
-        Loading access log
+        {t('Loading access log')}
       </div>
     );
   }
 
   if (rows.length === 0) {
-    return <p className="p-3 text-sm text-muted-foreground">Nobody has opened this link yet.</p>;
+    return <p className="p-3 text-sm text-muted-foreground">{t('Nobody has opened this link yet.')}</p>;
   }
 
   return (
@@ -374,10 +377,10 @@ function EditShareLinkDialog({
         toast.error(json.error || 'Could not update the link');
         return;
       }
-      toast.success('Link updated');
+      toast.success(t('Link updated'));
       onSaved();
     } catch {
-      toast.error('Could not update the link');
+      toast.error(t('Could not update the link'));
     } finally {
       setSaving(false);
     }
@@ -387,9 +390,11 @@ function EditShareLinkDialog({
     <Dialog open onOpenChange={(open) => !open && onClose()}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit shared link</DialogTitle>
+          <DialogTitle>{t('Edit shared link')}</DialogTitle>
           <DialogDescription>
-            Changes apply straight away, including to anyone with the page already open.
+            {t(
+              'Changes apply straight away, including to anyone with the page already open.'
+            )}
           </DialogDescription>
         </DialogHeader>
 
@@ -413,17 +418,17 @@ function EditShareLinkDialog({
             </div>
           ))}
           {sections.length === 0 && (
-            <p className="text-xs text-destructive">Pick at least one section to share.</p>
+            <p className="text-xs text-destructive">{t('Pick at least one section to share.')}</p>
           )}
         </div>
 
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>
-            Cancel
+            {t('Cancel')}
           </Button>
           <Button onClick={save} disabled={saving || sections.length === 0}>
             {saving && <Loader2 className="h-4 w-4 animate-spin" />}
-            Save
+            {t('Save')}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -432,7 +437,7 @@ function EditShareLinkDialog({
 }
 
 function linkStatus(link: ShareLink): { label: string; variant: 'muted' | 'success' | 'destructive' } {
-  if (link.revokedAt) return { label: 'Withdrawn', variant: 'destructive' };
-  if (new Date(link.expiresAt).getTime() <= Date.now()) return { label: 'Expired', variant: 'muted' };
+  if (link.revokedAt) return { label: t('Withdrawn'), variant: 'destructive' };
+  if (new Date(link.expiresAt).getTime() <= Date.now()) return { label: t('Expired'), variant: 'muted' };
   return { label: `Expires ${new Date(link.expiresAt).toLocaleDateString()}`, variant: 'success' };
 }

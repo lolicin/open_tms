@@ -18,6 +18,8 @@ import { API_URL } from '../api';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 
+import { t as translate } from '@/i18n';
+
 type TaskType = 'pick' | 'putaway' | 'receive' | 'pack' | 'return-receive' | 'return-inspect';
 
 interface TaskItem {
@@ -49,12 +51,12 @@ function statusVariant(s: string): 'muted' | 'info' | 'warning' | 'success' {
 }
 
 const TABS = [
-  { value: 'all', label: 'All' },
-  { value: 'receive', label: 'Receive' },
-  { value: 'putaway', label: 'Putaway' },
-  { value: 'pick', label: 'Pick' },
-  { value: 'pack', label: 'Pack' },
-  { value: 'returns', label: 'Returns' },
+  { value: 'all', label: translate('All') },
+  { value: 'receive', label: translate('Receive') },
+  { value: 'putaway', label: translate('Putaway') },
+  { value: 'pick', label: translate('Pick') },
+  { value: 'pack', label: translate('Pack') },
+  { value: 'returns', label: translate('Returns') },
 ] as const;
 
 type Tab = (typeof TABS)[number]['value'];
@@ -171,8 +173,8 @@ export default function WarehouseTasks() {
   return (
     <div className="mx-auto max-w-2xl space-y-4 px-1 py-2 pb-24">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Tasks</h1>
-        <p className="text-sm text-muted-foreground">Active warehouse work assigned to you</p>
+        <h1 className="text-2xl font-bold tracking-tight">{translate('Tasks')}</h1>
+        <p className="text-sm text-muted-foreground">{translate('Active warehouse work assigned to you')}</p>
       </div>
 
       {/* Tab pills - scrollable on small screens */}
@@ -207,8 +209,8 @@ export default function WarehouseTasks() {
       ) : filtered.length === 0 ? (
         <Card className="flex flex-col items-center gap-2 py-12 text-center">
           <CheckCircle2 className="h-12 w-12 text-success" />
-          <p className="text-base font-semibold">No active tasks</p>
-          <p className="px-6 text-sm text-muted-foreground">You're all caught up.</p>
+          <p className="text-base font-semibold">{translate('No active tasks')}</p>
+          <p className="px-6 text-sm text-muted-foreground">{translate('You\'re all caught up.')}</p>
         </Card>
       ) : (
         <div className="space-y-3">

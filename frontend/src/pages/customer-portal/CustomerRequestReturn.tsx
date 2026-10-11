@@ -24,6 +24,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface OrderLineItem {
   id: string;
   sku: string;
@@ -136,7 +138,7 @@ export default function CustomerRequestReturn() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">Request a return</h1>
+      <h1 className="text-3xl font-bold tracking-tight">{t('Request a return')}</h1>
 
       {error && (
         <div className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
@@ -146,22 +148,22 @@ export default function CustomerRequestReturn() {
 
       <Card>
         <CardHeader>
-          <CardTitle>1. Choose order</CardTitle>
+          <CardTitle>{t('1. Choose order')}</CardTitle>
         </CardHeader>
         <CardContent>
           {loadingOrders && <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />}
           {!loadingOrders && orders.length === 0 && (
-            <div className="text-sm text-muted-foreground">You have no delivered orders eligible for return.</div>
+            <div className="text-sm text-muted-foreground">{t('You have no delivered orders eligible for return.')}</div>
           )}
           {!loadingOrders && orders.length > 0 && (
             <Select value={selectedOrderId} onValueChange={v => { setSelectedOrderId(v); setLines([]); }}>
               <SelectTrigger>
-                <SelectValue placeholder="Select an order..." />
+                <SelectValue placeholder={t('Select an order...')} />
               </SelectTrigger>
               <SelectContent>
                 {orders.map(o => (
                   <SelectItem key={o.id} value={o.id}>
-                    {o.orderNumber} - {o.lineItems.length} line{o.lineItems.length === 1 ? '' : 's'} - delivered {new Date(o.createdAt).toLocaleDateString()}
+                    {o.orderNumber}- {o.lineItems.length} {t('line')}{o.lineItems.length === 1 ? '' : t('s')} {t('- delivered')} {new Date(o.createdAt).toLocaleDateString()}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -173,18 +175,18 @@ export default function CustomerRequestReturn() {
       {selectedOrder && (
         <Card>
           <CardHeader>
-            <CardTitle>2. Select items to return</CardTitle>
+            <CardTitle>{t('2. Select items to return')}</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-10"></TableHead>
-                  <TableHead>SKU</TableHead>
-                  <TableHead>Description</TableHead>
-                  <TableHead>Ordered qty</TableHead>
-                  <TableHead>Return qty</TableHead>
-                  <TableHead>Preferred outcome</TableHead>
+                  <TableHead>{t('SKU')}</TableHead>
+                  <TableHead>{t('Description')}</TableHead>
+                  <TableHead>{t('Ordered qty')}</TableHead>
+                  <TableHead>{t('Return qty')}</TableHead>
+                  <TableHead>{t('Preferred outcome')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -243,14 +245,14 @@ export default function CustomerRequestReturn() {
       {selectedOrder && lines.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>3. Reason</CardTitle>
+            <CardTitle>{t('3. Reason')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="return-reason">Why are you returning?</Label>
+              <Label htmlFor="return-reason">{t('Why are you returning?')}</Label>
               <Select value={returnReason} onValueChange={setReturnReason}>
                 <SelectTrigger id="return-reason">
-                  <SelectValue placeholder="Select a reason..." />
+                  <SelectValue placeholder={t('Select a reason...')} />
                 </SelectTrigger>
                 <SelectContent>
                   {RETURN_REASONS.map(r => <SelectItem key={r.v} value={r.v}>{r.l}</SelectItem>)}
@@ -258,14 +260,14 @@ export default function CustomerRequestReturn() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="notes">Additional notes (optional)</Label>
+              <Label htmlFor="notes">{t('Additional notes (optional)')}</Label>
               <textarea
                 id="notes"
                 className={TEXTAREA_CLASS}
                 rows={3}
                 value={notes}
                 onChange={e => setNotes(e.target.value)}
-                placeholder="Describe the issue so our team can help..."
+                placeholder={t('Describe the issue so our team can help...')}
               />
             </div>
           </CardContent>
@@ -274,10 +276,10 @@ export default function CustomerRequestReturn() {
 
       <div className="flex justify-end gap-2">
         <Button variant="outline" onClick={() => navigate('/customer-portal/returns')} disabled={submitting}>
-          Cancel
+          {t('Cancel')}
         </Button>
         <Button variant="gradient" onClick={handleSubmit} disabled={!canSubmit || submitting}>
-          {submitting ? 'Submitting...' : 'Submit return request'}
+          {submitting ? t('Submitting...') : t('Submit return request')}
         </Button>
       </div>
     </div>

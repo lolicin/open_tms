@@ -60,6 +60,8 @@ import {
 import { cn } from '@/lib/utils';
 import { keepMapSized, worldBoundsMapOptions, capWorldZoomOut, addBaseTileLayer } from '../lib/leafletMap';
 
+import { t as translate } from '@/i18n';
+
 interface Shipment {
   id: string;
   reference?: string;
@@ -511,11 +513,11 @@ export default function VNextShipments() {
   };
 
   const stats = [
-    { key: 'draft', label: 'Draft', value: statusCounts.draft, icon: FilePenLine },
-    { key: 'ready', label: 'Ready', value: statusCounts.ready, icon: CalendarCheck },
-    { key: 'in_progress', label: 'In progress', value: statusCounts.in_progress, icon: Truck },
-    { key: 'complete', label: 'Complete', value: statusCounts.complete, icon: CheckCircle2 },
-    { key: 'issue', label: 'Issues', value: statusCounts.issue, icon: AlertTriangle },
+    { key: 'draft', label: translate('Draft'), value: statusCounts.draft, icon: FilePenLine },
+    { key: 'ready', label: translate('Ready'), value: statusCounts.ready, icon: CalendarCheck },
+    { key: 'in_progress', label: translate('In progress'), value: statusCounts.in_progress, icon: Truck },
+    { key: 'complete', label: translate('Complete'), value: statusCounts.complete, icon: CheckCircle2 },
+    { key: 'issue', label: translate('Issues'), value: statusCounts.issue, icon: AlertTriangle },
   ] as const;
 
   const filteredIds = useMemo(() => filtered.map(s => s.id), [filtered]);
@@ -597,7 +599,7 @@ export default function VNextShipments() {
       clearSelection();
       setBulkStatus('');
     } catch {
-      toast.error('Bulk update failed');
+      toast.error(translate('Bulk update failed'));
     } finally {
       setBulkBusy(false);
     }
@@ -634,7 +636,7 @@ export default function VNextShipments() {
       setShipments(prev => prev.filter(s => !okIds.has(s.id)));
       clearSelection();
     } catch {
-      toast.error('Bulk archive failed');
+      toast.error(translate('Bulk archive failed'));
     } finally {
       setBulkArchiving(false);
     }
@@ -671,7 +673,7 @@ export default function VNextShipments() {
       setShipments(prev => prev.filter(s => !okIds.has(s.id)));
       clearSelection();
     } catch {
-      toast.error('Bulk delete failed');
+      toast.error(translate('Bulk delete failed'));
     } finally {
       setBulkDeleting(false);
       setConfirmBulkDelete(false);
@@ -682,7 +684,7 @@ export default function VNextShipments() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{translate('Loading...')}</h3>
       </div>
     );
   }
@@ -700,17 +702,17 @@ export default function VNextShipments() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Shipments</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{shipments.length} total shipments</p>
+          <h1 className="text-3xl font-bold tracking-tight">{translate('Shipments')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{shipments.length} {translate('total shipments')}</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline" onClick={() => exportShipmentsCsv(filtered)}>
             <Download className="h-4 w-4" />
-            Export
+            {translate('Export')}
           </Button>
           <Button variant="gradient" onClick={() => navigate('/shipments/create')}>
             <Plus className="h-4 w-4" />
-            New shipment
+            {translate('New shipment')}
           </Button>
         </div>
       </div>
@@ -750,7 +752,7 @@ export default function VNextShipments() {
               onClick={() => setViewMode('table')}
             >
               <ListIcon className="h-4 w-4" />
-              Table
+              {translate('Table')}
             </Button>
             <Separator orientation="vertical" />
             <Button
@@ -760,7 +762,7 @@ export default function VNextShipments() {
               onClick={() => setViewMode('map')}
             >
               <MapIcon className="h-4 w-4" />
-              Map
+              {translate('Map')}
             </Button>
           </div>
 
@@ -775,7 +777,7 @@ export default function VNextShipments() {
                   className="rounded-r-none"
                   onClick={() => setMapActiveOnly(false)}
                 >
-                  All shipments
+                  {translate('All shipments')}
                 </Button>
                 <Separator orientation="vertical" />
                 <Button
@@ -784,16 +786,16 @@ export default function VNextShipments() {
                   className="rounded-l-none"
                   onClick={() => setMapActiveOnly(true)}
                 >
-                  Active only
+                  {translate('Active only')}
                 </Button>
               </div>
 
               <Select value={mapLaneFilter} onValueChange={setMapLaneFilter}>
                 <SelectTrigger className="w-[200px]">
-                  <SelectValue placeholder="All lanes" />
+                  <SelectValue placeholder={translate('All lanes')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All lanes</SelectItem>
+                  <SelectItem value="all">{translate('All lanes')}</SelectItem>
                   {lanesInView.map(l => (
                     <SelectItem key={l.id} value={l.id}>{l.name}</SelectItem>
                   ))}
@@ -808,7 +810,7 @@ export default function VNextShipments() {
                   className="h-4 w-4 rounded border border-input bg-background accent-primary"
                 />
                 <span className="inline-block h-0.5 w-4 rounded-full" style={{ background: MARKER_COLORS.info }} />
-                Lanes
+                {translate('Lanes')}
               </label>
               <label className={cn('flex select-none items-center gap-1.5 text-sm', showLanes ? 'cursor-pointer' : 'cursor-not-allowed opacity-50')}>
                 <input
@@ -819,11 +821,11 @@ export default function VNextShipments() {
                   className="h-4 w-4 rounded border border-input bg-background accent-primary"
                 />
                 <span className="inline-block h-0.5 w-4 rounded-full" style={{ background: COLOR_ROUTE }} />
-                Planned routes
+                {translate('Planned routes')}
               </label>
 
               <span className="ml-auto text-sm text-muted-foreground">
-                {mapShipments.length} of {filtered.length} shown on map
+                {mapShipments.length} {translate('of')} {filtered.length} {translate('shown on map')}
               </span>
             </>
           )}
@@ -839,7 +841,7 @@ export default function VNextShipments() {
           <div className="relative min-w-[280px] max-w-sm flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search by ID, customer, origin, destination, carrier..."
+              placeholder={translate('Search by ID, customer, origin, destination, carrier...')}
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="pl-9"
@@ -851,21 +853,21 @@ export default function VNextShipments() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All statuses ({statusCounts.all})</SelectItem>
-              <SelectItem value="draft">Draft ({statusCounts.draft})</SelectItem>
-              <SelectItem value="ready">Ready ({statusCounts.ready})</SelectItem>
-              <SelectItem value="in_progress">In progress ({statusCounts.in_progress})</SelectItem>
-              <SelectItem value="complete">Complete ({statusCounts.complete})</SelectItem>
-              <SelectItem value="issue">Issues ({statusCounts.issue})</SelectItem>
+              <SelectItem value="all">{translate('All statuses (')}{statusCounts.all})</SelectItem>
+              <SelectItem value="draft">{translate('Draft (')}{statusCounts.draft})</SelectItem>
+              <SelectItem value="ready">{translate('Ready (')}{statusCounts.ready})</SelectItem>
+              <SelectItem value="in_progress">{translate('In progress (')}{statusCounts.in_progress})</SelectItem>
+              <SelectItem value="complete">{translate('Complete (')}{statusCounts.complete})</SelectItem>
+              <SelectItem value="issue">{translate('Issues (')}{statusCounts.issue})</SelectItem>
             </SelectContent>
           </Select>
 
           <Select value={typeFilter} onValueChange={setTypeFilter}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="All types" />
+              <SelectValue placeholder={translate('All types')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All types</SelectItem>
+              <SelectItem value="all">{translate('All types')}</SelectItem>
               {sortedShipmentTypes.map(t => (
                 <SelectItem key={t.id} value={t.id}>
                   <span className="inline-flex items-center gap-2">
@@ -885,10 +887,10 @@ export default function VNextShipments() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="createdAt">Sort: Created</SelectItem>
-              <SelectItem value="updatedAt">Sort: Updated</SelectItem>
-              <SelectItem value="pickupDate">Sort: Pickup</SelectItem>
-              <SelectItem value="deliveryDate">Sort: Delivery</SelectItem>
+              <SelectItem value="createdAt">{translate('Sort: Created')}</SelectItem>
+              <SelectItem value="updatedAt">{translate('Sort: Updated')}</SelectItem>
+              <SelectItem value="pickupDate">{translate('Sort: Pickup')}</SelectItem>
+              <SelectItem value="deliveryDate">{translate('Sort: Delivery')}</SelectItem>
             </SelectContent>
           </Select>
 
@@ -897,7 +899,7 @@ export default function VNextShipments() {
             size="icon"
             onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
             title={sortOrder === 'asc' ? 'Ascending (oldest first)' : 'Descending (newest first)'}
-            aria-label="Toggle sort order"
+            aria-label={translate('Toggle sort order')}
           >
             {sortOrder === 'asc' ? <ArrowUp className="h-4 w-4" /> : <ArrowDown className="h-4 w-4" />}
           </Button>
@@ -906,42 +908,42 @@ export default function VNextShipments() {
         <Separator />
 
         <div className="grid grid-cols-[110px_170px_24px_170px_auto] items-center gap-3 px-4 py-3 text-sm md:px-6">
-          <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Created</div>
+          <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{translate('Created')}</div>
           <DatePicker
             type="date"
             value={createdFrom}
             onChange={e => setCreatedFrom(e.target.value)}
-            aria-label="Created from"
+            aria-label={translate('Created from')}
           />
-          <div className="text-center text-xs text-muted-foreground">to</div>
+          <div className="text-center text-xs text-muted-foreground">{translate('to')}</div>
           <DatePicker
             type="date"
             value={createdTo}
             onChange={e => setCreatedTo(e.target.value)}
-            aria-label="Created to"
+            aria-label={translate('Created to')}
           />
           <div className="justify-self-end">
             {hasDateFilters && (
               <Button variant="ghost" size="sm" onClick={clearDateFilters}>
                 <X className="h-4 w-4" />
-                Clear
+                {translate('Clear')}
               </Button>
             )}
           </div>
 
-          <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Updated</div>
+          <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{translate('Updated')}</div>
           <DatePicker
             type="date"
             value={updatedFrom}
             onChange={e => setUpdatedFrom(e.target.value)}
-            aria-label="Updated from"
+            aria-label={translate('Updated from')}
           />
-          <div className="text-center text-xs text-muted-foreground">to</div>
+          <div className="text-center text-xs text-muted-foreground">{translate('to')}</div>
           <DatePicker
             type="date"
             value={updatedTo}
             onChange={e => setUpdatedTo(e.target.value)}
-            aria-label="Updated to"
+            aria-label={translate('Updated to')}
           />
           <div />
         </div>
@@ -950,16 +952,16 @@ export default function VNextShipments() {
 
         {selectedInView.length > 0 && (
           <div className="flex flex-wrap items-center gap-3 border-b border-border bg-muted/40 px-4 py-3 md:px-6">
-            <span className="text-sm font-medium">{selectedInView.length} selected</span>
+            <span className="text-sm font-medium">{selectedInView.length} {translate('selected')}</span>
             <Button variant="ghost" size="sm" onClick={clearSelection}>
               <X className="h-4 w-4" />
-              Clear
+              {translate('Clear')}
             </Button>
             <div className="ml-auto flex items-center gap-2">
-              <span className="text-sm text-muted-foreground">Move to</span>
+              <span className="text-sm text-muted-foreground">{translate('Move to')}</span>
               <Select value={bulkStatus} onValueChange={setBulkStatus}>
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select status..." />
+                  <SelectValue placeholder={translate('Select status...')} />
                 </SelectTrigger>
                 <SelectContent>
                   {SHIPMENT_LIFECYCLE.map(st => (
@@ -973,12 +975,12 @@ export default function VNextShipments() {
                 disabled={!bulkStatus || bulkBusy}
                 onClick={handleBulkApply}
               >
-                {bulkBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Apply'}
+                {bulkBusy ? <Loader2 className="h-4 w-4 animate-spin" /> : translate('Apply')}
               </Button>
               {hasPermission('shipments:write') && (
                 <Button variant="outline" size="sm" disabled={bulkArchiving} onClick={handleBulkArchive}>
                   {bulkArchiving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Archive className="h-4 w-4" />}
-                  Archive
+                  {translate('Archive')}
                 </Button>
               )}
               {hasPermission('shipments:delete') && (
@@ -990,7 +992,7 @@ export default function VNextShipments() {
                   className="text-destructive hover:text-destructive"
                 >
                   <Trash2 className="h-4 w-4" />
-                  Delete
+                  {translate('Delete')}
                 </Button>
               )}
             </div>
@@ -1004,21 +1006,21 @@ export default function VNextShipments() {
                 <TableHead className="w-10">
                   <input
                     type="checkbox"
-                    aria-label="Select all shipments"
+                    aria-label={translate('Select all shipments')}
                     className="h-4 w-4 cursor-pointer accent-primary"
                     checked={allSelected}
                     ref={el => { if (el) el.indeterminate = selectedInView.length > 0 && !allSelected; }}
                     onChange={toggleAll}
                   />
                 </TableHead>
-                <TableHead>Shipment</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Route</TableHead>
-                <TableHead>Carrier</TableHead>
-                <TableHead>Lane</TableHead>
-                <TableHead>Dates</TableHead>
-                <TableHead>Updated</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{translate('Shipment')}</TableHead>
+                <TableHead>{translate('Customer')}</TableHead>
+                <TableHead>{translate('Route')}</TableHead>
+                <TableHead>{translate('Carrier')}</TableHead>
+                <TableHead>{translate('Lane')}</TableHead>
+                <TableHead>{translate('Dates')}</TableHead>
+                <TableHead>{translate('Updated')}</TableHead>
+                <TableHead>{translate('Status')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -1055,19 +1057,19 @@ export default function VNextShipments() {
                     <TableCell>
                       <div className="text-sm">{s.origin ? `${s.origin.city}, ${s.origin.state}` : '-'}</div>
                       <div className="text-xs text-muted-foreground">
-                        to {s.destination ? `${s.destination.city}, ${s.destination.state}` : '-'}
+                        {translate('to')} {s.destination ? `${s.destination.city}, ${s.destination.state}` : '-'}
                       </div>
                     </TableCell>
                     <TableCell className="text-sm">
                       <div>{s.carrier?.name || '-'}</div>
-                      {s.proNumber && <div className="text-xs text-muted-foreground">PRO# {s.proNumber}</div>}
+                      {s.proNumber && <div className="text-xs text-muted-foreground">{translate('PRO#')} {s.proNumber}</div>}
                     </TableCell>
                     <TableCell>
                       {s.lane ? <Badge variant="muted">{s.lane.name}</Badge> : '-'}
                     </TableCell>
                     <TableCell className="whitespace-nowrap">
                       <div className="text-sm">{formatDate(s.pickupDate)}</div>
-                      <div className="text-xs text-muted-foreground">to {formatDate(s.deliveryDate)}</div>
+                      <div className="text-xs text-muted-foreground">{translate('to')} {formatDate(s.deliveryDate)}</div>
                     </TableCell>
                     <TableCell className="whitespace-nowrap text-sm text-muted-foreground">
                       {formatDateTime(s.updatedAt)}
@@ -1076,7 +1078,7 @@ export default function VNextShipments() {
                       <div className="flex items-center gap-1.5">
                         <Badge variant={statusVariant(s.status)}>{statusLabel(s.status)}</Badge>
                         {s.hasException && (
-                          <Badge variant="destructive" className="gap-1" title="Has an open exception">
+                          <Badge variant="destructive" className="gap-1" title={translate('Has an open exception')}>
                             <AlertTriangle className="h-3 w-3" />
                           </Badge>
                         )}
@@ -1092,8 +1094,8 @@ export default function VNextShipments() {
         {viewMode === 'table' && filtered.length === 0 && (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <SearchX className="h-8 w-8" />
-            <h3 className="text-base font-medium">No shipments found</h3>
-            <p className="text-sm">Try adjusting your search or filters</p>
+            <h3 className="text-base font-medium">{translate('No shipments found')}</h3>
+            <p className="text-sm">{translate('Try adjusting your search or filters')}</p>
           </div>
         )}
       </Card>
@@ -1102,17 +1104,18 @@ export default function VNextShipments() {
       <Dialog open={confirmBulkDelete} onOpenChange={setConfirmBulkDelete}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete {selectedInView.length} shipment{selectedInView.length === 1 ? '' : 's'}?</DialogTitle>
+            <DialogTitle>{translate('Delete')} {selectedInView.length} {translate('shipment')}{selectedInView.length === 1 ? '' : translate('s')}?</DialogTitle>
             <DialogDescription>
-              Selected shipments will be removed from all views. Records are retained for audit
-              but cannot be restored from the UI. This is different from archiving.
+              {translate(
+                'Selected shipments will be removed from all views. Records are retained for audit\n              but cannot be restored from the UI. This is different from archiving.'
+              )}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setConfirmBulkDelete(false)} disabled={bulkDeleting}>Cancel</Button>
+            <Button variant="outline" onClick={() => setConfirmBulkDelete(false)} disabled={bulkDeleting}>{translate('Cancel')}</Button>
             <Button variant="destructive" onClick={handleBulkDelete} disabled={bulkDeleting}>
               {bulkDeleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-              Delete {selectedInView.length} shipment{selectedInView.length === 1 ? '' : 's'}
+              {translate('Delete')} {selectedInView.length} {translate('shipment')}{selectedInView.length === 1 ? '' : translate('s')}
             </Button>
           </DialogFooter>
         </DialogContent>

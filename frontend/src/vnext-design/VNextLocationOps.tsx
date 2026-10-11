@@ -41,6 +41,8 @@ import { cn } from '@/lib/utils';
 import { getLocationTypeMeta } from './locationTypesMeta';
 import { stopTypeLabel } from '@open-tms/shared';
 
+import { t } from '@/i18n';
+
 interface LocationOps {
   location: any;
   stats: {
@@ -109,7 +111,7 @@ export default function VNextLocationOps() {
   if (error || !data) {
     return (
       <div className="rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-        {error || 'Failed to load location'}
+        {error || t('Failed to load location')}
       </div>
     );
   }
@@ -135,13 +137,13 @@ export default function VNextLocationOps() {
           <Button asChild variant="outline">
             <Link to={`/locations/${id}/edit`}>
               <Edit className="h-4 w-4" />
-              Edit
+              {t('Edit')}
             </Link>
           </Button>
           <Button asChild variant="outline">
             <Link to="/map">
               <MapIcon className="h-4 w-4" />
-              Map
+              {t('Map')}
             </Link>
           </Button>
         </div>
@@ -153,31 +155,31 @@ export default function VNextLocationOps() {
           {location.dockCount && (
             <div className="flex items-center gap-1.5">
               <SquareStack className="h-4 w-4 text-primary" />
-              {location.dockCount} docks
+              {location.dockCount} {t('docks')}
             </div>
           )}
           {capabilities?.crossDockCapable && (
             <div className="flex items-center gap-1.5">
               <ArrowLeftRight className="h-4 w-4 text-info" />
-              Cross-dock
+              {t('Cross-dock')}
             </div>
           )}
           {capabilities?.hasColdStorage && (
             <div className="flex items-center gap-1.5">
               <Snowflake className="h-4 w-4 text-info" />
-              Cold storage
+              {t('Cold storage')}
             </div>
           )}
           {capabilities?.hasHazmatCert && (
             <div className="flex items-center gap-1.5">
               <ShieldAlert className="h-4 w-4 text-warning" />
-              Hazmat
+              {t('Hazmat')}
             </div>
           )}
           {location.appointmentRequired && (
             <div className="flex items-center gap-1.5">
               <Calendar className="h-4 w-4 text-warning" />
-              Appointment required
+              {t('Appointment required')}
             </div>
           )}
           {location.contactName && (
@@ -199,7 +201,7 @@ export default function VNextLocationOps() {
             <ArrowDown className="h-6 w-6 text-info" />
             <div>
               <div className="text-2xl font-bold tracking-tight">{stats.incoming}</div>
-              <div className="text-xs text-muted-foreground">Incoming</div>
+              <div className="text-xs text-muted-foreground">{t('Incoming')}</div>
             </div>
           </div>
         </Card>
@@ -211,7 +213,7 @@ export default function VNextLocationOps() {
             <Package className="h-6 w-6 text-warning" />
             <div>
               <div className="text-2xl font-bold tracking-tight">{stats.atLocation}</div>
-              <div className="text-xs text-muted-foreground">At Location</div>
+              <div className="text-xs text-muted-foreground">{t('At Location')}</div>
             </div>
           </div>
         </Card>
@@ -223,17 +225,17 @@ export default function VNextLocationOps() {
             <ArrowUp className="h-6 w-6 text-success" />
             <div>
               <div className="text-2xl font-bold tracking-tight">{stats.outgoing}</div>
-              <div className="text-xs text-muted-foreground">Outgoing</div>
+              <div className="text-xs text-muted-foreground">{t('Outgoing')}</div>
             </div>
           </div>
         </Card>
         <Card className="border-l-4 border-l-primary p-5">
           <div className="text-2xl font-bold tracking-tight">{stats.unitsHere}</div>
-          <div className="text-xs text-muted-foreground">Units Here</div>
+          <div className="text-xs text-muted-foreground">{t('Units Here')}</div>
         </Card>
         <Card className="p-5">
           <div className="text-2xl font-bold tracking-tight">{stats.todayArrivals}</div>
-          <div className="text-xs text-muted-foreground">Today Arrivals</div>
+          <div className="text-xs text-muted-foreground">{t('Today Arrivals')}</div>
         </Card>
         <Card className="p-5">
           <div
@@ -244,7 +246,7 @@ export default function VNextLocationOps() {
           >
             {formatDwell(stats.avgDwellMinutes)}
           </div>
-          <div className="text-xs text-muted-foreground">Avg Dwell Today</div>
+          <div className="text-xs text-muted-foreground">{t('Avg Dwell Today')}</div>
         </Card>
       </div>
 
@@ -252,16 +254,16 @@ export default function VNextLocationOps() {
         <TabsList>
           <TabsTrigger value="incoming">
             <ArrowDown className="h-4 w-4" />
-            Incoming ({stats.incoming})
-          </TabsTrigger>
+            {t('Incoming (')}{stats.incoming})
+                      </TabsTrigger>
           <TabsTrigger value="at_location">
             <Package className="h-4 w-4" />
-            At Location ({stats.atLocation})
-          </TabsTrigger>
+            {t('At Location (')}{stats.atLocation})
+                      </TabsTrigger>
           <TabsTrigger value="outgoing">
             <ArrowUp className="h-4 w-4" />
-            Outgoing ({stats.outgoing})
-          </TabsTrigger>
+            {t('Outgoing (')}{stats.outgoing})
+                      </TabsTrigger>
         </TabsList>
 
         <TabsContent value="incoming" className="mt-4">
@@ -269,12 +271,12 @@ export default function VNextLocationOps() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Shipment</TableHead>
-                  <TableHead>Customer</TableHead>
-                  <TableHead>Carrier</TableHead>
-                  <TableHead>From</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>ETA</TableHead>
+                  <TableHead>{t('Shipment')}</TableHead>
+                  <TableHead>{t('Customer')}</TableHead>
+                  <TableHead>{t('Carrier')}</TableHead>
+                  <TableHead>{t('From')}</TableHead>
+                  <TableHead>{t('Type')}</TableHead>
+                  <TableHead>{t('ETA')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -302,14 +304,14 @@ export default function VNextLocationOps() {
                     <TableCell>{s.customer?.name || '--'}</TableCell>
                     <TableCell>{s.carrier?.name || '--'}</TableCell>
                     <TableCell>{s.origin?.name}{s.origin?.city ? `, ${s.origin.city}` : ''}</TableCell>
-                    <TableCell><Badge variant="info" className="text-xs">direct</Badge></TableCell>
+                    <TableCell><Badge variant="info" className="text-xs">{t('direct')}</Badge></TableCell>
                     <TableCell className="text-xs">{s.deliveryDate ? new Date(s.deliveryDate).toLocaleString() : '--'}</TableCell>
                   </TableRow>
                 ))}
                 {data.incoming.stops.length === 0 && data.incoming.directShipments.length === 0 && (
                   <TableRow>
                     <TableCell colSpan={6} className="py-6 text-center text-muted-foreground">
-                      No incoming shipments
+                      {t('No incoming shipments')}
                     </TableCell>
                   </TableRow>
                 )}
@@ -322,17 +324,17 @@ export default function VNextLocationOps() {
           <Card>
             <div className="flex items-center gap-2 border-b border-border p-4 font-semibold">
               <Truck className="h-5 w-5 text-warning" />
-              Shipments at Dock ({data.atLocation.stops.length})
-            </div>
+              {t('Shipments at Dock (')}{data.atLocation.stops.length})
+                          </div>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Shipment</TableHead>
-                  <TableHead>Customer</TableHead>
-                  <TableHead>Carrier</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Dwell Time</TableHead>
-                  <TableHead>Destination</TableHead>
+                  <TableHead>{t('Shipment')}</TableHead>
+                  <TableHead>{t('Customer')}</TableHead>
+                  <TableHead>{t('Carrier')}</TableHead>
+                  <TableHead>{t('Status')}</TableHead>
+                  <TableHead>{t('Dwell Time')}</TableHead>
+                  <TableHead>{t('Destination')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -357,7 +359,7 @@ export default function VNextLocationOps() {
                 {data.atLocation.stops.length === 0 && (
                   <TableRow>
                     <TableCell colSpan={6} className="py-6 text-center text-muted-foreground">
-                      No shipments currently at dock
+                      {t('No shipments currently at dock')}
                     </TableCell>
                   </TableRow>
                 )}
@@ -369,17 +371,17 @@ export default function VNextLocationOps() {
             <Card>
               <div className="flex items-center gap-2 border-b border-border p-4 font-semibold">
                 <Package className="h-5 w-5 text-primary" />
-                Trackable Units ({data.atLocation.units.length})
-              </div>
+                {t('Trackable Units (')}{data.atLocation.units.length})
+                              </div>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Unit</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Condition</TableHead>
-                    <TableHead>Order</TableHead>
-                    <TableHead>Shipment</TableHead>
-                    <TableHead>Arrived</TableHead>
+                    <TableHead>{t('Unit')}</TableHead>
+                    <TableHead>{t('Type')}</TableHead>
+                    <TableHead>{t('Condition')}</TableHead>
+                    <TableHead>{t('Order')}</TableHead>
+                    <TableHead>{t('Shipment')}</TableHead>
+                    <TableHead>{t('Arrived')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -408,12 +410,12 @@ export default function VNextLocationOps() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Shipment</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Customer</TableHead>
-                  <TableHead>Carrier</TableHead>
-                  <TableHead>Destination</TableHead>
-                  <TableHead>Pickup Date</TableHead>
+                  <TableHead>{t('Shipment')}</TableHead>
+                  <TableHead>{t('Status')}</TableHead>
+                  <TableHead>{t('Customer')}</TableHead>
+                  <TableHead>{t('Carrier')}</TableHead>
+                  <TableHead>{t('Destination')}</TableHead>
+                  <TableHead>{t('Pickup Date')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -438,7 +440,7 @@ export default function VNextLocationOps() {
                 {data.outgoing.shipments.length === 0 && (
                   <TableRow>
                     <TableCell colSpan={6} className="py-6 text-center text-muted-foreground">
-                      No outgoing shipments
+                      {t('No outgoing shipments')}
                     </TableCell>
                   </TableRow>
                 )}

@@ -29,6 +29,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface ReadyShipment {
   shipmentId: string;
   shipmentReference: string;
@@ -114,7 +116,7 @@ export default function VNextFinanceCreateInvoice() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -131,23 +133,25 @@ export default function VNextFinanceCreateInvoice() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm">
         <Button variant="ghost" size="sm" onClick={() => navigate('/finance/invoices')}>
-          <ArrowLeft className="h-4 w-4" /> Invoices
+          <ArrowLeft className="h-4 w-4" /> {t('Invoices')}
         </Button>
-        <span className="text-muted-foreground">/ Create Invoice</span>
+        <span className="text-muted-foreground">{t('/ Create Invoice')}</span>
       </div>
 
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Create Invoice</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Select delivered shipments with approved charges to invoice</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Create Invoice')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Select delivered shipments with approved charges to invoice')}</p>
         </div>
       </div>
 
       {shipments.length === 0 ? (
         <div className="flex flex-col items-center gap-3 py-16 text-center text-muted-foreground">
           <Receipt className="h-10 w-10" />
-          <h3 className="text-base font-medium">No shipments ready to invoice</h3>
-          <p className="max-w-md text-sm">Shipments are marked as ready to invoice when they are delivered and have approved revenue charges.</p>
+          <h3 className="text-base font-medium">{t('No shipments ready to invoice')}</h3>
+          <p className="max-w-md text-sm">{t(
+            'Shipments are marked as ready to invoice when they are delivered and have approved revenue charges.'
+          )}</p>
         </div>
       ) : (
         <>
@@ -161,13 +165,13 @@ export default function VNextFinanceCreateInvoice() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Customers</SelectItem>
+                  <SelectItem value="all">{t('All Customers')}</SelectItem>
                   {customers.map(([id, name]) => (
                     <SelectItem key={id} value={id}>{name}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
-              <span className="text-sm text-muted-foreground">{filtered.length} shipments ready</span>
+              <span className="text-sm text-muted-foreground">{filtered.length} {t('shipments ready')}</span>
             </div>
 
             <Table>
@@ -181,11 +185,11 @@ export default function VNextFinanceCreateInvoice() {
                       onChange={selectAll}
                     />
                   </TableHead>
-                  <TableHead>Shipment</TableHead>
-                  <TableHead>Customer</TableHead>
-                  <TableHead className="text-right">Revenue</TableHead>
-                  <TableHead className="text-right">Charges</TableHead>
-                  <TableHead>Delivered</TableHead>
+                  <TableHead>{t('Shipment')}</TableHead>
+                  <TableHead>{t('Customer')}</TableHead>
+                  <TableHead className="text-right">{t('Revenue')}</TableHead>
+                  <TableHead className="text-right">{t('Charges')}</TableHead>
+                  <TableHead>{t('Delivered')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -221,23 +225,23 @@ export default function VNextFinanceCreateInvoice() {
               <CardContent className="p-5">
                 <div className="flex flex-wrap items-center justify-between gap-4">
                   <div className="flex flex-wrap items-center gap-3">
-                    <strong>{selected.size} shipment{selected.size > 1 ? 's' : ''} selected</strong>
+                    <strong>{selected.size} {t('shipment')}{selected.size > 1 ? t('s') : ''} {t('selected')}</strong>
                     <span className="text-muted-foreground">|</span>
                     <strong className="text-lg font-mono tabular-nums">{formatMoney(totalRevenue)}</strong>
                     {selectedCustomers.length > 1 && (
-                      <Badge variant="destructive">Multiple customers - select only one</Badge>
+                      <Badge variant="destructive">{t('Multiple customers - select only one')}</Badge>
                     )}
                   </div>
                   <div className="flex items-end gap-2">
                     <Input
-                      placeholder="Invoice notes (optional)"
+                      placeholder={t('Invoice notes (optional)')}
                       value={notes}
                       onChange={e => setNotes(e.target.value)}
                       className="w-[250px]"
                     />
                     <Button onClick={createInvoice} disabled={!canCreate || creating}>
                       <Receipt className="h-4 w-4" />
-                      {creating ? 'Creating...' : 'Create Invoice'}
+                      {creating ? t('Creating...') : t('Create Invoice')}
                     </Button>
                   </div>
                 </div>

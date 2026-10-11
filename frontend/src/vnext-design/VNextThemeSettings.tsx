@@ -7,20 +7,22 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
+import { t } from '@/i18n';
+
 const THEME_KEYS = [
-  { key: 'primary', label: 'Primary' },
-  { key: 'on-primary', label: 'On Primary' },
-  { key: 'secondary', label: 'Secondary' },
-  { key: 'on-secondary', label: 'On Secondary' },
-  { key: 'surface', label: 'Surface' },
-  { key: 'on-surface', label: 'On Surface' },
-  { key: 'surface-container', label: 'Surface Container' },
-  { key: 'surface-container-low', label: 'Surface Container Low' },
-  { key: 'surface-container-lowest', label: 'Surface Container Lowest' },
-  { key: 'outline', label: 'Outline' },
-  { key: 'outline-variant', label: 'Outline Variant' },
-  { key: 'error', label: 'Error' },
-  { key: 'primary-container', label: 'Primary Container' },
+  { key: 'primary', label: t('Primary') },
+  { key: 'on-primary', label: t('On Primary') },
+  { key: 'secondary', label: t('Secondary') },
+  { key: 'on-secondary', label: t('On Secondary') },
+  { key: 'surface', label: t('Surface') },
+  { key: 'on-surface', label: t('On Surface') },
+  { key: 'surface-container', label: t('Surface Container') },
+  { key: 'surface-container-low', label: t('Surface Container Low') },
+  { key: 'surface-container-lowest', label: t('Surface Container Lowest') },
+  { key: 'outline', label: t('Outline') },
+  { key: 'outline-variant', label: t('Outline Variant') },
+  { key: 'error', label: t('Error') },
+  { key: 'primary-container', label: t('Primary Container') },
 ];
 
 interface ThemeData {
@@ -48,7 +50,7 @@ function Banner({
       <span>{message}</span>
       {onClose && (
         <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">
-          Dismiss
+          {t('Dismiss')}
         </button>
       )}
     </div>
@@ -158,8 +160,8 @@ export default function VNextThemeSettings() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Theme and branding</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Customize the look and feel of your system</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Theme and branding')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Customize the look and feel of your system')}</p>
         </div>
       </div>
 
@@ -169,18 +171,18 @@ export default function VNextThemeSettings() {
 
       <Card>
         <CardHeader>
-          <CardTitle>System name</CardTitle>
-          <CardDescription>The display name shown across the application.</CardDescription>
+          <CardTitle>{t('System name')}</CardTitle>
+          <CardDescription>{t('The display name shown across the application.')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label>Organization name</Label>
-            <Input value={orgName} onChange={e => setOrgName(e.target.value)} placeholder="Enter organization name" />
+            <Label>{t('Organization name')}</Label>
+            <Input value={orgName} onChange={e => setOrgName(e.target.value)} placeholder={t('Enter organization name')} />
           </div>
           <div className="flex justify-end">
             <Button variant="gradient" onClick={saveName} disabled={savingName}>
               <Save className="h-4 w-4" />
-              {savingName ? 'Saving...' : 'Save name'}
+              {savingName ? t('Saving...') : t('Save name')}
             </Button>
           </div>
         </CardContent>
@@ -190,26 +192,26 @@ export default function VNextThemeSettings() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <ImageIcon className="h-4 w-4 text-primary" />
-            Logo
+            {t('Logo')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {logoUrl && (
             <div className="flex items-center gap-4">
-              <span className="text-sm text-muted-foreground">Current logo:</span>
+              <span className="text-sm text-muted-foreground">{t('Current logo:')}</span>
               <img
                 src={`${API_URL}/api/v1/theme/logo`}
-                alt="Current logo"
+                alt={t('Current logo')}
                 className="max-h-16 max-w-48 rounded-md border bg-background object-contain p-2"
               />
             </div>
           )}
           <div className="space-y-2">
-            <Label>Upload new logo</Label>
+            <Label>{t('Upload new logo')}</Label>
             <label className="relative flex cursor-pointer flex-col items-center gap-2 rounded-md border-2 border-dashed border-input bg-background p-6 text-center text-sm text-muted-foreground hover:border-primary/40">
               <Upload className="h-8 w-8" />
-              <span className="font-medium">{uploadingLogo ? 'Uploading...' : 'Click to select a logo file'}</span>
-              <span className="text-xs">SVG, PNG, or JPG (max 2MB)</span>
+              <span className="font-medium">{uploadingLogo ? t('Uploading...') : t('Click to select a logo file')}</span>
+              <span className="text-xs">{t('SVG, PNG, or JPG (max 2MB)')}</span>
               <input
                 type="file"
                 accept="image/svg+xml,image/png,image/jpeg"
@@ -229,10 +231,12 @@ export default function VNextThemeSettings() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Palette className="h-4 w-4 text-primary" />
-            Theme colors
+            {t('Theme colors')}
           </CardTitle>
           <CardDescription>
-            Saved colors are stored on the org but no longer applied dynamically; the active theme uses Tailwind tokens.
+            {t(
+              'Saved colors are stored on the org but no longer applied dynamically; the active theme uses Tailwind tokens.'
+            )}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -258,10 +262,10 @@ export default function VNextThemeSettings() {
             ))}
           </div>
           <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={loadTheme}>Reset</Button>
+            <Button variant="outline" onClick={loadTheme}>{t('Reset')}</Button>
             <Button variant="gradient" onClick={saveColors} disabled={savingColors}>
               <Save className="h-4 w-4" />
-              {savingColors ? 'Saving...' : 'Save colors'}
+              {savingColors ? t('Saving...') : t('Save colors')}
             </Button>
           </div>
         </CardContent>

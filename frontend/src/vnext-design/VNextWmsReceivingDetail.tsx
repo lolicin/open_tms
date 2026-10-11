@@ -35,6 +35,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface ReceivingLine {
   id: string;
   sku: string;
@@ -147,7 +149,7 @@ export default function VNextWmsReceivingDetail() {
         loadTask();
       }
     } catch {
-      setActionError('Failed to record line');
+      setActionError(t('Failed to record line'));
     } finally {
       setRecording(false);
     }
@@ -168,7 +170,7 @@ export default function VNextWmsReceivingDetail() {
         loadTask();
       }
     } catch {
-      setActionError('Failed to complete task');
+      setActionError(t('Failed to complete task'));
     } finally {
       setCompleting(false);
     }
@@ -183,7 +185,7 @@ export default function VNextWmsReceivingDetail() {
       });
       loadTask();
     } catch {
-      setActionError('Failed to update inspection');
+      setActionError(t('Failed to update inspection'));
     }
   };
 
@@ -209,7 +211,7 @@ export default function VNextWmsReceivingDetail() {
     return (
       <div className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
         <CircleAlert className="h-5 w-5" />
-        {error || 'Task not found'}
+        {error || t('Task not found')}
       </div>
     );
   }
@@ -220,17 +222,17 @@ export default function VNextWmsReceivingDetail() {
   const isActive = task.status === 'pending' || task.status === 'in_progress';
 
   const stats = [
-    { label: 'Lines', value: task.lines.length, icon: List, tone: 'bg-info/15 text-info' },
-    ...(totalExpected > 0 ? [{ label: 'Expected', value: totalExpected, icon: Clock, tone: 'bg-muted text-muted-foreground' }] : []),
-    { label: 'Received', value: totalReceived, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
-    { label: 'Damaged', value: totalDamaged, icon: AlertTriangle, tone: totalDamaged > 0 ? 'bg-destructive/10 text-destructive' : 'bg-muted text-muted-foreground' },
+    { label: t('Lines'), value: task.lines.length, icon: List, tone: 'bg-info/15 text-info' },
+    ...(totalExpected > 0 ? [{ label: t('Expected'), value: totalExpected, icon: Clock, tone: 'bg-muted text-muted-foreground' }] : []),
+    { label: t('Received'), value: totalReceived, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
+    { label: t('Damaged'), value: totalDamaged, icon: AlertTriangle, tone: totalDamaged > 0 ? 'bg-destructive/10 text-destructive' : 'bg-muted text-muted-foreground' },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/wms/receiving" className="hover:text-foreground">
-          <ArrowLeft className="inline h-4 w-4" /> Receiving
+          <ArrowLeft className="inline h-4 w-4" /> {t('Receiving')}
         </Link>
         <ChevronRight className="h-3 w-3" />
         <span>{task.id.slice(0, 8)}</span>
@@ -238,12 +240,12 @@ export default function VNextWmsReceivingDetail() {
 
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Receiving Task</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Receiving Task')}</h1>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <span className="font-mono text-sm font-semibold">{task.id.slice(0, 8)}</span>
             <Badge variant={statusVariant(task.status)}>{formatStatus(task.status)}</Badge>
-            <Badge variant="secondary">{task.receivingType === 'asn' ? 'ASN' : 'Blind'}</Badge>
-            {task.crossDock && <Badge variant="warning">Cross-Dock</Badge>}
+            <Badge variant="secondary">{task.receivingType === 'asn' ? t('ASN') : t('Blind')}</Badge>
+            {task.crossDock && <Badge variant="warning">{t('Cross-Dock')}</Badge>}
           </div>
         </div>
         <div className="flex gap-2">
@@ -254,10 +256,10 @@ export default function VNextWmsReceivingDetail() {
                 onClick={() => { setShowRecordForm(true); setRecordForm({ sku: '', receivedQuantity: '1', damagedQuantity: '0', lotNumber: '', lineId: '' }); }}
               >
                 <ScanLine className="h-4 w-4" />
-                Record Item
+                {t('Record Item')}
               </Button>
               <Button variant="gradient" onClick={handleComplete} disabled={completing}>
-                {completing ? 'Completing...' : 'Complete Receiving'}
+                {completing ? t('Completing...') : t('Complete Receiving')}
               </Button>
             </>
           )}
@@ -291,31 +293,31 @@ export default function VNextWmsReceivingDetail() {
       {showRecordForm && (
         <Card className="border-l-4 border-l-primary">
           <CardHeader>
-            <CardTitle>{recordForm.lineId ? `Record against ${recordForm.sku}` : 'Record New Item'}</CardTitle>
+            <CardTitle>{recordForm.lineId ? `Record against ${recordForm.sku}` : t('Record New Item')}</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleRecordLine} className="flex flex-wrap items-end gap-3">
               {!recordForm.lineId && (
                 <div className="min-w-[150px] flex-1 space-y-2">
-                  <Label>SKU *</Label>
+                  <Label>{t('SKU *')}</Label>
                   <Input value={recordForm.sku} onChange={e => setRecordForm({ ...recordForm, sku: e.target.value })} required />
                 </div>
               )}
               <div className="w-28 space-y-2">
-                <Label>Received Qty *</Label>
+                <Label>{t('Received Qty *')}</Label>
                 <Input type="number" min="0" value={recordForm.receivedQuantity} onChange={e => setRecordForm({ ...recordForm, receivedQuantity: e.target.value })} required />
               </div>
               <div className="w-28 space-y-2">
-                <Label>Damaged</Label>
+                <Label>{t('Damaged')}</Label>
                 <Input type="number" min="0" value={recordForm.damagedQuantity} onChange={e => setRecordForm({ ...recordForm, damagedQuantity: e.target.value })} />
               </div>
               <div className="w-32 space-y-2">
-                <Label>Lot #</Label>
+                <Label>{t('Lot #')}</Label>
                 <Input value={recordForm.lotNumber} onChange={e => setRecordForm({ ...recordForm, lotNumber: e.target.value })} />
               </div>
               <div className="flex gap-2">
-                <Button variant="gradient" type="submit" disabled={recording}>{recording ? 'Saving...' : 'Save'}</Button>
-                <Button variant="outline" type="button" onClick={() => setShowRecordForm(false)}>Cancel</Button>
+                <Button variant="gradient" type="submit" disabled={recording}>{recording ? t('Saving...') : t('Save')}</Button>
+                <Button variant="outline" type="button" onClick={() => setShowRecordForm(false)}>{t('Cancel')}</Button>
               </div>
             </form>
           </CardContent>
@@ -324,25 +326,25 @@ export default function VNextWmsReceivingDetail() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Receiving Lines</CardTitle>
+          <CardTitle>{t('Receiving Lines')}</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           {task.lines.length === 0 ? (
             <div className="px-6 py-8 text-center text-sm text-muted-foreground">
-              No items recorded yet. Click "Record Item" to start receiving.
+              {t('No items recorded yet. Click "Record Item" to start receiving.')}
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>SKU</TableHead>
-                  <TableHead>UOM</TableHead>
-                  <TableHead>Expected</TableHead>
-                  <TableHead>Received</TableHead>
-                  <TableHead>Damaged</TableHead>
-                  <TableHead>Lot</TableHead>
-                  <TableHead>Inspection</TableHead>
-                  {isActive && <TableHead>Actions</TableHead>}
+                  <TableHead>{t('SKU')}</TableHead>
+                  <TableHead>{t('UOM')}</TableHead>
+                  <TableHead>{t('Expected')}</TableHead>
+                  <TableHead>{t('Received')}</TableHead>
+                  <TableHead>{t('Damaged')}</TableHead>
+                  <TableHead>{t('Lot')}</TableHead>
+                  <TableHead>{t('Inspection')}</TableHead>
+                  {isActive && <TableHead>{t('Actions')}</TableHead>}
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -370,10 +372,10 @@ export default function VNextWmsReceivingDetail() {
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="pending">Pending</SelectItem>
-                              <SelectItem value="pass">Pass</SelectItem>
-                              <SelectItem value="fail">Fail</SelectItem>
-                              <SelectItem value="quarantine">Quarantine</SelectItem>
+                              <SelectItem value="pending">{t('Pending')}</SelectItem>
+                              <SelectItem value="pass">{t('Pass')}</SelectItem>
+                              <SelectItem value="fail">{t('Fail')}</SelectItem>
+                              <SelectItem value="quarantine">{t('Quarantine')}</SelectItem>
                             </SelectContent>
                           </Select>
                         ) : (
@@ -384,7 +386,7 @@ export default function VNextWmsReceivingDetail() {
                         <TableCell>
                           {line.receivedQuantity === 0 && line.expectedQuantity != null && (
                             <Button variant="outline" size="sm" onClick={() => recordAgainstLine(line)}>
-                              Receive
+                              {t('Receive')}
                             </Button>
                           )}
                         </TableCell>

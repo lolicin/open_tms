@@ -13,6 +13,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import ConsolidationShipmentPicker from './ConsolidationShipmentPicker';
 import { consolidationStatusVariant } from './consolidationStatus';
 
+import { t } from '@/i18n';
+
 interface ConsolidationRow {
   id: string;
   reference: string;
@@ -84,27 +86,27 @@ export default function VNextConsolidations() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Consolidations</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Consolidations')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Truck runs carrying several shipments, each still its own customer's.
+            {t('Truck runs carrying several shipments, each still its own customer\'s.')}
           </p>
         </div>
         {hasPermission('shipments:write') && (
           <Button variant="gradient" onClick={() => setPicking(true)}>
             <Plus className="h-4 w-4" />
-            New consolidation
+            {t('New consolidation')}
           </Button>
         )}
       </div>
 
       <Card>
         <div className="flex items-center justify-between gap-3 p-4">
-          <span className="text-sm text-muted-foreground">{total} {view === 'archived' ? 'archived' : 'active'}</span>
+          <span className="text-sm text-muted-foreground">{total} {view === 'archived' ? t('archived') : t('active')}</span>
           <Select value={view} onValueChange={(v) => { setView(v as 'active' | 'archived'); setPage(1); }}>
             <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="active">Active</SelectItem>
-              <SelectItem value="archived">Archived</SelectItem>
+              <SelectItem value="active">{t('Active')}</SelectItem>
+              <SelectItem value="archived">{t('Archived')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -112,7 +114,7 @@ export default function VNextConsolidations() {
 
         {loading ? (
           <div className="flex items-center justify-center gap-2 py-16 text-muted-foreground">
-            <Loader2 className="h-5 w-5 animate-spin" /> Loading...
+            <Loader2 className="h-5 w-5 animate-spin" /> {t('Loading...')}
           </div>
         ) : error ? (
           <div className="m-4 flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
@@ -121,21 +123,21 @@ export default function VNextConsolidations() {
         ) : rows.length === 0 ? (
           <div className="flex flex-col items-center gap-2 py-16 text-center text-muted-foreground">
             <Container className="h-8 w-8" />
-            <p className="text-sm">No {view === 'archived' ? 'archived ' : ''}consolidations yet.</p>
+            <p className="text-sm">{t('No')} {view === 'archived' ? t('archived ') : ''}{t('consolidations yet.')}</p>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Reference</TableHead>
-                <TableHead>Route</TableHead>
-                <TableHead>Customers</TableHead>
-                <TableHead className="text-right">Shipments</TableHead>
-                <TableHead className="text-right">Stops</TableHead>
-                <TableHead>Pickup</TableHead>
-                <TableHead>Delivery</TableHead>
-                <TableHead>Carrier</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{t('Reference')}</TableHead>
+                <TableHead>{t('Route')}</TableHead>
+                <TableHead>{t('Customers')}</TableHead>
+                <TableHead className="text-right">{t('Shipments')}</TableHead>
+                <TableHead className="text-right">{t('Stops')}</TableHead>
+                <TableHead>{t('Pickup')}</TableHead>
+                <TableHead>{t('Delivery')}</TableHead>
+                <TableHead>{t('Carrier')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -155,7 +157,7 @@ export default function VNextConsolidations() {
                   <TableCell className="text-sm">{r.carrierName ?? '—'}</TableCell>
                   <TableCell>
                     <Badge variant={r.archived ? 'muted' : consolidationStatusVariant(r.status)} className="capitalize">
-                      {r.archived ? 'archived' : r.status.replace('_', ' ')}
+                      {r.archived ? t('archived') : r.status.replace('_', ' ')}
                     </Badge>
                   </TableCell>
                 </TableRow>
@@ -166,9 +168,9 @@ export default function VNextConsolidations() {
 
         {pages > 1 && (
           <div className="flex items-center justify-end gap-2 border-t p-3 text-sm">
-            <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage(page - 1)}>Previous</Button>
-            <span className="text-muted-foreground">Page {page} of {pages}</span>
-            <Button variant="outline" size="sm" disabled={page >= pages} onClick={() => setPage(page + 1)}>Next</Button>
+            <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage(page - 1)}>{t('Previous')}</Button>
+            <span className="text-muted-foreground">{t('Page')} {page} {t('of')} {pages}</span>
+            <Button variant="outline" size="sm" disabled={page >= pages} onClick={() => setPage(page + 1)}>{t('Next')}</Button>
           </div>
         )}
       </Card>
@@ -176,7 +178,7 @@ export default function VNextConsolidations() {
       <ConsolidationShipmentPicker
         open={picking}
         onOpenChange={setPicking}
-        title="New consolidation"
+        title={t('New consolidation')}
         confirmLabel="Create consolidation"
         onConfirm={createFrom}
       />

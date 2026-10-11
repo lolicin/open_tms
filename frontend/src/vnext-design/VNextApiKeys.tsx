@@ -25,6 +25,8 @@ import {
   TableCell,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 function Banner({ variant, children, onClose }: { variant: 'success' | 'error'; children: React.ReactNode; onClose?: () => void }) {
   const tone =
     variant === 'success'
@@ -34,7 +36,7 @@ function Banner({ variant, children, onClose }: { variant: 'success' | 'error'; 
     <div className={`flex items-start justify-between gap-3 rounded-md border p-3 text-sm ${tone}`}>
       <div className="flex-1">{children}</div>
       {onClose && (
-        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">Dismiss</button>
+        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">{t('Dismiss')}</button>
       )}
     </div>
   );
@@ -109,7 +111,7 @@ export default function VNextApiKeys() {
   }
 
   async function deleteKey(id: string) {
-    if (!confirm('Are you sure you want to delete this API key?')) return;
+    if (!confirm(t('Are you sure you want to delete this API key?'))) return;
     setError('');
     try {
       const res = await fetch(`${API_URL}/api/v1/api-keys/${id}`, { method: 'DELETE' });
@@ -135,12 +137,12 @@ export default function VNextApiKeys() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">API keys</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Manage API keys for webhook ingestion and external integrations</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('API keys')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Manage API keys for webhook ingestion and external integrations')}</p>
         </div>
         <Button variant="gradient" onClick={() => setShowCreate(true)}>
           <Plus className="h-4 w-4" />
-          Create API key
+          {t('Create API key')}
         </Button>
       </div>
 
@@ -149,16 +151,16 @@ export default function VNextApiKeys() {
       {createdKey && (
         <Banner variant="success">
           <div className="space-y-2">
-            <div><strong>API key created!</strong> Copy it now - it will not be shown again.</div>
+            <div><strong>{t('API key created!')}</strong> {t('Copy it now - it will not be shown again.')}</div>
             <div className="flex flex-wrap items-center gap-2">
               <code className="flex-1 break-all rounded bg-muted px-3 py-2 font-mono text-sm">{createdKey}</code>
               <Button variant="outline" size="sm" onClick={() => navigator.clipboard?.writeText(createdKey)}>
                 <Copy className="h-4 w-4" />
-                Copy
+                {t('Copy')}
               </Button>
               <Button variant="outline" size="sm" onClick={() => setCreatedKey('')}>
                 <X className="h-4 w-4" />
-                Dismiss
+                {t('Dismiss')}
               </Button>
             </div>
           </div>
@@ -168,21 +170,21 @@ export default function VNextApiKeys() {
       {showCreate && (
         <Card>
           <CardHeader>
-            <CardTitle>Create new API key</CardTitle>
+            <CardTitle>{t('Create new API key')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap items-center gap-2">
               <Input
                 value={newKeyName}
                 onChange={e => setNewKeyName(e.target.value)}
-                placeholder="Key name (e.g. Production Webhook)"
+                placeholder={t('Key name (e.g. Production Webhook)')}
                 className="flex-1"
                 onKeyDown={e => e.key === 'Enter' && createKey()}
               />
               <Button variant="gradient" onClick={createKey} disabled={creating || !newKeyName.trim()}>
-                {creating ? 'Creating...' : 'Create'}
+                {creating ? t('Creating...') : t('Create')}
               </Button>
-              <Button variant="outline" onClick={() => { setShowCreate(false); setNewKeyName(''); }}>Cancel</Button>
+              <Button variant="outline" onClick={() => { setShowCreate(false); setNewKeyName(''); }}>{t('Cancel')}</Button>
             </div>
           </CardContent>
         </Card>
@@ -196,7 +198,7 @@ export default function VNextApiKeys() {
             </div>
             <div>
               <div className="text-2xl font-semibold">{keys.length}</div>
-              <div className="text-xs text-muted-foreground">Total keys</div>
+              <div className="text-xs text-muted-foreground">{t('Total keys')}</div>
             </div>
           </CardContent>
         </Card>
@@ -207,7 +209,7 @@ export default function VNextApiKeys() {
             </div>
             <div>
               <div className="text-2xl font-semibold">{activeCount}</div>
-              <div className="text-xs text-muted-foreground">Active</div>
+              <div className="text-xs text-muted-foreground">{t('Active')}</div>
             </div>
           </CardContent>
         </Card>
@@ -215,26 +217,26 @@ export default function VNextApiKeys() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Webhook endpoint</CardTitle>
+          <CardTitle>{t('Webhook endpoint')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="flex flex-wrap items-center gap-2">
             <code className="flex-1 truncate rounded-md border bg-muted px-3 py-2 font-mono text-sm">
-              {API_URL}/api/v1/webhooks/inbound
+              {API_URL}{t('/api/v1/webhooks/inbound')}
             </code>
             <Button variant="outline" onClick={() => navigator.clipboard?.writeText(`${API_URL}/api/v1/webhooks/inbound`)}>
               <Copy className="h-4 w-4" />
-              Copy
+              {t('Copy')}
             </Button>
           </div>
           <div className="flex flex-wrap gap-6 text-sm text-muted-foreground">
             <div>
-              <strong>Header:</strong>{' '}
-              <code className="rounded bg-muted px-1.5 py-0.5">X-API-Key: &lt;your-key&gt;</code>
+              <strong>{t('Header:')}</strong>{' '}
+              <code className="rounded bg-muted px-1.5 py-0.5">{t('X-API-Key: <your-key>')}</code>
             </div>
             <div>
-              <strong>Or:</strong>{' '}
-              <code className="rounded bg-muted px-1.5 py-0.5">Authorization: Bearer &lt;your-key&gt;</code>
+              <strong>{t('Or:')}</strong>{' '}
+              <code className="rounded bg-muted px-1.5 py-0.5">{t('Authorization: Bearer <your-key>')}</code>
             </div>
           </div>
         </CardContent>
@@ -242,9 +244,9 @@ export default function VNextApiKeys() {
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between gap-2">
-          <CardTitle>API keys</CardTitle>
+          <CardTitle>{t('API keys')}</CardTitle>
           <Input
-            placeholder="Search keys..."
+            placeholder={t('Search keys...')}
             value={search}
             onChange={e => setSearch(e.target.value)}
             className="w-56"
@@ -254,19 +256,19 @@ export default function VNextApiKeys() {
           {filtered.length === 0 ? (
             <div className="flex flex-col items-center gap-2 py-12 text-center text-muted-foreground">
               <KeyRound className="h-8 w-8" />
-              <h3 className="text-base font-medium">No API keys found</h3>
-              <p className="text-sm">Create an API key to get started with integrations.</p>
+              <h3 className="text-base font-medium">{t('No API keys found')}</h3>
+              <p className="text-sm">{t('Create an API key to get started with integrations.')}</p>
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Key</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Last used</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead className="w-24">Actions</TableHead>
+                  <TableHead>{t('Name')}</TableHead>
+                  <TableHead>{t('Key')}</TableHead>
+                  <TableHead>{t('Status')}</TableHead>
+                  <TableHead>{t('Last used')}</TableHead>
+                  <TableHead>{t('Created')}</TableHead>
+                  <TableHead className="w-24">{t('Actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -280,11 +282,11 @@ export default function VNextApiKeys() {
                     </TableCell>
                     <TableCell>
                       <Badge variant={k.active !== false ? 'success' : 'destructive'}>
-                        {k.active !== false ? 'Active' : 'Inactive'}
+                        {k.active !== false ? t('Active') : t('Inactive')}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {k.lastUsedAt ? new Date(k.lastUsedAt).toLocaleString() : 'Never'}
+                      {k.lastUsedAt ? new Date(k.lastUsedAt).toLocaleString() : t('Never')}
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
                       {k.createdAt ? new Date(k.createdAt).toLocaleDateString() : '-'}

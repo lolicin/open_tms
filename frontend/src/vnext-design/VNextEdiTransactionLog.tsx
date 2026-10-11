@@ -31,6 +31,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
+import { t } from '@/i18n';
+
 interface EdiLog {
   id: string;
   transactionType: string;
@@ -133,8 +135,8 @@ export default function VNextEdiTransactionLog() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">EDI transaction log</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{total} transactions</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('EDI transaction log')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{total} {t('transactions')}</p>
         </div>
       </div>
 
@@ -150,41 +152,41 @@ export default function VNextEdiTransactionLog() {
           <Select value={typeFilter} onValueChange={v => { setTypeFilter(v); setPage(0); }}>
             <SelectTrigger className="w-[200px]"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All types</SelectItem>
-              <SelectItem value="850">850 - Purchase Order</SelectItem>
-              <SelectItem value="856">856 - Ship Notice</SelectItem>
-              <SelectItem value="204">204 - Load Tender</SelectItem>
-              <SelectItem value="990">990 - Tender Response</SelectItem>
-              <SelectItem value="997">997 - Func. Ack</SelectItem>
-              <SelectItem value="214">214 - Status</SelectItem>
-              <SelectItem value="210">210 - Freight Invoice</SelectItem>
-              <SelectItem value="810">810 - Invoice</SelectItem>
-              <SelectItem value="820">820 - Payment</SelectItem>
+              <SelectItem value="all">{t('All types')}</SelectItem>
+              <SelectItem value="850">{t('850 - Purchase Order')}</SelectItem>
+              <SelectItem value="856">{t('856 - Ship Notice')}</SelectItem>
+              <SelectItem value="204">{t('204 - Load Tender')}</SelectItem>
+              <SelectItem value="990">{t('990 - Tender Response')}</SelectItem>
+              <SelectItem value="997">{t('997 - Func. Ack')}</SelectItem>
+              <SelectItem value="214">{t('214 - Status')}</SelectItem>
+              <SelectItem value="210">{t('210 - Freight Invoice')}</SelectItem>
+              <SelectItem value="810">{t('810 - Invoice')}</SelectItem>
+              <SelectItem value="820">{t('820 - Payment')}</SelectItem>
             </SelectContent>
           </Select>
           <Select value={directionFilter} onValueChange={v => { setDirectionFilter(v); setPage(0); }}>
             <SelectTrigger className="w-[160px]"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All directions</SelectItem>
-              <SelectItem value="inbound">Inbound</SelectItem>
-              <SelectItem value="outbound">Outbound</SelectItem>
+              <SelectItem value="all">{t('All directions')}</SelectItem>
+              <SelectItem value="inbound">{t('Inbound')}</SelectItem>
+              <SelectItem value="outbound">{t('Outbound')}</SelectItem>
             </SelectContent>
           </Select>
           <Select value={statusFilter} onValueChange={v => { setStatusFilter(v); setPage(0); }}>
             <SelectTrigger className="w-[160px]"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All statuses</SelectItem>
-              <SelectItem value="success">Success</SelectItem>
-              <SelectItem value="error">Error</SelectItem>
-              <SelectItem value="pending">Pending</SelectItem>
-              <SelectItem value="processing">Processing</SelectItem>
-              <SelectItem value="duplicate">Duplicate</SelectItem>
+              <SelectItem value="all">{t('All statuses')}</SelectItem>
+              <SelectItem value="success">{t('Success')}</SelectItem>
+              <SelectItem value="error">{t('Error')}</SelectItem>
+              <SelectItem value="pending">{t('Pending')}</SelectItem>
+              <SelectItem value="processing">{t('Processing')}</SelectItem>
+              <SelectItem value="duplicate">{t('Duplicate')}</SelectItem>
             </SelectContent>
           </Select>
           <div className="relative min-w-[240px] flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search by reference, filename..."
+              placeholder={t('Search by reference, filename...')}
               value={search}
               onChange={e => { setSearch(e.target.value); setPage(0); }}
               className="pl-9"
@@ -197,21 +199,21 @@ export default function VNextEdiTransactionLog() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Date</TableHead>
-              <TableHead>Partner</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Direction</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Reference</TableHead>
-              <TableHead>Source</TableHead>
+              <TableHead>{t('Date')}</TableHead>
+              <TableHead>{t('Partner')}</TableHead>
+              <TableHead>{t('Type')}</TableHead>
+              <TableHead>{t('Direction')}</TableHead>
+              <TableHead>{t('Status')}</TableHead>
+              <TableHead>{t('Reference')}</TableHead>
+              <TableHead>{t('Source')}</TableHead>
               <TableHead className="w-[80px]"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
-              <TableRow><TableCell colSpan={8} className="py-8 text-center text-muted-foreground">Loading...</TableCell></TableRow>
+              <TableRow><TableCell colSpan={8} className="py-8 text-center text-muted-foreground">{t('Loading...')}</TableCell></TableRow>
             ) : logs.length === 0 ? (
-              <TableRow><TableCell colSpan={8} className="py-8 text-center text-muted-foreground">No transactions found</TableCell></TableRow>
+              <TableRow><TableCell colSpan={8} className="py-8 text-center text-muted-foreground">{t('No transactions found')}</TableCell></TableRow>
             ) : logs.map(log => (
               <TableRow key={log.id} onClick={() => fetchLogDetail(log.id)} className="cursor-pointer">
                 <TableCell className="whitespace-nowrap text-sm text-muted-foreground">{new Date(log.createdAt).toLocaleString()}</TableCell>
@@ -224,7 +226,7 @@ export default function VNextEdiTransactionLog() {
                 <TableCell onClick={e => e.stopPropagation()}>
                   {log.status === 'error' && (
                     <Button size="sm" variant="outline" onClick={() => retryLog(log.id)}>
-                      Retry
+                      {t('Retry')}
                     </Button>
                   )}
                 </TableCell>
@@ -236,9 +238,9 @@ export default function VNextEdiTransactionLog() {
 
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-3">
-          <Button variant="outline" disabled={page === 0} onClick={() => setPage(p => p - 1)}>Previous</Button>
-          <span className="text-sm text-muted-foreground">Page {page + 1} of {totalPages}</span>
-          <Button variant="outline" disabled={page >= totalPages - 1} onClick={() => setPage(p => p + 1)}>Next</Button>
+          <Button variant="outline" disabled={page === 0} onClick={() => setPage(p => p - 1)}>{t('Previous')}</Button>
+          <span className="text-sm text-muted-foreground">{t('Page')} {page + 1} {t('of')} {totalPages}</span>
+          <Button variant="outline" disabled={page >= totalPages - 1} onClick={() => setPage(p => p + 1)}>{t('Next')}</Button>
         </div>
       )}
 
@@ -247,30 +249,30 @@ export default function VNextEdiTransactionLog() {
           {selectedLog && (
             <>
               <DialogHeader>
-                <DialogTitle>EDI {selectedLog.transactionType} - {DIRECTION_LABEL[selectedLog.direction]}</DialogTitle>
+                <DialogTitle>{t('EDI')} {selectedLog.transactionType}- {DIRECTION_LABEL[selectedLog.direction]}</DialogTitle>
                 <DialogDescription>
-                  Created {new Date(selectedLog.createdAt).toLocaleString()}
+                  {t('Created')} {new Date(selectedLog.createdAt).toLocaleString()}
                 </DialogDescription>
               </DialogHeader>
 
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div><span className="font-medium">Status:</span> <Badge variant={statusVariant(selectedLog.status)}>{selectedLog.status}</Badge></div>
-                  <div><span className="font-medium">Partner:</span> {selectedLog.partner?.name || 'None'}</div>
-                  <div><span className="font-medium">File:</span> {selectedLog.fileName || '-'}</div>
-                  <div><span className="font-medium">Size:</span> {selectedLog.fileSize ? `${selectedLog.fileSize} bytes` : '-'}</div>
-                  <div><span className="font-medium">Transport:</span> {selectedLog.transport || '-'}</div>
-                  <div><span className="font-medium">Source:</span> {selectedLog.source || '-'}</div>
-                  <div><span className="font-medium">Created:</span> {new Date(selectedLog.createdAt).toLocaleString()}</div>
-                  <div><span className="font-medium">Processed:</span> {selectedLog.processedAt ? new Date(selectedLog.processedAt).toLocaleString() : '-'}</div>
-                  {selectedLog.shipmentReference && <div><span className="font-medium">Shipment:</span> {selectedLog.shipmentReference}</div>}
-                  {selectedLog.invoiceNumber && <div><span className="font-medium">Invoice:</span> {selectedLog.invoiceNumber}</div>}
+                  <div><span className="font-medium">{t('Status:')}</span> <Badge variant={statusVariant(selectedLog.status)}>{selectedLog.status}</Badge></div>
+                  <div><span className="font-medium">{t('Partner:')}</span> {selectedLog.partner?.name || t('None')}</div>
+                  <div><span className="font-medium">{t('File:')}</span> {selectedLog.fileName || '-'}</div>
+                  <div><span className="font-medium">{t('Size:')}</span> {selectedLog.fileSize ? `${selectedLog.fileSize} bytes` : '-'}</div>
+                  <div><span className="font-medium">{t('Transport:')}</span> {selectedLog.transport || '-'}</div>
+                  <div><span className="font-medium">{t('Source:')}</span> {selectedLog.source || '-'}</div>
+                  <div><span className="font-medium">{t('Created:')}</span> {new Date(selectedLog.createdAt).toLocaleString()}</div>
+                  <div><span className="font-medium">{t('Processed:')}</span> {selectedLog.processedAt ? new Date(selectedLog.processedAt).toLocaleString() : '-'}</div>
+                  {selectedLog.shipmentReference && <div><span className="font-medium">{t('Shipment:')}</span> {selectedLog.shipmentReference}</div>}
+                  {selectedLog.invoiceNumber && <div><span className="font-medium">{t('Invoice:')}</span> {selectedLog.invoiceNumber}</div>}
                   {selectedLog.entitiesCreated !== undefined && selectedLog.entitiesCreated > 0 && (
-                    <div><span className="font-medium">Entities created:</span> {selectedLog.entitiesCreated}</div>
+                    <div><span className="font-medium">{t('Entities created:')}</span> {selectedLog.entitiesCreated}</div>
                   )}
-                  <div><span className="font-medium">997 ack:</span> {selectedLog.ack997Sent ? 'Sent' : selectedLog.ack997Received ? 'Received' : 'None'}</div>
+                  <div><span className="font-medium">{t('997 ack:')}</span> {selectedLog.ack997Sent ? t('Sent') : selectedLog.ack997Received ? 'Received' : 'None'}</div>
                   {selectedLog.retryCount !== undefined && selectedLog.retryCount > 0 && (
-                    <div><span className="font-medium">Retries:</span> {selectedLog.retryCount}</div>
+                    <div><span className="font-medium">{t('Retries:')}</span> {selectedLog.retryCount}</div>
                   )}
                 </div>
 
@@ -282,7 +284,7 @@ export default function VNextEdiTransactionLog() {
 
                 {selectedLog.fileContent && (
                   <div>
-                    <div className="mb-2 text-sm font-medium">Raw EDI content</div>
+                    <div className="mb-2 text-sm font-medium">{t('Raw EDI content')}</div>
                     <pre className="max-h-[200px] overflow-auto whitespace-pre-wrap break-all rounded-md bg-muted p-3 font-mono text-xs">
                       {selectedLog.fileContent}
                     </pre>
@@ -293,7 +295,7 @@ export default function VNextEdiTransactionLog() {
               {selectedLog.status === 'error' && (
                 <DialogFooter>
                   <Button variant="gradient" onClick={() => retryLog(selectedLog.id)}>
-                    Retry transaction
+                    {t('Retry transaction')}
                   </Button>
                 </DialogFooter>
               )}

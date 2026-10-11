@@ -23,6 +23,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t as translate } from '@/i18n';
+
 interface PutawayTask {
   id: string;
   status: string;
@@ -81,8 +83,8 @@ export default function VNextWmsPutaway() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Putaway</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Directed putaway tasks for received goods</p>
+        <h1 className="text-3xl font-bold tracking-tight">{translate('Putaway')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{translate('Directed putaway tasks for received goods')}</p>
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
@@ -92,11 +94,11 @@ export default function VNextWmsPutaway() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Statuses</SelectItem>
-            <SelectItem value="pending">Pending</SelectItem>
-            <SelectItem value="assigned">Assigned</SelectItem>
-            <SelectItem value="in_progress">In Progress</SelectItem>
-            <SelectItem value="completed">Completed</SelectItem>
+            <SelectItem value="all">{translate('All Statuses')}</SelectItem>
+            <SelectItem value="pending">{translate('Pending')}</SelectItem>
+            <SelectItem value="assigned">{translate('Assigned')}</SelectItem>
+            <SelectItem value="in_progress">{translate('In Progress')}</SelectItem>
+            <SelectItem value="completed">{translate('Completed')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -109,9 +111,11 @@ export default function VNextWmsPutaway() {
         <Card>
           <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
             <PackagePlus className="h-12 w-12 text-muted-foreground" />
-            <h3 className="text-base font-medium">No putaway tasks</h3>
+            <h3 className="text-base font-medium">{translate('No putaway tasks')}</h3>
             <p className="text-sm text-muted-foreground">
-              Putaway tasks are auto-generated when receiving is completed. Configure putaway rules to direct stock to the right zones.
+              {translate(
+                'Putaway tasks are auto-generated when receiving is completed. Configure putaway rules to direct stock to the right zones.'
+              )}
             </p>
           </CardContent>
         </Card>
@@ -120,13 +124,13 @@ export default function VNextWmsPutaway() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Task</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Unit</TableHead>
-                <TableHead>From</TableHead>
-                <TableHead>To</TableHead>
-                <TableHead>Assigned To</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{translate('Task')}</TableHead>
+                <TableHead>{translate('Type')}</TableHead>
+                <TableHead>{translate('Unit')}</TableHead>
+                <TableHead>{translate('From')}</TableHead>
+                <TableHead>{translate('To')}</TableHead>
+                <TableHead>{translate('Assigned To')}</TableHead>
+                <TableHead>{translate('Status')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -137,9 +141,9 @@ export default function VNextWmsPutaway() {
                     <Badge variant="secondary">{formatStatus(task.putawayType)}</Badge>
                   </TableCell>
                   <TableCell className="font-semibold">{task.trackableUnitIdentifier}</TableCell>
-                  <TableCell>{task.sourceBinLabel || 'Dock'}</TableCell>
+                  <TableCell>{task.sourceBinLabel || translate('Dock')}</TableCell>
                   <TableCell>{task.targetBinLabel}</TableCell>
-                  <TableCell>{task.assignedTo || 'Unassigned'}</TableCell>
+                  <TableCell>{task.assignedTo || translate('Unassigned')}</TableCell>
                   <TableCell>
                     <Badge variant={statusVariant(task.status)}>{formatStatus(task.status)}</Badge>
                   </TableCell>

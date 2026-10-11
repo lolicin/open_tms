@@ -16,6 +16,8 @@ import ConsolidationRunMap from './ConsolidationRunMap';
 import { consolidationStatusVariant } from './consolidationStatus';
 import { stopTypeLabel } from '@open-tms/shared';
 
+import { t } from '@/i18n';
+
 interface ConsolidationStop {
   id: string;
   sequenceNumber: number;
@@ -193,33 +195,33 @@ export default function VNextConsolidationDetail() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <Button variant="ghost" size="sm" className="mb-2 -ml-2" onClick={() => navigate('/consolidations')}>
-            <ArrowLeft className="h-4 w-4" /> Consolidations
+            <ArrowLeft className="h-4 w-4" /> {t('Consolidations')}
           </Button>
           <div className="flex items-center gap-3">
             <h1 className="text-3xl font-bold tracking-tight">{consolidation.reference}</h1>
             <Badge variant={consolidation.archived ? 'muted' : consolidationStatusVariant(consolidation.status)} className="capitalize">
-              {consolidation.archived ? 'archived' : consolidation.status.replace('_', ' ')}
+              {consolidation.archived ? t('archived') : consolidation.status.replace('_', ' ')}
             </Badge>
           </div>
           <p className="mt-1 text-sm text-muted-foreground">
-            {shipments.length} shipment{shipments.length === 1 ? '' : 's'} for {customers} customer{customers === 1 ? '' : 's'} · {consolidation.stops.length} stops
+            {shipments.length} {t('shipment')}{shipments.length === 1 ? '' : t('s')} {t('for')} {customers} {t('customer')}{customers === 1 ? '' : t('s')}· {consolidation.stops.length} {t('stops')}
           </p>
         </div>
         {canWrite && (
           <div className="flex gap-2">
             {editable && (
               <Button variant="outline" onClick={() => setPicking(true)} disabled={busy}>
-                <PackagePlus className="h-4 w-4" /> Add shipments
+                <PackagePlus className="h-4 w-4" /> {t('Add shipments')}
               </Button>
             )}
             {consolidation.status === 'draft' && (
               <Button onClick={() => act('/status', { to: 'ready' })} disabled={busy || shipments.length === 0}>
-                <CheckCircle2 className="h-4 w-4" /> Mark ready
+                <CheckCircle2 className="h-4 w-4" /> {t('Mark ready')}
               </Button>
             )}
             {consolidation.status === 'ready' && (
               <Button variant="outline" onClick={() => act('/status', { to: 'draft' })} disabled={busy}>
-                <Undo2 className="h-4 w-4" /> Back to draft
+                <Undo2 className="h-4 w-4" /> {t('Back to draft')}
               </Button>
             )}
             <Button
@@ -230,7 +232,7 @@ export default function VNextConsolidationDetail() {
                 if (window.confirm(`Archive ${consolidation.reference}?${freed}`)) act('/archive');
               }}
             >
-              <Archive className="h-4 w-4" /> Archive
+              <Archive className="h-4 w-4" /> {t('Archive')}
             </Button>
           </div>
         )}
@@ -243,7 +245,7 @@ export default function VNextConsolidationDetail() {
       )}
 
       <Card>
-        <CardHeader><CardTitle>Map</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{t('Map')}</CardTitle></CardHeader>
         <CardContent>
           <ConsolidationRunMap reference={consolidation.reference} stops={consolidation.stops} position={consolidation.position} />
         </CardContent>
@@ -251,10 +253,10 @@ export default function VNextConsolidationDetail() {
 
       <div className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
-          <CardHeader><CardTitle>Stops</CardTitle></CardHeader>
+          <CardHeader><CardTitle>{t('Stops')}</CardTitle></CardHeader>
           <CardContent>
             {consolidation.stops.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No stops. Add shipments to build the run.</p>
+              <p className="text-sm text-muted-foreground">{t('No stops. Add shipments to build the run.')}</p>
             ) : (
               <ol className="space-y-2">
                 {consolidation.stops.map((stop, i) => (
@@ -272,7 +274,7 @@ export default function VNextConsolidationDetail() {
                       <div className="mt-1 text-xs text-muted-foreground">
                         {[stop.location.city, stop.location.state].filter(Boolean).join(', ')}
                         {stop.shipmentStops.length > 0 && (
-                          <> · {stop.stopType === 'pickup' ? 'collects' : stop.stopType === 'other' ? 'on the way for' : 'drops'} {stop.shipmentStops.map((s) => referenceOf.get(s.shipmentId) ?? s.shipmentId).join(', ')}</>
+                          <> · {stop.stopType === 'pickup' ? t('collects') : stop.stopType === 'other' ? 'on the way for' : 'drops'} {stop.shipmentStops.map((s) => referenceOf.get(s.shipmentId) ?? s.shipmentId).join(', ')}</>
                         )}
                       </div>
                     </div>
@@ -308,43 +310,43 @@ export default function VNextConsolidationDetail() {
         </Card>
 
         <Card>
-          <CardHeader><CardTitle>Run</CardTitle></CardHeader>
+          <CardHeader><CardTitle>{t('Run')}</CardTitle></CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label>Carrier</Label>
+              <Label>{t('Carrier')}</Label>
               <Select value={carrierId} onValueChange={setCarrierId} disabled={!canWrite}>
                 <SelectTrigger><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={NO_CARRIER}>No carrier yet</SelectItem>
+                  <SelectItem value={NO_CARRIER}>{t('No carrier yet')}</SelectItem>
                   {carriers.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="carrier-rate">Carrier rate ({consolidation.currency})</Label>
+              <Label htmlFor="carrier-rate">{t('Carrier rate (')}{consolidation.currency})</Label>
               <Input
                 id="carrier-rate"
                 inputMode="decimal"
-                placeholder="What the carrier charges for the run"
+                placeholder={t('What the carrier charges for the run')}
                 value={rate}
                 disabled={!canWrite}
                 onChange={(e) => setRate(e.target.value)}
               />
-              {rateCents === undefined && <p className="text-xs text-destructive">Enter an amount, like 1250.00.</p>}
+              {rateCents === undefined && <p className="text-xs text-destructive">{t('Enter an amount, like 1250.00.')}</p>}
               {consolidation.carrierRateCents != null && (
                 <p className="text-xs text-muted-foreground">
-                  Split across the shipments {weighed ? 'by the weight of their orders' : 'evenly, since none of their orders are weighed'}.
-                </p>
+                  {t('Split across the shipments')} {weighed ? t('by the weight of their orders') : t('evenly, since none of their orders are weighed')}.
+                                  </p>
               )}
             </div>
             <div className="space-y-2">
-              <Label>Notes</Label>
+              <Label>{t('Notes')}</Label>
               <textarea
                 rows={4}
                 value={notes}
                 disabled={!canWrite}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="Dock times, loading order..."
+                placeholder={t('Dock times, loading order...')}
                 className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
               />
             </div>
@@ -358,13 +360,13 @@ export default function VNextConsolidationDetail() {
                   ...(rateChanged ? { carrierRateCents: rateCents } : {}),
                 })}
               >
-                Save
+                {t('Save')}
               </Button>
             )}
             <div className="space-y-2 border-t pt-4">
-              <Label className="flex items-center gap-2"><Radio className="h-4 w-4" /> Tracking devices</Label>
-              <p className="text-xs text-muted-foreground">Pings from a device here update every shipment on the run.</p>
-              {consolidation.devices.length === 0 && <p className="text-sm text-muted-foreground">No device yet.</p>}
+              <Label className="flex items-center gap-2"><Radio className="h-4 w-4" /> {t('Tracking devices')}</Label>
+              <p className="text-xs text-muted-foreground">{t('Pings from a device here update every shipment on the run.')}</p>
+              {consolidation.devices.length === 0 && <p className="text-sm text-muted-foreground">{t('No device yet.')}</p>}
               {consolidation.devices.map((d) => (
                 <div key={d.id} className="flex items-center justify-between gap-2 rounded-md border px-3 py-2 text-sm">
                   <div className="min-w-0">
@@ -386,8 +388,8 @@ export default function VNextConsolidationDetail() {
               ))}
               {canWrite && (
                 <div className="space-y-2">
-                  <Input placeholder="Device name" value={deviceName} onChange={(e) => setDeviceName(e.target.value)} />
-                  <Input placeholder="Device ID" value={deviceExternalId} onChange={(e) => setDeviceExternalId(e.target.value)} />
+                  <Input placeholder={t('Device name')} value={deviceName} onChange={(e) => setDeviceName(e.target.value)} />
+                  <Input placeholder={t('Device ID')} value={deviceExternalId} onChange={(e) => setDeviceExternalId(e.target.value)} />
                   <Button
                     variant="outline"
                     className="w-full"
@@ -401,7 +403,7 @@ export default function VNextConsolidationDetail() {
                       setDeviceExternalId('');
                     }}
                   >
-                    Add device
+                    {t('Add device')}
                   </Button>
                 </div>
               )}
@@ -411,24 +413,24 @@ export default function VNextConsolidationDetail() {
       </div>
 
       <Card>
-        <CardHeader><CardTitle>Shipments</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{t('Shipments')}</CardTitle></CardHeader>
         <CardContent className="p-0">
           {shipments.length === 0 ? (
-            <p className="p-6 text-sm text-muted-foreground">No shipments on this consolidation.</p>
+            <p className="p-6 text-sm text-muted-foreground">{t('No shipments on this consolidation.')}</p>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Shipment</TableHead>
-                  <TableHead>Customer</TableHead>
-                  <TableHead>Mode</TableHead>
-                  <TableHead>Pickup</TableHead>
-                  <TableHead>Delivery</TableHead>
-                  <TableHead>Run stops</TableHead>
-                  <TableHead className="text-right">Weight</TableHead>
-                  <TableHead className="text-right">Cost share</TableHead>
-                  <TableHead className="text-right">Margin</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>{t('Shipment')}</TableHead>
+                  <TableHead>{t('Customer')}</TableHead>
+                  <TableHead>{t('Mode')}</TableHead>
+                  <TableHead>{t('Pickup')}</TableHead>
+                  <TableHead>{t('Delivery')}</TableHead>
+                  <TableHead>{t('Run stops')}</TableHead>
+                  <TableHead className="text-right">{t('Weight')}</TableHead>
+                  <TableHead className="text-right">{t('Cost share')}</TableHead>
+                  <TableHead className="text-right">{t('Margin')}</TableHead>
+                  <TableHead>{t('Status')}</TableHead>
                   {editable && <TableHead />}
                 </TableRow>
               </TableHeader>

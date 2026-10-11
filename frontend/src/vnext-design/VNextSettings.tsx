@@ -34,6 +34,8 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { API_URL } from '../api';
 
+import { t } from '@/i18n';
+
 function Switch({
   label,
   checked,
@@ -109,7 +111,7 @@ function Banner({
       <span>{message}</span>
       {onClose && (
         <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">
-          Dismiss
+          {t('Dismiss')}
         </button>
       )}
     </div>
@@ -194,54 +196,54 @@ function GeneralTab() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Building2 className="h-4 w-4 text-primary" />
-            Organization
+            {t('Organization')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label>Company name</Label>
+            <Label>{t('Company name')}</Label>
             <Input value={orgName} onChange={e => setOrgName(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>Industry</Label>
+            <Label>{t('Industry')}</Label>
             <Select defaultValue="logistics">
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="logistics">Logistics</SelectItem>
-                <SelectItem value="manufacturing">Manufacturing</SelectItem>
-                <SelectItem value="retail">Retail</SelectItem>
+                <SelectItem value="logistics">{t('Logistics')}</SelectItem>
+                <SelectItem value="manufacturing">{t('Manufacturing')}</SelectItem>
+                <SelectItem value="retail">{t('Retail')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2">
-            <Label>Timezone</Label>
+            <Label>{t('Timezone')}</Label>
             <Select defaultValue="America/New_York">
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="America/New_York">America / New York (ET)</SelectItem>
-                <SelectItem value="America/Chicago">America / Chicago (CT)</SelectItem>
-                <SelectItem value="America/Denver">America / Denver (MT)</SelectItem>
-                <SelectItem value="America/Los_Angeles">America / Los Angeles (PT)</SelectItem>
-                <SelectItem value="Europe/London">Europe / London (GMT)</SelectItem>
-                <SelectItem value="Europe/Berlin">Europe / Berlin (CET)</SelectItem>
+                <SelectItem value="America/New_York">{t('America / New York (ET)')}</SelectItem>
+                <SelectItem value="America/Chicago">{t('America / Chicago (CT)')}</SelectItem>
+                <SelectItem value="America/Denver">{t('America / Denver (MT)')}</SelectItem>
+                <SelectItem value="America/Los_Angeles">{t('America / Los Angeles (PT)')}</SelectItem>
+                <SelectItem value="Europe/London">{t('Europe / London (GMT)')}</SelectItem>
+                <SelectItem value="Europe/Berlin">{t('Europe / Berlin (CET)')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2">
-            <Label>Default currency</Label>
+            <Label>{t('Default currency')}</Label>
             <Select defaultValue="USD">
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="USD">USD</SelectItem>
-                <SelectItem value="EUR">EUR</SelectItem>
-                <SelectItem value="GBP">GBP</SelectItem>
-                <SelectItem value="CAD">CAD</SelectItem>
+                <SelectItem value="USD">{t('USD')}</SelectItem>
+                <SelectItem value="EUR">{t('EUR')}</SelectItem>
+                <SelectItem value="GBP">{t('GBP')}</SelectItem>
+                <SelectItem value="CAD">{t('CAD')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -252,48 +254,48 @@ function GeneralTab() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Ruler className="h-4 w-4 text-primary" />
-            Units of measure
+            {t('Units of measure')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <RadioGroup
-            label="Weight"
+            label={t('Weight')}
             name="weight"
             value={weight}
             onChange={setWeight}
             options={[
-              { value: 'kg', label: 'Kilograms (kg)' },
-              { value: 'lb', label: 'Pounds (lb)' },
+              { value: 'kg', label: t('Kilograms (kg)') },
+              { value: 'lb', label: t('Pounds (lb)') },
             ]}
           />
           <RadioGroup
-            label="Dimensions"
+            label={t('Dimensions')}
             name="dimensions"
             value={dimensions}
             onChange={setDimensions}
             options={[
-              { value: 'cm', label: 'Centimeters (cm)' },
-              { value: 'in', label: 'Inches (in)' },
+              { value: 'cm', label: t('Centimeters (cm)') },
+              { value: 'in', label: t('Inches (in)') },
             ]}
           />
           <RadioGroup
-            label="Temperature"
+            label={t('Temperature')}
             name="temperature"
             value={temperature}
             onChange={setTemperature}
             options={[
-              { value: 'C', label: 'Celsius (°C)' },
-              { value: 'F', label: 'Fahrenheit (°F)' },
+              { value: 'C', label: t('Celsius (°C)') },
+              { value: 'F', label: t('Fahrenheit (°F)') },
             ]}
           />
           <RadioGroup
-            label="Distance"
+            label={t('Distance')}
             name="distance"
             value={distance}
             onChange={setDistance}
             options={[
-              { value: 'km', label: 'Kilometers (km)' },
-              { value: 'mi', label: 'Miles (mi)' },
+              { value: 'km', label: t('Kilometers (km)') },
+              { value: 'mi', label: t('Miles (mi)') },
             ]}
           />
         </CardContent>
@@ -303,17 +305,19 @@ function GeneralTab() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Gavel className="h-4 w-4 text-primary" />
-            Carrier tendering
+            {t('Carrier tendering')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
           <Switch
-            label="Auto-tender for laneless shipments"
+            label={t('Auto-tender for laneless shipments')}
             checked={autoTenderEnabled}
             onChange={setAutoTenderEnabled}
           />
           <p className="ml-6 text-xs text-muted-foreground">
-            When enabled, a broadcast tender is automatically created for all carriers when a shipment is created without a lane or carrier assignment.
+            {t(
+              'When enabled, a broadcast tender is automatically created for all carriers when a shipment is created without a lane or carrier assignment.'
+            )}
           </p>
         </CardContent>
       </Card>
@@ -322,12 +326,12 @@ function GeneralTab() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MapPin className="h-4 w-4 text-primary" />
-            Location and geofencing
+            {t('Location and geofencing')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label>Default geofence radius (meters)</Label>
+            <Label>{t('Default geofence radius (meters)')}</Label>
             <Input
               type="number"
               value={String(defaultGeofenceRadius)}
@@ -335,7 +339,9 @@ function GeneralTab() {
             />
           </div>
           <p className="self-end text-xs text-muted-foreground">
-            Default radius for geofence arrival criteria when new locations are auto-created.
+            {t(
+              'Default radius for geofence arrival criteria when new locations are auto-created.'
+            )}
           </p>
         </CardContent>
       </Card>
@@ -344,26 +350,28 @@ function GeneralTab() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Thermometer className="h-4 w-4 text-primary" />
-            Cold chain and compliance
+            {t('Cold chain and compliance')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
           <Switch
-            label="Auto-deliver shipment documents to customers on completion"
+            label={t('Auto-deliver shipment documents to customers on completion')}
             checked={autoDeliverDocs}
             onChange={setAutoDeliverDocs}
           />
           <p className="ml-6 text-xs text-muted-foreground">
-            When enabled, cold chain compliance reports and other shipment documents will be automatically sent to the customer when a shipment is delivered.
+            {t(
+              'When enabled, cold chain compliance reports and other shipment documents will be automatically sent to the customer when a shipment is delivered.'
+            )}
           </p>
         </CardContent>
       </Card>
 
       <div className="flex flex-wrap items-center justify-end gap-2">
-        <Button variant="outline">Cancel</Button>
+        <Button variant="outline">{t('Cancel')}</Button>
         <Button variant="gradient" onClick={handleSave} disabled={saving}>
           <Save className="h-4 w-4" />
-          {saving ? 'Saving...' : 'Save'}
+          {saving ? t('Saving...') : t('Save')}
         </Button>
       </div>
     </div>
@@ -391,25 +399,25 @@ function NotificationsTab() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Email notifications</CardTitle>
+          <CardTitle>{t('Email notifications')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <Switch label="Shipment status changes" checked={emailPrefs.shipmentStatus} onChange={() => toggleEmail('shipmentStatus')} />
-          <Switch label="Delivery confirmations" checked={emailPrefs.deliveryConfirmations} onChange={() => toggleEmail('deliveryConfirmations')} />
-          <Switch label="Exception alerts" checked={emailPrefs.exceptionAlerts} onChange={() => toggleEmail('exceptionAlerts')} />
-          <Switch label="Daily report" checked={emailPrefs.dailyReport} onChange={() => toggleEmail('dailyReport')} />
+          <Switch label={t('Shipment status changes')} checked={emailPrefs.shipmentStatus} onChange={() => toggleEmail('shipmentStatus')} />
+          <Switch label={t('Delivery confirmations')} checked={emailPrefs.deliveryConfirmations} onChange={() => toggleEmail('deliveryConfirmations')} />
+          <Switch label={t('Exception alerts')} checked={emailPrefs.exceptionAlerts} onChange={() => toggleEmail('exceptionAlerts')} />
+          <Switch label={t('Daily report')} checked={emailPrefs.dailyReport} onChange={() => toggleEmail('dailyReport')} />
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>In-app notifications</CardTitle>
+          <CardTitle>{t('In-app notifications')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <Switch label="Shipment status changes" checked={appPrefs.shipmentStatus} onChange={() => toggleApp('shipmentStatus')} />
-          <Switch label="Delivery confirmations" checked={appPrefs.deliveryConfirmations} onChange={() => toggleApp('deliveryConfirmations')} />
-          <Switch label="Exception alerts" checked={appPrefs.exceptionAlerts} onChange={() => toggleApp('exceptionAlerts')} />
-          <Switch label="Daily report" checked={appPrefs.dailyReport} onChange={() => toggleApp('dailyReport')} />
+          <Switch label={t('Shipment status changes')} checked={appPrefs.shipmentStatus} onChange={() => toggleApp('shipmentStatus')} />
+          <Switch label={t('Delivery confirmations')} checked={appPrefs.deliveryConfirmations} onChange={() => toggleApp('deliveryConfirmations')} />
+          <Switch label={t('Exception alerts')} checked={appPrefs.exceptionAlerts} onChange={() => toggleApp('exceptionAlerts')} />
+          <Switch label={t('Daily report')} checked={appPrefs.dailyReport} onChange={() => toggleApp('dailyReport')} />
         </CardContent>
       </Card>
     </div>
@@ -423,9 +431,9 @@ function IntegrationsTab() {
         <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
           <Plug className="h-6 w-6" />
         </div>
-        <p className="text-base font-semibold">Integrations are managed from the Integrations app</p>
+        <p className="text-base font-semibold">{t('Integrations are managed from the Integrations app')}</p>
         <a href="/integrations" className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
-          Go to Integrations <ExternalLink className="h-3 w-3" />
+          {t('Go to Integrations')} <ExternalLink className="h-3 w-3" />
         </a>
       </CardContent>
     </Card>
@@ -441,16 +449,16 @@ function ThemeTab() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Palette className="h-4 w-4 text-primary" />
-            Branding
+            {t('Branding')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label>System name</Label>
+            <Label>{t('System name')}</Label>
             <Input defaultValue="Open TMS" />
           </div>
           <div className="space-y-2">
-            <Label>Primary color</Label>
+            <Label>{t('Primary color')}</Label>
             <div className="flex items-center gap-2">
               <input
                 type="color"
@@ -462,20 +470,20 @@ function ThemeTab() {
             </div>
           </div>
           <div className="space-y-2 md:col-span-2">
-            <Label>Logo</Label>
+            <Label>{t('Logo')}</Label>
             <div className="flex flex-col items-center gap-2 rounded-md border-2 border-dashed border-input bg-background py-8 text-center text-sm text-muted-foreground">
-              <span className="font-medium">Click to upload or drag and drop</span>
-              <span className="text-xs">SVG, PNG, or JPG (max 2MB)</span>
+              <span className="font-medium">{t('Click to upload or drag and drop')}</span>
+              <span className="text-xs">{t('SVG, PNG, or JPG (max 2MB)')}</span>
             </div>
           </div>
         </CardContent>
       </Card>
 
       <div className="flex flex-wrap items-center justify-end gap-2">
-        <Button variant="outline">Cancel</Button>
+        <Button variant="outline">{t('Cancel')}</Button>
         <Button variant="gradient">
           <Save className="h-4 w-4" />
-          Save theme
+          {t('Save theme')}
         </Button>
       </div>
     </div>
@@ -553,25 +561,27 @@ function BrokerageTab() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Organization type</CardTitle>
+          <CardTitle>{t('Organization type')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="space-y-2 md:max-w-sm">
-            <Label>Organization type</Label>
+            <Label>{t('Organization type')}</Label>
             <Select value={orgType} onValueChange={setOrgType}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="shipper">Shipper</SelectItem>
-                <SelectItem value="broker">Broker</SelectItem>
-                <SelectItem value="carrier">Carrier</SelectItem>
-                <SelectItem value="3pl">3PL</SelectItem>
+                <SelectItem value="shipper">{t('Shipper')}</SelectItem>
+                <SelectItem value="broker">{t('Broker')}</SelectItem>
+                <SelectItem value="carrier">{t('Carrier')}</SelectItem>
+                <SelectItem value="3pl">{t('3PL')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <p className="text-xs text-muted-foreground">
-            This determines the default UI experience and available features. Brokers and 3PLs get margin tracking and broker-specific workflows.
+            {t(
+              'This determines the default UI experience and available features. Brokers and 3PLs get margin tracking and broker-specific workflows.'
+            )}
           </p>
         </CardContent>
       </Card>
@@ -580,32 +590,32 @@ function BrokerageTab() {
         <>
           <Card>
             <CardHeader>
-              <CardTitle>Authority and compliance</CardTitle>
+              <CardTitle>{t('Authority and compliance')}</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>MC number</Label>
-                <Input value={mcNumber} onChange={e => setMcNumber(e.target.value)} placeholder="e.g. 123456" />
+                <Label>{t('MC number')}</Label>
+                <Input value={mcNumber} onChange={e => setMcNumber(e.target.value)} placeholder={t('e.g. 123456')} />
               </div>
               <div className="space-y-2">
-                <Label>Operating authority status</Label>
+                <Label>{t('Operating authority status')}</Label>
                 <Select value={authorityStatus} onValueChange={setAuthorityStatus}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="revoked">Revoked</SelectItem>
+                    <SelectItem value="active">{t('Active')}</SelectItem>
+                    <SelectItem value="pending">{t('Pending')}</SelectItem>
+                    <SelectItem value="revoked">{t('Revoked')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Bond amount ($)</Label>
+                <Label>{t('Bond amount ($)')}</Label>
                 <Input type="number" step="0.01" value={bondAmount} onChange={e => setBondAmount(e.target.value)} placeholder="0.00" />
               </div>
               <div className="space-y-2">
-                <Label>Bond expiration</Label>
+                <Label>{t('Bond expiration')}</Label>
                 <DatePicker type="date" value={bondExpiration} onChange={e => setBondExpiration(e.target.value)} />
               </div>
             </CardContent>
@@ -613,16 +623,18 @@ function BrokerageTab() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Margin alerts</CardTitle>
+              <CardTitle>{t('Margin alerts')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Switch label="Enable margin alerts" checked={marginAlertEnabled} onChange={setMarginAlertEnabled} />
+              <Switch label={t('Enable margin alerts')} checked={marginAlertEnabled} onChange={setMarginAlertEnabled} />
               <p className="text-xs text-muted-foreground">
-                When enabled, an issue is automatically created when a shipment's margin drops below the threshold.
+                {t(
+                  'When enabled, an issue is automatically created when a shipment\'s margin drops below the threshold.'
+                )}
               </p>
               {marginAlertEnabled && (
                 <div className="space-y-2 md:max-w-xs">
-                  <Label>Minimum margin (%)</Label>
+                  <Label>{t('Minimum margin (%)')}</Label>
                   <Input
                     type="number"
                     step="0.1"
@@ -630,7 +642,7 @@ function BrokerageTab() {
                     max="100"
                     value={minMarginPercent}
                     onChange={e => setMinMarginPercent(e.target.value)}
-                    placeholder="e.g. 10"
+                    placeholder={t('e.g. 10')}
                   />
                 </div>
               )}
@@ -646,7 +658,7 @@ function BrokerageTab() {
       <div className="flex justify-end">
         <Button variant="gradient" onClick={handleSave} disabled={saving}>
           <Save className="h-4 w-4" />
-          {saving ? 'Saving...' : 'Save brokerage settings'}
+          {saving ? t('Saving...') : t('Save brokerage settings')}
         </Button>
       </div>
     </div>
@@ -767,26 +779,28 @@ function WarehouseTab() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Warehouse className="h-4 w-4 text-primary" />
-            Warehouse app settings
+            {t('Warehouse app settings')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
             <Switch
-              label="Magic link login (QR codes)"
+              label={t('Magic link login (QR codes)')}
               checked={magicLinksEnabled}
               onChange={setMagicLinksEnabled}
             />
             <p className="ml-6 mt-1 text-xs text-muted-foreground">
-              When enabled, admins can generate printable QR codes for warehouse users to log in without typing credentials.
+              {t(
+                'When enabled, admins can generate printable QR codes for warehouse users to log in without typing credentials.'
+              )}
             </p>
           </div>
           <RadioGroup
-            label="Default scanner mode"
+            label={t('Default scanner mode')}
             name="scanMode"
             options={[
-              { value: 'hid', label: 'Built-in scanner (HID)' },
-              { value: 'camera', label: 'Camera' },
+              { value: 'hid', label: t('Built-in scanner (HID)') },
+              { value: 'camera', label: t('Camera') },
             ]}
             value={scanMode}
             onChange={setScanMode}
@@ -795,10 +809,10 @@ function WarehouseTab() {
       </Card>
 
       <div className="flex justify-end gap-2">
-        <Button variant="outline" onClick={() => window.location.reload()}>Reset</Button>
+        <Button variant="outline" onClick={() => window.location.reload()}>{t('Reset')}</Button>
         <Button variant="gradient" onClick={handleSave} disabled={saving}>
           <Save className="h-4 w-4" />
-          {saving ? 'Saving...' : 'Save settings'}
+          {saving ? t('Saving...') : t('Save settings')}
         </Button>
       </div>
 
@@ -807,16 +821,16 @@ function WarehouseTab() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <QrCode className="h-4 w-4 text-primary" />
-              Generate login QR code
+              {t('Generate login QR code')}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
               <div className="space-y-2">
-                <Label>Select user</Label>
+                <Label>{t('Select user')}</Label>
                 <Select value={selectedUserId} onValueChange={setSelectedUserId}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Choose a user..." />
+                    <SelectValue placeholder={t('Choose a user...')} />
                   </SelectTrigger>
                   <SelectContent>
                     {users.map((u: any) => (
@@ -827,7 +841,7 @@ function WarehouseTab() {
               </div>
               <Button variant="gradient" onClick={generateMagicLink} disabled={!selectedUserId || generating}>
                 <QrCode className="h-4 w-4" />
-                {generating ? 'Generating...' : 'Generate QR code'}
+                {generating ? t('Generating...') : t('Generate QR code')}
               </Button>
             </div>
 
@@ -836,7 +850,7 @@ function WarehouseTab() {
                 <CardContent className="flex flex-col items-center gap-3 py-6">
                   <img
                     src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(generatedLink)}`}
-                    alt="Login QR Code"
+                    alt={t('Login QR Code')}
                     width={200}
                     height={200}
                   />
@@ -844,11 +858,11 @@ function WarehouseTab() {
                   <div className="flex gap-2">
                     <Button variant="outline" onClick={() => navigator.clipboard.writeText(generatedLink)}>
                       <Copy className="h-4 w-4" />
-                      Copy link
+                      {t('Copy link')}
                     </Button>
                     <Button variant="gradient" onClick={printQrCode}>
                       <Printer className="h-4 w-4" />
-                      Print QR code
+                      {t('Print QR code')}
                     </Button>
                   </div>
                 </CardContent>
@@ -862,7 +876,7 @@ function WarehouseTab() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <History className="h-4 w-4 text-primary" />
-            Login audit log
+            {t('Login audit log')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -894,7 +908,7 @@ function LoginAuditPreview() {
   }
 
   if (logs.length === 0) {
-    return <p className="text-sm text-muted-foreground">No login activity yet.</p>;
+    return <p className="text-sm text-muted-foreground">{t('No login activity yet.')}</p>;
   }
 
   return (
@@ -902,10 +916,10 @@ function LoginAuditPreview() {
       <table className="w-full text-sm">
         <thead className="bg-muted text-xs uppercase tracking-wide text-muted-foreground">
           <tr>
-            <th className="px-3 py-2 text-left">User</th>
-            <th className="px-3 py-2 text-left">Method</th>
-            <th className="px-3 py-2 text-left">Status</th>
-            <th className="px-3 py-2 text-left">Time</th>
+            <th className="px-3 py-2 text-left">{t('User')}</th>
+            <th className="px-3 py-2 text-left">{t('Method')}</th>
+            <th className="px-3 py-2 text-left">{t('Status')}</th>
+            <th className="px-3 py-2 text-left">{t('Time')}</th>
           </tr>
         </thead>
         <tbody>
@@ -914,11 +928,11 @@ function LoginAuditPreview() {
               <td className="px-3 py-2">{log.user?.firstName} {log.user?.lastName}</td>
               <td className="px-3 py-2">
                 <Badge variant={log.method === 'magic_link' ? 'info' : 'secondary'}>
-                  {log.method === 'magic_link' ? 'QR / Magic Link' : log.method === 'password' ? 'Password' : log.method}
+                  {log.method === 'magic_link' ? t('QR / Magic Link') : log.method === 'password' ? 'Password' : log.method}
                 </Badge>
               </td>
               <td className={`px-3 py-2 ${log.success ? 'text-success' : 'text-destructive'}`}>
-                {log.success ? 'Success' : `Failed (${log.failReason})`}
+                {log.success ? t('Success') : `Failed (${log.failReason})`}
               </td>
               <td className="px-3 py-2 text-xs text-muted-foreground">
                 {new Date(log.createdAt).toLocaleString()}
@@ -936,21 +950,21 @@ export default function VNextSettings() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Settings')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Manage your organization preferences and integrations
+            {t('Manage your organization preferences and integrations')}
           </p>
         </div>
       </div>
 
       <Tabs defaultValue="general">
         <TabsList>
-          <TabsTrigger value="general"><Building2 className="mr-1 h-4 w-4" />General</TabsTrigger>
-          <TabsTrigger value="brokerage"><Briefcase className="mr-1 h-4 w-4" />Brokerage</TabsTrigger>
-          <TabsTrigger value="warehouse"><Warehouse className="mr-1 h-4 w-4" />Warehouse</TabsTrigger>
-          <TabsTrigger value="notifications"><Bell className="mr-1 h-4 w-4" />Notifications</TabsTrigger>
-          <TabsTrigger value="integrations"><Plug className="mr-1 h-4 w-4" />Integrations</TabsTrigger>
-          <TabsTrigger value="theme"><Palette className="mr-1 h-4 w-4" />Theme</TabsTrigger>
+          <TabsTrigger value="general"><Building2 className="mr-1 h-4 w-4" />{t('General')}</TabsTrigger>
+          <TabsTrigger value="brokerage"><Briefcase className="mr-1 h-4 w-4" />{t('Brokerage')}</TabsTrigger>
+          <TabsTrigger value="warehouse"><Warehouse className="mr-1 h-4 w-4" />{t('Warehouse')}</TabsTrigger>
+          <TabsTrigger value="notifications"><Bell className="mr-1 h-4 w-4" />{t('Notifications')}</TabsTrigger>
+          <TabsTrigger value="integrations"><Plug className="mr-1 h-4 w-4" />{t('Integrations')}</TabsTrigger>
+          <TabsTrigger value="theme"><Palette className="mr-1 h-4 w-4" />{t('Theme')}</TabsTrigger>
         </TabsList>
         <TabsContent value="general" className="mt-6"><GeneralTab /></TabsContent>
         <TabsContent value="brokerage" className="mt-6"><BrokerageTab /></TabsContent>

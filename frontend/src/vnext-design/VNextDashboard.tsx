@@ -33,6 +33,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t as translate } from '@/i18n';
+
 interface Shipment {
   id: string;
   status?: string;
@@ -79,14 +81,14 @@ const STATUS_VARIANT = {
 } as const;
 
 const STATUS_LABEL: Record<string, string> = {
-  draft: 'Draft',
-  ready: 'Ready',
-  in_progress: 'In progress',
-  complete: 'Completed',
+  draft: translate('Draft'),
+  ready: translate('Ready'),
+  in_progress: translate('In progress'),
+  complete: translate('Completed'),
 };
 
 function statusToBadge(status?: string) {
-  if (!status) return { label: 'Unknown', variant: 'muted' as const };
+  if (!status) return { label: translate('Unknown'), variant: 'muted' as const };
   const variant = (STATUS_VARIANT as Record<string, string>)[status] ?? 'muted';
   const label = STATUS_LABEL[status] ?? status;
   return { label, variant: variant as 'success' | 'info' | 'warning' | 'muted' };
@@ -171,7 +173,7 @@ export default function VNextDashboard() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{translate('Loading...')}</h3>
       </div>
     );
   }
@@ -180,7 +182,7 @@ export default function VNextDashboard() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-destructive">
         <CircleAlert className="h-8 w-8" />
-        <h3 className="text-lg font-medium">Error</h3>
+        <h3 className="text-lg font-medium">{translate('Error')}</h3>
         <p className="text-sm text-muted-foreground">{error}</p>
       </div>
     );
@@ -223,8 +225,8 @@ export default function VNextDashboard() {
     .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime())
     .slice(0, 5);
 
-  const fmtDay = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-  const weekLabel = `This week · ${fmtDay(weekStart)} – ${fmtDay(weekEnd)}`;
+  const fmtDay = (d: Date) => d.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
+  const weekLabel = `${translate('This week')} · ${fmtDay(weekStart)} – ${fmtDay(weekEnd)}`;
 
   // No real activity this week → frosted "awaiting data" view rather than a wall of zeros.
   const noActivityThisWeek =
@@ -234,11 +236,11 @@ export default function VNextDashboard() {
     exceptionsThisWeek.length === 0;
 
   const stats = [
-    { label: 'Shipments created', value: shipmentsThisWeek.length, icon: Truck, tone: 'primary', onClick: () => navigate('/shipments') },
-    { label: 'Orders created', value: ordersThisWeek.length, icon: Package, tone: 'accent', onClick: () => navigate('/orders') },
-    { label: 'In progress', value: inProgressCount, icon: Truck, tone: 'warning', onClick: () => navigate('/shipments') },
-    { label: 'Completed', value: completedCount, icon: CheckCircle2, tone: 'success', onClick: () => navigate('/shipments') },
-    { label: 'On-time delivery', value: onTimeRate === null ? '—' : `${onTimeRate}%`, icon: Percent, tone: onTimeTone },
+    { label: translate('Shipments created'), value: shipmentsThisWeek.length, icon: Truck, tone: 'primary', onClick: () => navigate('/shipments') },
+    { label: translate('Orders created'), value: ordersThisWeek.length, icon: Package, tone: 'accent', onClick: () => navigate('/orders') },
+    { label: translate('In progress'), value: inProgressCount, icon: Truck, tone: 'warning', onClick: () => navigate('/shipments') },
+    { label: translate('Completed'), value: completedCount, icon: CheckCircle2, tone: 'success', onClick: () => navigate('/shipments') },
+    { label: translate('On-time delivery'), value: onTimeRate === null ? '—' : `${onTimeRate}%`, icon: Percent, tone: onTimeTone },
   ];
 
   const tones = {
@@ -254,17 +256,17 @@ export default function VNextDashboard() {
       <div>
         <div className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">{weekLabel}</div>
         <h1 className="mt-2 text-4xl font-bold tracking-tight">
-          <GradientText>Dashboard</GradientText>
+          <GradientText>{translate('Dashboard')}</GradientText>
         </h1>
       </div>
       <div className="flex gap-2">
         <Button variant="outline" disabled={noActivityThisWeek}>
           <Download className="h-4 w-4" />
-          Export
+          {translate('Export')}
         </Button>
         <Button variant="gradient" onClick={() => navigate('/shipments/create')}>
           <Plus className="h-4 w-4" />
-          New shipment
+          {translate('New shipment')}
         </Button>
       </div>
     </div>
@@ -302,15 +304,15 @@ export default function VNextDashboard() {
               <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <Inbox className="h-7 w-7" />
               </div>
-              <h2 className="text-xl font-semibold">Awaiting data this week</h2>
+              <h2 className="text-xl font-semibold">{translate('Awaiting data this week')}</h2>
               <p className="text-sm text-muted-foreground">
-                Nothing has moved through Open TMS since {fmtDay(weekStart)}. As shipments,
-                orders, and exceptions are created this week, your live metrics will appear
-                here automatically.
+                {translate('Nothing has moved through Open TMS since')} {fmtDay(weekStart)}{translate(
+                  '. As shipments,\n                orders, and exceptions are created this week, your live metrics will appear\n                here automatically.'
+                )}
               </p>
               <Button variant="gradient" className="mt-2" onClick={() => navigate('/shipments/create')}>
                 <Plus className="h-4 w-4" />
-                Create your first shipment
+                {translate('Create your first shipment')}
               </Button>
             </div>
           </div>
@@ -351,11 +353,11 @@ export default function VNextDashboard() {
         <Card className="lg:col-span-2">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle>Recent shipments</CardTitle>
-              <CardDescription>Created this week.</CardDescription>
+              <CardTitle>{translate('Recent shipments')}</CardTitle>
+              <CardDescription>{translate('Created this week.')}</CardDescription>
             </div>
             <Button variant="outline" size="sm" onClick={() => navigate('/shipments')}>
-              View all
+              {translate('View all')}
               <ArrowRight className="h-4 w-4" />
             </Button>
           </CardHeader>
@@ -363,15 +365,15 @@ export default function VNextDashboard() {
             <Separator />
             {recentShipments.length === 0 ? (
               <div className="px-6 py-12 text-center text-sm text-muted-foreground">
-                No shipments created this week
+                {translate('No shipments created this week')}
               </div>
             ) : (
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Shipment</TableHead>
-                    <TableHead>Route</TableHead>
-                    <TableHead>Status</TableHead>
+                    <TableHead>{translate('Shipment')}</TableHead>
+                    <TableHead>{translate('Route')}</TableHead>
+                    <TableHead>{translate('Status')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -390,7 +392,7 @@ export default function VNextDashboard() {
                         </TableCell>
                         <TableCell>
                           <div className="text-sm">{origin}</div>
-                          <div className="text-xs text-muted-foreground">to {dest}</div>
+                          <div className="text-xs text-muted-foreground">{translate('to')} {dest}</div>
                         </TableCell>
                         <TableCell>
                           <Badge variant={badge.variant}>{badge.label}</Badge>
@@ -407,17 +409,17 @@ export default function VNextDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
-              <CardTitle>Active issues</CardTitle>
-              <CardDescription>Open exceptions waiting for review.</CardDescription>
+              <CardTitle>{translate('Active issues')}</CardTitle>
+              <CardDescription>{translate('Open exceptions waiting for review.')}</CardDescription>
             </div>
             <Button variant="outline" size="sm" onClick={() => navigate('/issues')}>
-              View board
+              {translate('View board')}
               <ArrowRight className="h-4 w-4" />
             </Button>
           </CardHeader>
           <CardContent className="space-y-3">
             {activeIssues.length === 0 ? (
-              <div className="py-8 text-center text-sm text-muted-foreground">No active issues</div>
+              <div className="py-8 text-center text-sm text-muted-foreground">{translate('No active issues')}</div>
             ) : (
               activeIssues.map(issue => {
                 const sev = (() => {
@@ -445,7 +447,7 @@ export default function VNextDashboard() {
                     <div className="flex-1">
                       <div className="text-sm font-medium text-foreground">{issue.title}</div>
                       <div className="text-xs text-muted-foreground">
-                        {issue.sourceEntityId || 'N/A'} &middot; {relativeTime(issue.createdAt)}
+                        {issue.sourceEntityId || translate('N/A')} &middot; {relativeTime(issue.createdAt)}
                       </div>
                     </div>
                     <ChevronRight className="h-4 w-4 text-muted-foreground" />
@@ -460,16 +462,16 @@ export default function VNextDashboard() {
       {slaSummary && slaSummary.total > 0 && (
         <Card className="cursor-pointer transition-colors hover:border-primary/40" onClick={() => navigate('/sla')}>
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>SLA health</CardTitle>
+            <CardTitle>{translate('SLA health')}</CardTitle>
             <ExternalLink className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-4 gap-4 text-center">
               {[
-                { label: 'Active', value: slaSummary.active, color: 'text-info' },
-                { label: 'Warning', value: slaSummary.warning, color: 'text-warning' },
-                { label: 'Breached', value: slaSummary.breached, color: 'text-destructive' },
-                { label: 'Met', value: slaSummary.met, color: 'text-success' },
+                { label: translate('Active'), value: slaSummary.active, color: 'text-info' },
+                { label: translate('Warning'), value: slaSummary.warning, color: 'text-warning' },
+                { label: translate('Breached'), value: slaSummary.breached, color: 'text-destructive' },
+                { label: translate('Met'), value: slaSummary.met, color: 'text-success' },
               ].map(s => (
                 <div key={s.label}>
                   <div className={cn('text-3xl font-bold tracking-tight', s.color)}>{s.value}</div>
@@ -480,7 +482,7 @@ export default function VNextDashboard() {
             {slaSummary.breached > 0 && (
               <div className="mt-4 flex items-center gap-2 rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
                 <AlertTriangle className="h-4 w-4" />
-                {slaSummary.breached} SLA{slaSummary.breached > 1 ? 's' : ''} breached - click to view details
+                {slaSummary.breached} {translate('SLA')}{slaSummary.breached > 1 ? translate('s') : ''} {translate('breached - click to view details')}
               </div>
             )}
           </CardContent>
@@ -489,23 +491,23 @@ export default function VNextDashboard() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Delivery performance</CardTitle>
-          <CardDescription>Status of all shipments.</CardDescription>
+          <CardTitle>{translate('Delivery performance')}</CardTitle>
+          <CardDescription>{translate('Status of all shipments.')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-5">
           {(() => {
             const total = shipments.length || 1;
             const otherCount = shipments.length - completedCount - inProgressCount;
             return [
-              { label: 'Completed', count: completedCount, pct: parseFloat(((completedCount / total) * 100).toFixed(1)), tone: 'bg-success' },
-              { label: 'In progress', count: inProgressCount, pct: parseFloat(((inProgressCount / total) * 100).toFixed(1)), tone: 'bg-warning' },
-              { label: 'Other', count: otherCount, pct: parseFloat(((otherCount / total) * 100).toFixed(1)), tone: 'bg-destructive' },
+              { label: translate('Completed'), count: completedCount, pct: parseFloat(((completedCount / total) * 100).toFixed(1)), tone: 'bg-success' },
+              { label: translate('In progress'), count: inProgressCount, pct: parseFloat(((inProgressCount / total) * 100).toFixed(1)), tone: 'bg-warning' },
+              { label: translate('Other'), count: otherCount, pct: parseFloat(((otherCount / total) * 100).toFixed(1)), tone: 'bg-destructive' },
             ];
           })().map(row => (
             <div key={row.label}>
               <div className="mb-2 flex items-center justify-between text-sm">
                 <span className="font-medium">{row.label}</span>
-                <span className="text-muted-foreground">{row.count} shipments ({row.pct}%)</span>
+                <span className="text-muted-foreground">{row.count} {translate('shipments (')}{row.pct}%)</span>
               </div>
               <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
                 <div className={cn('h-full rounded-full', row.tone)} style={{ width: `${row.pct}%` }} />

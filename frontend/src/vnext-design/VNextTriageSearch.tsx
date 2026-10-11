@@ -20,12 +20,14 @@ import {
   TriageLoading, TriageError, TriageEmpty, TriageFilterBar, ConfidenceMeter, SlaPill, PlainSelect,
 } from './triage/components';
 
+import { t as translate } from '@/i18n';
+
 const PER_PAGE = 50;
 const SORTS = [
-  { value: 'createdAt', label: 'Newest' },
-  { value: 'signalScore', label: 'Confidence' },
-  { value: 'slaDeadline', label: 'SLA deadline' },
-  { value: 'lastActivityAt', label: 'Last activity' },
+  { value: 'createdAt', label: translate('Newest') },
+  { value: 'signalScore', label: translate('Confidence') },
+  { value: 'slaDeadline', label: translate('SLA deadline') },
+  { value: 'lastActivityAt', label: translate('Last activity') },
 ];
 
 export default function VNextTriageSearch() {
@@ -80,13 +82,13 @@ export default function VNextTriageSearch() {
     <div className="grid gap-4">
       <header className="flex flex-wrap items-center gap-3">
         <SearchIcon className="h-5 w-5" aria-hidden="true" />
-        <h1 className="m-0 text-xl font-semibold">Search</h1>
-        <Badge variant="secondary">{total} match{total === 1 ? '' : 'es'}</Badge>
+        <h1 className="m-0 text-xl font-semibold">{translate('Search')}</h1>
+        <Badge variant="secondary">{total} {translate('match')}{total === 1 ? '' : translate('es')}</Badge>
         <div className="flex-1" />
         <label className="flex items-center gap-1.5 text-sm">
-          Sort
+          {translate('Sort')}
           <PlainSelect
-            label="Sort results"
+            label={translate('Sort results')}
             value={sortBy}
             onChange={(v) => { setSortBy(v); setPage(1); }}
           >
@@ -97,8 +99,8 @@ export default function VNextTriageSearch() {
 
       {entityId && (
         <Card className="flex items-center gap-2 p-3">
-          <span className="text-sm">Filtered to entity <code>{entityId}</code></span>
-          <Button size="sm" variant="ghost" onClick={() => navigate('/triage/search')}>Clear</Button>
+          <span className="text-sm">{translate('Filtered to entity')} <code>{entityId}</code></span>
+          <Button size="sm" variant="ghost" onClick={() => navigate('/triage/search')}>{translate('Clear')}</Button>
         </Card>
       )}
 
@@ -108,10 +110,10 @@ export default function VNextTriageSearch() {
         issueTypes={types}
       />
 
-      {loading && <TriageLoading label="Searching" />}
+      {loading && <TriageLoading label={translate('Searching')} />}
       {error && !loading && <TriageError message={error} onRetry={load} />}
       {!loading && !error && issues.length === 0 && (
-        <TriageEmpty title="Nothing matched" hint="Try removing a filter or widening the window." />
+        <TriageEmpty title={translate('Nothing matched')} hint="Try removing a filter or widening the window." />
       )}
 
       {!loading && !error && issues.length > 0 && (
@@ -119,13 +121,13 @@ export default function VNextTriageSearch() {
           <table className="w-full border-collapse text-sm">
             <thead>
               <tr className="border-b border-border text-left">
-                <th className="p-2.5">Issue</th>
-                <th className="p-2.5">Type</th>
-                <th className="p-2.5">Status</th>
-                <th className="p-2.5">Confidence</th>
-                <th className="p-2.5">SLA</th>
-                <th className="p-2.5">Resolved in</th>
-                <th className="p-2.5">Raised</th>
+                <th className="p-2.5">{translate('Issue')}</th>
+                <th className="p-2.5">{translate('Type')}</th>
+                <th className="p-2.5">{translate('Status')}</th>
+                <th className="p-2.5">{translate('Confidence')}</th>
+                <th className="p-2.5">{translate('SLA')}</th>
+                <th className="p-2.5">{translate('Resolved in')}</th>
+                <th className="p-2.5">{translate('Raised')}</th>
               </tr>
             </thead>
             <tbody>
@@ -158,17 +160,17 @@ export default function VNextTriageSearch() {
       {total > PER_PAGE && (
         <div className="flex items-center justify-center gap-2">
           <Button size="sm" variant="outline" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
-            Previous
+            {translate('Previous')}
           </Button>
           <span className="text-sm text-muted-foreground">
-            Page {page} of {Math.ceil(total / PER_PAGE)}
+            {translate('Page')} {page} {translate('of')} {Math.ceil(total / PER_PAGE)}
           </span>
           <Button
             size="sm" variant="outline"
             disabled={page >= Math.ceil(total / PER_PAGE)}
             onClick={() => setPage((p) => p + 1)}
           >
-            Next
+            {translate('Next')}
           </Button>
         </div>
       )}

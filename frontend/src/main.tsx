@@ -226,6 +226,8 @@ import InventoryAppScan from './inventory-app/InventoryAppScan';
 import WarehousePack from './warehouse/WarehousePack';
 import './shadcn-tokens.css';
 
+import { t } from '@/i18n';
+
 const root = createRoot(document.getElementById('root')!);
 root.render(
   <BrowserRouter>
@@ -237,8 +239,8 @@ root.render(
         toastOptions={{
           classNames: {
             toast: 'group bg-card text-card-foreground border border-border shadow-lg',
-            title: 'text-sm font-semibold',
-            description: 'text-xs text-muted-foreground',
+            title: t('text-sm font-semibold'),
+            description: t('text-xs text-muted-foreground'),
             actionButton: 'bg-primary text-primary-foreground hover:bg-primary/90',
             success: '!border-success/40',
             error: '!border-destructive/40',

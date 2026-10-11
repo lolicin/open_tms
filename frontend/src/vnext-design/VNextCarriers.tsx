@@ -31,6 +31,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface Carrier {
   id: string;
   name: string;
@@ -51,9 +53,9 @@ interface Carrier {
 type StatusVariant = 'success' | 'warning' | 'destructive';
 
 function carrierStatus(c: Carrier): { label: string; variant: StatusVariant } {
-  if (c.archived) return { label: 'Inactive', variant: 'destructive' };
-  if (c.validationTier === 'probation') return { label: 'Probation', variant: 'warning' };
-  return { label: 'Active', variant: 'success' };
+  if (c.archived) return { label: t('Inactive'), variant: 'destructive' };
+  if (c.validationTier === 'probation') return { label: t('Probation'), variant: 'warning' };
+  return { label: t('Active'), variant: 'success' };
 }
 
 export default function VNextCarriers() {
@@ -90,7 +92,9 @@ export default function VNextCarriers() {
   }, []);
 
   const handleSeedNationalLtl = async () => {
-    if (!confirm('Add any missing national LTL carriers (Old Dominion, Estes, ABF, Saia, XPO, FedEx Freight, R+L, Southeastern, Averitt, TForce) to your carrier list?')) return;
+    if (!confirm(t(
+      'Add any missing national LTL carriers (Old Dominion, Estes, ABF, Saia, XPO, FedEx Freight, R+L, Southeastern, Averitt, TForce) to your carrier list?'
+    ))) return;
     setSeedingLtl(true);
     try {
       const res = await fetch(`${API_URL}/api/v1/carriers/seed-standards/ltl`, { method: 'POST' });
@@ -105,9 +109,9 @@ export default function VNextCarriers() {
 
   // Clickable stat boxes each carry a predicate; selecting one filters the list.
   const statDefs = [
-    { key: 'active', label: 'Active carriers', icon: CheckCircle2, tone: 'bg-success/15 text-success', match: (c: Carrier) => !c.archived },
-    { key: 'registration', label: 'Registration verified', icon: Star, tone: 'bg-info/15 text-info', match: (c: Carrier) => !!c.registrationChecked },
-    { key: 'insurance', label: 'Insurance on file', icon: Truck, tone: 'bg-primary/10 text-primary', match: (c: Carrier) => !!c.insuranceDocReceived },
+    { key: 'active', label: t('Active carriers'), icon: CheckCircle2, tone: 'bg-success/15 text-success', match: (c: Carrier) => !c.archived },
+    { key: 'registration', label: t('Registration verified'), icon: Star, tone: 'bg-info/15 text-info', match: (c: Carrier) => !!c.registrationChecked },
+    { key: 'insurance', label: t('Insurance on file'), icon: Truck, tone: 'bg-primary/10 text-primary', match: (c: Carrier) => !!c.insuranceDocReceived },
   ];
   const activeStat = statDefs.find(s => s.key === statFilter);
 
@@ -124,7 +128,7 @@ export default function VNextCarriers() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -144,9 +148,9 @@ export default function VNextCarriers() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Carriers</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Carriers')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {carriers.length} carriers in your network
+            {carriers.length} {t('carriers in your network')}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -171,13 +175,13 @@ export default function VNextCarriers() {
           </div>
           {hasPermission('carriers:write') && (
             <Button variant="outline" onClick={handleSeedNationalLtl} disabled={seedingLtl}>
-              {seedingLtl ? 'Seeding...' : 'Load national LTL carriers'}
+              {seedingLtl ? t('Seeding...') : t('Load national LTL carriers')}
             </Button>
           )}
           {hasPermission('carriers:write') && (
             <Button variant="gradient" onClick={() => navigate('/carriers/create')}>
               <Plus className="h-4 w-4" />
-              Add carrier
+              {t('Add carrier')}
             </Button>
           )}
         </div>
@@ -214,8 +218,8 @@ export default function VNextCarriers() {
 
       {activeStat && (
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <span>Filtered by <span className="font-medium text-foreground">{activeStat.label}</span> — showing {filtered.length} of {carriers.length}.</span>
-          <button className="text-primary hover:underline" onClick={() => setStatFilter(null)}>Clear</button>
+          <span>{t('Filtered by')} <span className="font-medium text-foreground">{activeStat.label}</span> {t('— showing')} {filtered.length} {t('of')} {carriers.length}.</span>
+          <button className="text-primary hover:underline" onClick={() => setStatFilter(null)}>{t('Clear')}</button>
         </div>
       )}
 
@@ -224,7 +228,7 @@ export default function VNextCarriers() {
           <div className="relative">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search carriers by name, MC#, or contact..."
+              placeholder={t('Search carriers by name, MC#, or contact...')}
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="pl-9"
@@ -271,15 +275,15 @@ export default function VNextCarriers() {
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <div className="mb-1 text-xs text-muted-foreground">Registration</div>
+                      <div className="mb-1 text-xs text-muted-foreground">{t('Registration')}</div>
                       <Badge variant={c.registrationChecked ? 'success' : 'muted'}>
-                        {c.registrationChecked ? 'Verified' : 'Pending'}
+                        {c.registrationChecked ? t('Verified') : t('Pending')}
                       </Badge>
                     </div>
                     <div>
-                      <div className="mb-1 text-xs text-muted-foreground">Insurance</div>
+                      <div className="mb-1 text-xs text-muted-foreground">{t('Insurance')}</div>
                       <Badge variant={c.insuranceDocReceived ? 'success' : 'warning'}>
-                        {c.insuranceDocReceived ? 'On file' : 'Missing'}
+                        {c.insuranceDocReceived ? t('On file') : t('Missing')}
                       </Badge>
                     </div>
                   </div>
@@ -288,21 +292,21 @@ export default function VNextCarriers() {
                     <div className="mt-4 border-t border-border pt-4 text-sm">
                       <dl className="grid grid-cols-2 gap-3">
                         <div>
-                          <dt className="text-xs text-muted-foreground">Contact</dt>
+                          <dt className="text-xs text-muted-foreground">{t('Contact')}</dt>
                           <dd>{c.contactName || '-'}</dd>
                         </div>
                         <div>
-                          <dt className="text-xs text-muted-foreground">Phone</dt>
+                          <dt className="text-xs text-muted-foreground">{t('Phone')}</dt>
                           <dd>{c.contactPhone || '-'}</dd>
                         </div>
                         <div className="col-span-2">
-                          <dt className="text-xs text-muted-foreground">Email</dt>
+                          <dt className="text-xs text-muted-foreground">{t('Email')}</dt>
                           <dd className="text-info">{c.contactEmail || '-'}</dd>
                         </div>
                       </dl>
                       {c.validationTier && (
                         <div className="mt-3 text-xs text-muted-foreground">
-                          Validation tier: <strong>{c.validationTier}</strong>
+                          {t('Validation tier:')} <strong>{c.validationTier}</strong>
                         </div>
                       )}
                       <div className="mt-4 flex justify-end">
@@ -314,7 +318,7 @@ export default function VNextCarriers() {
                           }}
                         >
                           <Pencil className="h-4 w-4" />
-                          Open details
+                          {t('Open details')}
                         </Button>
                       </div>
                     </div>
@@ -329,13 +333,13 @@ export default function VNextCarriers() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Carrier</TableHead>
-                <TableHead>MC / DOT</TableHead>
-                <TableHead>Location</TableHead>
-                <TableHead>Registration</TableHead>
-                <TableHead>Insurance</TableHead>
-                <TableHead>Validation</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{t('Carrier')}</TableHead>
+                <TableHead>{t('MC / DOT')}</TableHead>
+                <TableHead>{t('Location')}</TableHead>
+                <TableHead>{t('Registration')}</TableHead>
+                <TableHead>{t('Insurance')}</TableHead>
+                <TableHead>{t('Validation')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -364,12 +368,12 @@ export default function VNextCarriers() {
                     </TableCell>
                     <TableCell>
                       <Badge variant={c.registrationChecked ? 'success' : 'muted'}>
-                        {c.registrationChecked ? 'Verified' : 'Pending'}
+                        {c.registrationChecked ? t('Verified') : t('Pending')}
                       </Badge>
                     </TableCell>
                     <TableCell>
                       <Badge variant={c.insuranceDocReceived ? 'success' : 'warning'}>
-                        {c.insuranceDocReceived ? 'On file' : 'Missing'}
+                        {c.insuranceDocReceived ? t('On file') : t('Missing')}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-sm">{c.validationTier || '-'}</TableCell>

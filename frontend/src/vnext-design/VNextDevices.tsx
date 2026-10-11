@@ -38,6 +38,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface Device {
   id: string;
   externalId: string;
@@ -158,22 +160,22 @@ export default function VNextDevices() {
   }
 
   const stats = [
-    { label: 'Total devices', value: totalCount, icon: Activity, tone: 'bg-primary/10 text-primary' },
-    { label: 'Active', value: activeCount, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
-    { label: 'Low battery', value: alertCount, icon: AlertTriangle, tone: 'bg-destructive/15 text-destructive' },
-    { label: 'Assigned', value: assignedCount, icon: LinkIcon, tone: 'bg-info/15 text-info' },
+    { label: t('Total devices'), value: totalCount, icon: Activity, tone: 'bg-primary/10 text-primary' },
+    { label: t('Active'), value: activeCount, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
+    { label: t('Low battery'), value: alertCount, icon: AlertTriangle, tone: 'bg-destructive/15 text-destructive' },
+    { label: t('Assigned'), value: assignedCount, icon: LinkIcon, tone: 'bg-info/15 text-info' },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Devices</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{totalCount} devices registered</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Devices')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{totalCount} {t('devices registered')}</p>
         </div>
         <Button variant="gradient">
           <Plus className="h-4 w-4" />
-          Register device
+          {t('Register device')}
         </Button>
       </div>
 
@@ -203,7 +205,7 @@ export default function VNextDevices() {
               <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 className="pl-8"
-                placeholder="Search devices by name, ID, or model..."
+                placeholder={t('Search devices by name, ID, or model...')}
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />
@@ -211,10 +213,10 @@ export default function VNextDevices() {
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-44"><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All statuses</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="inactive">Inactive</SelectItem>
-                <SelectItem value="retired">Retired</SelectItem>
+                <SelectItem value="all">{t('All statuses')}</SelectItem>
+                <SelectItem value="active">{t('Active')}</SelectItem>
+                <SelectItem value="inactive">{t('Inactive')}</SelectItem>
+                <SelectItem value="retired">{t('Retired')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -222,13 +224,13 @@ export default function VNextDevices() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Model</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Battery</TableHead>
-                <TableHead>Last seen</TableHead>
-                <TableHead>Assigned to</TableHead>
-                <TableHead>Readings</TableHead>
+                <TableHead>{t('Name')}</TableHead>
+                <TableHead>{t('Model')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead>{t('Battery')}</TableHead>
+                <TableHead>{t('Last seen')}</TableHead>
+                <TableHead>{t('Assigned to')}</TableHead>
+                <TableHead>{t('Readings')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -281,8 +283,8 @@ export default function VNextDevices() {
                   <TableCell colSpan={7}>
                     <div className="flex flex-col items-center gap-2 py-12 text-center text-muted-foreground">
                       <Activity className="h-8 w-8" />
-                      <h3 className="text-base font-medium">No devices found</h3>
-                      <p className="text-sm">Register a device to get started with IoT tracking.</p>
+                      <h3 className="text-base font-medium">{t('No devices found')}</h3>
+                      <p className="text-sm">{t('Register a device to get started with IoT tracking.')}</p>
                     </div>
                   </TableCell>
                 </TableRow>

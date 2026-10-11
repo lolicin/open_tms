@@ -18,6 +18,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 type Tab = 'customers' | 'carriers';
 
 interface PortalUserSummary {
@@ -126,13 +128,13 @@ export default function VNextPortalUsers() {
       <div className="space-y-4">
         <Button variant="outline" size="sm" onClick={() => { setSelected(null); load(tab); }}>
           <ArrowLeft className="h-4 w-4" />
-          Back to {tab === 'customers' ? 'customers' : 'carriers'}
+          {t('Back to')} {tab === 'customers' ? t('customers') : t('carriers')}
         </Button>
         <div>
           <h1 className="text-3xl font-bold tracking-tight">{selected.name}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Manage portal logins for this {tab === 'customers' ? 'customer' : 'carrier'}.
-          </p>
+            {t('Manage portal logins for this')} {tab === 'customers' ? t('customer') : t('carrier')}.
+                      </p>
         </div>
         <Card>
           <CardContent className="p-6">
@@ -151,16 +153,17 @@ export default function VNextPortalUsers() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Portal users</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Portal users')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Manage logins for the customer and carrier portals. Pick an entity to add users, change
-            roles, reset passwords, or unlock accounts.
+            {t(
+              'Manage logins for the customer and carrier portals. Pick an entity to add users, change\n            roles, reset passwords, or unlock accounts.'
+            )}
           </p>
         </div>
         {totalLocked > 0 && (
           <Badge variant="destructive" className="gap-1">
             <Lock className="h-3 w-3" />
-            {totalLocked} locked across {tab}
+            {totalLocked} {t('locked across')} {tab}
           </Badge>
         )}
       </div>
@@ -176,7 +179,7 @@ export default function VNextPortalUsers() {
           }`}
         >
           <Building2 className="h-4 w-4" />
-          Customers
+          {t('Customers')}
         </button>
         <button
           type="button"
@@ -188,7 +191,7 @@ export default function VNextPortalUsers() {
           }`}
         >
           <Truck className="h-4 w-4" />
-          Carriers
+          {t('Carriers')}
         </button>
       </div>
 
@@ -218,14 +221,14 @@ export default function VNextPortalUsers() {
                   `No ${tab} match "${search}"`
                 ) : (
                   <>
-                    No {tab} yet.{' '}
+                    {t('No')} {tab} {t('yet.')}{' '}
                     <Link
                       to={tab === 'customers' ? '/customers' : '/carriers'}
                       className="font-medium text-primary hover:underline"
                     >
-                      Create one
+                      {t('Create one')}
                     </Link>{' '}
-                    before adding portal users.
+                    {t('before adding portal users.')}
                   </>
                 )}
               </p>
@@ -234,11 +237,11 @@ export default function VNextPortalUsers() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>{tab === 'customers' ? 'Contact email' : 'SCAC'}</TableHead>
-                  <TableHead>Location</TableHead>
-                  <TableHead className="text-right">Portal users</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>{t('Name')}</TableHead>
+                  <TableHead>{tab === 'customers' ? t('Contact email') : t('SCAC')}</TableHead>
+                  <TableHead>{t('Location')}</TableHead>
+                  <TableHead className="text-right">{t('Portal users')}</TableHead>
+                  <TableHead>{t('Status')}</TableHead>
                   <TableHead className="w-[100px]"></TableHead>
                 </TableRow>
               </TableHeader>
@@ -262,17 +265,17 @@ export default function VNextPortalUsers() {
                         {r.lockedCount > 0 && (
                           <Badge variant="destructive" className="gap-1">
                             <Lock className="h-3 w-3" />
-                            {r.lockedCount} locked
+                            {r.lockedCount} {t('locked')}
                           </Badge>
                         )}
                         {r.inactiveCount > 0 && (
-                          <Badge variant="muted">{r.inactiveCount} inactive</Badge>
+                          <Badge variant="muted">{r.inactiveCount} {t('inactive')}</Badge>
                         )}
                         {r.lockedCount === 0 && r.inactiveCount === 0 && r.userCount > 0 && (
-                          <Badge variant="success">Healthy</Badge>
+                          <Badge variant="success">{t('Healthy')}</Badge>
                         )}
                         {r.userCount === 0 && (
-                          <Badge variant="muted">No users</Badge>
+                          <Badge variant="muted">{t('No users')}</Badge>
                         )}
                       </div>
                     </TableCell>
@@ -285,7 +288,7 @@ export default function VNextPortalUsers() {
                           setSelected({ id: r.id, name: r.name });
                         }}
                       >
-                        Manage
+                        {t('Manage')}
                       </Button>
                     </TableCell>
                   </TableRow>

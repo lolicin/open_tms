@@ -33,6 +33,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface Invoice {
   id: string;
   invoiceNumber: string;
@@ -115,7 +117,7 @@ export default function VNextFinanceInvoices() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -132,14 +134,14 @@ export default function VNextFinanceInvoices() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Invoices</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{invoices.length} invoices</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Invoices')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{invoices.length} {t('invoices')}</p>
         </div>
         <div className="flex gap-2">
           <Button variant="gradient" asChild>
             <Link to="/finance/invoices/create">
               <Plus className="h-4 w-4" />
-              New Invoice
+              {t('New Invoice')}
             </Link>
           </Button>
         </div>
@@ -152,7 +154,7 @@ export default function VNextFinanceInvoices() {
               <Receipt className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight">{stats.total}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Total</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Total')}</div>
           </CardContent>
         </Card>
         <Card>
@@ -161,7 +163,7 @@ export default function VNextFinanceInvoices() {
               <Wallet className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight font-mono tabular-nums">{formatMoney(stats.outstanding)}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Outstanding</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Outstanding')}</div>
           </CardContent>
         </Card>
         <Card>
@@ -170,7 +172,7 @@ export default function VNextFinanceInvoices() {
               <AlertTriangle className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight">{stats.overdue}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Overdue</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Overdue')}</div>
           </CardContent>
         </Card>
         <Card>
@@ -179,7 +181,7 @@ export default function VNextFinanceInvoices() {
               <FileEdit className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight">{stats.draft}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Drafts</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Drafts')}</div>
           </CardContent>
         </Card>
       </div>
@@ -190,7 +192,7 @@ export default function VNextFinanceInvoices() {
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               className="pl-9"
-              placeholder="Search invoices..."
+              placeholder={t('Search invoices...')}
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
@@ -200,14 +202,14 @@ export default function VNextFinanceInvoices() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="draft">Draft</SelectItem>
-              <SelectItem value="approved">Approved</SelectItem>
-              <SelectItem value="sent">Sent</SelectItem>
-              <SelectItem value="partial_paid">Partial Paid</SelectItem>
-              <SelectItem value="paid">Paid</SelectItem>
-              <SelectItem value="overdue">Overdue</SelectItem>
-              <SelectItem value="void">Void</SelectItem>
+              <SelectItem value="all">{t('All Status')}</SelectItem>
+              <SelectItem value="draft">{t('Draft')}</SelectItem>
+              <SelectItem value="approved">{t('Approved')}</SelectItem>
+              <SelectItem value="sent">{t('Sent')}</SelectItem>
+              <SelectItem value="partial_paid">{t('Partial Paid')}</SelectItem>
+              <SelectItem value="paid">{t('Paid')}</SelectItem>
+              <SelectItem value="overdue">{t('Overdue')}</SelectItem>
+              <SelectItem value="void">{t('Void')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -215,19 +217,19 @@ export default function VNextFinanceInvoices() {
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <Receipt className="h-8 w-8" />
-            <h3 className="text-base font-medium">No invoices found</h3>
+            <h3 className="text-base font-medium">{t('No invoices found')}</h3>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Invoice #</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Total</TableHead>
-                <TableHead className="text-right">Balance</TableHead>
-                <TableHead>Issue Date</TableHead>
-                <TableHead>Due Date</TableHead>
+                <TableHead>{t('Invoice #')}</TableHead>
+                <TableHead>{t('Customer')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead className="text-right">{t('Total')}</TableHead>
+                <TableHead className="text-right">{t('Balance')}</TableHead>
+                <TableHead>{t('Issue Date')}</TableHead>
+                <TableHead>{t('Due Date')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

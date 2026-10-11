@@ -39,6 +39,8 @@ import {
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface Carrier {
   id: string;
   name: string;
@@ -76,13 +78,15 @@ const PROVIDERS: ProviderDef[] = [
     key: 'fedex',
     name: 'FedEx',
     icon: Truck,
-    description: 'Track shipments via the FedEx Track API with full status and proof of delivery.',
+    description: t(
+      'Track shipments via the FedEx Track API with full status and proof of delivery.'
+    ),
     supportsWebhook: true,
     supportsPolling: true,
     fields: [
-      { key: 'clientId', label: 'Client ID', type: 'text', required: true, placeholder: 'Your FedEx API client ID' },
-      { key: 'clientSecret', label: 'Client secret', type: 'password', required: true, placeholder: 'Your FedEx API client secret' },
-      { key: 'accountNumber', label: 'Account number', type: 'text', required: false, placeholder: 'Optional - FedEx account number' },
+      { key: 'clientId', label: t('Client ID'), type: 'text', required: true, placeholder: t('Your FedEx API client ID') },
+      { key: 'clientSecret', label: t('Client secret'), type: 'password', required: true, placeholder: t('Your FedEx API client secret') },
+      { key: 'accountNumber', label: t('Account number'), type: 'text', required: false, placeholder: t('Optional - FedEx account number') },
     ],
     infoUrl: 'https://developer.fedex.com',
     infoText: 'Get your credentials at developer.fedex.com',
@@ -91,12 +95,14 @@ const PROVIDERS: ProviderDef[] = [
     key: 'ups',
     name: 'UPS',
     icon: Inbox,
-    description: 'Track packages through the UPS Tracking API with detailed milestone events.',
+    description: t(
+      'Track packages through the UPS Tracking API with detailed milestone events.'
+    ),
     supportsWebhook: true,
     supportsPolling: true,
     fields: [
-      { key: 'clientId', label: 'Client ID', type: 'text', required: true, placeholder: 'Your UPS API client ID' },
-      { key: 'clientSecret', label: 'Client secret', type: 'password', required: true, placeholder: 'Your UPS API client secret' },
+      { key: 'clientId', label: t('Client ID'), type: 'text', required: true, placeholder: t('Your UPS API client ID') },
+      { key: 'clientSecret', label: t('Client secret'), type: 'password', required: true, placeholder: t('Your UPS API client secret') },
     ],
     infoUrl: 'https://developer.ups.com',
     infoText: 'Get your credentials at developer.ups.com',
@@ -105,11 +111,13 @@ const PROVIDERS: ProviderDef[] = [
     key: 'dhl',
     name: 'DHL',
     icon: Plane,
-    description: 'Track DHL Express, eCommerce, and Freight shipments via the Unified Tracking API.',
+    description: t(
+      'Track DHL Express, eCommerce, and Freight shipments via the Unified Tracking API.'
+    ),
     supportsWebhook: false,
     supportsPolling: true,
     fields: [
-      { key: 'apiKey', label: 'API key', type: 'password', required: true, placeholder: 'Your DHL API key' },
+      { key: 'apiKey', label: t('API key'), type: 'password', required: true, placeholder: t('Your DHL API key') },
     ],
     infoUrl: 'https://developer.dhl.com',
     infoText: 'Get your API key at developer.dhl.com',
@@ -118,11 +126,13 @@ const PROVIDERS: ProviderDef[] = [
     key: 'easypost',
     name: 'EasyPost',
     icon: Inbox,
-    description: 'Multi-carrier tracking through EasyPost. Supports 100+ carriers with a single integration.',
+    description: t(
+      'Multi-carrier tracking through EasyPost. Supports 100+ carriers with a single integration.'
+    ),
     supportsWebhook: true,
     supportsPolling: true,
     fields: [
-      { key: 'apiKey', label: 'API key', type: 'password', required: true, placeholder: 'Your EasyPost API key' },
+      { key: 'apiKey', label: t('API key'), type: 'password', required: true, placeholder: t('Your EasyPost API key') },
     ],
     infoUrl: 'https://easypost.com/account',
     infoText: 'Get your API key at easypost.com/account',
@@ -131,11 +141,13 @@ const PROVIDERS: ProviderDef[] = [
     key: 'aftership',
     name: 'AfterShip',
     icon: Inbox,
-    description: 'Tracking-only aggregator covering 900+ carriers through a single API key.',
+    description: t(
+      'Tracking-only aggregator covering 900+ carriers through a single API key.'
+    ),
     supportsWebhook: true,
     supportsPolling: true,
     fields: [
-      { key: 'apiKey', label: 'API key', type: 'password', required: true, placeholder: 'Your AfterShip API key' },
+      { key: 'apiKey', label: t('API key'), type: 'password', required: true, placeholder: t('Your AfterShip API key') },
     ],
     infoUrl: 'https://admin.aftership.com/settings/api-keys',
     infoText: 'Get your API key at admin.aftership.com/settings/api-keys',
@@ -144,7 +156,9 @@ const PROVIDERS: ProviderDef[] = [
     key: 'edi_214',
     name: 'EDI 214',
     icon: Repeat,
-    description: 'Receive tracking updates via EDI 214 Shipment Status messages from trading partners.',
+    description: t(
+      'Receive tracking updates via EDI 214 Shipment Status messages from trading partners.'
+    ),
     supportsWebhook: false,
     supportsPolling: false,
     fields: [],
@@ -154,7 +168,9 @@ const PROVIDERS: ProviderDef[] = [
     key: 'manual',
     name: 'Manual',
     icon: Pencil,
-    description: 'Manually update tracking status through the UI or API. No external provider needed.',
+    description: t(
+      'Manually update tracking status through the UI or API. No external provider needed.'
+    ),
     supportsWebhook: false,
     supportsPolling: false,
     fields: [],
@@ -162,10 +178,10 @@ const PROVIDERS: ProviderDef[] = [
 ];
 
 const POLLING_INTERVALS = [
-  { value: 5, label: 'Every 5 minutes' },
-  { value: 15, label: 'Every 15 minutes' },
-  { value: 30, label: 'Every 30 minutes' },
-  { value: 60, label: 'Every hour' },
+  { value: 5, label: t('Every 5 minutes') },
+  { value: 15, label: t('Every 15 minutes') },
+  { value: 30, label: t('Every 30 minutes') },
+  { value: 60, label: t('Every hour') },
 ];
 
 const STEPS = ['Select carrier', 'Select provider', 'Configure', 'Test connection', 'Done'];
@@ -274,7 +290,7 @@ export default function VNextCarrierTrackingSetup() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -284,14 +300,14 @@ export default function VNextCarrierTrackingSetup() {
       <Button variant="ghost" size="sm" asChild className="-ml-3 self-start">
         <Link to="/integrations/carrier-tracking">
           <ArrowLeft className="h-4 w-4" />
-          Back to carrier tracking
+          {t('Back to carrier tracking')}
         </Link>
       </Button>
 
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Set up carrier tracking</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Set up carrier tracking')}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Connect a carrier to receive automatic shipment tracking updates.
+          {t('Connect a carrier to receive automatic shipment tracking updates.')}
         </p>
       </div>
 
@@ -320,29 +336,33 @@ export default function VNextCarrierTrackingSetup() {
         <div className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
           <CircleAlert className="h-5 w-5" />
           <span className="flex-1">{error}</span>
-          <Button variant="ghost" size="sm" onClick={() => setError(null)}>Dismiss</Button>
+          <Button variant="ghost" size="sm" onClick={() => setError(null)}>{t('Dismiss')}</Button>
         </div>
       )}
 
       {step === 0 && (
         <Card className="space-y-4 p-6">
           <div>
-            <h2 className="text-lg font-semibold">Select carrier</h2>
+            <h2 className="text-lg font-semibold">{t('Select carrier')}</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Choose the carrier you want to set up tracking for. Only carriers without an existing integration are shown.
+              {t(
+                'Choose the carrier you want to set up tracking for. Only carriers without an existing integration are shown.'
+              )}
             </p>
           </div>
 
           {availableCarriers.length === 0 ? (
             <div className="flex flex-col items-center gap-2 rounded-md border-2 border-dashed border-border p-8 text-center text-muted-foreground">
               <Truck className="h-10 w-10 opacity-40" />
-              <p>All carriers already have tracking integrations, or no carriers exist yet.</p>
+              <p>{t(
+                'All carriers already have tracking integrations, or no carriers exist yet.'
+              )}</p>
             </div>
           ) : (
             <div className="space-y-2">
-              <Label>Carrier</Label>
+              <Label>{t('Carrier')}</Label>
               <Select value={selectedCarrierId} onValueChange={setSelectedCarrierId}>
-                <SelectTrigger><SelectValue placeholder="Select a carrier..." /></SelectTrigger>
+                <SelectTrigger><SelectValue placeholder={t('Select a carrier...')} /></SelectTrigger>
                 <SelectContent>
                   {availableCarriers.map(c => (
                     <SelectItem key={c.id} value={c.id}>
@@ -356,7 +376,7 @@ export default function VNextCarrierTrackingSetup() {
 
           <div className="flex justify-end">
             <Button variant="gradient" disabled={!canProceedStep0} onClick={() => setStep(1)}>
-              Next
+              {t('Next')}
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
@@ -366,10 +386,10 @@ export default function VNextCarrierTrackingSetup() {
       {step === 1 && (
         <Card className="space-y-4 p-6">
           <div>
-            <h2 className="text-lg font-semibold">Select provider</h2>
+            <h2 className="text-lg font-semibold">{t('Select provider')}</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Choose how you want to receive tracking updates for {selectedCarrier?.name || 'this carrier'}.
-            </p>
+              {t('Choose how you want to receive tracking updates for')} {selectedCarrier?.name || t('this carrier')}.
+                          </p>
           </div>
 
           <div className="grid gap-3 sm:grid-cols-2">
@@ -390,8 +410,8 @@ export default function VNextCarrierTrackingSetup() {
                   <div className="text-sm font-semibold">{provider.name}</div>
                   <div className="mt-1 text-xs leading-relaxed text-muted-foreground">{provider.description}</div>
                   <div className="mt-2 flex flex-wrap gap-1">
-                    {provider.supportsPolling && <Badge variant="info">Polling</Badge>}
-                    {provider.supportsWebhook && <Badge variant="info">Webhook</Badge>}
+                    {provider.supportsPolling && <Badge variant="info">{t('Polling')}</Badge>}
+                    {provider.supportsWebhook && <Badge variant="info">{t('Webhook')}</Badge>}
                   </div>
                 </button>
               );
@@ -401,10 +421,10 @@ export default function VNextCarrierTrackingSetup() {
           <div className="flex justify-between">
             <Button variant="outline" onClick={() => setStep(0)}>
               <ArrowLeft className="h-4 w-4" />
-              Back
+              {t('Back')}
             </Button>
             <Button variant="gradient" disabled={!canProceedStep1} onClick={() => setStep(2)}>
-              Next
+              {t('Next')}
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
@@ -414,7 +434,7 @@ export default function VNextCarrierTrackingSetup() {
       {step === 2 && providerDef && (
         <Card className="space-y-4 p-6">
           <div>
-            <h2 className="text-lg font-semibold">Configure {providerDef.name}</h2>
+            <h2 className="text-lg font-semibold">{t('Configure')} {providerDef.name}</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               {providerDef.fields.length > 0
                 ? `Enter your ${providerDef.name} API credentials to enable tracking.`
@@ -456,18 +476,18 @@ export default function VNextCarrierTrackingSetup() {
 
           {providerDef.supportsPolling && (
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold">Polling configuration</h3>
+              <h3 className="text-sm font-semibold">{t('Polling configuration')}</h3>
               <label className="flex items-center gap-2 text-sm">
                 <input
                   type="checkbox"
                   checked={pollingEnabled}
                   onChange={e => setPollingEnabled(e.target.checked)}
                 />
-                Enable automatic polling
+                {t('Enable automatic polling')}
               </label>
               {pollingEnabled && (
                 <div className="space-y-2">
-                  <Label>Polling interval</Label>
+                  <Label>{t('Polling interval')}</Label>
                   <Select value={String(pollingInterval)} onValueChange={v => setPollingInterval(Number(v))}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
@@ -488,18 +508,18 @@ export default function VNextCarrierTrackingSetup() {
               rel="noopener noreferrer"
               className="text-muted-foreground underline"
             >
-              Instructions did not work? Create an issue
+              {t('Instructions did not work? Create an issue')}
             </a>
           </div>
 
           <div className="flex justify-between">
             <Button variant="outline" onClick={() => setStep(1)}>
               <ArrowLeft className="h-4 w-4" />
-              Back
+              {t('Back')}
             </Button>
             <Button variant="gradient" disabled={!canProceedStep2 || saving} onClick={handleCreateIntegration}>
               {saving && <Loader2 className="h-4 w-4 animate-spin" />}
-              {saving ? 'Creating...' : 'Create integration'}
+              {saving ? t('Creating...') : t('Create integration')}
             </Button>
           </div>
         </Card>
@@ -507,9 +527,11 @@ export default function VNextCarrierTrackingSetup() {
 
       {step === 3 && (
         <Card className="space-y-4 p-6 text-center">
-          <h2 className="text-lg font-semibold">Test connection</h2>
+          <h2 className="text-lg font-semibold">{t('Test connection')}</h2>
           <p className="text-sm text-muted-foreground">
-            Integration created successfully. Test the connection to make sure everything is working.
+            {t(
+              'Integration created successfully. Test the connection to make sure everything is working.'
+            )}
           </p>
 
           {testResult && (
@@ -527,10 +549,10 @@ export default function VNextCarrierTrackingSetup() {
           <div className="flex justify-center gap-3">
             <Button variant="gradient" onClick={handleTest} disabled={testing}>
               {testing ? <Loader2 className="h-4 w-4 animate-spin" /> : <Wifi className="h-4 w-4" />}
-              {testing ? 'Testing...' : testResult ? 'Retry test' : 'Test connection'}
+              {testing ? t('Testing...') : testResult ? 'Retry test' : 'Test connection'}
             </Button>
             <Button variant="outline" onClick={() => setStep(4)}>
-              {testResult?.success ? 'Continue' : 'Skip'}
+              {testResult?.success ? t('Continue') : t('Skip')}
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
@@ -540,23 +562,23 @@ export default function VNextCarrierTrackingSetup() {
       {step === 4 && (
         <Card className="space-y-4 p-10 text-center">
           <CheckCircle2 className="mx-auto h-14 w-14 text-success" />
-          <h2 className="text-xl font-semibold">All set</h2>
+          <h2 className="text-xl font-semibold">{t('All set')}</h2>
           <p className="text-sm text-muted-foreground">
-            Carrier tracking integration for {selectedCarrier?.name} with {providerDef?.name} has been configured.
+            {t('Carrier tracking integration for')} {selectedCarrier?.name} {t('with')} {providerDef?.name} {t('has been configured.')}
           </p>
           <div className="flex justify-center gap-3">
             {createdId && (
               <Button variant="gradient" asChild>
                 <Link to={`/integrations/carrier-tracking/${createdId}`}>
                   <Eye className="h-4 w-4" />
-                  View integration
+                  {t('View integration')}
                 </Link>
               </Button>
             )}
             <Button variant="outline" asChild>
               <Link to="/integrations/carrier-tracking">
                 <ListIcon className="h-4 w-4" />
-                Back to list
+                {t('Back to list')}
               </Link>
             </Button>
           </div>

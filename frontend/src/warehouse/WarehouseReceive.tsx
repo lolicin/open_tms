@@ -16,6 +16,8 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface ReceivingLine {
   id: string;
   sku: string;
@@ -134,7 +136,9 @@ export default function WarehouseReceive() {
   };
 
   const handleComplete = async () => {
-    if (!confirm('Complete this receipt? Any expected lines with zero received will be flagged.')) return;
+    if (!confirm(t(
+      'Complete this receipt? Any expected lines with zero received will be flagged.'
+    ))) return;
     setBusy(true);
     try {
       const res = await fetch(`${API_URL}/api/v1/receiving/tasks/${id}/complete`, {
@@ -158,7 +162,7 @@ export default function WarehouseReceive() {
   if (!task) {
     return (
       <div className="rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-        {error || 'Not found'}
+        {error || t('Not found')}
       </div>
     );
   }
@@ -170,7 +174,7 @@ export default function WarehouseReceive() {
     <div className="space-y-4 pb-24">
       <Button variant="ghost" size="sm" onClick={() => navigate('/warehouse/tasks')} className="-ml-2">
         <ArrowLeft className="h-5 w-5" />
-        <span className="text-base">Tasks</span>
+        <span className="text-base">{t('Tasks')}</span>
       </Button>
 
       {error && (
@@ -182,11 +186,11 @@ export default function WarehouseReceive() {
       <Card>
         <CardContent className="space-y-1 p-5">
           <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Receiving {task.receivingType === 'blind' ? '(blind)' : '(ASN)'} {task.crossDock && '- cross-dock'}
+            {t('Receiving')} {task.receivingType === 'blind' ? t('(blind)') : t('(ASN)')} {task.crossDock && '- cross-dock'}
           </div>
           <div className="text-xl font-bold">{task.id.slice(0, 8)}</div>
           <div className="text-sm text-muted-foreground">
-            Dock: <strong>{task.dockBin?.label ?? 'unassigned'}</strong>
+            {t('Dock:')} <strong>{task.dockBin?.label ?? 'unassigned'}</strong>
           </div>
         </CardContent>
       </Card>
@@ -195,7 +199,7 @@ export default function WarehouseReceive() {
         <Card className="border-warning/40">
           <CardContent className="space-y-3 p-5">
             <Label className="text-xs font-semibold uppercase tracking-wider text-warning">
-              New SKU (blind receipt)
+              {t('New SKU (blind receipt)')}
             </Label>
             <div className="text-base font-semibold">{blindSku}</div>
             <div className="flex gap-2">
@@ -210,7 +214,7 @@ export default function WarehouseReceive() {
                 className="h-12 flex-1 text-center text-lg"
               />
               <Button size="lg" variant="gradient" onClick={() => handleReceive(null)} disabled={busy}>
-                {busy ? '...' : 'Confirm'}
+                {busy ? '...' : t('Confirm')}
               </Button>
               <Button
                 variant="outline"
@@ -218,7 +222,7 @@ export default function WarehouseReceive() {
                 className="h-12 w-12"
                 onClick={() => { setBlindScan(false); setBlindSku(''); }}
                 disabled={busy}
-                aria-label="Cancel"
+                aria-label={t('Cancel')}
               >
                 <X className="h-5 w-5" />
               </Button>
@@ -233,17 +237,17 @@ export default function WarehouseReceive() {
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-success/15 text-success">
               <CheckCircle2 className="h-8 w-8" />
             </div>
-            <div className="text-lg font-semibold">All lines received</div>
+            <div className="text-lg font-semibold">{t('All lines received')}</div>
             <Button size="lg" variant="gradient" onClick={handleComplete} disabled={busy}>
               {busy && <Loader2 className="h-4 w-4 animate-spin" />}
-              {busy ? 'Completing...' : 'Complete receipt'}
+              {busy ? t('Completing...') : t('Complete receipt')}
             </Button>
           </CardContent>
         </Card>
       ) : (
         <>
           <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Scan SKU to receive{task.receivingType === 'blind' ? ' - new SKUs accepted' : ''}
+            {t('Scan SKU to receive')}{task.receivingType === 'blind' ? t(' - new SKUs accepted') : ''}
           </Label>
           <div className="space-y-2">
             {task.lines.map(line => {
@@ -259,7 +263,7 @@ export default function WarehouseReceive() {
                         <div className="text-sm text-muted-foreground">
                           {line.receivedQuantity} / {line.expectedQuantity} {line.uomCode}
                           {line.damagedQuantity > 0 && (
-                            <span className="ml-2 text-warning">({line.damagedQuantity} damaged)</span>
+                            <span className="ml-2 text-warning">({line.damagedQuantity} {t('damaged)')}</span>
                           )}
                           {done && <CheckCircle2 className="ml-2 inline h-4 w-4 text-success" />}
                         </div>
@@ -273,7 +277,7 @@ export default function WarehouseReceive() {
                             setDamagedQty('');
                           }}
                         >
-                          Receive
+                          {t('Receive')}
                         </Button>
                       )}
                     </div>
@@ -282,7 +286,7 @@ export default function WarehouseReceive() {
                       <div className="mt-4 space-y-3">
                         <div className="grid grid-cols-2 gap-2">
                           <div>
-                            <Label className="text-xs text-muted-foreground">Received</Label>
+                            <Label className="text-xs text-muted-foreground">{t('Received')}</Label>
                             <Input
                               type="number"
                               inputMode="numeric"
@@ -296,7 +300,7 @@ export default function WarehouseReceive() {
                             />
                           </div>
                           <div>
-                            <Label className="text-xs text-muted-foreground">Damaged</Label>
+                            <Label className="text-xs text-muted-foreground">{t('Damaged')}</Label>
                             <Input
                               type="number"
                               inputMode="numeric"
@@ -316,7 +320,7 @@ export default function WarehouseReceive() {
                             onClick={() => handleReceive(line.id)}
                             disabled={busy}
                           >
-                            {busy ? '...' : 'Confirm'}
+                            {busy ? '...' : t('Confirm')}
                           </Button>
                           <Button
                             size="lg"
@@ -329,7 +333,7 @@ export default function WarehouseReceive() {
                             }}
                             disabled={busy}
                           >
-                            Cancel
+                            {t('Cancel')}
                           </Button>
                         </div>
                       </div>
@@ -362,7 +366,7 @@ export default function WarehouseReceive() {
 
                     {done && line.inspectionStatus !== 'pending' && (
                       <div className="mt-2 text-xs text-muted-foreground">
-                        Inspection:{' '}
+                        {t('Inspection:')}{' '}
                         <Badge variant={INSPECTION_VARIANT[line.inspectionStatus] ?? 'muted'} className="ml-1 capitalize">
                           {line.inspectionStatus}
                         </Badge>

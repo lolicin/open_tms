@@ -19,6 +19,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface ArchivedOrder {
   id: string;
   orderNumber?: string;
@@ -143,10 +145,10 @@ export default function VNextArchives() {
         toast.error(json.error || 'Failed to unarchive order', { duration: 8000 });
         return;
       }
-      toast.success('Order restored');
+      toast.success(t('Order restored'));
       setOrders(prev => prev.filter(o => o.id !== id));
     } catch {
-      toast.error('Failed to unarchive order');
+      toast.error(t('Failed to unarchive order'));
     } finally {
       setRestoringId(null);
     }
@@ -161,10 +163,10 @@ export default function VNextArchives() {
         toast.error(json.error || 'Failed to unarchive shipment', { duration: 8000 });
         return;
       }
-      toast.success('Shipment restored');
+      toast.success(t('Shipment restored'));
       setShipments(prev => prev.filter(s => s.id !== id));
     } catch {
-      toast.error('Failed to unarchive shipment');
+      toast.error(t('Failed to unarchive shipment'));
     } finally {
       setRestoringId(null);
     }
@@ -179,10 +181,10 @@ export default function VNextArchives() {
         toast.error(json.error || 'Failed to unarchive carrier', { duration: 8000 });
         return;
       }
-      toast.success('Carrier restored');
+      toast.success(t('Carrier restored'));
       setCarriers(prev => prev.filter(c => c.id !== id));
     } catch {
-      toast.error('Failed to unarchive carrier');
+      toast.error(t('Failed to unarchive carrier'));
     } finally {
       setRestoringId(null);
     }
@@ -209,15 +211,15 @@ export default function VNextArchives() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Archives</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Orders, shipments, and carriers that have been archived</p>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Archives')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t('Orders, shipments, and carriers that have been archived')}</p>
       </div>
 
       <Tabs value={tab} onValueChange={v => setTab(v as 'orders' | 'shipments' | 'carriers')}>
         <TabsList>
-          <TabsTrigger value="orders">Orders {ordersLoaded && `(${orders.length})`}</TabsTrigger>
-          <TabsTrigger value="shipments">Shipments {shipmentsLoaded && `(${shipments.length})`}</TabsTrigger>
-          <TabsTrigger value="carriers">Carriers {carriersLoaded && `(${carriers.length})`}</TabsTrigger>
+          <TabsTrigger value="orders">{t('Orders')} {ordersLoaded && `(${orders.length})`}</TabsTrigger>
+          <TabsTrigger value="shipments">{t('Shipments')} {shipmentsLoaded && `(${shipments.length})`}</TabsTrigger>
+          <TabsTrigger value="carriers">{t('Carriers')} {carriersLoaded && `(${carriers.length})`}</TabsTrigger>
         </TabsList>
 
         <Card className="mt-4">
@@ -242,7 +244,7 @@ export default function VNextArchives() {
           {loading ? (
             <div className="flex flex-col items-center gap-3 py-16 text-muted-foreground">
               <Loader2 className="h-8 w-8 animate-spin" />
-              <h3 className="text-sm font-medium">Loading...</h3>
+              <h3 className="text-sm font-medium">{t('Loading...')}</h3>
             </div>
           ) : error ? (
             <div className="flex items-center gap-3 p-4 text-sm text-destructive">
@@ -255,17 +257,17 @@ export default function VNextArchives() {
                 {filteredOrders.length === 0 ? (
                   <div className="flex flex-col items-center gap-2 py-16 text-muted-foreground">
                     <Archive className="h-8 w-8" />
-                    <p className="text-sm">No archived orders</p>
+                    <p className="text-sm">{t('No archived orders')}</p>
                   </div>
                 ) : (
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Order</TableHead>
-                        <TableHead>Customer</TableHead>
-                        <TableHead>Route</TableHead>
-                        <TableHead>Status before archive</TableHead>
-                        <TableHead>Archived on</TableHead>
+                        <TableHead>{t('Order')}</TableHead>
+                        <TableHead>{t('Customer')}</TableHead>
+                        <TableHead>{t('Route')}</TableHead>
+                        <TableHead>{t('Status before archive')}</TableHead>
+                        <TableHead>{t('Archived on')}</TableHead>
                         <TableHead className="w-[140px]"></TableHead>
                       </TableRow>
                     </TableHeader>
@@ -274,13 +276,13 @@ export default function VNextArchives() {
                         <TableRow key={o.id} onClick={() => navigate(`/orders/${o.id}`)} className="cursor-pointer">
                           <TableCell>
                             <div className="font-mono text-sm font-semibold">{o.orderNumber || o.id}</div>
-                            {o.poNumber && <div className="text-xs text-muted-foreground">PO# {o.poNumber}</div>}
+                            {o.poNumber && <div className="text-xs text-muted-foreground">{t('PO#')} {o.poNumber}</div>}
                           </TableCell>
                           <TableCell>{o.customer?.name || '-'}</TableCell>
                           <TableCell>
                             <div className="text-sm">{o.origin ? `${o.origin.city}, ${o.origin.state}` : '-'}</div>
                             <div className="text-xs text-muted-foreground">
-                              to {o.destination ? `${o.destination.city}, ${o.destination.state}` : '-'}
+                              {t('to')} {o.destination ? `${o.destination.city}, ${o.destination.state}` : '-'}
                             </div>
                           </TableCell>
                           <TableCell className="text-sm">{o.statusBeforeArchive || '-'}</TableCell>
@@ -302,7 +304,7 @@ export default function VNextArchives() {
                                   ) : (
                                     <ArchiveRestore className="h-4 w-4" />
                                   )}
-                                  Unarchive
+                                  {t('Unarchive')}
                                 </Button>
                               )}
                             </div>
@@ -318,18 +320,18 @@ export default function VNextArchives() {
                 {filteredShipments.length === 0 ? (
                   <div className="flex flex-col items-center gap-2 py-16 text-muted-foreground">
                     <Archive className="h-8 w-8" />
-                    <p className="text-sm">No archived shipments</p>
+                    <p className="text-sm">{t('No archived shipments')}</p>
                   </div>
                 ) : (
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Shipment</TableHead>
-                        <TableHead>Customer</TableHead>
-                        <TableHead>Route</TableHead>
-                        <TableHead>Carrier</TableHead>
-                        <TableHead>Status before archive</TableHead>
-                        <TableHead>Archived on</TableHead>
+                        <TableHead>{t('Shipment')}</TableHead>
+                        <TableHead>{t('Customer')}</TableHead>
+                        <TableHead>{t('Route')}</TableHead>
+                        <TableHead>{t('Carrier')}</TableHead>
+                        <TableHead>{t('Status before archive')}</TableHead>
+                        <TableHead>{t('Archived on')}</TableHead>
                         <TableHead className="w-[140px]"></TableHead>
                       </TableRow>
                     </TableHeader>
@@ -338,13 +340,13 @@ export default function VNextArchives() {
                         <TableRow key={s.id} onClick={() => navigate(`/shipments/${s.id}`)} className="cursor-pointer">
                           <TableCell>
                             <div className="font-mono text-sm font-semibold">{s.reference || s.id}</div>
-                            {s.proNumber && <div className="text-xs text-muted-foreground">PRO# {s.proNumber}</div>}
+                            {s.proNumber && <div className="text-xs text-muted-foreground">{t('PRO#')} {s.proNumber}</div>}
                           </TableCell>
                           <TableCell>{s.customer?.name || '-'}</TableCell>
                           <TableCell>
                             <div className="text-sm">{s.origin ? `${s.origin.city}, ${s.origin.state}` : '-'}</div>
                             <div className="text-xs text-muted-foreground">
-                              to {s.destination ? `${s.destination.city}, ${s.destination.state}` : '-'}
+                              {t('to')} {s.destination ? `${s.destination.city}, ${s.destination.state}` : '-'}
                             </div>
                           </TableCell>
                           <TableCell className="text-sm">{s.carrier?.name || '-'}</TableCell>
@@ -367,7 +369,7 @@ export default function VNextArchives() {
                                   ) : (
                                     <ArchiveRestore className="h-4 w-4" />
                                   )}
-                                  Unarchive
+                                  {t('Unarchive')}
                                 </Button>
                               )}
                             </div>
@@ -383,16 +385,16 @@ export default function VNextArchives() {
                 {filteredCarriers.length === 0 ? (
                   <div className="flex flex-col items-center gap-2 py-16 text-muted-foreground">
                     <Archive className="h-8 w-8" />
-                    <p className="text-sm">No archived carriers</p>
+                    <p className="text-sm">{t('No archived carriers')}</p>
                   </div>
                 ) : (
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Carrier</TableHead>
-                        <TableHead>MC / DOT</TableHead>
-                        <TableHead>Contact email</TableHead>
-                        <TableHead>Archived on</TableHead>
+                        <TableHead>{t('Carrier')}</TableHead>
+                        <TableHead>{t('MC / DOT')}</TableHead>
+                        <TableHead>{t('Contact email')}</TableHead>
+                        <TableHead>{t('Archived on')}</TableHead>
                         <TableHead className="w-[140px]"></TableHead>
                       </TableRow>
                     </TableHeader>
@@ -424,7 +426,7 @@ export default function VNextArchives() {
                                   ) : (
                                     <ArchiveRestore className="h-4 w-4" />
                                   )}
-                                  Unarchive
+                                  {t('Unarchive')}
                                 </Button>
                               )}
                             </div>

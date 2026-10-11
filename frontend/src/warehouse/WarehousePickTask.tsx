@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { t } from '@/i18n';
 // Barcode scanner would be used for bin verification in production
 // import { useBarcodeScanner } from './useBarcodeScanner';
 
@@ -92,7 +93,7 @@ export default function WarehousePickTask() {
   if (!task) {
     return (
       <Card className="mx-auto mt-4 max-w-2xl p-6 text-center">
-        <p className="text-base text-destructive">{error || 'Not found'}</p>
+        <p className="text-base text-destructive">{error || t('Not found')}</p>
       </Card>
     );
   }
@@ -113,7 +114,7 @@ export default function WarehousePickTask() {
           size="icon"
           className="h-12 w-12 shrink-0"
           onClick={() => navigate('/warehouse/tasks')}
-          aria-label="Back to tasks"
+          aria-label={t('Back to tasks')}
         >
           <ArrowLeft className="h-5 w-5" />
         </Button>
@@ -133,7 +134,7 @@ export default function WarehousePickTask() {
       {/* Progress */}
       <div>
         <div className="mb-1.5 flex items-center justify-between text-sm text-muted-foreground">
-          <span className="font-medium">Pick Progress</span>
+          <span className="font-medium">{t('Pick Progress')}</span>
           <span className="tabular-nums">{task.completedLines}/{task.totalLines}</span>
         </div>
         <div className="h-2 overflow-hidden rounded-full bg-muted">
@@ -149,29 +150,29 @@ export default function WarehousePickTask() {
         <Card className="border-2 border-primary">
           <CardContent className="pt-6">
             <div className="text-xs font-semibold uppercase tracking-wider text-primary">
-              Next Pick
+              {t('Next Pick')}
             </div>
 
             <div className="mt-4 grid grid-cols-2 gap-4">
               <div>
-                <div className="text-xs text-muted-foreground">Bin</div>
+                <div className="text-xs text-muted-foreground">{t('Bin')}</div>
                 <div className="text-2xl font-bold tabular-nums text-primary">
                   {nextLine.bin.label}
                 </div>
                 <div className="text-xs text-muted-foreground">{nextLine.bin.zone.name}</div>
               </div>
               <div>
-                <div className="text-xs text-muted-foreground">SKU</div>
+                <div className="text-xs text-muted-foreground">{t('SKU')}</div>
                 <div className="text-base font-semibold">{nextLine.sku}</div>
                 <div className="text-sm text-muted-foreground">
-                  Qty: <strong className="text-foreground">{nextLine.requestedQuantity}</strong>
+                  {t('Qty:')} <strong className="text-foreground">{nextLine.requestedQuantity}</strong>
                 </div>
               </div>
             </div>
 
             <div className="mt-6 text-center">
               <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Quantity to pick
+                {t('Quantity to pick')}
               </div>
               <div className="mt-2 flex items-center justify-center gap-3">
                 <Button
@@ -181,7 +182,7 @@ export default function WarehousePickTask() {
                   className="h-14 w-14"
                   onClick={() => setPickedQty(String(Math.max(0, currentQty - 1)))}
                   disabled={picking || currentQty <= 0}
-                  aria-label="Decrement"
+                  aria-label={t('Decrement')}
                 >
                   <Minus className="h-6 w-6" />
                 </Button>
@@ -202,7 +203,7 @@ export default function WarehousePickTask() {
                   className="h-14 w-14"
                   onClick={() => setPickedQty(String(currentQty + 1))}
                   disabled={picking}
-                  aria-label="Increment"
+                  aria-label={t('Increment')}
                 >
                   <Plus className="h-6 w-6" />
                 </Button>
@@ -213,15 +214,15 @@ export default function WarehousePickTask() {
       ) : isComplete ? (
         <Card className="flex flex-col items-center gap-2 py-12 text-center">
           <CheckCircle2 className="h-12 w-12 text-success" />
-          <p className="text-lg font-semibold">Pick Complete</p>
-          <p className="text-sm text-muted-foreground">{task.completedLines} lines picked</p>
+          <p className="text-lg font-semibold">{t('Pick Complete')}</p>
+          <p className="text-sm text-muted-foreground">{task.completedLines} {t('lines picked')}</p>
         </Card>
       ) : null}
 
       {/* Lines list */}
       <div>
         <div className="mb-2 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-          All Lines
+          {t('All Lines')}
         </div>
         <div className="space-y-1.5">
           {task.pickLines.map(line => (
@@ -262,7 +263,7 @@ export default function WarehousePickTask() {
             disabled={picking}
           >
             {picking ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
-            {picking ? 'Confirming...' : 'Confirm pick'}
+            {picking ? t('Confirming...') : t('Confirm pick')}
           </Button>
         </div>
       )}

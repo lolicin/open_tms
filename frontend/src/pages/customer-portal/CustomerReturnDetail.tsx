@@ -16,6 +16,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface RmaLine {
   id: string;
   sku: string;
@@ -117,7 +119,7 @@ export default function CustomerReturnDetail() {
   if (error || !rma) {
     return (
       <div className="rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-        {error || 'Return not found'}
+        {error || t('Return not found')}
       </div>
     );
   }
@@ -126,7 +128,7 @@ export default function CustomerReturnDetail() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center gap-3">
         <Button variant="outline" size="sm" asChild>
-          <Link to="/customer-portal/returns">Back</Link>
+          <Link to="/customer-portal/returns">{t('Back')}</Link>
         </Button>
         <h1 className="text-3xl font-bold tracking-tight">{rma.rmaNumber}</h1>
         <Badge variant={statusVariant(rma.status)}>{fmt(rma.status)}</Badge>
@@ -139,21 +141,21 @@ export default function CustomerReturnDetail() {
       <Card>
         <CardContent className="flex flex-wrap gap-8 p-6">
           <div>
-            <div className="text-xs text-muted-foreground">Reason</div>
+            <div className="text-xs text-muted-foreground">{t('Reason')}</div>
             <div className="font-semibold">{fmt(rma.returnReason)}</div>
           </div>
           <div>
-            <div className="text-xs text-muted-foreground">Estimated refund</div>
+            <div className="text-xs text-muted-foreground">{t('Estimated refund')}</div>
             <div className="text-xl font-bold">${(rma.suggestedRefundCents / 100).toFixed(2)}</div>
           </div>
           {rma.actualRefundCents != null && (
             <div>
-              <div className="text-xs text-muted-foreground">Final refund</div>
+              <div className="text-xs text-muted-foreground">{t('Final refund')}</div>
               <div className="text-xl font-bold text-success">${(rma.actualRefundCents / 100).toFixed(2)}</div>
             </div>
           )}
           <div>
-            <div className="text-xs text-muted-foreground">Requested</div>
+            <div className="text-xs text-muted-foreground">{t('Requested')}</div>
             <div>{new Date(rma.requestedAt).toLocaleString()}</div>
           </div>
         </CardContent>
@@ -162,7 +164,7 @@ export default function CustomerReturnDetail() {
       {(rma.returnLabelStorageKey || rma.returnPickupScheduledAt) && (
         <Card>
           <CardHeader>
-            <CardTitle>Return shipping</CardTitle>
+            <CardTitle>{t('Return shipping')}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {rma.returnLabelStorageKey && (
@@ -174,13 +176,13 @@ export default function CustomerReturnDetail() {
                     rel="noreferrer"
                   >
                     <Download className="h-4 w-4" />
-                    Download return label
+                    {t('Download return label')}
                   </a>
                 </Button>
                 {rma.returnTrackingNumber && (
                   <span className="text-sm">
-                    Tracking: <strong>{rma.returnTrackingNumber}</strong>
-                    {rma.returnLabelProvider && <> &middot; via {rma.returnLabelProvider.toUpperCase()}</>}
+                    {t('Tracking:')} <strong>{rma.returnTrackingNumber}</strong>
+                    {rma.returnLabelProvider && <> {t('· via')} {rma.returnLabelProvider.toUpperCase()}</>}
                     {rma.returnServiceLevel && <> &middot; {fmt(rma.returnServiceLevel)}</>}
                   </span>
                 )}
@@ -188,12 +190,12 @@ export default function CustomerReturnDetail() {
             )}
             {rma.returnPickupScheduledAt && (
               <div className="border-t border-border pt-3 text-sm">
-                <strong>Pickup scheduled:</strong> {new Date(rma.returnPickupScheduledAt).toLocaleString()}
-                {rma.returnPickupWindow && <> (window {rma.returnPickupWindow})</>}
-                {rma.returnPickupConfirmationNumber && <> &middot; confirmation {rma.returnPickupConfirmationNumber}</>}
+                <strong>{t('Pickup scheduled:')}</strong> {new Date(rma.returnPickupScheduledAt).toLocaleString()}
+                {rma.returnPickupWindow && <> {t('(window')} {rma.returnPickupWindow})</>}
+                {rma.returnPickupConfirmationNumber && <> {t('· confirmation')} {rma.returnPickupConfirmationNumber}</>}
                 {rma.returnPickupCancelledAt && (
                   <span className="ml-3 text-destructive">
-                    Cancelled {new Date(rma.returnPickupCancelledAt).toLocaleString()}
+                    {t('Cancelled')} {new Date(rma.returnPickupCancelledAt).toLocaleString()}
                   </span>
                 )}
               </div>
@@ -204,14 +206,14 @@ export default function CustomerReturnDetail() {
 
       {rma.rejectionNotes && (
         <div className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
-          <strong>Why this was rejected:</strong> {rma.rejectionNotes}
+          <strong>{t('Why this was rejected:')}</strong> {rma.rejectionNotes}
         </div>
       )}
 
       {rma.customerNotes && (
         <Card>
           <CardHeader>
-            <CardTitle>Your notes</CardTitle>
+            <CardTitle>{t('Your notes')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-sm">{rma.customerNotes}</div>
@@ -221,17 +223,17 @@ export default function CustomerReturnDetail() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Items</CardTitle>
+          <CardTitle>{t('Items')}</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>SKU</TableHead>
-                <TableHead>Requested qty</TableHead>
-                <TableHead>Received qty</TableHead>
-                <TableHead>Outcome</TableHead>
-                <TableHead>Refund</TableHead>
+                <TableHead>{t('SKU')}</TableHead>
+                <TableHead>{t('Requested qty')}</TableHead>
+                <TableHead>{t('Received qty')}</TableHead>
+                <TableHead>{t('Outcome')}</TableHead>
+                <TableHead>{t('Refund')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -242,7 +244,7 @@ export default function CustomerReturnDetail() {
                   <TableCell>{line.receivedQuantity}</TableCell>
                   <TableCell>
                     {line.disposition === 'pending'
-                      ? <Badge variant="secondary">Pending</Badge>
+                      ? <Badge variant="secondary">{t('Pending')}</Badge>
                       : <Badge variant={statusVariant(line.disposition)}>{fmt(line.disposition)}</Badge>}
                   </TableCell>
                   <TableCell>${(line.refundAmountCents / 100).toFixed(2)}</TableCell>

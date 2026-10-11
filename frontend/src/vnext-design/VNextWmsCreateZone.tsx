@@ -17,23 +17,25 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { t as translate } from '@/i18n';
+
 const ZONE_TYPES = [
-  { value: 'receiving', label: 'Receiving' },
-  { value: 'bulk_storage', label: 'Bulk Storage' },
-  { value: 'pick_face', label: 'Pick Face' },
-  { value: 'staging', label: 'Staging' },
-  { value: 'packing', label: 'Packing' },
-  { value: 'shipping_dock', label: 'Shipping Dock' },
-  { value: 'quarantine', label: 'Quarantine' },
-  { value: 'returns', label: 'Returns' },
-  { value: 'cross_dock', label: 'Cross Dock' },
+  { value: 'receiving', label: translate('Receiving') },
+  { value: 'bulk_storage', label: translate('Bulk Storage') },
+  { value: 'pick_face', label: translate('Pick Face') },
+  { value: 'staging', label: translate('Staging') },
+  { value: 'packing', label: translate('Packing') },
+  { value: 'shipping_dock', label: translate('Shipping Dock') },
+  { value: 'quarantine', label: translate('Quarantine') },
+  { value: 'returns', label: translate('Returns') },
+  { value: 'cross_dock', label: translate('Cross Dock') },
 ];
 
 const TEMP_ZONES = [
-  { value: 'none', label: 'None' },
-  { value: 'ambient', label: 'Ambient' },
-  { value: 'refrigerated', label: 'Refrigerated' },
-  { value: 'frozen', label: 'Frozen' },
+  { value: 'none', label: translate('None') },
+  { value: 'ambient', label: translate('Ambient') },
+  { value: 'refrigerated', label: translate('Refrigerated') },
+  { value: 'frozen', label: translate('Frozen') },
 ];
 
 interface LocationOption {
@@ -139,16 +141,16 @@ export default function VNextWmsCreateZone() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/wms/zones" className="hover:text-foreground">
-          <ArrowLeft className="inline h-4 w-4" /> Zones
+          <ArrowLeft className="inline h-4 w-4" /> {translate('Zones')}
         </Link>
         <ChevronRight className="h-3 w-3" />
-        <span>{isEdit ? 'Edit zone' : 'New zone'}</span>
+        <span>{isEdit ? translate('Edit zone') : translate('New zone')}</span>
       </div>
 
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">{isEdit ? 'Edit Zone' : 'Create Zone'}</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{isEdit ? translate('Edit Zone') : translate('Create Zone')}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          {isEdit ? 'Update zone configuration' : 'Define a new warehouse zone'}
+          {isEdit ? translate('Update zone configuration') : translate('Define a new warehouse zone')}
         </p>
       </div>
 
@@ -163,7 +165,7 @@ export default function VNextWmsCreateZone() {
         <Card className="max-w-3xl">
           <CardContent className="grid gap-4 p-6 md:grid-cols-2">
             <div className="space-y-2 md:col-span-2">
-              <Label>Facility *</Label>
+              <Label>{translate('Facility *')}</Label>
               <FacilitySelect
                 facilities={facilities}
                 value={form.facilityId}
@@ -175,17 +177,17 @@ export default function VNextWmsCreateZone() {
             </div>
 
             <div className="space-y-2">
-              <Label>Zone Name *</Label>
+              <Label>{translate('Zone Name *')}</Label>
               <Input
                 value={form.name}
                 onChange={e => setForm({ ...form, name: e.target.value })}
-                placeholder="e.g. Bulk A, Dock 3, Cold Store"
+                placeholder={translate('e.g. Bulk A, Dock 3, Cold Store')}
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label>Zone Type *</Label>
+              <Label>{translate('Zone Type *')}</Label>
               <Select value={form.zoneType} onValueChange={v => setForm({ ...form, zoneType: v })}>
                 <SelectTrigger>
                   <SelectValue />
@@ -199,7 +201,7 @@ export default function VNextWmsCreateZone() {
             </div>
 
             <div className="space-y-2">
-              <Label>Temperature Zone</Label>
+              <Label>{translate('Temperature Zone')}</Label>
               <Select value={form.temperatureZone} onValueChange={v => setForm({ ...form, temperatureZone: v })}>
                 <SelectTrigger>
                   <SelectValue />
@@ -213,7 +215,7 @@ export default function VNextWmsCreateZone() {
             </div>
 
             <div className="space-y-2">
-              <Label>Sort Order</Label>
+              <Label>{translate('Sort Order')}</Label>
               <Input
                 type="number"
                 value={form.sortOrder}
@@ -222,24 +224,24 @@ export default function VNextWmsCreateZone() {
             </div>
 
             <div className="space-y-2">
-              <Label>Max Weight (kg)</Label>
+              <Label>{translate('Max Weight (kg)')}</Label>
               <Input
                 type="number"
                 step="0.1"
                 value={form.maxWeightKg}
                 onChange={e => setForm({ ...form, maxWeightKg: e.target.value })}
-                placeholder="Optional"
+                placeholder={translate('Optional')}
               />
             </div>
 
             <div className="space-y-2">
-              <Label>Max Volume (cbm)</Label>
+              <Label>{translate('Max Volume (cbm)')}</Label>
               <Input
                 type="number"
                 step="0.01"
                 value={form.maxVolumeCbm}
                 onChange={e => setForm({ ...form, maxVolumeCbm: e.target.value })}
-                placeholder="Optional"
+                placeholder={translate('Optional')}
               />
             </div>
 
@@ -251,7 +253,7 @@ export default function VNextWmsCreateZone() {
                   onChange={e => setForm({ ...form, hazmatCertified: e.target.checked })}
                   className="h-4 w-4 rounded border border-input bg-background accent-primary"
                 />
-                Hazmat Certified
+                {translate('Hazmat Certified')}
               </label>
             </div>
           </CardContent>
@@ -259,11 +261,11 @@ export default function VNextWmsCreateZone() {
 
         <div className="mt-6 flex flex-wrap items-center justify-end gap-2">
           <Button variant="outline" type="button" onClick={() => navigate('/wms/zones')}>
-            Cancel
+            {translate('Cancel')}
           </Button>
           <Button variant="gradient" type="submit" disabled={saving}>
             <Save className="h-4 w-4" />
-            {saving ? 'Saving...' : isEdit ? 'Update Zone' : 'Create Zone'}
+            {saving ? translate('Saving...') : isEdit ? 'Update Zone' : 'Create Zone'}
           </Button>
         </div>
       </form>

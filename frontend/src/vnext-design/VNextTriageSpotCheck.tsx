@@ -21,10 +21,12 @@ import {
   TriageLoading, TriageError, TriageEmpty, StatTile, StatGrid, ConfidenceMeter, SlaPill,
 } from './triage/components';
 
+import { t as translate } from '@/i18n';
+
 const RANGES = [
-  { value: '24h', label: '24 hours' },
-  { value: '7d', label: '7 days' },
-  { value: '30d', label: '30 days' },
+  { value: '24h', label: translate('24 hours') },
+  { value: '7d', label: translate('7 days') },
+  { value: '30d', label: translate('30 days') },
 ];
 const SAMPLE_SIZES = [10, 20, 50];
 
@@ -66,12 +68,12 @@ export default function VNextTriageSpotCheck() {
     <div className="grid gap-4">
       <header className="flex flex-wrap items-center gap-3">
         <FileSearch className="h-5 w-5" aria-hidden="true" />
-        <h1 className="m-0 flex-1 text-xl font-semibold">Spot Check</h1>
+        <h1 className="m-0 flex-1 text-xl font-semibold">{translate('Spot Check')}</h1>
       </header>
 
       <Card className="flex flex-wrap items-center gap-5 p-3">
-        <div className="flex items-center gap-1" role="group" aria-label="Window">
-          <span className="text-xs text-muted-foreground">Window</span>
+        <div className="flex items-center gap-1" role="group" aria-label={translate('Window')}>
+          <span className="text-xs text-muted-foreground">{translate('Window')}</span>
           {RANGES.map((r) => (
             <Button
               key={r.value} size="sm"
@@ -83,8 +85,8 @@ export default function VNextTriageSpotCheck() {
           ))}
         </div>
 
-        <div className="flex items-center gap-1" role="group" aria-label="Sample size">
-          <span className="text-xs text-muted-foreground">Sample</span>
+        <div className="flex items-center gap-1" role="group" aria-label={translate('Sample size')}>
+          <span className="text-xs text-muted-foreground">{translate('Sample')}</span>
           {SAMPLE_SIZES.map((n) => (
             <Button
               key={n} size="sm"
@@ -102,32 +104,32 @@ export default function VNextTriageSpotCheck() {
             checked={includeNoise}
             onChange={(e) => setIncludeNoise(e.target.checked)}
           />
-          Include suppressed issues
+          {translate('Include suppressed issues')}
         </label>
       </Card>
 
-      {loading && <TriageLoading label="Sampling" />}
+      {loading && <TriageLoading label={translate('Sampling')} />}
       {error && !loading && <TriageError message={error} onRetry={load} />}
 
       {result && !loading && !error && (
         <>
           <StatGrid>
-            <StatTile label="Settled in window" value={result.total} />
-            <StatTile label="Sampled" value={result.sampled} sub="spread across the window" />
+            <StatTile label={translate('Settled in window')} value={result.total} />
+            <StatTile label={translate('Sampled')} value={result.sampled} sub="spread across the window" />
             <StatTile
-              label="SLA breach rate"
+              label={translate('SLA breach rate')}
               value={`${result.breachRate}%`}
               tone={result.breachRate > 20 ? 'error' : result.breachRate > 5 ? 'warning' : 'success'}
             />
             <StatTile
-              label="Mean time to resolve"
+              label={translate('Mean time to resolve')}
               value={fmtDuration(result.avgTimeToResolutionMins)}
             />
           </StatGrid>
 
           {result.items.length === 0 ? (
             <TriageEmpty
-              title="Nothing settled in this window"
+              title={translate('Nothing settled in this window')}
               hint="Widen the window, or check that issues are being resolved at all."
             />
           ) : (
@@ -156,24 +158,24 @@ export default function VNextTriageSpotCheck() {
                     {open && (
                       <div className="grid gap-2.5 pb-4 pl-[38px] pr-3">
                         <dl className="m-0 grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-3">
-                          <Field label="Type">
+                          <Field label={translate('Type')}>
                             {i.issueType ? typeNames[i.issueType] ?? i.issueType : i.category}
                           </Field>
-                          <Field label="Priority">{i.priority}</Field>
-                          <Field label="Assignee">{i.assigneeName ?? 'unassigned'}</Field>
-                          <Field label="Raised">{timeAgo(i.createdAt)}</Field>
-                          <Field label="First response">{fmtDuration(i.timeToFirstResponseMins)}</Field>
-                          <Field label="Signals">{i.signalCount}</Field>
+                          <Field label={translate('Priority')}>{i.priority}</Field>
+                          <Field label={translate('Assignee')}>{i.assigneeName ?? 'unassigned'}</Field>
+                          <Field label={translate('Raised')}>{timeAgo(i.createdAt)}</Field>
+                          <Field label={translate('First response')}>{fmtDuration(i.timeToFirstResponseMins)}</Field>
+                          <Field label={translate('Signals')}>{i.signalCount}</Field>
                         </dl>
 
                         <div className="max-w-[220px]">
-                          <div className="mb-1 text-xs text-muted-foreground">Confidence</div>
+                          <div className="mb-1 text-xs text-muted-foreground">{translate('Confidence')}</div>
                           <ConfidenceMeter score={i.signalScore} signalCount={i.signalCount} />
                         </div>
 
                         {i.isNoise && i.noiseReason && (
                           <div className="text-sm text-muted-foreground">
-                            <strong>Suppressed:</strong> {i.noiseReason}
+                            <strong>{translate('Suppressed:')}</strong> {i.noiseReason}
                           </div>
                         )}
 
@@ -183,7 +185,7 @@ export default function VNextTriageSpotCheck() {
 
                         <div>
                           <Button size="sm" variant="outline" onClick={() => navigate(`/triage/issues/${i.id}`)}>
-                            Open issue
+                            {translate('Open issue')}
                           </Button>
                         </div>
                       </div>

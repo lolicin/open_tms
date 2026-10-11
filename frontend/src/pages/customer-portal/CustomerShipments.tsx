@@ -23,6 +23,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface Shipment {
   id: string; reference: string; status: string;
   originCity?: string; originState?: string; destinationCity?: string; destinationState?: string;
@@ -68,7 +70,7 @@ export default function CustomerShipments() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">Shipments</h1>
+      <h1 className="text-3xl font-bold tracking-tight">{t('Shipments')}</h1>
       <Card>
         <div className="flex flex-wrap items-center gap-3 p-4">
           <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -76,14 +78,14 @@ export default function CustomerShipments() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All statuses</SelectItem>
-              <SelectItem value="active">Active (in flight)</SelectItem>
-              <SelectItem value="booked">Booked</SelectItem>
-              <SelectItem value="in_transit">In transit</SelectItem>
-              <SelectItem value="at_pickup">At pickup</SelectItem>
-              <SelectItem value="at_delivery">At delivery</SelectItem>
-              <SelectItem value="delivered">Delivered</SelectItem>
-              <SelectItem value="exception">Exception</SelectItem>
+              <SelectItem value="all">{t('All statuses')}</SelectItem>
+              <SelectItem value="active">{t('Active (in flight)')}</SelectItem>
+              <SelectItem value="booked">{t('Booked')}</SelectItem>
+              <SelectItem value="in_transit">{t('In transit')}</SelectItem>
+              <SelectItem value="at_pickup">{t('At pickup')}</SelectItem>
+              <SelectItem value="at_delivery">{t('At delivery')}</SelectItem>
+              <SelectItem value="delivered">{t('Delivered')}</SelectItem>
+              <SelectItem value="exception">{t('Exception')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -92,19 +94,19 @@ export default function CustomerShipments() {
         {loading ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <Loader2 className="h-6 w-6 animate-spin" />
-            <span className="text-sm">Loading shipments...</span>
+            <span className="text-sm">{t('Loading shipments...')}</span>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Reference</TableHead>
-                <TableHead>Origin</TableHead>
-                <TableHead>Destination</TableHead>
-                <TableHead>Carrier</TableHead>
-                <TableHead>Pickup</TableHead>
-                <TableHead>Delivery</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{t('Reference')}</TableHead>
+                <TableHead>{t('Origin')}</TableHead>
+                <TableHead>{t('Destination')}</TableHead>
+                <TableHead>{t('Carrier')}</TableHead>
+                <TableHead>{t('Pickup')}</TableHead>
+                <TableHead>{t('Delivery')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -132,7 +134,7 @@ export default function CustomerShipments() {
               {shipments.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={7} className="py-8 text-center text-sm text-muted-foreground">
-                    No shipments found
+                    {t('No shipments found')}
                   </TableCell>
                 </TableRow>
               )}

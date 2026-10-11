@@ -33,6 +33,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface Carton {
   id: string; name: string;
   lengthMm: number; widthMm: number; heightMm: number;
@@ -225,12 +227,12 @@ export default function VNextWmsCartonCatalogue() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Carton Catalogue</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Available carton sizes for packing recommendations</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Carton Catalogue')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Available carton sizes for packing recommendations')}</p>
         </div>
         <Button variant="gradient" onClick={openCreate}>
           <Plus className="h-4 w-4" />
-          Add Carton
+          {t('Add Carton')}
         </Button>
       </div>
 
@@ -250,105 +252,105 @@ export default function VNextWmsCartonCatalogue() {
       <Dialog open={showModal} onOpenChange={setShowModal}>
         <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
-            <DialogTitle>{editingId ? 'Edit Carton' : 'Add Carton Size'}</DialogTitle>
+            <DialogTitle>{editingId ? t('Edit Carton') : t('Add Carton Size')}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSave} className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2 md:col-span-2">
-                <Label>Name *</Label>
-                <Input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder='e.g. "Small Mailer", "Medium Box"' required />
+                <Label>{t('Name *')}</Label>
+                <Input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder={t('e.g. "Small Mailer", "Medium Box"')} required />
               </div>
               <div className="space-y-2">
-                <Label>Length (mm) *</Label>
+                <Label>{t('Length (mm) *')}</Label>
                 <Input type="number" min="1" value={form.lengthMm} onChange={e => setForm({ ...form, lengthMm: e.target.value })} required />
               </div>
               <div className="space-y-2">
-                <Label>Width (mm) *</Label>
+                <Label>{t('Width (mm) *')}</Label>
                 <Input type="number" min="1" value={form.widthMm} onChange={e => setForm({ ...form, widthMm: e.target.value })} required />
               </div>
               <div className="space-y-2">
-                <Label>Height (mm) *</Label>
+                <Label>{t('Height (mm) *')}</Label>
                 <Input type="number" min="1" value={form.heightMm} onChange={e => setForm({ ...form, heightMm: e.target.value })} required />
               </div>
               <div className="space-y-2">
-                <Label>Max Weight (g) *</Label>
+                <Label>{t('Max Weight (g) *')}</Label>
                 <Input type="number" min="1" value={form.maxWeightGrams} onChange={e => setForm({ ...form, maxWeightGrams: e.target.value })} required />
               </div>
               <div className="space-y-2 md:col-span-2">
-                <Label>Unit Cost (cents)</Label>
-                <Input type="number" min="0" value={form.unitCostCents} onChange={e => setForm({ ...form, unitCostCents: e.target.value })} placeholder="Optional" />
+                <Label>{t('Unit Cost (cents)')}</Label>
+                <Input type="number" min="0" value={form.unitCostCents} onChange={e => setForm({ ...form, unitCostCents: e.target.value })} placeholder={t('Optional')} />
               </div>
             </div>
 
-            <h4 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Container intelligence</h4>
+            <h4 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{t('Container intelligence')}</h4>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>Temperature zone</Label>
+                <Label>{t('Temperature zone')}</Label>
                 <Select value={form.temperatureZone} onValueChange={v => setForm({ ...form, temperatureZone: v })}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="any">Any (ambient)</SelectItem>
-                    <SelectItem value="ambient">Ambient</SelectItem>
-                    <SelectItem value="refrigerated">Refrigerated</SelectItem>
-                    <SelectItem value="frozen">Frozen</SelectItem>
-                    <SelectItem value="dry_ice">Dry ice</SelectItem>
+                    <SelectItem value="any">{t('Any (ambient)')}</SelectItem>
+                    <SelectItem value="ambient">{t('Ambient')}</SelectItem>
+                    <SelectItem value="refrigerated">{t('Refrigerated')}</SelectItem>
+                    <SelectItem value="frozen">{t('Frozen')}</SelectItem>
+                    <SelectItem value="dry_ice">{t('Dry ice')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Value class</Label>
+                <Label>{t('Value class')}</Label>
                 <Select value={form.valueClass} onValueChange={v => setForm({ ...form, valueClass: v })}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="any">Any</SelectItem>
-                    <SelectItem value="standard">Standard</SelectItem>
-                    <SelectItem value="high_value">High-value</SelectItem>
+                    <SelectItem value="any">{t('Any')}</SelectItem>
+                    <SelectItem value="standard">{t('Standard')}</SelectItem>
+                    <SelectItem value="high_value">{t('High-value')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Material</Label>
+                <Label>{t('Material')}</Label>
                 <Select value={form.materialType} onValueChange={v => setForm({ ...form, materialType: v })}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="corrugated">Corrugated</SelectItem>
-                    <SelectItem value="plastic">Plastic</SelectItem>
-                    <SelectItem value="metal">Metal</SelectItem>
-                    <SelectItem value="foam">Foam</SelectItem>
-                    <SelectItem value="composite">Composite</SelectItem>
+                    <SelectItem value="corrugated">{t('Corrugated')}</SelectItem>
+                    <SelectItem value="plastic">{t('Plastic')}</SelectItem>
+                    <SelectItem value="metal">{t('Metal')}</SelectItem>
+                    <SelectItem value="foam">{t('Foam')}</SelectItem>
+                    <SelectItem value="composite">{t('Composite')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Insulation hours (optional)</Label>
-                <Input type="number" min="0" value={form.insulationHours} onChange={e => setForm({ ...form, insulationHours: e.target.value })} placeholder="e.g. 24" />
+                <Label>{t('Insulation hours (optional)')}</Label>
+                <Input type="number" min="0" value={form.insulationHours} onChange={e => setForm({ ...form, insulationHours: e.target.value })} placeholder={t('e.g. 24')} />
               </div>
               <div className="space-y-2 md:col-span-2">
-                <Label>Hazmat UN classes (comma-separated, e.g. "3, 5.1")</Label>
-                <Input value={form.hazmatClasses} onChange={e => setForm({ ...form, hazmatClasses: e.target.value })} placeholder="Leave blank for non-hazmat" />
+                <Label>{t('Hazmat UN classes (comma-separated, e.g. "3, 5.1")')}</Label>
+                <Input value={form.hazmatClasses} onChange={e => setForm({ ...form, hazmatClasses: e.target.value })} placeholder={t('Leave blank for non-hazmat')} />
               </div>
             </div>
             <div className="flex flex-wrap gap-3">
               <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" checked={form.insulated} onChange={e => setForm({ ...form, insulated: e.target.checked })} className="h-4 w-4 rounded border border-input bg-background accent-primary" /> Insulated
+                <input type="checkbox" checked={form.insulated} onChange={e => setForm({ ...form, insulated: e.target.checked })} className="h-4 w-4 rounded border border-input bg-background accent-primary" /> {t('Insulated')}
               </label>
               <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" checked={form.tamperEvident} onChange={e => setForm({ ...form, tamperEvident: e.target.checked })} className="h-4 w-4 rounded border border-input bg-background accent-primary" /> Tamper-evident
+                <input type="checkbox" checked={form.tamperEvident} onChange={e => setForm({ ...form, tamperEvident: e.target.checked })} className="h-4 w-4 rounded border border-input bg-background accent-primary" /> {t('Tamper-evident')}
               </label>
               <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" checked={form.hazmatRated} onChange={e => setForm({ ...form, hazmatRated: e.target.checked })} className="h-4 w-4 rounded border border-input bg-background accent-primary" /> Hazmat-rated
+                <input type="checkbox" checked={form.hazmatRated} onChange={e => setForm({ ...form, hazmatRated: e.target.checked })} className="h-4 w-4 rounded border border-input bg-background accent-primary" /> {t('Hazmat-rated')}
               </label>
             </div>
 
             <DialogFooter>
-              <Button variant="outline" type="button" onClick={() => setShowModal(false)}>Cancel</Button>
-              <Button variant="gradient" type="submit" disabled={busy}>{busy ? 'Saving...' : editingId ? 'Save changes' : 'Create carton'}</Button>
+              <Button variant="outline" type="button" onClick={() => setShowModal(false)}>{t('Cancel')}</Button>
+              <Button variant="gradient" type="submit" disabled={busy}>{busy ? t('Saving...') : editingId ? 'Save changes' : 'Create carton'}</Button>
             </DialogFooter>
           </form>
         </DialogContent>
@@ -363,7 +365,7 @@ export default function VNextWmsCartonCatalogue() {
             onChange={e => setShowArchived(e.target.checked)}
             className="h-4 w-4 rounded border border-input bg-background accent-primary"
           />
-          Show archived
+          {t('Show archived')}
         </label>
       </div>
 
@@ -375,8 +377,10 @@ export default function VNextWmsCartonCatalogue() {
         <Card>
           <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
             <Package className="h-12 w-12 text-muted-foreground" />
-            <h3 className="text-base font-medium">No carton sizes defined</h3>
-            <p className="text-sm text-muted-foreground">Add your available box sizes to enable automatic carton recommendations at packing.</p>
+            <h3 className="text-base font-medium">{t('No carton sizes defined')}</h3>
+            <p className="text-sm text-muted-foreground">{t(
+              'Add your available box sizes to enable automatic carton recommendations at packing.'
+            )}</p>
           </CardContent>
         </Card>
       ) : (
@@ -384,16 +388,16 @@ export default function VNextWmsCartonCatalogue() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>L x W x H (mm)</TableHead>
-                <TableHead>Volume (L)</TableHead>
-                <TableHead>Max Weight (g)</TableHead>
-                <TableHead>Temp</TableHead>
-                <TableHead>Value</TableHead>
-                <TableHead>Hazmat</TableHead>
-                <TableHead>Material</TableHead>
-                <TableHead>Cost</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead>{t('Name')}</TableHead>
+                <TableHead>{t('L x W x H (mm)')}</TableHead>
+                <TableHead>{t('Volume (L)')}</TableHead>
+                <TableHead>{t('Max Weight (g)')}</TableHead>
+                <TableHead>{t('Temp')}</TableHead>
+                <TableHead>{t('Value')}</TableHead>
+                <TableHead>{t('Hazmat')}</TableHead>
+                <TableHead>{t('Material')}</TableHead>
+                <TableHead>{t('Cost')}</TableHead>
+                <TableHead className="text-right">{t('Actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -401,18 +405,18 @@ export default function VNextWmsCartonCatalogue() {
                 <TableRow key={c.id} className={cn(!c.active && 'opacity-55')}>
                   <TableCell>
                     <span className="font-semibold">{c.name}</span>
-                    {!c.active && <Badge variant="muted" className="ml-2">archived</Badge>}
-                    {c.insulated && <Badge variant="info" className="ml-2">insulated{c.insulationHours ? ` ${c.insulationHours}h` : ''}</Badge>}
-                    {c.tamperEvident && <Badge variant="warning" className="ml-2">tamper-evident</Badge>}
+                    {!c.active && <Badge variant="muted" className="ml-2">{t('archived')}</Badge>}
+                    {c.insulated && <Badge variant="info" className="ml-2">{t('insulated')}{c.insulationHours ? ` ${c.insulationHours}h` : ''}</Badge>}
+                    {c.tamperEvident && <Badge variant="warning" className="ml-2">{t('tamper-evident')}</Badge>}
                   </TableCell>
-                  <TableCell>{c.lengthMm} x {c.widthMm} x {c.heightMm}</TableCell>
+                  <TableCell>{c.lengthMm} {t('x')} {c.widthMm} {t('x')} {c.heightMm}</TableCell>
                   <TableCell>{volumeLitres(c)}</TableCell>
                   <TableCell>{c.maxWeightGrams.toLocaleString()}</TableCell>
                   <TableCell><Badge variant="secondary">{c.temperatureZone}</Badge></TableCell>
                   <TableCell><Badge variant="secondary">{c.valueClass}</Badge></TableCell>
                   <TableCell>
                     {c.hazmatRated
-                      ? <Badge variant="destructive">{(c.hazmatClasses ?? []).join(', ') || 'yes'}</Badge>
+                      ? <Badge variant="destructive">{(c.hazmatClasses ?? []).join(', ') || t('yes')}</Badge>
                       : <span className="text-muted-foreground">-</span>}
                   </TableCell>
                   <TableCell>{c.materialType}</TableCell>
@@ -421,20 +425,20 @@ export default function VNextWmsCartonCatalogue() {
                     <div className="inline-flex justify-end gap-1">
                       {c.active ? (
                         <>
-                          <Button variant="ghost" size="icon" onClick={() => openEdit(c)} title="Edit">
+                          <Button variant="ghost" size="icon" onClick={() => openEdit(c)} title={t('Edit')}>
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="icon" onClick={() => handleArchive(c)} title="Archive">
+                          <Button variant="ghost" size="icon" onClick={() => handleArchive(c)} title={t('Archive')}>
                             <Archive className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="icon" onClick={() => handleDelete(c)} title="Delete">
+                          <Button variant="ghost" size="icon" onClick={() => handleDelete(c)} title={t('Delete')}>
                             <Trash2 className="h-4 w-4 text-destructive" />
                           </Button>
                         </>
                       ) : (
-                        <Button variant="outline" size="sm" onClick={() => handleRestore(c)} title="Restore">
+                        <Button variant="outline" size="sm" onClick={() => handleRestore(c)} title={t('Restore')}>
                           <ArchiveRestore className="h-4 w-4" />
-                          Restore
+                          {t('Restore')}
                         </Button>
                       )}
                     </div>

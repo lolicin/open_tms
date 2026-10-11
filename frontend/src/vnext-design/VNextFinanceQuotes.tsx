@@ -33,6 +33,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface Quote {
   id: string;
   quoteNumber: string;
@@ -114,7 +116,7 @@ export default function VNextFinanceQuotes() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -131,14 +133,14 @@ export default function VNextFinanceQuotes() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Quotes</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{quotes.length} quotes</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Quotes')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{quotes.length} {t('quotes')}</p>
         </div>
         <div className="flex gap-2">
           <Button variant="gradient" asChild>
             <Link to="/finance/quotes/create">
               <Plus className="h-4 w-4" />
-              New Quote
+              {t('New Quote')}
             </Link>
           </Button>
         </div>
@@ -151,7 +153,7 @@ export default function VNextFinanceQuotes() {
               <FileText className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight">{stats.total}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Total</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Total')}</div>
           </CardContent>
         </Card>
         <Card>
@@ -160,7 +162,7 @@ export default function VNextFinanceQuotes() {
               <Clock className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight">{stats.active}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Active</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Active')}</div>
           </CardContent>
         </Card>
         <Card>
@@ -169,7 +171,7 @@ export default function VNextFinanceQuotes() {
               <Handshake className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight">{stats.accepted}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Accepted</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Accepted')}</div>
           </CardContent>
         </Card>
         <Card>
@@ -178,7 +180,7 @@ export default function VNextFinanceQuotes() {
               <DollarSign className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight font-mono tabular-nums">{formatMoney(stats.totalRevenue)}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Won Revenue</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Won Revenue')}</div>
           </CardContent>
         </Card>
       </div>
@@ -189,7 +191,7 @@ export default function VNextFinanceQuotes() {
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               className="pl-9"
-              placeholder="Search quotes..."
+              placeholder={t('Search quotes...')}
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
@@ -199,12 +201,12 @@ export default function VNextFinanceQuotes() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="draft">Draft</SelectItem>
-              <SelectItem value="sent">Sent</SelectItem>
-              <SelectItem value="accepted">Accepted</SelectItem>
-              <SelectItem value="declined">Declined</SelectItem>
-              <SelectItem value="expired">Expired</SelectItem>
+              <SelectItem value="all">{t('All Status')}</SelectItem>
+              <SelectItem value="draft">{t('Draft')}</SelectItem>
+              <SelectItem value="sent">{t('Sent')}</SelectItem>
+              <SelectItem value="accepted">{t('Accepted')}</SelectItem>
+              <SelectItem value="declined">{t('Declined')}</SelectItem>
+              <SelectItem value="expired">{t('Expired')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -212,20 +214,20 @@ export default function VNextFinanceQuotes() {
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <FileText className="h-8 w-8" />
-            <h3 className="text-base font-medium">No quotes found</h3>
+            <h3 className="text-base font-medium">{t('No quotes found')}</h3>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Quote #</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Service</TableHead>
-                <TableHead className="text-right">Revenue</TableHead>
-                <TableHead className="text-right">Cost</TableHead>
-                <TableHead className="text-right">Margin</TableHead>
-                <TableHead>Valid Until</TableHead>
+                <TableHead>{t('Quote #')}</TableHead>
+                <TableHead>{t('Customer')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead>{t('Service')}</TableHead>
+                <TableHead className="text-right">{t('Revenue')}</TableHead>
+                <TableHead className="text-right">{t('Cost')}</TableHead>
+                <TableHead className="text-right">{t('Margin')}</TableHead>
+                <TableHead>{t('Valid Until')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -248,7 +250,7 @@ export default function VNextFinanceQuotes() {
                   </TableCell>
                   <TableCell className="text-sm">
                     {new Date(q.validUntil) < new Date() && q.status !== 'accepted'
-                      ? <span className="text-destructive">Expired</span>
+                      ? <span className="text-destructive">{t('Expired')}</span>
                       : <span className="text-muted-foreground">{formatDate(q.validUntil)}</span>}
                   </TableCell>
                 </TableRow>

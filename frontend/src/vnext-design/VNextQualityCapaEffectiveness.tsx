@@ -22,6 +22,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface CapaRow {
   id: string;
   reportNumber: string;
@@ -162,7 +164,7 @@ export default function VNextQualityCapaEffectiveness() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -183,16 +185,16 @@ export default function VNextQualityCapaEffectiveness() {
   const totalOverdue = data.reduce((s, r) => s + r.followUpStats.overdue, 0);
 
   const stats = [
-    { label: 'Total CAPAs', value: totalCapas, icon: ClipboardList, tone: 'bg-primary/10 text-primary' },
-    { label: 'Avg completion rate', value: `${avgCompletionRate.toFixed(0)}%`, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
-    { label: 'Overdue follow-ups', value: totalOverdue, icon: Clock, tone: 'bg-destructive/10 text-destructive' },
+    { label: t('Total CAPAs'), value: totalCapas, icon: ClipboardList, tone: 'bg-primary/10 text-primary' },
+    { label: t('Avg completion rate'), value: `${avgCompletionRate.toFixed(0)}%`, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
+    { label: t('Overdue follow-ups'), value: totalOverdue, icon: Clock, tone: 'bg-destructive/10 text-destructive' },
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">CAPA effectiveness report</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Corrective and preventive action completion and effectiveness tracking</p>
+        <h1 className="text-3xl font-bold tracking-tight">{t('CAPA effectiveness report')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t('Corrective and preventive action completion and effectiveness tracking')}</p>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-3">
@@ -216,23 +218,23 @@ export default function VNextQualityCapaEffectiveness() {
         {sorted.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <ClipboardList className="h-10 w-10 opacity-40" />
-            <h3 className="text-base font-medium">No CAPA data</h3>
-            <p className="text-sm">No CAPA reports are available yet.</p>
+            <h3 className="text-base font-medium">{t('No CAPA data')}</h3>
+            <p className="text-sm">{t('No CAPA reports are available yet.')}</p>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="cursor-pointer" onClick={() => handleSort('reportNumber')}>Report #<SortIndicator field="reportNumber" /></TableHead>
-                <TableHead className="cursor-pointer" onClick={() => handleSort('title')}>Title<SortIndicator field="title" /></TableHead>
-                <TableHead className="cursor-pointer text-center" onClick={() => handleSort('status')}>Status<SortIndicator field="status" /></TableHead>
-                <TableHead className="cursor-pointer text-center" onClick={() => handleSort('priority')}>Priority<SortIndicator field="priority" /></TableHead>
-                <TableHead>Root cause</TableHead>
-                <TableHead>Issue category</TableHead>
-                <TableHead className="text-right">Follow-ups</TableHead>
-                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('completionRate')}>Completion rate<SortIndicator field="completionRate" /></TableHead>
-                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('overdue')}>Overdue<SortIndicator field="overdue" /></TableHead>
-                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('createdAt')}>Created<SortIndicator field="createdAt" /></TableHead>
+                <TableHead className="cursor-pointer" onClick={() => handleSort('reportNumber')}>{t('Report #')}<SortIndicator field="reportNumber" /></TableHead>
+                <TableHead className="cursor-pointer" onClick={() => handleSort('title')}>{t('Title')}<SortIndicator field="title" /></TableHead>
+                <TableHead className="cursor-pointer text-center" onClick={() => handleSort('status')}>{t('Status')}<SortIndicator field="status" /></TableHead>
+                <TableHead className="cursor-pointer text-center" onClick={() => handleSort('priority')}>{t('Priority')}<SortIndicator field="priority" /></TableHead>
+                <TableHead>{t('Root cause')}</TableHead>
+                <TableHead>{t('Issue category')}</TableHead>
+                <TableHead className="text-right">{t('Follow-ups')}</TableHead>
+                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('completionRate')}>{t('Completion rate')}<SortIndicator field="completionRate" /></TableHead>
+                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('overdue')}>{t('Overdue')}<SortIndicator field="overdue" /></TableHead>
+                <TableHead className="cursor-pointer text-right" onClick={() => handleSort('createdAt')}>{t('Created')}<SortIndicator field="createdAt" /></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

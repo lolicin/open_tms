@@ -25,6 +25,8 @@ import {
 import { API_URL } from '../../api';
 import { createIssue } from './api';
 
+import { t } from '@/i18n';
+
 const ENTITY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   shipment: Package,
   order: ShoppingCart,
@@ -127,7 +129,7 @@ function EntitySearchField({ entityType, value, onSelect }: {
   }, []);
 
   if (!entityType) {
-    return <Input disabled placeholder="Select a subject type first" />;
+    return <Input disabled placeholder={t('Select a subject type first')} />;
   }
 
   const Icon = entityIcon(entityType);
@@ -143,7 +145,7 @@ function EntitySearchField({ entityType, value, onSelect }: {
             variant="ghost"
             size="icon"
             type="button"
-            aria-label="Clear selection"
+            aria-label={t('Clear selection')}
             onClick={() => { onSelect('', ''); setSelectedLabel(''); }}
           >
             <X className="h-3 w-3" aria-hidden="true" />
@@ -160,10 +162,10 @@ function EntitySearchField({ entityType, value, onSelect }: {
       {showDropdown && (query.length >= 1 || results.length > 0) && (
         <div className="absolute left-0 right-0 top-full z-20 mt-1 max-h-60 overflow-y-auto rounded-md border border-border bg-popover shadow-lg">
           {loading && (
-            <div className="p-3 text-center text-xs text-muted-foreground">Searching...</div>
+            <div className="p-3 text-center text-xs text-muted-foreground">{t('Searching...')}</div>
           )}
           {!loading && results.length === 0 && query.length >= 1 && (
-            <div className="p-3 text-center text-xs text-muted-foreground">No results found</div>
+            <div className="p-3 text-center text-xs text-muted-foreground">{t('No results found')}</div>
           )}
           {results.map((r) => (
             <button
@@ -252,7 +254,7 @@ export function CreateIssueDialog({ open, onClose, onCreated }: {
     <Dialog open={open} onOpenChange={(next) => { if (!next) onClose(); }}>
       <DialogContent className="max-h-[85vh] max-w-2xl overflow-visible">
         <DialogHeader>
-          <DialogTitle>Report issue</DialogTitle>
+          <DialogTitle>{t('Report issue')}</DialogTitle>
         </DialogHeader>
 
         {error && (
@@ -264,10 +266,10 @@ export function CreateIssueDialog({ open, onClose, onCreated }: {
 
         <div className="grid gap-3 md:grid-cols-2">
           <div className="space-y-2 md:col-span-2">
-            <Label htmlFor="issue-title">Title *</Label>
+            <Label htmlFor="issue-title">{t('Title *')}</Label>
             <Input
               id="issue-title"
-              placeholder="Brief description of the issue"
+              placeholder={t('Brief description of the issue')}
               value={form.title}
               onChange={(e) => update('title', e.target.value)}
               autoFocus
@@ -275,11 +277,11 @@ export function CreateIssueDialog({ open, onClose, onCreated }: {
           </div>
 
           <div className="space-y-2 md:col-span-2">
-            <Label htmlFor="issue-description">Description</Label>
+            <Label htmlFor="issue-description">{t('Description')}</Label>
             <textarea
               id="issue-description"
               rows={3}
-              placeholder="Detailed description, context, impact..."
+              placeholder={t('Detailed description, context, impact...')}
               value={form.description}
               onChange={(e) => update('description', e.target.value)}
               className="w-full resize-y rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -287,20 +289,20 @@ export function CreateIssueDialog({ open, onClose, onCreated }: {
           </div>
 
           <div className="space-y-2">
-            <Label>Priority</Label>
+            <Label>{t('Priority')}</Label>
             <Select value={form.priority} onValueChange={(v) => update('priority', v)}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="low">Low</SelectItem>
-                <SelectItem value="medium">Medium</SelectItem>
-                <SelectItem value="high">High</SelectItem>
-                <SelectItem value="critical">Critical</SelectItem>
+                <SelectItem value="low">{t('Low')}</SelectItem>
+                <SelectItem value="medium">{t('Medium')}</SelectItem>
+                <SelectItem value="high">{t('High')}</SelectItem>
+                <SelectItem value="critical">{t('Critical')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label>Subject type</Label>
+            <Label>{t('Subject type')}</Label>
             <Select
               value={form.sourceEntityType || 'none'}
               onValueChange={(v) => {
@@ -310,16 +312,16 @@ export function CreateIssueDialog({ open, onClose, onCreated }: {
             >
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="shipment">Shipment</SelectItem>
-                <SelectItem value="order">Order</SelectItem>
-                <SelectItem value="carrier">Carrier</SelectItem>
-                <SelectItem value="none">None</SelectItem>
+                <SelectItem value="shipment">{t('Shipment')}</SelectItem>
+                <SelectItem value="order">{t('Order')}</SelectItem>
+                <SelectItem value="carrier">{t('Carrier')}</SelectItem>
+                <SelectItem value="none">{t('None')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2">
-            <Label>Subject</Label>
+            <Label>{t('Subject')}</Label>
             <EntitySearchField
               entityType={form.sourceEntityType}
               value={form.sourceEntityId}
@@ -328,24 +330,24 @@ export function CreateIssueDialog({ open, onClose, onCreated }: {
           </div>
 
           <div className="space-y-2">
-            <Label>Category</Label>
+            <Label>{t('Category')}</Label>
             <Select value={form.category} onValueChange={(v) => update('category', v)}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="exception">Exception</SelectItem>
-                <SelectItem value="delay">Delay</SelectItem>
-                <SelectItem value="damage">Damage</SelectItem>
-                <SelectItem value="compliance">Compliance</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
+                <SelectItem value="exception">{t('Exception')}</SelectItem>
+                <SelectItem value="delay">{t('Delay')}</SelectItem>
+                <SelectItem value="damage">{t('Damage')}</SelectItem>
+                <SelectItem value="compliance">{t('Compliance')}</SelectItem>
+                <SelectItem value="other">{t('Other')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="space-y-2 md:col-span-2">
-            <Label htmlFor="issue-assignee">Assign to</Label>
+            <Label htmlFor="issue-assignee">{t('Assign to')}</Label>
             <Input
               id="issue-assignee"
-              placeholder="Assignee name (optional)"
+              placeholder={t('Assignee name (optional)')}
               value={form.assigneeName}
               onChange={(e) => update('assigneeName', e.target.value)}
             />
@@ -353,9 +355,9 @@ export function CreateIssueDialog({ open, onClose, onCreated }: {
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={onClose} disabled={submitting}>Cancel</Button>
+          <Button variant="outline" onClick={onClose} disabled={submitting}>{t('Cancel')}</Button>
           <Button onClick={handleSubmit} disabled={submitting}>
-            {submitting ? 'Creating...' : 'Create issue'}
+            {submitting ? t('Creating...') : t('Create issue')}
           </Button>
         </DialogFooter>
       </DialogContent>

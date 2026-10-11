@@ -16,6 +16,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t as translate } from '@/i18n';
+
 interface OfferHistory {
   id: string;
   status: string;
@@ -113,23 +115,23 @@ export default function CarrierTenderHistory() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{translate('Loading...')}</h3>
       </div>
     );
   }
 
   const tiles: Array<{ key: string; label: string; value: number; valueClass?: string }> = [
-    { key: 'total', label: 'Total', value: counts.total },
-    { key: 'won', label: 'Won', value: counts.won, valueClass: 'text-success' },
-    { key: 'lost', label: 'Lost', value: counts.lost, valueClass: 'text-destructive' },
-    { key: 'pending', label: 'Pending', value: counts.pending },
-    { key: 'active', label: 'Active', value: counts.active, valueClass: 'text-primary' },
-    { key: 'expired', label: 'Expired', value: counts.expired },
+    { key: 'total', label: translate('Total'), value: counts.total },
+    { key: 'won', label: translate('Won'), value: counts.won, valueClass: 'text-success' },
+    { key: 'lost', label: translate('Lost'), value: counts.lost, valueClass: 'text-destructive' },
+    { key: 'pending', label: translate('Pending'), value: counts.pending },
+    { key: 'active', label: translate('Active'), value: counts.active, valueClass: 'text-primary' },
+    { key: 'expired', label: translate('Expired'), value: counts.expired },
   ];
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">Tender history</h1>
+      <h1 className="text-3xl font-bold tracking-tight">{translate('Tender history')}</h1>
 
       <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
         {tiles.map(t => {
@@ -160,7 +162,7 @@ export default function CarrierTenderHistory() {
         <Card>
           <CardContent className="flex flex-wrap items-center gap-6 p-4">
             <div>
-              <div className="text-xs text-muted-foreground">Win rate</div>
+              <div className="text-xs text-muted-foreground">{translate('Win rate')}</div>
               <div className="text-3xl font-bold tracking-tight text-success">
                 {Math.round((counts.won / (counts.won + counts.lost)) * 100)}%
               </div>
@@ -172,7 +174,7 @@ export default function CarrierTenderHistory() {
               />
             </div>
             <div className="text-sm text-muted-foreground">
-              {counts.won}W / {counts.lost}L
+              {counts.won}{translate('W /')} {counts.lost}{translate('L')}
             </div>
           </CardContent>
         </Card>
@@ -182,22 +184,22 @@ export default function CarrierTenderHistory() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Tender</TableHead>
-              <TableHead>Route</TableHead>
-              <TableHead>Customer</TableHead>
-              <TableHead>Equipment</TableHead>
-              <TableHead>Target rate</TableHead>
-              <TableHead>Your bid</TableHead>
-              <TableHead>Outcome</TableHead>
-              <TableHead>Tender status</TableHead>
-              <TableHead>Date</TableHead>
+              <TableHead>{translate('Tender')}</TableHead>
+              <TableHead>{translate('Route')}</TableHead>
+              <TableHead>{translate('Customer')}</TableHead>
+              <TableHead>{translate('Equipment')}</TableHead>
+              <TableHead>{translate('Target rate')}</TableHead>
+              <TableHead>{translate('Your bid')}</TableHead>
+              <TableHead>{translate('Outcome')}</TableHead>
+              <TableHead>{translate('Tender status')}</TableHead>
+              <TableHead>{translate('Date')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filtered.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={9} className="py-10 text-center text-sm text-muted-foreground">
-                  {outcomeFilter ? `No ${outcomeLabels[outcomeFilter]?.toLowerCase()} tenders` : 'No tender history yet'}
+                  {outcomeFilter ? `No ${outcomeLabels[outcomeFilter]?.toLowerCase()} tenders` : translate('No tender history yet')}
                 </TableCell>
               </TableRow>
             ) : filtered.map(o => {

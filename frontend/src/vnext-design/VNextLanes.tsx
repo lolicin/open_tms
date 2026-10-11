@@ -37,6 +37,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface Lane {
   id: string;
   name: string;
@@ -101,7 +103,7 @@ export default function VNextLanes() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -118,24 +120,24 @@ export default function VNextLanes() {
   const inactiveCount = lanes.filter(l => l.status !== 'ACTIVE').length;
 
   const statCards = [
-    { label: 'Total lanes', value: stats.total, icon: Route, tone: 'bg-primary/10 text-primary' },
-    { label: 'Active', value: stats.active, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
-    { label: 'Avg distance', value: `${stats.avgDistance.toLocaleString()} km`, icon: Ruler, tone: 'bg-info/15 text-info' },
-    { label: 'Carriers assigned', value: stats.totalCarriers, icon: Truck, tone: 'bg-warning/15 text-warning' },
+    { label: t('Total lanes'), value: stats.total, icon: Route, tone: 'bg-primary/10 text-primary' },
+    { label: t('Active'), value: stats.active, icon: CheckCircle2, tone: 'bg-success/15 text-success' },
+    { label: t('Avg distance'), value: `${stats.avgDistance.toLocaleString()} km`, icon: Ruler, tone: 'bg-info/15 text-info' },
+    { label: t('Carriers assigned'), value: stats.totalCarriers, icon: Truck, tone: 'bg-warning/15 text-warning' },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Lanes</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{lanes.length} lanes configured</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Lanes')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{lanes.length} {t('lanes configured')}</p>
         </div>
         <div className="flex gap-2">
           {hasPermission('lanes:write') && (
             <Button variant="gradient" onClick={() => navigate('/lanes/create')}>
               <Plus className="h-4 w-4" />
-              New lane
+              {t('New lane')}
             </Button>
           )}
         </div>
@@ -163,7 +165,7 @@ export default function VNextLanes() {
           <div className="relative min-w-[280px] flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search by lane ID, origin, or destination..."
+              placeholder={t('Search by lane ID, origin, or destination...')}
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="pl-9"
@@ -174,9 +176,9 @@ export default function VNextLanes() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All statuses ({stats.total})</SelectItem>
-              <SelectItem value="active">Active ({stats.active})</SelectItem>
-              <SelectItem value="inactive">Inactive ({inactiveCount})</SelectItem>
+              <SelectItem value="all">{t('All statuses (')}{stats.total})</SelectItem>
+              <SelectItem value="active">{t('Active (')}{stats.active})</SelectItem>
+              <SelectItem value="inactive">{t('Inactive (')}{inactiveCount})</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -186,11 +188,11 @@ export default function VNextLanes() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Lane</TableHead>
-              <TableHead>Distance</TableHead>
-              <TableHead>Carriers</TableHead>
-              <TableHead>Shipments</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>{t('Lane')}</TableHead>
+              <TableHead>{t('Distance')}</TableHead>
+              <TableHead>{t('Carriers')}</TableHead>
+              <TableHead>{t('Shipments')}</TableHead>
+              <TableHead>{t('Status')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -224,7 +226,7 @@ export default function VNextLanes() {
                 <TableCell className="text-sm font-semibold">{l._count?.shipments ?? 0}</TableCell>
                 <TableCell>
                   <Badge variant={l.status === 'ACTIVE' ? 'success' : 'destructive'}>
-                    {l.status === 'ACTIVE' ? 'Active' : 'Inactive'}
+                    {l.status === 'ACTIVE' ? t('Active') : t('Inactive')}
                   </Badge>
                 </TableCell>
               </TableRow>
@@ -234,8 +236,8 @@ export default function VNextLanes() {
                 <TableCell colSpan={5}>
                   <div className="flex flex-col items-center gap-2 py-12 text-muted-foreground">
                     <SearchX className="h-8 w-8" />
-                    <h3 className="text-base font-medium">No lanes found</h3>
-                    <p className="text-sm">Try adjusting your search or filters</p>
+                    <h3 className="text-base font-medium">{t('No lanes found')}</h3>
+                    <p className="text-sm">{t('Try adjusting your search or filters')}</p>
                   </div>
                 </TableCell>
               </TableRow>

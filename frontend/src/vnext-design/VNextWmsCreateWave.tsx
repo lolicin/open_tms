@@ -28,6 +28,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface OrderOption {
   id: string;
   orderNumber: string;
@@ -113,8 +115,8 @@ export default function VNextWmsCreateWave() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Create Wave</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Group orders into a pick wave for efficient fulfillment</p>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Create Wave')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t('Group orders into a pick wave for efficient fulfillment')}</p>
       </div>
 
       {error && (
@@ -128,11 +130,11 @@ export default function VNextWmsCreateWave() {
         <form onSubmit={handleSubmit}>
           <Card>
             <CardHeader>
-              <CardTitle>Wave Settings</CardTitle>
+              <CardTitle>{t('Wave Settings')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label>Facility *</Label>
+                <Label>{t('Facility *')}</Label>
               <FacilitySelect
                 facilities={facilities}
                 value={form.facilityId}
@@ -143,46 +145,46 @@ export default function VNextWmsCreateWave() {
               />
               </div>
               <div className="space-y-2">
-                <Label>Pick Strategy *</Label>
+                <Label>{t('Pick Strategy *')}</Label>
                 <Select value={form.pickStrategy} onValueChange={v => setForm({ ...form, pickStrategy: v })}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="discrete">Discrete (one picker per order)</SelectItem>
-                    <SelectItem value="batch">Batch (combine all orders)</SelectItem>
-                    <SelectItem value="zone">Zone (split by zone)</SelectItem>
+                    <SelectItem value="discrete">{t('Discrete (one picker per order)')}</SelectItem>
+                    <SelectItem value="batch">{t('Batch (combine all orders)')}</SelectItem>
+                    <SelectItem value="zone">{t('Zone (split by zone)')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               {form.pickStrategy === 'zone' && (
                 <div className="space-y-2">
-                  <Label>Zone Pick Mode *</Label>
+                  <Label>{t('Zone Pick Mode *')}</Label>
                   <Select value={form.zonePickMode || 'parallel'} onValueChange={v => setForm({ ...form, zonePickMode: v })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="parallel">Parallel (all zones simultaneously)</SelectItem>
-                      <SelectItem value="sequential">Sequential (pick-and-pass)</SelectItem>
+                      <SelectItem value="parallel">{t('Parallel (all zones simultaneously)')}</SelectItem>
+                      <SelectItem value="sequential">{t('Sequential (pick-and-pass)')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               )}
               <div className="space-y-2">
-                <Label>Cutoff Time</Label>
+                <Label>{t('Cutoff Time')}</Label>
                 <DatePicker type="datetime-local" value={form.cutoffAt} onChange={e => setForm({ ...form, cutoffAt: e.target.value })} />
               </div>
 
               <div className="rounded-md bg-muted p-3">
-                <div className="text-xs text-muted-foreground">Selected Orders</div>
+                <div className="text-xs text-muted-foreground">{t('Selected Orders')}</div>
                 <div className="text-2xl font-bold">{selectedOrders.size}</div>
               </div>
 
               <div className="flex flex-wrap items-center justify-end gap-2">
-                <Button variant="outline" type="button" onClick={() => navigate('/wms/waves')}>Cancel</Button>
+                <Button variant="outline" type="button" onClick={() => navigate('/wms/waves')}>{t('Cancel')}</Button>
                 <Button variant="gradient" type="submit" disabled={saving || selectedOrders.size === 0}>
-                  {saving ? 'Creating...' : 'Create Wave'}
+                  {saving ? t('Creating...') : t('Create Wave')}
                 </Button>
               </div>
             </CardContent>
@@ -191,9 +193,9 @@ export default function VNextWmsCreateWave() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Select Orders</CardTitle>
+            <CardTitle>{t('Select Orders')}</CardTitle>
             <Button variant="outline" size="sm" onClick={selectAll}>
-              {selectedOrders.size === orders.length ? 'Deselect All' : 'Select All'}
+              {selectedOrders.size === orders.length ? t('Deselect All') : t('Select All')}
             </Button>
           </CardHeader>
           <CardContent className="p-0">
@@ -203,17 +205,17 @@ export default function VNextWmsCreateWave() {
               </div>
             ) : orders.length === 0 ? (
               <div className="px-6 py-8 text-center text-sm text-muted-foreground">
-                No eligible orders found. Orders must be in accepted/processing status.
+                {t('No eligible orders found. Orders must be in accepted/processing status.')}
               </div>
             ) : (
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-10"></TableHead>
-                    <TableHead>Order</TableHead>
-                    <TableHead>Customer</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Lines</TableHead>
+                    <TableHead>{t('Order')}</TableHead>
+                    <TableHead>{t('Customer')}</TableHead>
+                    <TableHead>{t('Status')}</TableHead>
+                    <TableHead>{t('Lines')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>

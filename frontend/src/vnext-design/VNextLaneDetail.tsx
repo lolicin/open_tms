@@ -29,6 +29,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 const STOP_PURPOSE_LABELS: Record<string, string> = {
   pickup: 'Pickup',
   dropoff: 'Dropoff',
@@ -82,7 +84,7 @@ export default function VNextLaneDetail() {
     return (
       <div className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
         <CircleAlert className="h-5 w-5" />
-        Lane not found
+        {t('Lane not found')}
       </div>
     );
   }
@@ -106,7 +108,7 @@ export default function VNextLaneDetail() {
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Button variant="ghost" size="sm" onClick={() => navigate('/lanes')} className="-ml-3">
           <ArrowLeft className="h-4 w-4" />
-          Lanes
+          {t('Lanes')}
         </Button>
         <span className="text-muted-foreground">/ {laneName}</span>
       </div>
@@ -116,12 +118,12 @@ export default function VNextLaneDetail() {
           <h1 className="text-3xl font-bold tracking-tight">{laneName}</h1>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <Badge variant={lane.status === 'active' ? 'success' : 'muted'}>
-              {lane.status || 'Unknown'}
+              {lane.status || t('Unknown')}
             </Badge>
             {route && (
               <Badge variant="info" className="gap-1">
                 <RouteIcon className="h-3 w-3" />
-                Route planned
+                {t('Route planned')}
               </Badge>
             )}
           </div>
@@ -129,11 +131,11 @@ export default function VNextLaneDetail() {
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={() => navigate(`/lanes/${id}/edit`)}>
             <Pencil className="h-4 w-4" />
-            Edit
+            {t('Edit')}
           </Button>
           <Button variant="outline" size="sm">
             <Archive className="h-4 w-4" />
-            Archive
+            {t('Archive')}
           </Button>
         </div>
       </div>
@@ -144,12 +146,12 @@ export default function VNextLaneDetail() {
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="flex items-center gap-2">
                 <MapIcon className="h-5 w-5 text-primary" />
-                {route ? 'Planned route' : 'Lane route'}
+                {route ? t('Planned route') : t('Lane route')}
               </CardTitle>
               {!route && (
                 <Button variant="outline" size="sm" onClick={() => navigate(`/lanes/${id}/edit`)}>
                   <Plus className="h-4 w-4" />
-                  Plan route
+                  {t('Plan route')}
                 </Button>
               )}
             </CardHeader>
@@ -169,27 +171,26 @@ export default function VNextLaneDetail() {
                   <div className="mt-4 flex flex-wrap gap-6 text-sm">
                     <div className="flex items-center gap-1.5">
                       <Ruler className="h-4 w-4 text-primary" />
-                      <strong>{(route.distanceMeters / 1609.34).toFixed(1)} mi</strong>
-                      <span className="text-muted-foreground">
-                        ({(route.distanceMeters / 1000).toFixed(1)} km)
+                      <strong>{(route.distanceMeters / 1609.34).toFixed(1)} {t('mi')}</strong>
+                      <span className="text-muted-foreground">({(route.distanceMeters / 1000).toFixed(1)} {t('km)')}
                       </span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <Clock className="h-4 w-4 text-primary" />
                       <strong>
-                        {Math.floor(route.durationSeconds / 3600)}h{' '}
-                        {Math.round((route.durationSeconds % 3600) / 60)}m
+                        {Math.floor(route.durationSeconds / 3600)}{t('h')}{' '}
+                        {Math.round((route.durationSeconds % 3600) / 60)}{t('m')}
                       </strong>
                     </div>
                     {route.summary && (
                       <div className="flex items-center gap-1.5 text-muted-foreground">
                         <RouteIcon className="h-4 w-4" />
-                        via {route.summary}
+                        {t('via')} {route.summary}
                       </div>
                     )}
                     <div className="flex items-center gap-1.5 text-muted-foreground">
                       <Radar className="h-4 w-4" />
-                      Deviation corridor: {(route.corridorMeters / 1000).toFixed(1)} km
+                      {t('Deviation corridor:')} {(route.corridorMeters / 1000).toFixed(1)} {t('km')}
                     </div>
                   </div>
                 </>
@@ -197,8 +198,8 @@ export default function VNextLaneDetail() {
                 <div className="flex h-52 items-center justify-center rounded-md border border-dashed border-border bg-muted/30 text-muted-foreground">
                   <div className="text-center">
                     <MapIcon className="mx-auto h-12 w-12 opacity-40" />
-                    <div className="mt-2 text-sm">No planned route configured</div>
-                    <div className="mt-1 text-xs">Edit this lane to plan a route for deviation alerts</div>
+                    <div className="mt-2 text-sm">{t('No planned route configured')}</div>
+                    <div className="mt-1 text-xs">{t('Edit this lane to plan a route for deviation alerts')}</div>
                   </div>
                 </div>
               )}
@@ -207,27 +208,27 @@ export default function VNextLaneDetail() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Carriers</CardTitle>
+              <CardTitle>{t('Carriers')}</CardTitle>
               <Button variant="outline" size="sm">
                 <Plus className="h-4 w-4" />
-                Add carrier
+                {t('Add carrier')}
               </Button>
             </CardHeader>
             <CardContent className="p-0">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Carrier</TableHead>
-                    <TableHead>Price</TableHead>
-                    <TableHead>Service level</TableHead>
-                    <TableHead>Status</TableHead>
+                    <TableHead>{t('Carrier')}</TableHead>
+                    <TableHead>{t('Price')}</TableHead>
+                    <TableHead>{t('Service level')}</TableHead>
+                    <TableHead>{t('Status')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {carriers.length === 0 ? (
                     <TableRow>
                       <TableCell colSpan={4} className="py-12 text-center text-sm text-muted-foreground">
-                        No carriers assigned
+                        {t('No carriers assigned')}
                       </TableCell>
                     </TableRow>
                   ) : (
@@ -241,7 +242,7 @@ export default function VNextLaneDetail() {
                         <TableCell>{c.serviceLevel || '-'}</TableCell>
                         <TableCell>
                           <Badge variant={c.assigned ? 'success' : 'muted'}>
-                            {c.assigned ? 'Assigned' : 'Available'}
+                            {c.assigned ? t('Assigned') : t('Available')}
                           </Badge>
                         </TableCell>
                       </TableRow>
@@ -254,9 +255,9 @@ export default function VNextLaneDetail() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Recent shipments</CardTitle>
+              <CardTitle>{t('Recent shipments')}</CardTitle>
               <Button variant="ghost" size="sm">
-                View all
+                {t('View all')}
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </CardHeader>
@@ -264,10 +265,10 @@ export default function VNextLaneDetail() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Reference</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Pickup date</TableHead>
-                    <TableHead>Delivery date</TableHead>
+                    <TableHead>{t('Reference')}</TableHead>
+                    <TableHead>{t('Status')}</TableHead>
+                    <TableHead>{t('Pickup date')}</TableHead>
+                    <TableHead>{t('Delivery date')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -275,7 +276,7 @@ export default function VNextLaneDetail() {
                     <TableCell colSpan={4} className="py-12 text-center text-sm text-muted-foreground">
                       {lane._count?.shipments != null
                         ? `${lane._count.shipments} shipment(s) on this lane`
-                        : 'No shipment data available'}
+                        : t('No shipment data available')}
                     </TableCell>
                   </TableRow>
                 </TableBody>
@@ -287,24 +288,24 @@ export default function VNextLaneDetail() {
         <aside className="space-y-6 lg:sticky lg:top-20 lg:self-start">
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Lane info</CardTitle>
+              <CardTitle className="text-base">{t('Lane info')}</CardTitle>
             </CardHeader>
             <CardContent>
               <dl className="space-y-3 text-sm">
                 <div className="flex justify-between gap-2">
-                  <dt className="text-muted-foreground">Distance</dt>
+                  <dt className="text-muted-foreground">{t('Distance')}</dt>
                   <dd>{lane.distance ? `${lane.distance} miles` : '-'}</dd>
                 </div>
                 <div className="flex justify-between gap-2">
-                  <dt className="text-muted-foreground">Status</dt>
+                  <dt className="text-muted-foreground">{t('Status')}</dt>
                   <dd>{lane.status || '-'}</dd>
                 </div>
                 <div className="flex justify-between gap-2">
-                  <dt className="text-muted-foreground">Service level</dt>
+                  <dt className="text-muted-foreground">{t('Service level')}</dt>
                   <dd>{lane.serviceLevel || '-'}</dd>
                 </div>
                 <div className="flex justify-between gap-2">
-                  <dt className="text-muted-foreground">Notes</dt>
+                  <dt className="text-muted-foreground">{t('Notes')}</dt>
                   <dd className="text-right">{lane.notes || '-'}</dd>
                 </div>
               </dl>
@@ -314,25 +315,27 @@ export default function VNextLaneDetail() {
           {route && (
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Route deviation</CardTitle>
+                <CardTitle className="text-base">{t('Route deviation')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <dl className="space-y-3 text-sm">
                   <div className="flex justify-between gap-2">
-                    <dt className="text-muted-foreground">Status</dt>
-                    <dd><Badge variant="success" className="text-[10px]">Active</Badge></dd>
+                    <dt className="text-muted-foreground">{t('Status')}</dt>
+                    <dd><Badge variant="success" className="text-[10px]">{t('Active')}</Badge></dd>
                   </div>
                   <div className="flex justify-between gap-2">
-                    <dt className="text-muted-foreground">Corridor</dt>
-                    <dd>{(route.corridorMeters / 1000).toFixed(1)} km</dd>
+                    <dt className="text-muted-foreground">{t('Corridor')}</dt>
+                    <dd>{(route.corridorMeters / 1000).toFixed(1)} {t('km')}</dd>
                   </div>
                   <div className="flex justify-between gap-2">
-                    <dt className="text-muted-foreground">Provider</dt>
-                    <dd className="capitalize">{route.provider || 'Google'}</dd>
+                    <dt className="text-muted-foreground">{t('Provider')}</dt>
+                    <dd className="capitalize">{route.provider || t('Google')}</dd>
                   </div>
                 </dl>
                 <p className="mt-3 text-xs text-muted-foreground">
-                  In-transit shipments on this lane will be monitored for route deviations beyond {(route.corridorMeters / 1000).toFixed(1)} km from the planned route.
+                  {t(
+                    'In-transit shipments on this lane will be monitored for route deviations beyond'
+                  )} {(route.corridorMeters / 1000).toFixed(1)} {t('km from the planned route.')}
                 </p>
               </CardContent>
             </Card>
@@ -342,15 +345,15 @@ export default function VNextLaneDetail() {
             <CardContent className="p-5">
               <div className="mb-3 flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-success" />
-                <span className="text-sm font-semibold">Origin</span>
+                <span className="text-sm font-semibold">{t('Origin')}</span>
               </div>
               <dl className="space-y-2 text-sm">
                 <div>
-                  <dt className="text-xs text-muted-foreground">Facility</dt>
+                  <dt className="text-xs text-muted-foreground">{t('Facility')}</dt>
                   <dd>{origin.name || '-'}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-muted-foreground">Address</dt>
+                  <dt className="text-xs text-muted-foreground">{t('Address')}</dt>
                   <dd>{[origin.city, origin.state].filter(Boolean).join(', ') || '-'}</dd>
                 </div>
               </dl>
@@ -361,15 +364,15 @@ export default function VNextLaneDetail() {
             <CardContent className="p-5">
               <div className="mb-3 flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-destructive" />
-                <span className="text-sm font-semibold">Destination</span>
+                <span className="text-sm font-semibold">{t('Destination')}</span>
               </div>
               <dl className="space-y-2 text-sm">
                 <div>
-                  <dt className="text-xs text-muted-foreground">Facility</dt>
+                  <dt className="text-xs text-muted-foreground">{t('Facility')}</dt>
                   <dd>{destination.name || '-'}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-muted-foreground">Address</dt>
+                  <dt className="text-xs text-muted-foreground">{t('Address')}</dt>
                   <dd>{[destination.city, destination.state].filter(Boolean).join(', ') || '-'}</dd>
                 </div>
               </dl>
@@ -378,11 +381,11 @@ export default function VNextLaneDetail() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Stops</CardTitle>
+              <CardTitle className="text-base">{t('Stops')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {stops.length === 0 && (
-                <p className="text-sm text-muted-foreground">No intermediate stops.</p>
+                <p className="text-sm text-muted-foreground">{t('No intermediate stops.')}</p>
               )}
               {stops.map((stop: any, i: number) => (
                 <div key={stop.id || i} className="flex items-start gap-3">

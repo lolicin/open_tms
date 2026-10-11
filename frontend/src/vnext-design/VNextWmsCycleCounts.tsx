@@ -32,6 +32,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface CycleCount {
   id: string;
   countType: string;
@@ -111,12 +113,12 @@ export default function VNextWmsCycleCounts() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Cycle Counts</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Inventory accuracy verification</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Cycle Counts')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Inventory accuracy verification')}</p>
         </div>
         <Button variant="gradient" onClick={() => setShowCreate(true)}>
           <Plus className="h-4 w-4" />
-          New Count
+          {t('New Count')}
         </Button>
       </div>
 
@@ -130,28 +132,28 @@ export default function VNextWmsCycleCounts() {
       <Dialog open={showCreate} onOpenChange={setShowCreate}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>New Cycle Count</DialogTitle>
+            <DialogTitle>{t('New Cycle Count')}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleCreate} className="space-y-4">
             <div className="space-y-2">
-              <Label>Count Type</Label>
+              <Label>{t('Count Type')}</Label>
               <Select value={createForm.countType} onValueChange={v => setCreateForm({ ...createForm, countType: v })}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="full">Full (all bins)</SelectItem>
-                  <SelectItem value="zone">Zone (specific zone)</SelectItem>
-                  <SelectItem value="random_sample">Random Sample (~20%)</SelectItem>
+                  <SelectItem value="full">{t('Full (all bins)')}</SelectItem>
+                  <SelectItem value="zone">{t('Zone (specific zone)')}</SelectItem>
+                  <SelectItem value="random_sample">{t('Random Sample (~20%)')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             {createForm.countType === 'zone' && (
               <div className="space-y-2">
-                <Label>Zone</Label>
+                <Label>{t('Zone')}</Label>
                 <Select value={createForm.zoneId} onValueChange={v => setCreateForm({ ...createForm, zoneId: v })}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select zone..." />
+                    <SelectValue placeholder={t('Select zone...')} />
                   </SelectTrigger>
                   <SelectContent>
                     {zones.map(z => (
@@ -162,8 +164,8 @@ export default function VNextWmsCycleCounts() {
               </div>
             )}
             <DialogFooter>
-              <Button variant="outline" type="button" onClick={() => setShowCreate(false)}>Cancel</Button>
-              <Button variant="gradient" type="submit" disabled={creating}>{creating ? 'Creating...' : 'Create'}</Button>
+              <Button variant="outline" type="button" onClick={() => setShowCreate(false)}>{t('Cancel')}</Button>
+              <Button variant="gradient" type="submit" disabled={creating}>{creating ? t('Creating...') : t('Create')}</Button>
             </DialogFooter>
           </form>
         </DialogContent>
@@ -181,8 +183,8 @@ export default function VNextWmsCycleCounts() {
         <Card>
           <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
             <ClipboardCheck className="h-12 w-12 text-muted-foreground" />
-            <h3 className="text-base font-medium">No cycle counts</h3>
-            <p className="text-sm text-muted-foreground">Create a cycle count to verify inventory accuracy.</p>
+            <h3 className="text-base font-medium">{t('No cycle counts')}</h3>
+            <p className="text-sm text-muted-foreground">{t('Create a cycle count to verify inventory accuracy.')}</p>
           </CardContent>
         </Card>
       ) : (
@@ -190,11 +192,11 @@ export default function VNextWmsCycleCounts() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Type</TableHead>
-                <TableHead>Progress</TableHead>
-                <TableHead>Variances</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Created</TableHead>
+                <TableHead>{t('Type')}</TableHead>
+                <TableHead>{t('Progress')}</TableHead>
+                <TableHead>{t('Variances')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead>{t('Created')}</TableHead>
                 <TableHead></TableHead>
               </TableRow>
             </TableHeader>
@@ -221,7 +223,7 @@ export default function VNextWmsCycleCounts() {
                   </TableCell>
                   <TableCell>{new Date(c.createdAt).toLocaleDateString()}</TableCell>
                   <TableCell>
-                    <Button variant="outline" size="sm" onClick={() => navigate(`/wms/cycle-counts/${c.id}`)}>View</Button>
+                    <Button variant="outline" size="sm" onClick={() => navigate(`/wms/cycle-counts/${c.id}`)}>{t('View')}</Button>
                   </TableCell>
                 </TableRow>
               ))}

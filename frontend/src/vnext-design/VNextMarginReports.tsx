@@ -16,6 +16,8 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 type ReportView = 'customer' | 'carrier' | 'lane' | 'time';
 
 interface MarginRow {
@@ -84,9 +86,9 @@ export default function VNextMarginReports() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Margin Reports</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Margin Reports')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Analyze profitability by customer, carrier, lane, or time period
+            {t('Analyze profitability by customer, carrier, lane, or time period')}
           </p>
         </div>
       </div>
@@ -94,19 +96,19 @@ export default function VNextMarginReports() {
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <Card>
           <CardContent className="p-5">
-            <div className="text-sm text-muted-foreground">Total Revenue</div>
+            <div className="text-sm text-muted-foreground">{t('Total Revenue')}</div>
             <div className="mt-1 text-2xl font-bold tracking-tight font-mono tabular-nums">{formatCents(totals.revenue)}</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-5">
-            <div className="text-sm text-muted-foreground">Total Cost</div>
+            <div className="text-sm text-muted-foreground">{t('Total Cost')}</div>
             <div className="mt-1 text-2xl font-bold tracking-tight font-mono tabular-nums">{formatCents(totals.cost)}</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-5">
-            <div className="text-sm text-muted-foreground">Total Margin</div>
+            <div className="text-sm text-muted-foreground">{t('Total Margin')}</div>
             <div className={cn('mt-1 text-2xl font-bold tracking-tight font-mono tabular-nums', marginColorClass(totalMarginPct))}>
               {formatCents(totals.margin)}
             </div>
@@ -114,7 +116,7 @@ export default function VNextMarginReports() {
         </Card>
         <Card>
           <CardContent className="p-5">
-            <div className="text-sm text-muted-foreground">Margin %</div>
+            <div className="text-sm text-muted-foreground">{t('Margin %')}</div>
             <div className={cn('mt-1 text-2xl font-bold tracking-tight font-mono tabular-nums', marginColorClass(totalMarginPct))}>
               {totalMarginPct.toFixed(1)}%
             </div>
@@ -122,7 +124,7 @@ export default function VNextMarginReports() {
         </Card>
         <Card>
           <CardContent className="p-5">
-            <div className="text-sm text-muted-foreground">Shipments</div>
+            <div className="text-sm text-muted-foreground">{t('Shipments')}</div>
             <div className="mt-1 text-2xl font-bold tracking-tight font-mono tabular-nums">{totals.count}</div>
           </CardContent>
         </Card>
@@ -132,10 +134,10 @@ export default function VNextMarginReports() {
         <div className="flex flex-wrap items-center gap-3 p-4">
           <Tabs value={view} onValueChange={v => setView(v as ReportView)} className="flex-1">
             <TabsList>
-              <TabsTrigger value="customer">By Customer</TabsTrigger>
-              <TabsTrigger value="carrier">By Carrier</TabsTrigger>
-              <TabsTrigger value="lane">By Lane</TabsTrigger>
-              <TabsTrigger value="time">Over Time</TabsTrigger>
+              <TabsTrigger value="customer">{t('By Customer')}</TabsTrigger>
+              <TabsTrigger value="carrier">{t('By Carrier')}</TabsTrigger>
+              <TabsTrigger value="lane">{t('By Lane')}</TabsTrigger>
+              <TabsTrigger value="time">{t('Over Time')}</TabsTrigger>
             </TabsList>
           </Tabs>
           <DatePicker
@@ -144,7 +146,7 @@ export default function VNextMarginReports() {
             onChange={e => setDateFrom(e.target.value)}
             className="w-[170px]"
           />
-          <span className="text-sm text-muted-foreground">to</span>
+          <span className="text-sm text-muted-foreground">{t('to')}</span>
           <DatePicker
             type="date"
             value={dateTo}
@@ -158,24 +160,24 @@ export default function VNextMarginReports() {
         {loading ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <Loader2 className="h-8 w-8 animate-spin" />
-            <h3 className="text-base font-medium">Loading...</h3>
+            <h3 className="text-base font-medium">{t('Loading...')}</h3>
           </div>
         ) : data.length === 0 ? (
           <div className="py-12 text-center text-sm text-muted-foreground">
-            No data for the selected period
+            {t('No data for the selected period')}
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>{view === 'customer' ? 'Customer' : view === 'carrier' ? 'Carrier' : view === 'lane' ? 'Lane' : 'Period'}</TableHead>
-                <TableHead className="text-right">Shipments</TableHead>
-                <TableHead className="text-right">Revenue</TableHead>
-                <TableHead className="text-right">Cost</TableHead>
-                <TableHead className="text-right">Margin</TableHead>
-                <TableHead className="text-right">Margin %</TableHead>
-                {view === 'customer' && <TableHead className="text-right">Target</TableHead>}
-                {view === 'customer' && <TableHead className="text-right">Variance</TableHead>}
+                <TableHead>{view === 'customer' ? t('Customer') : view === 'carrier' ? 'Carrier' : view === 'lane' ? 'Lane' : 'Period'}</TableHead>
+                <TableHead className="text-right">{t('Shipments')}</TableHead>
+                <TableHead className="text-right">{t('Revenue')}</TableHead>
+                <TableHead className="text-right">{t('Cost')}</TableHead>
+                <TableHead className="text-right">{t('Margin')}</TableHead>
+                <TableHead className="text-right">{t('Margin %')}</TableHead>
+                {view === 'customer' && <TableHead className="text-right">{t('Target')}</TableHead>}
+                {view === 'customer' && <TableHead className="text-right">{t('Variance')}</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>

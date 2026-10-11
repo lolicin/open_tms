@@ -4,6 +4,8 @@ import MapView from '../maps/Map';
 import type { MapMarker, MapPolyline } from '../maps/types';
 import { stopTypeLabel } from '@open-tms/shared';
 
+import { t } from '@/i18n';
+
 // Hex colors used inside map HTML strings (cannot use Tailwind/var(--*)); same palette as the
 // shipment detail map.
 const COLOR_PICKUP = '#3b82f6';
@@ -79,7 +81,7 @@ export default function ConsolidationRunMap({ reference, stops, position }: Prop
   );
 
   if (located.length === 0) {
-    return <p className="text-sm text-muted-foreground">None of the stops have coordinates to map.</p>;
+    return <p className="text-sm text-muted-foreground">{t('None of the stops have coordinates to map.')}</p>;
   }
   return (
     <div className="overflow-hidden rounded-lg border border-border">

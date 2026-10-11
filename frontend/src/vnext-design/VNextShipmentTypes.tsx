@@ -60,6 +60,8 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
+import { t as translate } from '@/i18n';
+
 interface ShipmentType {
   id: string;
   name: string;
@@ -224,14 +226,14 @@ export default function VNextShipmentTypes() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Shipment types</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{translate('Shipment types')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Templates that pre-decide required fields, default values, and icon. {rows.length} total - {builtInCount} built-in.
+            {translate('Templates that pre-decide required fields, default values, and icon.')} {rows.length} {translate('total -')} {builtInCount} {translate('built-in.')}
           </p>
         </div>
         <Button variant="gradient" onClick={openCreate}>
           <Plus className="h-4 w-4" />
-          New type
+          {translate('New type')}
         </Button>
       </div>
 
@@ -245,20 +247,20 @@ export default function VNextShipmentTypes() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-16">Icon</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Description</TableHead>
-                  <TableHead>Required fields</TableHead>
-                  <TableHead>Pre-filled defaults</TableHead>
-                  <TableHead className="w-24">Built-in</TableHead>
-                  <TableHead className="w-28 text-right">Actions</TableHead>
+                  <TableHead className="w-16">{translate('Icon')}</TableHead>
+                  <TableHead>{translate('Name')}</TableHead>
+                  <TableHead>{translate('Description')}</TableHead>
+                  <TableHead>{translate('Required fields')}</TableHead>
+                  <TableHead>{translate('Pre-filled defaults')}</TableHead>
+                  <TableHead className="w-24">{translate('Built-in')}</TableHead>
+                  <TableHead className="w-28 text-right">{translate('Actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {rows.length === 0 && (
                   <TableRow>
                     <TableCell colSpan={7} className="py-6 text-center text-sm text-muted-foreground">
-                      No shipment types yet.
+                      {translate('No shipment types yet.')}
                     </TableCell>
                   </TableRow>
                 )}
@@ -273,7 +275,7 @@ export default function VNextShipmentTypes() {
                       {t.requiredFields.length === 0 ? '-' : t.requiredFields.map(f => SHIPMENT_FIELD_LABELS[f] || f).join(', ')}
                     </TableCell>
                     <TableCell className="text-sm">{defaultsLabel(t.defaults || {})}</TableCell>
-                    <TableCell>{t.isBuiltIn ? <Badge variant="secondary">Built-in</Badge> : '-'}</TableCell>
+                    <TableCell>{t.isBuiltIn ? <Badge variant="secondary">{translate('Built-in')}</Badge> : '-'}</TableCell>
                     <TableCell>
                       <div className="flex justify-end gap-1">
                         <Button variant="ghost" size="icon" onClick={() => openEdit(t)}>
@@ -297,7 +299,7 @@ export default function VNextShipmentTypes() {
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>
-            <DialogTitle>{editing ? 'Edit shipment type' : 'New shipment type'}</DialogTitle>
+            <DialogTitle>{editing ? translate('Edit shipment type') : translate('New shipment type')}</DialogTitle>
           </DialogHeader>
 
           <div className="space-y-6">
@@ -309,17 +311,17 @@ export default function VNextShipmentTypes() {
 
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>Name</Label>
-                <Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="e.g. Weekly Dallas Reefer" />
+                <Label>{translate('Name')}</Label>
+                <Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder={translate('e.g. Weekly Dallas Reefer')} />
               </div>
               <div className="space-y-2">
-                <Label>Description</Label>
-                <Input value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} placeholder="Optional" />
+                <Label>{translate('Description')}</Label>
+                <Input value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} placeholder={translate('Optional')} />
               </div>
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold">Icon and color</h3>
+              <h3 className="text-sm font-semibold">{translate('Icon and color')}</h3>
               <div className="flex flex-wrap gap-2">
                 {ICON_CHOICES.map(icon => (
                   <button
@@ -357,44 +359,46 @@ export default function VNextShipmentTypes() {
             <div className="space-y-3">
               <h3 className="flex items-center gap-2 text-sm font-semibold">
                 <Sparkles className="h-4 w-4" />
-                Default values
+                {translate('Default values')}
               </h3>
               <p className="text-xs text-muted-foreground">
-                Pre-fill the new shipment form with these values. The user can still change them.
+                {translate(
+                  'Pre-fill the new shipment form with these values. The user can still change them.'
+                )}
               </p>
               <div className="grid gap-4 md:grid-cols-3">
                 <div className="space-y-2">
-                  <Label>Default customer</Label>
+                  <Label>{translate('Default customer')}</Label>
                   <Select value={form.defaultCustomerId || 'none'} onValueChange={v => setForm(f => ({ ...f, defaultCustomerId: v === 'none' ? '' : v }))}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="none">None</SelectItem>
+                      <SelectItem value="none">{translate('None')}</SelectItem>
                       {customers.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label>Default origin</Label>
+                  <Label>{translate('Default origin')}</Label>
                   <Select value={form.defaultOriginId || 'none'} onValueChange={v => setForm(f => ({ ...f, defaultOriginId: v === 'none' ? '' : v }))}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="none">None</SelectItem>
+                      <SelectItem value="none">{translate('None')}</SelectItem>
                       {locations.map(l => <SelectItem key={l.id} value={l.id}>{l.name}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label>Default destination</Label>
+                  <Label>{translate('Default destination')}</Label>
                   <Select value={form.defaultDestinationId || 'none'} onValueChange={v => setForm(f => ({ ...f, defaultDestinationId: v === 'none' ? '' : v }))}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="none">None</SelectItem>
+                      <SelectItem value="none">{translate('None')}</SelectItem>
                       {locations.map(l => <SelectItem key={l.id} value={l.id}>{l.name}</SelectItem>)}
                     </SelectContent>
                   </Select>
@@ -405,10 +409,12 @@ export default function VNextShipmentTypes() {
             <div className="space-y-3">
               <h3 className="flex items-center gap-2 text-sm font-semibold">
                 <CheckSquare className="h-4 w-4" />
-                Required fields
+                {translate('Required fields')}
               </h3>
               <p className="text-xs text-muted-foreground">
-                These must be filled for a shipment of this type to leave draft. Users can still save drafts with missing fields.
+                {translate(
+                  'These must be filled for a shipment of this type to leave draft. Users can still save drafts with missing fields.'
+                )}
               </p>
               <div className="flex flex-wrap gap-3">
                 {SELECTABLE_FIELDS.map(field => (
@@ -429,11 +435,11 @@ export default function VNextShipmentTypes() {
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowForm(false)}>
               <X className="h-4 w-4" />
-              Cancel
+              {translate('Cancel')}
             </Button>
             <Button variant="gradient" onClick={handleSave}>
               <Save className="h-4 w-4" />
-              {editing ? 'Save changes' : 'Create type'}
+              {editing ? translate('Save changes') : translate('Create type')}
             </Button>
           </DialogFooter>
         </DialogContent>

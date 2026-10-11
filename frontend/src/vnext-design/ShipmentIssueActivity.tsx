@@ -4,6 +4,8 @@ import { Activity, AlertTriangle, Lock } from 'lucide-react';
 import { API_URL } from '../api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
+import { t as translate } from '@/i18n';
+
 // ─── Types ───────────────────────────────────────────────────────────────
 interface Signal {
   id: string;
@@ -75,7 +77,7 @@ function SignalsBarChart({ signals }: { signals: Signal[] }) {
   }, [signals]);
 
   if (!chart) {
-    return <p className="py-6 text-center text-sm text-muted-foreground">No exception signals recorded yet.</p>;
+    return <p className="py-6 text-center text-sm text-muted-foreground">{translate('No exception signals recorded yet.')}</p>;
   }
 
   const w = 640, h = 200, padL = 28, padR = 12, padT = 12, padB = 28;
@@ -139,7 +141,7 @@ function IssuesTimeline({ issues }: { issues: IssueRow[] }) {
   }, [issues]);
 
   if (!span) {
-    return <p className="py-6 text-center text-sm text-muted-foreground">No issues raised for this shipment.</p>;
+    return <p className="py-6 text-center text-sm text-muted-foreground">{translate('No issues raised for this shipment.')}</p>;
   }
 
   const total = span.max - span.min || 1;
@@ -170,7 +172,7 @@ function IssuesTimeline({ issues }: { issues: IssueRow[] }) {
               />
             </div>
             <span className={`vn-chip ${PRIORITY_CHIP[issue.priority] || 'vn-chip-secondary'} shrink-0`}>{issue.status}</span>
-            {issue.latched && <Lock className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-label="Latched" />}
+            {issue.latched && <Lock className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-label={translate('Latched')} />}
           </div>
         );
       })}
@@ -211,7 +213,7 @@ export default function ShipmentIssueActivity({ shipmentId }: { shipmentId: stri
     return () => { alive = false; };
   }, [shipmentId]);
 
-  if (loading) return <p className="py-8 text-center text-sm text-muted-foreground">Loading activity…</p>;
+  if (loading) return <p className="py-8 text-center text-sm text-muted-foreground">{translate('Loading activity…')}</p>;
   if (error) {
     return (
       <div className="flex items-center gap-2 rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
@@ -225,9 +227,9 @@ export default function ShipmentIssueActivity({ shipmentId }: { shipmentId: stri
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
           <CardTitle className="flex items-center gap-2 text-base">
-            <Activity className="h-4 w-4 text-primary" /> Exception signals over time
+            <Activity className="h-4 w-4 text-primary" /> {translate('Exception signals over time')}
           </CardTitle>
-          <span className="text-xs text-muted-foreground">{signals.length} signal{signals.length === 1 ? '' : 's'}</span>
+          <span className="text-xs text-muted-foreground">{signals.length} {translate('signal')}{signals.length === 1 ? '' : translate('s')}</span>
         </CardHeader>
         <CardContent>
           <SignalsBarChart signals={signals} />
@@ -245,9 +247,9 @@ export default function ShipmentIssueActivity({ shipmentId }: { shipmentId: stri
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
           <CardTitle className="flex items-center gap-2 text-base">
-            <AlertTriangle className="h-4 w-4 text-primary" /> Issues over time
+            <AlertTriangle className="h-4 w-4 text-primary" /> {translate('Issues over time')}
           </CardTitle>
-          <span className="text-xs text-muted-foreground">{issues.length} issue{issues.length === 1 ? '' : 's'}</span>
+          <span className="text-xs text-muted-foreground">{issues.length} {translate('issue')}{issues.length === 1 ? '' : translate('s')}</span>
         </CardHeader>
         <CardContent>
           <IssuesTimeline issues={issues} />

@@ -11,6 +11,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 const TEXTAREA_CLASS =
   'flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2';
 
@@ -87,7 +89,7 @@ export default function CarrierTenderView() {
   }
 
   async function handleDecline() {
-    if (!confirm('Decline this tender? You will not be able to bid on it afterwards.')) return;
+    if (!confirm(t('Decline this tender? You will not be able to bid on it afterwards.'))) return;
     setSubmitting(true);
     const res = await carrierFetch(`${API_URL}/api/v1/carrier-portal/tenders/${id}/decline`, {
       method: 'POST',
@@ -105,14 +107,14 @@ export default function CarrierTenderView() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
   if (!data?.tender) {
     return (
       <div className="rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-        {error || 'Tender not found'}
+        {error || t('Tender not found')}
       </div>
     );
   }
@@ -142,7 +144,7 @@ export default function CarrierTenderView() {
               timeLeft < 30 ? 'bg-destructive' : 'bg-primary',
             )}
           >
-            {timeLeft > 60 ? `${Math.floor(timeLeft / 60)}h ${timeLeft % 60}m` : `${timeLeft}m`} remaining
+            {timeLeft > 60 ? `${Math.floor(timeLeft / 60)}h ${timeLeft % 60}m` : `${timeLeft}m`} {t('remaining')}
           </div>
         )}
       </div>
@@ -161,30 +163,30 @@ export default function CarrierTenderView() {
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Shipment details</CardTitle>
+            <CardTitle>{t('Shipment details')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid gap-2 text-sm">
-              <div><strong>Reference:</strong> {tender.shipment.reference}</div>
-              <div><strong>Customer:</strong> {tender.shipment.customer?.name}</div>
+              <div><strong>{t('Reference:')}</strong> {tender.shipment.reference}</div>
+              <div><strong>{t('Customer:')}</strong> {tender.shipment.customer?.name}</div>
               <div>
-                <strong>Origin:</strong> {tender.shipment.origin.name}, {tender.shipment.origin.city}
+                <strong>{t('Origin:')}</strong> {tender.shipment.origin.name}, {tender.shipment.origin.city}
                 {tender.shipment.origin.state ? `, ${tender.shipment.origin.state}` : ''}
               </div>
               <div>
-                <strong>Destination:</strong> {tender.shipment.destination.name}, {tender.shipment.destination.city}
+                <strong>{t('Destination:')}</strong> {tender.shipment.destination.name}, {tender.shipment.destination.city}
                 {tender.shipment.destination.state ? `, ${tender.shipment.destination.state}` : ''}
               </div>
               {tender.shipment.pickupDate && (
-                <div><strong>Pickup:</strong> {new Date(tender.shipment.pickupDate).toLocaleDateString()}</div>
+                <div><strong>{t('Pickup:')}</strong> {new Date(tender.shipment.pickupDate).toLocaleDateString()}</div>
               )}
               {tender.shipment.deliveryDate && (
-                <div><strong>Delivery:</strong> {new Date(tender.shipment.deliveryDate).toLocaleDateString()}</div>
+                <div><strong>{t('Delivery:')}</strong> {new Date(tender.shipment.deliveryDate).toLocaleDateString()}</div>
               )}
-              {tender.equipmentType && <div><strong>Equipment:</strong> {tender.equipmentType}</div>}
+              {tender.equipmentType && <div><strong>{t('Equipment:')}</strong> {tender.equipmentType}</div>}
               {tender.specialInstructions && (
                 <div className="mt-2 rounded-md bg-muted/50 p-3">
-                  <strong>Special instructions:</strong>
+                  <strong>{t('Special instructions:')}</strong>
                   <br />
                   {tender.specialInstructions}
                 </div>
@@ -197,7 +199,7 @@ export default function CarrierTenderView() {
           {existingBid ? (
             <>
               <CardHeader>
-                <CardTitle>Your bid</CardTitle>
+                <CardTitle>{t('Your bid')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col items-center gap-3 py-6 text-center">
@@ -205,7 +207,7 @@ export default function CarrierTenderView() {
                   <Badge variant={bidStatusVariant(existingBid.status)}>{existingBid.status}</Badge>
                   {existingBid.status === 'accepted' && (
                     <div className="mt-2 rounded-md border border-success/30 bg-success/10 px-3 py-2 text-sm text-success">
-                      Congratulations! Your bid was accepted.
+                      {t('Congratulations! Your bid was accepted.')}
                     </div>
                   )}
                 </div>
@@ -214,17 +216,17 @@ export default function CarrierTenderView() {
           ) : canBid ? (
             <>
               <CardHeader>
-                <CardTitle>Submit your bid</CardTitle>
+                <CardTitle>{t('Submit your bid')}</CardTitle>
               </CardHeader>
               <CardContent>
                 {tender.targetRate && (
                   <div className="mb-4 rounded-md bg-muted/50 px-3 py-2 text-center text-sm">
-                    Target rate: <strong>${tender.targetRate.toLocaleString()}</strong>
+                    {t('Target rate:')} <strong>${tender.targetRate.toLocaleString()}</strong>
                   </div>
                 )}
                 <form onSubmit={handleBid} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="bid-rate">Your rate ($) *</Label>
+                    <Label htmlFor="bid-rate">{t('Your rate ($) *')}</Label>
                     <Input
                       id="bid-rate"
                       type="number"
@@ -233,38 +235,38 @@ export default function CarrierTenderView() {
                       value={rate}
                       onChange={e => setRate(e.target.value)}
                       required
-                      placeholder="Enter your rate"
+                      placeholder={t('Enter your rate')}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="transit-days">Transit days</Label>
+                    <Label htmlFor="transit-days">{t('Transit days')}</Label>
                     <Input
                       id="transit-days"
                       type="number"
                       min="1"
                       value={transitDays}
                       onChange={e => setTransitDays(e.target.value)}
-                      placeholder="Estimated transit"
+                      placeholder={t('Estimated transit')}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="equipment">Equipment type</Label>
+                    <Label htmlFor="equipment">{t('Equipment type')}</Label>
                     <Input
                       id="equipment"
                       value={equipmentType}
                       onChange={e => setEquipmentType(e.target.value)}
-                      placeholder="e.g. 53' Dry Van"
+                      placeholder={t('e.g. 53\' Dry Van')}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="notes">Notes</Label>
+                    <Label htmlFor="notes">{t('Notes')}</Label>
                     <textarea
                       id="notes"
                       className={TEXTAREA_CLASS}
                       rows={2}
                       value={notes}
                       onChange={e => setNotes(e.target.value)}
-                      placeholder="Additional comments"
+                      placeholder={t('Additional comments')}
                     />
                   </div>
                   <div className="flex justify-end gap-2 pt-2">
@@ -274,10 +276,10 @@ export default function CarrierTenderView() {
                       onClick={handleDecline}
                       disabled={submitting}
                     >
-                      Decline
+                      {t('Decline')}
                     </Button>
                     <Button type="submit" variant="gradient" disabled={submitting || !rate}>
-                      {submitting ? 'Submitting...' : 'Submit bid'}
+                      {submitting ? t('Submitting...') : t('Submit bid')}
                     </Button>
                   </div>
                 </form>
@@ -286,11 +288,11 @@ export default function CarrierTenderView() {
           ) : (
             <>
               <CardHeader>
-                <CardTitle>Tender status</CardTitle>
+                <CardTitle>{t('Tender status')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="py-6 text-center text-sm text-muted-foreground">
-                  {tender.status === 'awarded' ? 'This tender has been awarded.' :
+                  {tender.status === 'awarded' ? t('This tender has been awarded.') :
                    tender.status === 'cancelled' ? 'This tender was cancelled.' :
                    tender.status === 'expired' ? 'This tender has expired.' :
                    offer?.status === 'expired' ? 'Your offer has expired.' :
@@ -304,7 +306,7 @@ export default function CarrierTenderView() {
 
       <div className="text-center">
         <Button variant="outline" onClick={() => navigate('/carrier-portal')}>
-          Back to dashboard
+          {t('Back to dashboard')}
         </Button>
       </div>
     </div>

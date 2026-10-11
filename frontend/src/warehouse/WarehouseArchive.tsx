@@ -13,6 +13,8 @@ import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 export default function WarehouseArchive() {
   const navigate = useNavigate();
   const [shipments, setShipments] = useState<any[]>([]);
@@ -52,17 +54,17 @@ export default function WarehouseArchive() {
     <div className="mx-auto max-w-2xl space-y-4 px-1 py-2 pb-24">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Archive</h1>
-          <p className="text-sm text-muted-foreground">Shipments idle &gt;2 days</p>
+          <h1 className="text-2xl font-bold tracking-tight">{t('Archive')}</h1>
+          <p className="text-sm text-muted-foreground">{t('Shipments idle >2 days')}</p>
         </div>
       </div>
 
       {shipments.length === 0 ? (
         <Card className="flex flex-col items-center gap-2 py-12 text-center">
           <Package className="h-12 w-12 text-muted-foreground" />
-          <p className="text-base font-semibold">No stale shipments</p>
+          <p className="text-base font-semibold">{t('No stale shipments')}</p>
           <p className="px-6 text-sm text-muted-foreground">
-            All shipments are being processed on time.
+            {t('All shipments are being processed on time.')}
           </p>
         </Card>
       ) : (
@@ -92,12 +94,12 @@ export default function WarehouseArchive() {
                 <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-sm text-muted-foreground">
                   <span className="inline-flex items-center gap-1.5">
                     <Clock className="h-4 w-4" />
-                    Created {new Date(s.createdAt).toLocaleDateString()}
+                    {t('Created')} {new Date(s.createdAt).toLocaleDateString()}
                   </span>
                   {hasFlags && (
                     <span className="inline-flex items-center gap-1.5 text-destructive">
                       <Flag className="h-4 w-4" />
-                      {s.flags.length} flag{s.flags.length !== 1 ? 's' : ''}
+                      {s.flags.length} {t('flag')}{s.flags.length !== 1 ? t('s') : ''}
                     </span>
                   )}
                 </div>
@@ -108,7 +110,7 @@ export default function WarehouseArchive() {
       )}
 
       <div className="text-center text-xs text-muted-foreground">
-        {shipments.length} stale shipment{shipments.length !== 1 ? 's' : ''}
+        {shipments.length} {t('stale shipment')}{shipments.length !== 1 ? t('s') : ''}
       </div>
     </div>
   );

@@ -41,15 +41,17 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 type WizardStep = 'detail' | 'trackers' | 'accessories' | 'units' | 'review';
 
 const ACCESSORY_TYPES = [
-  { value: 'temp_sensor_front', label: 'Temp Sensor (Front)', icon: 'thermostat', isIoT: true },
-  { value: 'temp_sensor_middle', label: 'Temp Sensor (Middle)', icon: 'thermostat', isIoT: true },
-  { value: 'temp_sensor_back', label: 'Temp Sensor (Back)', icon: 'thermostat', isIoT: true },
-  { value: 'door_sensor', label: 'Door Sensor', icon: 'sensor_door', isIoT: true },
-  { value: 'door_seal', label: 'Door Seal (Non-IoT)', icon: 'lock', isIoT: false },
-  { value: 'ble_tracker', label: 'BLE Tracker', icon: 'bluetooth', isIoT: true },
+  { value: 'temp_sensor_front', label: t('Temp Sensor (Front)'), icon: 'thermostat', isIoT: true },
+  { value: 'temp_sensor_middle', label: t('Temp Sensor (Middle)'), icon: 'thermostat', isIoT: true },
+  { value: 'temp_sensor_back', label: t('Temp Sensor (Back)'), icon: 'thermostat', isIoT: true },
+  { value: 'door_sensor', label: t('Door Sensor'), icon: 'sensor_door', isIoT: true },
+  { value: 'door_seal', label: t('Door Seal (Non-IoT)'), icon: 'lock', isIoT: false },
+  { value: 'ble_tracker', label: t('BLE Tracker'), icon: 'bluetooth', isIoT: true },
 ];
 
 const ACCESSORY_ICON: Record<string, LucideIcon> = {
@@ -60,11 +62,11 @@ const ACCESSORY_ICON: Record<string, LucideIcon> = {
 };
 
 const STEPS: { key: WizardStep; label: string }[] = [
-  { key: 'detail', label: 'Detail' },
-  { key: 'trackers', label: 'Trackers' },
-  { key: 'accessories', label: 'Accessories' },
-  { key: 'units', label: 'Units' },
-  { key: 'review', label: 'Review' },
+  { key: 'detail', label: t('Detail') },
+  { key: 'trackers', label: t('Trackers') },
+  { key: 'accessories', label: t('Accessories') },
+  { key: 'units', label: t('Units') },
+  { key: 'review', label: t('Review') },
 ];
 
 type StatusVariant = 'success' | 'info' | 'warning' | 'destructive' | 'muted';
@@ -145,7 +147,7 @@ export default function WarehouseShipmentDetail() {
           setScannedDevice(json.data);
         }
       } catch {
-        setScanError('Network error looking up device');
+        setScanError(t('Network error looking up device'));
       }
     } else if (step === 'accessories' && scanMode === 'accessory') {
       setAccessoryIdentifier(barcode);
@@ -161,7 +163,7 @@ export default function WarehouseShipmentDetail() {
             setScanMode(null);
           }
         } catch {
-          setScanError('Network error looking up unit');
+          setScanError(t('Network error looking up unit'));
         }
       } else {
         if (scannedUnit) {
@@ -181,7 +183,7 @@ export default function WarehouseShipmentDetail() {
               setScanMode('unit');
             }
           } catch {
-            setScanError('Network error looking up device');
+            setScanError(t('Network error looking up device'));
           }
         }
       }
@@ -216,7 +218,7 @@ export default function WarehouseShipmentDetail() {
       setSuccess('Tracker assigned');
       setTimeout(() => setSuccess(''), 2000);
     } catch {
-      setScanError('Failed to assign tracker');
+      setScanError(t('Failed to assign tracker'));
     }
   }
 
@@ -248,7 +250,7 @@ export default function WarehouseShipmentDetail() {
       setSuccess('Accessory added');
       setTimeout(() => setSuccess(''), 2000);
     } catch {
-      setScanError('Failed to add accessory');
+      setScanError(t('Failed to add accessory'));
     }
   }
 
@@ -323,9 +325,9 @@ export default function WarehouseShipmentDetail() {
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-destructive/15 text-destructive">
               <AlertTriangle className="h-8 w-8" />
             </div>
-            <div className="text-lg font-semibold">Shipment not found</div>
+            <div className="text-lg font-semibold">{t('Shipment not found')}</div>
             <Button variant="outline" size="lg" onClick={() => navigate('/warehouse')}>
-              Back to list
+              {t('Back to list')}
             </Button>
           </CardContent>
         </Card>
@@ -361,7 +363,7 @@ export default function WarehouseShipmentDetail() {
           <button
             type="button"
             onClick={() => setError('')}
-            aria-label="Dismiss"
+            aria-label={t('Dismiss')}
             className="text-destructive hover:opacity-70"
           >
             <X className="h-4 w-4" />
@@ -405,24 +407,24 @@ export default function WarehouseShipmentDetail() {
           <div className="flex items-center justify-between gap-2">
             <Button variant="ghost" size="sm" onClick={() => navigate('/warehouse')} className="-ml-2">
               <ArrowLeft className="h-5 w-5" />
-              <span className="text-base">Shipments</span>
+              <span className="text-base">{t('Shipments')}</span>
             </Button>
             <Button
               variant="outline"
               size="sm"
               onClick={() => setShowFlagForm(true)}
               className="border-destructive/40 text-destructive hover:bg-destructive/10"
-              aria-label="Flag shipment"
+              aria-label={t('Flag shipment')}
             >
               <Flag className="h-4 w-4" />
-              Flag
+              {t('Flag')}
             </Button>
           </div>
 
           <div className="flex items-center justify-between gap-2">
             <div>
               <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Shipment
+                {t('Shipment')}
               </div>
               <div className="text-xl font-bold">{shipment.reference}</div>
             </div>
@@ -439,7 +441,7 @@ export default function WarehouseShipmentDetail() {
               <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
               <div>
                 <div className="font-semibold">
-                  {unresolvedFlags.length} unresolved flag{unresolvedFlags.length !== 1 ? 's' : ''}
+                  {unresolvedFlags.length} {t('unresolved flag')}{unresolvedFlags.length !== 1 ? t('s') : ''}
                 </div>
                 <div className="text-xs">
                   {unresolvedFlags.map((f: any) => `"${f.reason}"`).join(', ')}
@@ -452,26 +454,26 @@ export default function WarehouseShipmentDetail() {
           <Card>
             <CardContent className="p-0">
               <div className="border-b border-border px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Route
+                {t('Route')}
               </div>
               <div className="divide-y divide-border">
                 <div className="flex items-center justify-between gap-3 p-4 text-sm">
-                  <span className="text-muted-foreground">From</span>
+                  <span className="text-muted-foreground">{t('From')}</span>
                   <span className="text-right font-medium">
                     {shipment.origin?.name} - {shipment.origin?.city}
                   </span>
                 </div>
                 <div className="flex items-center justify-between gap-3 p-4 text-sm">
-                  <span className="text-muted-foreground">To</span>
+                  <span className="text-muted-foreground">{t('To')}</span>
                   <span className="text-right font-medium">
                     {shipment.destination?.name} - {shipment.destination?.city}
                   </span>
                 </div>
                 {shipment.stops?.length > 0 && (
                   <div className="flex items-center justify-between gap-3 p-4 text-sm">
-                    <span className="text-muted-foreground">Stops</span>
+                    <span className="text-muted-foreground">{t('Stops')}</span>
                     <span className="font-medium">
-                      {shipment.stops.length} stop{shipment.stops.length !== 1 ? 's' : ''}
+                      {shipment.stops.length} {t('stop')}{shipment.stops.length !== 1 ? t('s') : ''}
                     </span>
                   </div>
                 )}
@@ -483,24 +485,24 @@ export default function WarehouseShipmentDetail() {
           <Card>
             <CardContent className="p-0">
               <div className="border-b border-border px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Details
+                {t('Details')}
               </div>
               <div className="divide-y divide-border">
                 <div className="flex items-center justify-between gap-3 p-4 text-sm">
-                  <span className="text-muted-foreground">Customer</span>
+                  <span className="text-muted-foreground">{t('Customer')}</span>
                   <span className="text-right font-medium">{shipment.customer?.name}</span>
                 </div>
                 <div className="flex items-center justify-between gap-3 p-4 text-sm">
-                  <span className="text-muted-foreground">Pickup</span>
+                  <span className="text-muted-foreground">{t('Pickup')}</span>
                   <span className="font-medium">{fmtDate(shipment.pickupDate)}</span>
                 </div>
                 <div className="flex items-center justify-between gap-3 p-4 text-sm">
-                  <span className="text-muted-foreground">Delivery</span>
+                  <span className="text-muted-foreground">{t('Delivery')}</span>
                   <span className="font-medium">{fmtDate(shipment.deliveryDate)}</span>
                 </div>
                 {shipment.proNumber && (
                   <div className="flex items-center justify-between gap-3 p-4 text-sm">
-                    <span className="text-muted-foreground">PRO #</span>
+                    <span className="text-muted-foreground">{t('PRO #')}</span>
                     <span className="font-medium">{shipment.proNumber}</span>
                   </div>
                 )}
@@ -512,27 +514,27 @@ export default function WarehouseShipmentDetail() {
           <Card>
             <CardContent className="p-0">
               <div className="border-b border-border px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Transport
+                {t('Transport')}
               </div>
               <div className="divide-y divide-border">
                 <div className="flex items-center justify-between gap-3 p-4 text-sm">
-                  <span className="text-muted-foreground">Carrier</span>
+                  <span className="text-muted-foreground">{t('Carrier')}</span>
                   <span className="font-medium">{shipment.carrier?.name || '-'}</span>
                 </div>
                 {shipment.loads?.[0]?.driver && (
                   <div className="flex items-center justify-between gap-3 p-4 text-sm">
-                    <span className="text-muted-foreground">Driver</span>
+                    <span className="text-muted-foreground">{t('Driver')}</span>
                     <span className="font-medium">{shipment.loads[0].driver.name}</span>
                   </div>
                 )}
                 {shipment.loads?.[0]?.vehicle && (
                   <>
                     <div className="flex items-center justify-between gap-3 p-4 text-sm">
-                      <span className="text-muted-foreground">Vehicle</span>
+                      <span className="text-muted-foreground">{t('Vehicle')}</span>
                       <span className="font-medium">{shipment.loads[0].vehicle.plate}</span>
                     </div>
                     <div className="flex items-center justify-between gap-3 p-4 text-sm">
-                      <span className="text-muted-foreground">Type</span>
+                      <span className="text-muted-foreground">{t('Type')}</span>
                       <span className="font-medium">{shipment.loads[0].vehicle.type}</span>
                     </div>
                   </>
@@ -546,13 +548,13 @@ export default function WarehouseShipmentDetail() {
             <Card>
               <CardContent className="p-0">
                 <div className="border-b border-border px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Orders & Units
+                  {t('Orders & Units')}
                 </div>
                 <div className="divide-y divide-border">
                   {shipment.orderShipments.map((os: any) => (
                     <div key={os.order.id} className="space-y-2 p-4">
                       <div className="flex items-center justify-between gap-3 text-sm">
-                        <span className="text-muted-foreground">Order</span>
+                        <span className="text-muted-foreground">{t('Order')}</span>
                         <span className="font-bold">{os.order.orderNumber}</span>
                       </div>
                       {os.order.trackableUnits?.map((u: any) => (
@@ -582,7 +584,7 @@ export default function WarehouseShipmentDetail() {
             <Card>
               <CardContent className="p-0">
                 <div className="border-b border-border px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Assigned Trackers
+                  {t('Assigned Trackers')}
                 </div>
                 <div className="divide-y divide-border">
                   {shipment.deviceAssignments.map((da: any) => (
@@ -593,8 +595,8 @@ export default function WarehouseShipmentDetail() {
                           {da.device?.displayId || da.device?.name}
                         </div>
                         <div className="text-xs text-muted-foreground">
-                          Battery: {da.device?.batteryLevel ?? '-'}%
-                        </div>
+                          {t('Battery:')} {da.device?.batteryLevel ?? '-'}%
+                                                  </div>
                       </div>
                     </div>
                   ))}
@@ -608,7 +610,7 @@ export default function WarehouseShipmentDetail() {
             {shipment.launchedAt ? (
               <div className="flex items-center justify-center gap-2 rounded-md border border-success/30 bg-success/10 px-3 py-3 text-sm font-semibold text-success">
                 <CheckCircle2 className="h-5 w-5" />
-                Launched
+                {t('Launched')}
               </div>
             ) : (
               <Button
@@ -618,7 +620,7 @@ export default function WarehouseShipmentDetail() {
                 onClick={() => setStep('trackers')}
               >
                 <Play className="h-5 w-5" />
-                Start launch wizard
+                {t('Start launch wizard')}
               </Button>
             )}
           </div>
@@ -627,19 +629,19 @@ export default function WarehouseShipmentDetail() {
           <Dialog open={showFlagForm} onOpenChange={setShowFlagForm}>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Flag an issue</DialogTitle>
+                <DialogTitle>{t('Flag an issue')}</DialogTitle>
               </DialogHeader>
               <textarea
                 value={flagReason}
                 onChange={e => setFlagReason(e.target.value)}
-                placeholder="Describe the issue..."
+                placeholder={t('Describe the issue...')}
                 rows={4}
                 autoFocus
                 className="w-full resize-none rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               />
               <DialogFooter className="flex flex-row gap-2 sm:justify-end">
                 <Button variant="outline" onClick={() => setShowFlagForm(false)}>
-                  Cancel
+                  {t('Cancel')}
                 </Button>
                 <Button
                   variant="destructive"
@@ -647,7 +649,7 @@ export default function WarehouseShipmentDetail() {
                   disabled={!flagReason.trim()}
                 >
                   <Flag className="h-4 w-4" />
-                  Flag
+                  {t('Flag')}
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -659,9 +661,9 @@ export default function WarehouseShipmentDetail() {
       {step === 'trackers' && (
         <>
           <div>
-            <h2 className="text-xl font-bold">Assign trackers</h2>
+            <h2 className="text-xl font-bold">{t('Assign trackers')}</h2>
             <p className="text-sm text-muted-foreground">
-              Scan the barcode on each IoT tracker to assign it to this shipment.
+              {t('Scan the barcode on each IoT tracker to assign it to this shipment.')}
             </p>
           </div>
 
@@ -675,9 +677,9 @@ export default function WarehouseShipmentDetail() {
           <Card className="border-primary/40 bg-primary/5">
             <CardContent className="p-5 text-center">
               <ScanLine className="mx-auto h-12 w-12 text-primary" />
-              <div className="mt-2 text-base font-semibold">Scan tracker barcode</div>
+              <div className="mt-2 text-base font-semibold">{t('Scan tracker barcode')}</div>
               <div className="text-sm text-muted-foreground">
-                Use built-in scanner or tap camera button
+                {t('Use built-in scanner or tap camera button')}
               </div>
               <Button
                 variant="gradient"
@@ -686,7 +688,7 @@ export default function WarehouseShipmentDetail() {
                 onClick={() => openCameraScanner('tracker')}
               >
                 <Camera className="h-5 w-5" />
-                Use camera
+                {t('Use camera')}
               </Button>
             </CardContent>
           </Card>
@@ -704,13 +706,13 @@ export default function WarehouseShipmentDetail() {
                     {scannedDevice.model || scannedDevice.provider}
                     {scannedDevice.alreadyAssigned && (
                       <span className="text-warning">
-                        {' '}- Currently on {scannedDevice.currentShipmentRef}
+                        {' '}{t('- Currently on')} {scannedDevice.currentShipmentRef}
                       </span>
                     )}
                   </div>
                 </div>
                 <Button size="sm" onClick={assignTracker}>
-                  Assign
+                  {t('Assign')}
                 </Button>
               </CardContent>
             </Card>
@@ -721,8 +723,8 @@ export default function WarehouseShipmentDetail() {
             <Card>
               <CardContent className="p-0">
                 <div className="border-b border-border px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Assigned ({shipment.deviceAssignments.length})
-                </div>
+                  {t('Assigned (')}{shipment.deviceAssignments.length})
+                                  </div>
                 <div className="divide-y divide-border">
                   {shipment.deviceAssignments.map((da: any) => (
                     <div key={da.id} className="flex items-center gap-3 p-4">
@@ -732,14 +734,14 @@ export default function WarehouseShipmentDetail() {
                           {da.device?.displayId || da.device?.name}
                         </div>
                         <div className="text-xs text-muted-foreground">
-                          {da.device?.model || 'Tracker'}
+                          {da.device?.model || t('Tracker')}
                         </div>
                       </div>
                       <Button
                         variant="ghost"
                         size="icon"
                         className="h-11 w-11 text-destructive hover:bg-destructive/10"
-                        aria-label="Remove tracker"
+                        aria-label={t('Remove tracker')}
                         onClick={() => removeDevice(da.device?.id)}
                       >
                         <Trash2 className="h-5 w-5" />
@@ -758,7 +760,7 @@ export default function WarehouseShipmentDetail() {
               className="flex-1 text-base"
               onClick={() => setStep('detail')}
             >
-              Back
+              {t('Back')}
             </Button>
             <Button
               size="lg"
@@ -770,7 +772,7 @@ export default function WarehouseShipmentDetail() {
                 setScannedDevice(null);
               }}
             >
-              Next
+              {t('Next')}
             </Button>
           </div>
         </>
@@ -780,9 +782,9 @@ export default function WarehouseShipmentDetail() {
       {step === 'accessories' && (
         <>
           <div>
-            <h2 className="text-xl font-bold">Add accessories</h2>
+            <h2 className="text-xl font-bold">{t('Add accessories')}</h2>
             <p className="text-sm text-muted-foreground">
-              Add door seals, temperature sensors, or BLE devices.
+              {t('Add door seals, temperature sensors, or BLE devices.')}
             </p>
           </div>
 
@@ -823,12 +825,12 @@ export default function WarehouseShipmentDetail() {
                 <CardContent className="p-5 text-center">
                   <ScanLine className="mx-auto h-10 w-10 text-primary" />
                   <div className="mt-2 text-base font-semibold">
-                    {selectedAcc.isIoT ? 'Scan device ID' : 'Scan seal ID'}
+                    {selectedAcc.isIoT ? t('Scan device ID') : t('Scan seal ID')}
                   </div>
                   <div className="text-sm text-muted-foreground">
                     {selectedAcc.isIoT
-                      ? 'Scan the barcode on the BLE device'
-                      : 'Scan or type the door seal identifier'}
+                      ? t('Scan the barcode on the BLE device')
+                      : t('Scan or type the door seal identifier')}
                   </div>
                   <Button
                     variant="gradient"
@@ -837,11 +839,11 @@ export default function WarehouseShipmentDetail() {
                     onClick={() => openCameraScanner('accessory')}
                   >
                     <Camera className="h-5 w-5" />
-                    Use camera
+                    {t('Use camera')}
                   </Button>
                   {selectedAcc.isIoT && scannedDevice && (
                     <div className="mt-2 text-sm font-semibold text-primary">
-                      Found: {scannedDevice.displayId || scannedDevice.name}
+                      {t('Found:')} {scannedDevice.displayId || scannedDevice.name}
                     </div>
                   )}
                   {!selectedAcc.isIoT && (
@@ -849,7 +851,7 @@ export default function WarehouseShipmentDetail() {
                       <Input
                         value={accessoryIdentifier}
                         onChange={e => setAccessoryIdentifier(e.target.value)}
-                        placeholder="Or type seal ID..."
+                        placeholder={t('Or type seal ID...')}
                         data-manual-input="true"
                         className="h-12 text-center text-base"
                       />
@@ -865,7 +867,7 @@ export default function WarehouseShipmentDetail() {
                 onClick={addAccessory}
               >
                 <Plus className="h-5 w-5" />
-                Add {selectedAcc.label}
+                {t('Add')} {selectedAcc.label}
               </Button>
             </>
           )}
@@ -875,8 +877,8 @@ export default function WarehouseShipmentDetail() {
             <Card>
               <CardContent className="p-0">
                 <div className="border-b border-border px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Added ({shipment.accessories.length})
-                </div>
+                  {t('Added (')}{shipment.accessories.length})
+                                  </div>
                 <div className="divide-y divide-border">
                   {shipment.accessories.map((acc: any) => {
                     const Icon = acc.isIoT ? Bluetooth : Lock;
@@ -888,14 +890,14 @@ export default function WarehouseShipmentDetail() {
                             {acc.alias || acc.accessoryType}
                           </div>
                           <div className="truncate text-xs text-muted-foreground">
-                            {acc.identifier || 'No ID'}
+                            {acc.identifier || t('No ID')}
                           </div>
                         </div>
                         <Button
                           variant="ghost"
                           size="icon"
                           className="h-11 w-11 text-destructive hover:bg-destructive/10"
-                          aria-label="Remove accessory"
+                          aria-label={t('Remove accessory')}
                           onClick={() => removeAccessory(acc.id)}
                         >
                           <Trash2 className="h-5 w-5" />
@@ -918,7 +920,7 @@ export default function WarehouseShipmentDetail() {
                 setScanMode('tracker');
               }}
             >
-              Back
+              {t('Back')}
             </Button>
             <Button
               size="lg"
@@ -934,7 +936,7 @@ export default function WarehouseShipmentDetail() {
                 }
               }}
             >
-              {hasUnits ? 'Next' : 'Review'}
+              {hasUnits ? t('Next') : t('Review')}
             </Button>
           </div>
         </>
@@ -944,9 +946,9 @@ export default function WarehouseShipmentDetail() {
       {step === 'units' && (
         <>
           <div>
-            <h2 className="text-xl font-bold">Track units</h2>
+            <h2 className="text-xl font-bold">{t('Track units')}</h2>
             <p className="text-sm text-muted-foreground">
-              Scan a pallet/tote barcode, then scan the IoT device to pair them.
+              {t('Scan a pallet/tote barcode, then scan the IoT device to pair them.')}
             </p>
           </div>
 
@@ -963,7 +965,7 @@ export default function WarehouseShipmentDetail() {
               <CardContent className="space-y-3 p-4">
                 <div className="flex items-center gap-2 text-sm font-semibold">
                   <Package className="h-4 w-4 text-primary" />
-                  Step 1: Scan unit
+                  {t('Step 1: Scan unit')}
                 </div>
                 {scannedUnit ? (
                   <div className="flex items-center gap-3 rounded-md border border-border bg-muted/30 p-3">
@@ -976,7 +978,7 @@ export default function WarehouseShipmentDetail() {
                 ) : (
                   <div className="flex flex-col items-center gap-2 rounded-md border border-dashed border-border p-3 text-center">
                     <ScanLine className="h-8 w-8 text-muted-foreground" />
-                    <div className="text-xs text-muted-foreground">Scan unit barcode</div>
+                    <div className="text-xs text-muted-foreground">{t('Scan unit barcode')}</div>
                     <Button
                       variant="outline"
                       size="sm"
@@ -987,7 +989,7 @@ export default function WarehouseShipmentDetail() {
                       }}
                     >
                       <Camera className="h-4 w-4" />
-                      Camera
+                      {t('Camera')}
                     </Button>
                   </div>
                 )}
@@ -999,12 +1001,12 @@ export default function WarehouseShipmentDetail() {
               <CardContent className="space-y-3 p-4">
                 <div className="flex items-center gap-2 text-sm font-semibold">
                   <Radio className="h-4 w-4 text-primary" />
-                  Step 2: Scan tracker
+                  {t('Step 2: Scan tracker')}
                 </div>
                 {scannedUnit ? (
                   <div className="flex flex-col items-center gap-2 rounded-md border border-dashed border-primary p-3 text-center">
                     <ScanLine className="h-8 w-8 text-primary" />
-                    <div className="text-xs text-muted-foreground">Now scan the tracker</div>
+                    <div className="text-xs text-muted-foreground">{t('Now scan the tracker')}</div>
                     <Button
                       variant="outline"
                       size="sm"
@@ -1012,12 +1014,12 @@ export default function WarehouseShipmentDetail() {
                       onClick={() => openCameraScanner('unit-device')}
                     >
                       <Camera className="h-4 w-4" />
-                      Camera
+                      {t('Camera')}
                     </Button>
                   </div>
                 ) : (
                   <div className="rounded-md border border-dashed border-border p-3 text-center text-xs text-muted-foreground">
-                    Scan a unit first
+                    {t('Scan a unit first')}
                   </div>
                 )}
               </CardContent>
@@ -1029,8 +1031,8 @@ export default function WarehouseShipmentDetail() {
             <Card>
               <CardContent className="p-0">
                 <div className="border-b border-border px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Paired ({unitDevicePairs.length})
-                </div>
+                  {t('Paired (')}{unitDevicePairs.length})
+                                  </div>
                 <div className="divide-y divide-border">
                   {unitDevicePairs.map((pair, i) => (
                     <div key={i} className="flex items-center gap-3 p-4">
@@ -1038,14 +1040,14 @@ export default function WarehouseShipmentDetail() {
                       <div className="min-w-0 flex-1">
                         <div className="truncate text-sm font-semibold">{pair.unitName}</div>
                         <div className="truncate text-xs text-muted-foreground">
-                          Tracker: {pair.deviceName}
+                          {t('Tracker:')} {pair.deviceName}
                         </div>
                       </div>
                       <Button
                         variant="ghost"
                         size="icon"
                         className="h-11 w-11 text-destructive hover:bg-destructive/10"
-                        aria-label="Remove pairing"
+                        aria-label={t('Remove pairing')}
                         onClick={() =>
                           setUnitDevicePairs(prev => prev.filter((_, j) => j !== i))
                         }
@@ -1063,7 +1065,7 @@ export default function WarehouseShipmentDetail() {
                     onClick={saveUnitPairings}
                   >
                     <Save className="h-5 w-5" />
-                    Save pairings
+                    {t('Save pairings')}
                   </Button>
                 </div>
               </CardContent>
@@ -1080,7 +1082,7 @@ export default function WarehouseShipmentDetail() {
                 setScanMode('accessory');
               }}
             >
-              Back
+              {t('Back')}
             </Button>
             <Button
               size="lg"
@@ -1091,7 +1093,7 @@ export default function WarehouseShipmentDetail() {
                 setScanMode(null);
               }}
             >
-              Review
+              {t('Review')}
             </Button>
           </div>
         </>
@@ -1101,9 +1103,9 @@ export default function WarehouseShipmentDetail() {
       {step === 'review' && (
         <>
           <div>
-            <h2 className="text-xl font-bold">Review & launch</h2>
+            <h2 className="text-xl font-bold">{t('Review & launch')}</h2>
             <p className="text-sm text-muted-foreground">
-              Confirm everything looks good before launching.
+              {t('Confirm everything looks good before launching.')}
             </p>
           </div>
 
@@ -1112,35 +1114,35 @@ export default function WarehouseShipmentDetail() {
               <div className="divide-y divide-border">
                 <ReviewRow
                   ok
-                  label="Shipment"
+                  label={t('Shipment')}
                   detail={`${shipment.reference} - ${shipment.customer?.name}`}
                 />
                 <ReviewRow
                   ok
-                  label="Route"
+                  label={t('Route')}
                   detail={`${shipment.origin?.name} -> ${shipment.destination?.name}`}
                 />
                 <ReviewRow
                   ok={shipment.deviceAssignments?.length > 0}
-                  label="Trackers"
+                  label={t('Trackers')}
                   detail={`${shipment.deviceAssignments?.length || 0} tracker${
                     shipment.deviceAssignments?.length !== 1 ? 's' : ''
                   } assigned`}
                 />
                 <ReviewRow
                   ok
-                  label="Accessories"
+                  label={t('Accessories')}
                   detail={`${shipment.accessories?.length || 0} accessory item${
                     shipment.accessories?.length !== 1 ? 's' : ''
                   }`}
                 />
                 {shipment.carrier && (
-                  <ReviewRow ok label="Carrier" detail={shipment.carrier.name} />
+                  <ReviewRow ok label={t('Carrier')} detail={shipment.carrier.name} />
                 )}
                 {unresolvedFlags.length > 0 && (
                   <ReviewRow
                     error
-                    label="Unresolved flags"
+                    label={t('Unresolved flags')}
                     detail={`${unresolvedFlags.length} flag${
                       unresolvedFlags.length !== 1 ? 's' : ''
                     } must be resolved before launch`}
@@ -1157,7 +1159,7 @@ export default function WarehouseShipmentDetail() {
               className="flex-1 text-base"
               onClick={() => setStep(hasUnits ? 'units' : 'accessories')}
             >
-              Back
+              {t('Back')}
             </Button>
             <Button
               size="lg"
@@ -1167,7 +1169,7 @@ export default function WarehouseShipmentDetail() {
               disabled={!canLaunch}
             >
               <Rocket className="h-5 w-5" />
-              Launch shipment
+              {t('Launch shipment')}
             </Button>
           </div>
         </>

@@ -15,14 +15,16 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { t as translate } from '@/i18n';
+
 const BIN_TYPES = [
-  { value: 'pallet', label: 'Pallet' }, { value: 'shelf', label: 'Shelf' },
-  { value: 'floor', label: 'Floor' }, { value: 'dock_door', label: 'Dock Door' },
-  { value: 'staging', label: 'Staging' }, { value: 'pack_station', label: 'Pack Station' },
+  { value: 'pallet', label: translate('Pallet') }, { value: 'shelf', label: translate('Shelf') },
+  { value: 'floor', label: translate('Floor') }, { value: 'dock_door', label: translate('Dock Door') },
+  { value: 'staging', label: translate('Staging') }, { value: 'pack_station', label: translate('Pack Station') },
 ];
 const TEMP_ZONES = [
-  { value: 'inherit', label: 'Inherit from zone' }, { value: 'ambient', label: 'Ambient' },
-  { value: 'refrigerated', label: 'Refrigerated' }, { value: 'frozen', label: 'Frozen' },
+  { value: 'inherit', label: translate('Inherit from zone') }, { value: 'ambient', label: translate('Ambient') },
+  { value: 'refrigerated', label: translate('Refrigerated') }, { value: 'frozen', label: translate('Frozen') },
 ];
 
 export default function VNextWmsCreateBin() {
@@ -89,8 +91,8 @@ export default function VNextWmsCreateBin() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Create Bin</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Add a single storage location</p>
+        <h1 className="text-3xl font-bold tracking-tight">{translate('Create Bin')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{translate('Add a single storage location')}</p>
       </div>
 
       {error && (
@@ -104,10 +106,10 @@ export default function VNextWmsCreateBin() {
         <Card className="max-w-3xl">
           <CardContent className="grid gap-4 p-6 md:grid-cols-2">
             <div className="space-y-2">
-              <Label>Zone *</Label>
+              <Label>{translate('Zone *')}</Label>
               <Select value={form.zoneId} onValueChange={v => setForm({ ...form, zoneId: v })}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select zone..." />
+                  <SelectValue placeholder={translate('Select zone...')} />
                 </SelectTrigger>
                 <SelectContent>
                   {zones.map(z => (
@@ -118,17 +120,17 @@ export default function VNextWmsCreateBin() {
             </div>
 
             <div className="space-y-2">
-              <Label>Label *</Label>
+              <Label>{translate('Label *')}</Label>
               <Input
                 value={form.label}
                 onChange={e => setForm({ ...form, label: e.target.value })}
-                placeholder="e.g. BULK-A-01-01"
+                placeholder={translate('e.g. BULK-A-01-01')}
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label>Bin Type *</Label>
+              <Label>{translate('Bin Type *')}</Label>
               <Select value={form.binType} onValueChange={v => setForm({ ...form, binType: v })}>
                 <SelectTrigger>
                   <SelectValue />
@@ -142,7 +144,7 @@ export default function VNextWmsCreateBin() {
             </div>
 
             <div className="space-y-2">
-              <Label>Temperature Zone</Label>
+              <Label>{translate('Temperature Zone')}</Label>
               <Select value={form.temperatureZone} onValueChange={v => setForm({ ...form, temperatureZone: v })}>
                 <SelectTrigger>
                   <SelectValue />
@@ -156,19 +158,19 @@ export default function VNextWmsCreateBin() {
             </div>
 
             <div className="space-y-2">
-              <Label>Level</Label>
-              <Input type="number" value={form.level} onChange={e => setForm({ ...form, level: e.target.value })} placeholder="Vertical position" />
+              <Label>{translate('Level')}</Label>
+              <Input type="number" value={form.level} onChange={e => setForm({ ...form, level: e.target.value })} placeholder={translate('Vertical position')} />
             </div>
             <div className="space-y-2">
-              <Label>Walk Sequence</Label>
+              <Label>{translate('Walk Sequence')}</Label>
               <Input type="number" value={form.walkSequence} onChange={e => setForm({ ...form, walkSequence: e.target.value })} />
             </div>
             <div className="space-y-2">
-              <Label>Max Weight (kg)</Label>
+              <Label>{translate('Max Weight (kg)')}</Label>
               <Input type="number" step="0.1" value={form.maxWeightKg} onChange={e => setForm({ ...form, maxWeightKg: e.target.value })} />
             </div>
             <div className="space-y-2">
-              <Label>Max Pallet Positions</Label>
+              <Label>{translate('Max Pallet Positions')}</Label>
               <Input type="number" value={form.maxPalletPositions} onChange={e => setForm({ ...form, maxPalletPositions: e.target.value })} />
             </div>
 
@@ -180,15 +182,15 @@ export default function VNextWmsCreateBin() {
                   onChange={e => setForm({ ...form, hazmatCertified: e.target.checked })}
                   className="h-4 w-4 rounded border border-input bg-background accent-primary"
                 />
-                Hazmat Certified
+                {translate('Hazmat Certified')}
               </label>
             </div>
           </CardContent>
         </Card>
 
         <div className="mt-6 flex flex-wrap items-center justify-end gap-2">
-          <Button variant="outline" type="button" onClick={() => navigate(-1)}>Cancel</Button>
-          <Button variant="gradient" type="submit" disabled={saving}>{saving ? 'Creating...' : 'Create Bin'}</Button>
+          <Button variant="outline" type="button" onClick={() => navigate(-1)}>{translate('Cancel')}</Button>
+          <Button variant="gradient" type="submit" disabled={saving}>{saving ? translate('Creating...') : translate('Create Bin')}</Button>
         </div>
       </form>
     </div>

@@ -34,6 +34,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 function formatFileSize(bytes: number): string {
   if (!bytes) return 'N/A';
   if (bytes < 1024) return `${bytes} B`;
@@ -132,7 +134,7 @@ export default function VNextDocuments() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -147,19 +149,19 @@ export default function VNextDocuments() {
   }
 
   const stats = [
-    { tone: 'primary' as const, label: 'Total Documents', value: typeCounts.all, icon: Folder, key: 'all' },
-    { tone: 'info' as const, label: 'Bills of Lading', value: typeCounts.bol, icon: FileText, key: 'bol' },
-    { tone: 'warning' as const, label: 'Customs Forms', value: typeCounts.customs, icon: Gavel, key: 'customs' },
-    { tone: 'muted' as const, label: 'Attachments', value: typeCounts.attachment, icon: Paperclip, key: 'attachment' },
+    { tone: 'primary' as const, label: t('Total Documents'), value: typeCounts.all, icon: Folder, key: 'all' },
+    { tone: 'info' as const, label: t('Bills of Lading'), value: typeCounts.bol, icon: FileText, key: 'bol' },
+    { tone: 'warning' as const, label: t('Customs Forms'), value: typeCounts.customs, icon: Gavel, key: 'customs' },
+    { tone: 'muted' as const, label: t('Attachments'), value: typeCounts.attachment, icon: Paperclip, key: 'attachment' },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <h1 className="text-3xl font-bold tracking-tight">Documents</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Documents')}</h1>
         <Button variant="gradient">
           <Upload className="h-4 w-4" />
-          Upload
+          {t('Upload')}
         </Button>
       </div>
 
@@ -168,13 +170,13 @@ export default function VNextDocuments() {
           <div className="flex items-center gap-2">
             <Filter className="h-4 w-4" />
             <span>
-              Filtered to {orderIdFilter ? 'order' : 'shipment'}{' '}
+              {t('Filtered to')} {orderIdFilter ? t('order') : t('shipment')}{' '}
               <span className="font-mono text-xs">{orderIdFilter || shipmentIdFilter}</span>
             </span>
           </div>
           <Button variant="ghost" size="sm" onClick={clearEntityFilter}>
             <X className="h-4 w-4" />
-            Clear filter
+            {t('Clear filter')}
           </Button>
         </div>
       )}
@@ -204,7 +206,7 @@ export default function VNextDocuments() {
             <div className="relative min-w-[220px]">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Search documents..."
+                placeholder={t('Search documents...')}
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 className="pl-9"
@@ -215,10 +217,10 @@ export default function VNextDocuments() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="bol">BOL</SelectItem>
-                <SelectItem value="customs">Customs</SelectItem>
-                <SelectItem value="attachment">Attachment</SelectItem>
+                <SelectItem value="all">{t('All Types')}</SelectItem>
+                <SelectItem value="bol">{t('BOL')}</SelectItem>
+                <SelectItem value="customs">{t('Customs')}</SelectItem>
+                <SelectItem value="attachment">{t('Attachment')}</SelectItem>
               </SelectContent>
             </Select>
             <Select defaultValue="all">
@@ -226,25 +228,25 @@ export default function VNextDocuments() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Dates</SelectItem>
-                <SelectItem value="7d">Last 7 Days</SelectItem>
-                <SelectItem value="30d">Last 30 Days</SelectItem>
-                <SelectItem value="90d">Last 90 Days</SelectItem>
+                <SelectItem value="all">{t('All Dates')}</SelectItem>
+                <SelectItem value="7d">{t('Last 7 Days')}</SelectItem>
+                <SelectItem value="30d">{t('Last 30 Days')}</SelectItem>
+                <SelectItem value="90d">{t('Last 90 Days')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
-          <span className="text-sm text-muted-foreground">{filtered.length} documents</span>
+          <span className="text-sm text-muted-foreground">{filtered.length} {t('documents')}</span>
         </div>
         <Separator />
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Document Name</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Entity</TableHead>
-              <TableHead>Size</TableHead>
-              <TableHead>Created</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead>{t('Document Name')}</TableHead>
+              <TableHead>{t('Type')}</TableHead>
+              <TableHead>{t('Entity')}</TableHead>
+              <TableHead>{t('Size')}</TableHead>
+              <TableHead>{t('Created')}</TableHead>
+              <TableHead>{t('Actions')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -266,7 +268,7 @@ export default function VNextDocuments() {
                   <div className="flex gap-1">
                     {doc.documentType === 'bol' && (
                       <Button asChild variant="ghost" size="icon" className="h-8 w-8">
-                        <Link to={`/documents/${doc.id}/view`} title="View BOL">
+                        <Link to={`/documents/${doc.id}/view`} title={t('View BOL')}>
                           <Eye className="h-4 w-4" />
                         </Link>
                       </Button>
@@ -276,7 +278,7 @@ export default function VNextDocuments() {
                         href={`${API_URL}/api/v1/documents/${doc.id}/download`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        title="Download"
+                        title={t('Download')}
                       >
                         <Download className="h-4 w-4" />
                       </a>
@@ -289,7 +291,7 @@ export default function VNextDocuments() {
               <TableRow>
                 <TableCell colSpan={6} className="py-8 text-center text-sm text-muted-foreground">
                   <File className="mx-auto mb-2 h-8 w-8 opacity-40" />
-                  No documents found
+                  {t('No documents found')}
                 </TableCell>
               </TableRow>
             )}

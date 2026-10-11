@@ -28,6 +28,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface DashboardPayload {
   generatedAt: string;
   throughput: {
@@ -170,7 +172,7 @@ export default function VNextWmsOperationsDashboard() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading operations dashboard...</h3>
+        <h3 className="text-lg font-medium">{t('Loading operations dashboard...')}</h3>
       </div>
     );
   }
@@ -178,7 +180,7 @@ export default function VNextWmsOperationsDashboard() {
     return (
       <div className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
         <CircleAlert className="h-5 w-5" />
-        Could not load dashboard.
+        {t('Could not load dashboard.')}
       </div>
     );
   }
@@ -187,43 +189,43 @@ export default function VNextWmsOperationsDashboard() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Warehouse Operations</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Warehouse Operations')}</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Live at {new Date(data.generatedAt).toLocaleTimeString()} - auto-refreshes every minute
+            {t('Live at')} {new Date(data.generatedAt).toLocaleTimeString()} {t('- auto-refreshes every minute')}
           </p>
         </div>
         <Button variant="outline" onClick={() => load(true)} disabled={refreshing}>
           <RefreshCw className={cn('h-4 w-4', refreshing && 'animate-spin')} />
-          {refreshing ? 'Refreshing...' : 'Refresh'}
+          {refreshing ? t('Refreshing...') : t('Refresh')}
         </Button>
       </div>
 
-      <Section title="Throughput today">
-        <StatTile icon={PackageOpen} tone="primary" label="Receipts" value={data.throughput.today.receipts} sub={`${data.throughput.last7Days.receipts} last 7d`} />
-        <StatTile icon={PackagePlus} tone="primary" label="Putaways" value={data.throughput.today.putaways} sub={`${data.throughput.last7Days.putaways} last 7d`} />
-        <StatTile icon={ShoppingCart} tone="primary" label="Picks" value={data.throughput.today.picks} sub={`${data.throughput.last7Days.picks} last 7d`} />
-        <StatTile icon={Package} tone="primary" label="Packs" value={data.throughput.today.packs} sub={`${data.throughput.last7Days.packs} last 7d`} />
-        <StatTile icon={Truck} tone="info" label="Shipments dispatched" value={data.throughput.today.shipmentsDispatched} sub={`${data.throughput.last7Days.shipmentsDispatched} last 7d`} />
+      <Section title={t('Throughput today')}>
+        <StatTile icon={PackageOpen} tone="primary" label={t('Receipts')} value={data.throughput.today.receipts} sub={`${data.throughput.last7Days.receipts} last 7d`} />
+        <StatTile icon={PackagePlus} tone="primary" label={t('Putaways')} value={data.throughput.today.putaways} sub={`${data.throughput.last7Days.putaways} last 7d`} />
+        <StatTile icon={ShoppingCart} tone="primary" label={t('Picks')} value={data.throughput.today.picks} sub={`${data.throughput.last7Days.picks} last 7d`} />
+        <StatTile icon={Package} tone="primary" label={t('Packs')} value={data.throughput.today.packs} sub={`${data.throughput.last7Days.packs} last 7d`} />
+        <StatTile icon={Truck} tone="info" label={t('Shipments dispatched')} value={data.throughput.today.shipmentsDispatched} sub={`${data.throughput.last7Days.shipmentsDispatched} last 7d`} />
       </Section>
 
-      <Section title="Cycle times (30 days)">
-        <StatTile icon={Timer} tone="info" label="Pick cycle" value={data.cycleTimes.pickCycleMinutes != null ? `${data.cycleTimes.pickCycleMinutes}m` : '-'} sub={`${data.cycleTimes.samples.pickCycle} picks`} />
-        <StatTile icon={Clock} tone="info" label="Dock to stock" value={data.cycleTimes.dockToStockMinutes != null ? `${data.cycleTimes.dockToStockMinutes}m` : '-'} sub={`${data.cycleTimes.samples.dockToStock} putaways`} />
-        <StatTile icon={Clock} tone="info" label="Order to ship" value={data.cycleTimes.orderToShipHours != null ? `${data.cycleTimes.orderToShipHours}h` : '-'} sub={`${data.cycleTimes.samples.orderToShip} orders`} />
+      <Section title={t('Cycle times (30 days)')}>
+        <StatTile icon={Timer} tone="info" label={t('Pick cycle')} value={data.cycleTimes.pickCycleMinutes != null ? `${data.cycleTimes.pickCycleMinutes}m` : '-'} sub={`${data.cycleTimes.samples.pickCycle} picks`} />
+        <StatTile icon={Clock} tone="info" label={t('Dock to stock')} value={data.cycleTimes.dockToStockMinutes != null ? `${data.cycleTimes.dockToStockMinutes}m` : '-'} sub={`${data.cycleTimes.samples.dockToStock} putaways`} />
+        <StatTile icon={Clock} tone="info" label={t('Order to ship')} value={data.cycleTimes.orderToShipHours != null ? `${data.cycleTimes.orderToShipHours}h` : '-'} sub={`${data.cycleTimes.samples.orderToShip} orders`} />
       </Section>
 
-      <Section title="Quality & accuracy (30 days)">
+      <Section title={t('Quality & accuracy (30 days)')}>
         <StatTile
           icon={ShieldCheck}
           tone={accuracyTone(data.quality.pickAccuracyPercent)}
-          label="Pick accuracy"
+          label={t('Pick accuracy')}
           value={fmt(data.quality.pickAccuracyPercent, '%')}
           sub={`${data.quality.pickAccuracySamples} picks`}
         />
         <StatTile
           icon={ClipboardCheck}
           tone={accuracyTone(data.quality.packAuditPassRatePercent)}
-          label="Pack audit pass rate"
+          label={t('Pack audit pass rate')}
           value={fmt(data.quality.packAuditPassRatePercent, '%')}
           sub={`${data.quality.packAuditSamples} audits`}
           to="/wms/pack-audits"
@@ -231,25 +233,25 @@ export default function VNextWmsOperationsDashboard() {
         <StatTile
           icon={Boxes}
           tone={accuracyTone(data.quality.inventoryAccuracyPercent)}
-          label="Inventory accuracy"
+          label={t('Inventory accuracy')}
           value={fmt(data.quality.inventoryAccuracyPercent, '%')}
           sub={`${data.quality.cycleCountSamples} count lines`}
         />
       </Section>
 
-      <Section title="Live work queue">
-        <StatTile icon={ShoppingCart} tone="warning" label="Pending picks" value={data.liveWork.pendingPickTasks} to="/wms/picking" />
-        <StatTile icon={PackagePlus} tone="warning" label="Pending putaways" value={data.liveWork.pendingPutawayTasks} to="/wms/putaway" />
-        <StatTile icon={Package} tone="warning" label="Pending packs" value={data.liveWork.pendingPackTasks} to="/wms/packing" />
-        <StatTile icon={Waves} tone="primary" label="Active waves" value={data.liveWork.activeWaves} to="/wms/waves" />
-        <StatTile icon={PackageOpen} tone="primary" label="Receiving in progress" value={data.liveWork.receivingInProgress} to="/wms/receiving" />
+      <Section title={t('Live work queue')}>
+        <StatTile icon={ShoppingCart} tone="warning" label={t('Pending picks')} value={data.liveWork.pendingPickTasks} to="/wms/picking" />
+        <StatTile icon={PackagePlus} tone="warning" label={t('Pending putaways')} value={data.liveWork.pendingPutawayTasks} to="/wms/putaway" />
+        <StatTile icon={Package} tone="warning" label={t('Pending packs')} value={data.liveWork.pendingPackTasks} to="/wms/packing" />
+        <StatTile icon={Waves} tone="primary" label={t('Active waves')} value={data.liveWork.activeWaves} to="/wms/waves" />
+        <StatTile icon={PackageOpen} tone="primary" label={t('Receiving in progress')} value={data.liveWork.receivingInProgress} to="/wms/receiving" />
       </Section>
 
-      <Section title="Exceptions">
+      <Section title={t('Exceptions')}>
         <StatTile
           icon={AlertTriangle}
           tone={data.exceptions.criticalIssues > 0 ? 'error' : 'warning'}
-          label="Open issues"
+          label={t('Open issues')}
           value={data.exceptions.openIssues}
           sub={`${data.exceptions.criticalIssues} critical`}
           to="/issues"
@@ -257,22 +259,22 @@ export default function VNextWmsOperationsDashboard() {
         <StatTile
           icon={Clock}
           tone={data.exceptions.cutoffAtRisk.critical > 0 ? 'error' : 'warning'}
-          label="Cutoff risk"
+          label={t('Cutoff risk')}
           value={data.exceptions.cutoffAtRisk.critical}
           sub={`${data.exceptions.cutoffAtRisk.warning} warning`}
           to="/wms/cutoff-monitor"
         />
-        <StatTile icon={RotateCcw} tone="info" label="Returns in progress" value={data.exceptions.pendingReturns} to="/wms/returns" />
-        <StatTile icon={FileWarning} tone="error" label="Open pack audit fails" value={data.exceptions.packAuditFailuresOpen} to="/wms/pack-audits" />
+        <StatTile icon={RotateCcw} tone="info" label={t('Returns in progress')} value={data.exceptions.pendingReturns} to="/wms/returns" />
+        <StatTile icon={FileWarning} tone="error" label={t('Open pack audit fails')} value={data.exceptions.packAuditFailuresOpen} to="/wms/pack-audits" />
       </Section>
 
-      <Section title="Capacity">
-        <StatTile icon={Grid3x3} tone="primary" label="Total bins" value={data.capacity.totalBins} />
-        <StatTile icon={Boxes} tone="primary" label="Bins with inventory" value={data.capacity.binsWithInventory} />
+      <Section title={t('Capacity')}>
+        <StatTile icon={Grid3x3} tone="primary" label={t('Total bins')} value={data.capacity.totalBins} />
+        <StatTile icon={Boxes} tone="primary" label={t('Bins with inventory')} value={data.capacity.binsWithInventory} />
         <StatTile
           icon={Database}
           tone={utilizationTone(data.capacity.utilizationPercent)}
-          label="Utilization"
+          label={t('Utilization')}
           value={fmt(data.capacity.utilizationPercent, '%')}
         />
       </Section>

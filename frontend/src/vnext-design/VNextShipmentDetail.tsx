@@ -121,6 +121,8 @@ import {
   stopTypeLabel,
 } from '@open-tms/shared';
 
+import { t as translate } from '@/i18n';
+
 const EQUIPMENT_TYPE_LABELS: Record<string, string> = {
   dryVan: 'Dry van',
   reefer: 'Reefer',
@@ -199,7 +201,7 @@ function FinancialsTab({ shipmentId, hasBol }: { shipmentId: string; hasBol: boo
   if (loading) return (
     <Card>
       <CardContent className="p-6">
-        <p>Loading financials...</p>
+        <p>{translate('Loading financials...')}</p>
       </CardContent>
     </Card>
   );
@@ -210,12 +212,14 @@ function FinancialsTab({ shipmentId, hasBol }: { shipmentId: string; hasBol: boo
   if (!hasBol) {
     return (
       <Card>
-        <CardHeader><CardTitle>Financials</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{translate('Financials')}</CardTitle></CardHeader>
         <CardContent>
           <div className="flex flex-col items-center gap-2 py-8 text-muted-foreground">
             <Lock className="h-12 w-12 opacity-50" />
-            <p>Financial data becomes available once the load is sealed.</p>
-            <p className="text-sm">Generate a Bill of Lading from the Docs tab to unlock revenue, cost, and margin.</p>
+            <p>{translate('Financial data becomes available once the load is sealed.')}</p>
+            <p className="text-sm">{translate(
+              'Generate a Bill of Lading from the Docs tab to unlock revenue, cost, and margin.'
+            )}</p>
           </div>
         </CardContent>
       </Card>
@@ -225,11 +229,11 @@ function FinancialsTab({ shipmentId, hasBol }: { shipmentId: string; hasBol: boo
   if (!data || (data.charges && data.charges.length === 0)) {
     return (
       <Card>
-        <CardHeader><CardTitle>Financials</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{translate('Financials')}</CardTitle></CardHeader>
         <CardContent>
           <div className="flex flex-col items-center gap-2 py-8 text-muted-foreground">
             <Wallet className="h-12 w-12 opacity-50" />
-            <p>No charges recorded on this shipment yet.</p>
+            <p>{translate('No charges recorded on this shipment yet.')}</p>
           </div>
         </CardContent>
       </Card>
@@ -248,14 +252,14 @@ function FinancialsTab({ shipmentId, hasBol }: { shipmentId: string; hasBol: boo
             <CreditCard className="h-5 w-5" />
           </div>
           <div className="mt-3 text-2xl font-bold tracking-tight">{fmtMoney(data.expectedRevenueCents)}</div>
-          <div className="mt-1 text-sm text-muted-foreground">Expected Revenue</div>
+          <div className="mt-1 text-sm text-muted-foreground">{translate('Expected Revenue')}</div>
         </Card>
         <Card className="p-5">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-warning/15 text-warning">
             <Truck className="h-5 w-5" />
           </div>
           <div className="mt-3 text-2xl font-bold tracking-tight">{fmtMoney(data.expectedCostCents)}</div>
-          <div className="mt-1 text-sm text-muted-foreground">Expected Cost</div>
+          <div className="mt-1 text-sm text-muted-foreground">{translate('Expected Cost')}</div>
         </Card>
         <Card className="p-5">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-success/15 text-success">
@@ -264,21 +268,21 @@ function FinancialsTab({ shipmentId, hasBol }: { shipmentId: string; hasBol: boo
           <div className={cn('mt-3 text-2xl font-bold tracking-tight', margin >= 0 ? 'text-success' : 'text-destructive')}>
             {fmtMoney(margin)} ({marginPct}%)
           </div>
-          <div className="mt-1 text-sm text-muted-foreground">Margin</div>
+          <div className="mt-1 text-sm text-muted-foreground">{translate('Margin')}</div>
         </Card>
       </div>
 
       <Card>
-        <CardHeader><CardTitle className="text-base">Charges ({data.charges?.length || 0})</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base">{translate('Charges (')}{data.charges?.length || 0})</CardTitle></CardHeader>
         <CardContent className="p-0">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Description</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
+                <TableHead>{translate('Description')}</TableHead>
+                <TableHead>{translate('Category')}</TableHead>
+                <TableHead>{translate('Type')}</TableHead>
+                <TableHead>{translate('Status')}</TableHead>
+                <TableHead className="text-right">{translate('Amount')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -374,7 +378,7 @@ function TelemetryTab({ shipmentId, deviceAssignments }: { shipmentId: string; d
         title={autoRefresh ? 'Stop auto-refresh (30s)' : 'Start auto-refresh (30s)'}
       >
         {autoRefresh ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
-        {autoRefresh ? 'Live' : 'Auto'}
+        {autoRefresh ? translate('Live') : translate('Auto')}
       </Button>
     </div>
   );
@@ -397,7 +401,7 @@ function TelemetryTab({ shipmentId, deviceAssignments }: { shipmentId: string; d
         {controlsRow}
         <div className="flex flex-col items-center gap-2 py-12 text-muted-foreground">
           <Loader2 className="h-6 w-6 animate-spin" />
-          <h3 className="text-base font-medium">Loading telemetry...</h3>
+          <h3 className="text-base font-medium">{translate('Loading telemetry...')}</h3>
         </div>
       </div>
     );
@@ -441,7 +445,7 @@ function TelemetryTab({ shipmentId, deviceAssignments }: { shipmentId: string; d
 
       {trackerDevices.length > 0 && (
         <Card>
-          <CardHeader><CardTitle className="text-base">Tracking Devices</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="text-base">{translate('Tracking Devices')}</CardTitle></CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-3">
               {trackerDevices.map((dev: any) => {
@@ -459,11 +463,11 @@ function TelemetryTab({ shipmentId, deviceAssignments }: { shipmentId: string; d
                     )}
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold">{dev.name || dev.displayId || 'Device'}</span>
+                        <span className="text-sm font-semibold">{dev.name || dev.displayId || translate('Device')}</span>
                         {purpose && <Badge variant="muted">{DEVICE_PURPOSE_LABELS[purpose] || purpose}</Badge>}
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        {dev.model || 'Unknown model'}{dev.displayId ? ` - ${dev.displayId}` : ''}
+                        {dev.model || translate('Unknown model')}{dev.displayId ? ` - ${dev.displayId}` : ''}
                       </div>
                     </div>
                   </div>
@@ -480,34 +484,34 @@ function TelemetryTab({ shipmentId, deviceAssignments }: { shipmentId: string; d
             <Package className="h-5 w-5" />
           </div>
           <div className="mt-3 text-2xl font-bold tracking-tight">{readings.length}</div>
-          <div className="mt-1 text-sm text-muted-foreground">Reading Count</div>
+          <div className="mt-1 text-sm text-muted-foreground">{translate('Reading Count')}</div>
         </Card>
         <Card className="p-5">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-destructive/10 text-destructive">
             <AlertTriangle className="h-5 w-5" />
           </div>
           <div className="mt-3 text-2xl font-bold tracking-tight">{alerts.length}</div>
-          <div className="mt-1 text-sm text-muted-foreground">Alerts</div>
+          <div className="mt-1 text-sm text-muted-foreground">{translate('Alerts')}</div>
         </Card>
         <Card className="p-5">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <Thermometer className="h-5 w-5" />
           </div>
           <div className="mt-3 text-2xl font-bold tracking-tight">{avgTemp}{avgTemp !== '-' ? '°' : ''}</div>
-          <div className="mt-1 text-sm text-muted-foreground">Avg Temp</div>
+          <div className="mt-1 text-sm text-muted-foreground">{translate('Avg Temp')}</div>
         </Card>
         <Card className="p-5">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-success/15 text-success">
             <BatteryFull className="h-5 w-5" />
           </div>
           <div className="mt-3 text-2xl font-bold tracking-tight">{latestBattery}</div>
-          <div className="mt-1 text-sm text-muted-foreground">Latest Battery</div>
+          <div className="mt-1 text-sm text-muted-foreground">{translate('Latest Battery')}</div>
         </Card>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>
-          <CardHeader><CardTitle className="text-base">Temperature over time</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="text-base">{translate('Temperature over time')}</CardTitle></CardHeader>
           <CardContent>
             <TimeSeriesChart
               points={tempSeries}
@@ -518,17 +522,17 @@ function TelemetryTab({ shipmentId, deviceAssignments }: { shipmentId: string; d
             />
             {tempBand && (tempBand.min != null || tempBand.max != null) && (
               <p className="mt-2 text-xs text-muted-foreground">
-                Shaded band shows the acceptable range
-                {tempBand.min != null ? ` (${tempBand.min}°` : ' (up to'}
+                {translate('Shaded band shows the acceptable range')}
+                {tempBand.min != null ? ` (${tempBand.min}°` : translate(' (up to')}
                 {tempBand.max != null ? ` to ${tempBand.max}°)` : ')'}.
-              </p>
+                              </p>
             )}
           </CardContent>
         </Card>
 
         {pressureSeries.length >= 2 && (
           <Card>
-            <CardHeader><CardTitle className="text-base">Atmospheric pressure over time</CardTitle></CardHeader>
+            <CardHeader><CardTitle className="text-base">{translate('Atmospheric pressure over time')}</CardTitle></CardHeader>
             <CardContent>
               <TimeSeriesChart points={pressureSeries} unit=" hPa" lineClassName="stroke-warning" pointClassName="fill-warning" />
             </CardContent>
@@ -537,7 +541,7 @@ function TelemetryTab({ shipmentId, deviceAssignments }: { shipmentId: string; d
 
         {batterySeries.length >= 2 && (
           <Card>
-            <CardHeader><CardTitle className="text-base">Battery over time</CardTitle></CardHeader>
+            <CardHeader><CardTitle className="text-base">{translate('Battery over time')}</CardTitle></CardHeader>
             <CardContent>
               <TimeSeriesChart points={batterySeries} unit="%" lineClassName="stroke-success" pointClassName="fill-success" />
             </CardContent>
@@ -546,17 +550,17 @@ function TelemetryTab({ shipmentId, deviceAssignments }: { shipmentId: string; d
       </div>
 
       <Card>
-        <CardHeader><CardTitle className="text-base">Recent Readings</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base">{translate('Recent Readings')}</CardTitle></CardHeader>
         <CardContent className="p-0">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Time</TableHead>
-                <TableHead>Temp</TableHead>
-                <TableHead>Pressure</TableHead>
-                <TableHead>Battery</TableHead>
-                <TableHead>Location</TableHead>
-                <TableHead>Alert</TableHead>
+                <TableHead>{translate('Time')}</TableHead>
+                <TableHead>{translate('Temp')}</TableHead>
+                <TableHead>{translate('Pressure')}</TableHead>
+                <TableHead>{translate('Battery')}</TableHead>
+                <TableHead>{translate('Location')}</TableHead>
+                <TableHead>{translate('Alert')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -572,7 +576,7 @@ function TelemetryTab({ shipmentId, deviceAssignments }: { shipmentId: string; d
                         {r.lat.toFixed(4)}, {r.lng.toFixed(4)}
                         {(r.locationType || r.locationAccuracy != null) && (
                           <span className="text-muted-foreground">
-                            {' · '}{r.locationType || 'fix'}{r.locationAccuracy != null ? ` ±${Math.round(r.locationAccuracy)}m` : ''}
+                            {' · '}{r.locationType || translate('fix')}{r.locationAccuracy != null ? ` ±${Math.round(r.locationAccuracy)}m` : ''}
                           </span>
                         )}
                       </span>
@@ -580,14 +584,14 @@ function TelemetryTab({ shipmentId, deviceAssignments }: { shipmentId: string; d
                   </TableCell>
                   <TableCell>
                     {r.isAlert
-                      ? <Badge variant="destructive">Alert</Badge>
+                      ? <Badge variant="destructive">{translate('Alert')}</Badge>
                       : <span className="text-xs text-muted-foreground">-</span>}
                   </TableCell>
                 </TableRow>
               ))}
               {readings.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={7} className="py-6 text-center text-muted-foreground">No readings available</TableCell>
+                  <TableCell colSpan={7} className="py-6 text-center text-muted-foreground">{translate('No readings available')}</TableCell>
                 </TableRow>
               )}
             </TableBody>
@@ -737,7 +741,7 @@ function CargoTab({ shipmentId }: { shipmentId: string }) {
     return (
       <div className="flex flex-col items-center gap-2 py-12 text-muted-foreground">
         <Loader2 className="h-6 w-6 animate-spin" />
-        <h3 className="text-base font-medium">Loading cargo data...</h3>
+        <h3 className="text-base font-medium">{translate('Loading cargo data...')}</h3>
       </div>
     );
   }
@@ -756,9 +760,11 @@ function CargoTab({ shipmentId }: { shipmentId: string }) {
       <Card>
         <CardContent className="flex flex-col items-center gap-2 py-12 text-muted-foreground">
           <Package className="h-12 w-12 opacity-30" />
-          <h3 className="text-base font-medium">No trackable cargo units</h3>
+          <h3 className="text-base font-medium">{translate('No trackable cargo units')}</h3>
           <p className="text-sm">
-            Add trackable units (pallets, totes, boxes) to orders assigned to this shipment to enable cargo tracking.
+            {translate(
+              'Add trackable units (pallets, totes, boxes) to orders assigned to this shipment to enable cargo tracking.'
+            )}
           </p>
         </CardContent>
       </Card>
@@ -775,14 +781,14 @@ function CargoTab({ shipmentId }: { shipmentId: string }) {
             <Package className="h-5 w-5" />
           </div>
           <div className="mt-3 text-2xl font-bold tracking-tight">{manifest.totalExpected}</div>
-          <div className="mt-1 text-sm text-muted-foreground">Expected Units</div>
+          <div className="mt-1 text-sm text-muted-foreground">{translate('Expected Units')}</div>
         </Card>
         <Card className="p-5">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-success/15 text-success">
             <CheckCircle2 className="h-5 w-5" />
           </div>
           <div className="mt-3 text-2xl font-bold tracking-tight">{manifest.totalScanned}</div>
-          <div className="mt-1 text-sm text-muted-foreground">Scanned / Confirmed</div>
+          <div className="mt-1 text-sm text-muted-foreground">{translate('Scanned / Confirmed')}</div>
         </Card>
         <Card className="p-5">
           <div
@@ -794,14 +800,14 @@ function CargoTab({ shipmentId }: { shipmentId: string }) {
             <AlertTriangle className="h-5 w-5" />
           </div>
           <div className="mt-3 text-2xl font-bold tracking-tight">{openDiscrepancies.length}</div>
-          <div className="mt-1 text-sm text-muted-foreground">Open Issues</div>
+          <div className="mt-1 text-sm text-muted-foreground">{translate('Open Issues')}</div>
         </Card>
         <Card className="p-5">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <MapPin className="h-5 w-5" />
           </div>
           <div className="mt-3 text-2xl font-bold tracking-tight">{manifest.stops.length}</div>
-          <div className="mt-1 text-sm text-muted-foreground">Delivery Stops</div>
+          <div className="mt-1 text-sm text-muted-foreground">{translate('Delivery Stops')}</div>
         </Card>
       </div>
 
@@ -810,8 +816,8 @@ function CargoTab({ shipmentId }: { shipmentId: string }) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base text-destructive">
               <AlertTriangle className="h-5 w-5" />
-              Cargo Issues ({openDiscrepancies.length})
-            </CardTitle>
+              {translate('Cargo Issues (')}{openDiscrepancies.length})
+                          </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             {openDiscrepancies.map((disc) => (
@@ -831,17 +837,17 @@ function CargoTab({ shipmentId }: { shipmentId: string }) {
                       {discrepancyTypeLabels[disc.discrepancyType] || disc.discrepancyType}
                     </span>
                     <Badge variant={severityVariant(disc.severity)}>{disc.severity}</Badge>
-                    {disc.status === 'investigating' && <Badge variant="warning">Investigating</Badge>}
+                    {disc.status === 'investigating' && <Badge variant="warning">{translate('Investigating')}</Badge>}
                   </div>
                   <div className="mt-0.5 text-xs text-muted-foreground">{disc.description}</div>
                   <div className="text-xs text-muted-foreground">
-                    Detected {new Date(disc.detectedAt).toLocaleString()}
+                    {translate('Detected')} {new Date(disc.detectedAt).toLocaleString()}
                   </div>
                 </div>
                 <div className="flex shrink-0 gap-1">
                   {disc.status === 'open' && (
                     <Button variant="outline" size="sm" onClick={() => handleInvestigate(disc.id)}>
-                      Investigate
+                      {translate('Investigate')}
                     </Button>
                   )}
                   <Button
@@ -850,7 +856,7 @@ function CargoTab({ shipmentId }: { shipmentId: string }) {
                     onClick={() => handleResolve(disc.id)}
                     disabled={resolving === disc.id}
                   >
-                    {resolving === disc.id ? 'Resolving...' : 'Resolve'}
+                    {resolving === disc.id ? translate('Resolving...') : translate('Resolve')}
                   </Button>
                 </div>
               </div>
@@ -868,7 +874,7 @@ function CargoTab({ shipmentId }: { shipmentId: string }) {
             <CardHeader className="flex flex-row items-center justify-between gap-3 space-y-0">
               <div>
                 <CardTitle className="text-base">
-                  Stop {stop.sequenceNumber} - {stop.locationName}
+                  {translate('Stop')} {stop.sequenceNumber}- {stop.locationName}
                 </CardTitle>
                 <div className="mt-1 text-xs text-muted-foreground">
                   {stopTypeLabel(stop)} - {stop.status}
@@ -878,13 +884,13 @@ function CargoTab({ shipmentId }: { shipmentId: string }) {
               {allDelivered && !hasIssues && (
                 <Badge variant="success">
                   <CheckCircle2 className="mr-1 h-3 w-3" />
-                  All Delivered
+                  {translate('All Delivered')}
                 </Badge>
               )}
               {hasIssues && (
                 <Badge variant="destructive">
                   <AlertTriangle className="mr-1 h-3 w-3" />
-                  Issues Detected
+                  {translate('Issues Detected')}
                 </Badge>
               )}
             </CardHeader>
@@ -894,12 +900,12 @@ function CargoTab({ shipmentId }: { shipmentId: string }) {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Unit</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Order</TableHead>
-                      <TableHead>Items</TableHead>
-                      <TableHead>Condition</TableHead>
-                      <TableHead>Status</TableHead>
+                      <TableHead>{translate('Unit')}</TableHead>
+                      <TableHead>{translate('Type')}</TableHead>
+                      <TableHead>{translate('Order')}</TableHead>
+                      <TableHead>{translate('Items')}</TableHead>
+                      <TableHead>{translate('Condition')}</TableHead>
+                      <TableHead>{translate('Status')}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -962,7 +968,7 @@ function CargoTab({ shipmentId }: { shipmentId: string }) {
               </CardContent>
             ) : (
               <CardContent className="py-6 text-center text-sm text-muted-foreground">
-                No cargo units assigned to this stop
+                {translate('No cargo units assigned to this stop')}
               </CardContent>
             )}
           </Card>
@@ -974,21 +980,23 @@ function CargoTab({ shipmentId }: { shipmentId: string }) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <CircleHelp className="h-5 w-5 text-warning" />
-              Unassigned Cargo ({manifest.unassignedUnits.length})
-            </CardTitle>
+              {translate('Unassigned Cargo (')}{manifest.unassignedUnits.length})
+                          </CardTitle>
           </CardHeader>
           <CardContent className="text-sm text-muted-foreground">
-            These trackable units are on this shipment but not assigned to a delivery stop.
+            {translate(
+              'These trackable units are on this shipment but not assigned to a delivery stop.'
+            )}
           </CardContent>
           <CardContent className="p-0">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Unit</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Order</TableHead>
-                  <TableHead>Items</TableHead>
-                  <TableHead>Condition</TableHead>
+                  <TableHead>{translate('Unit')}</TableHead>
+                  <TableHead>{translate('Type')}</TableHead>
+                  <TableHead>{translate('Order')}</TableHead>
+                  <TableHead>{translate('Items')}</TableHead>
+                  <TableHead>{translate('Condition')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -1013,16 +1021,16 @@ function CargoTab({ shipmentId }: { shipmentId: string }) {
 
       {discrepancies.filter(d => d.status === 'resolved' || d.status === 'dismissed').length > 0 && (
         <Card>
-          <CardHeader><CardTitle className="text-base">Resolved Issues</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="text-base">{translate('Resolved Issues')}</CardTitle></CardHeader>
           <CardContent className="p-0">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Issue</TableHead>
-                  <TableHead>Unit</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Resolution</TableHead>
-                  <TableHead>Resolved</TableHead>
+                  <TableHead>{translate('Issue')}</TableHead>
+                  <TableHead>{translate('Unit')}</TableHead>
+                  <TableHead>{translate('Status')}</TableHead>
+                  <TableHead>{translate('Resolution')}</TableHead>
+                  <TableHead>{translate('Resolved')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -1081,8 +1089,10 @@ function SlaTab({ shipmentId }: { shipmentId: string }) {
     return (
       <div className="py-8 text-center text-muted-foreground">
         <Timer className="mx-auto h-12 w-12 opacity-40" />
-        <h3 className="mt-2 text-base font-medium">No SLA Evaluations</h3>
-        <p className="text-sm">No SLA policies are tracking this shipment. Configure policies in Admin &gt; Settings &gt; SLA Policies.</p>
+        <h3 className="mt-2 text-base font-medium">{translate('No SLA Evaluations')}</h3>
+        <p className="text-sm">{translate(
+          'No SLA policies are tracking this shipment. Configure policies in Admin > Settings > SLA Policies.'
+        )}</p>
       </div>
     );
   }
@@ -1114,12 +1124,12 @@ function SlaTab({ shipmentId }: { shipmentId: string }) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Rule</TableHead>
-            <TableHead>Type</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Time Remaining</TableHead>
-            <TableHead>Started</TableHead>
-            <TableHead>Due</TableHead>
+            <TableHead>{translate('Rule')}</TableHead>
+            <TableHead>{translate('Type')}</TableHead>
+            <TableHead>{translate('Status')}</TableHead>
+            <TableHead>{translate('Time Remaining')}</TableHead>
+            <TableHead>{translate('Started')}</TableHead>
+            <TableHead>{translate('Due')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -1161,15 +1171,15 @@ const NOTE_GROUPS: {
   iconText: string;
 }[] = [
   {
-    key: 'issue', label: 'Issues', Icon: AlertTriangle, empty: 'No issues noted for this shipment.',
+    key: 'issue', label: translate('Issues'), Icon: AlertTriangle, empty: 'No issues noted for this shipment.',
     border: 'border-l-4 border-l-destructive', iconBg: 'bg-destructive/10', iconText: 'text-destructive',
   },
   {
-    key: 'requirement', label: 'Additional requirements', Icon: Info, empty: 'No additional requirements noted.',
+    key: 'requirement', label: translate('Additional requirements'), Icon: Info, empty: 'No additional requirements noted.',
     border: 'border-l-4 border-l-info', iconBg: 'bg-info/10', iconText: 'text-info',
   },
   {
-    key: '', label: 'Standard notes', Icon: MessageSquare, empty: 'No standard notes yet.',
+    key: '', label: translate('Standard notes'), Icon: MessageSquare, empty: 'No standard notes yet.',
     border: 'border-l-4 border-l-primary', iconBg: 'bg-primary/10', iconText: 'text-primary',
   },
 ];
@@ -1242,21 +1252,21 @@ function LaneStopsMismatch({ shipment, onChanged }: { shipment: any; onChanged: 
       <AlertTriangle className="h-5 w-5 shrink-0" />
       <div className="space-y-2">
         <div>
-          <strong>Stops don't match the lane</strong>
+          <strong>{translate('Stops don\'t match the lane')}</strong>
           <p className="mt-1">
-            This shipment is on the lane {lane.name}, but {offLane.length > 0
-              ? `${offLane.map((st: any) => st.location?.name || 'a stop').join(', ')} ${offLane.length === 1 ? "isn't" : "aren't"} on it`
-              : 'its stops are in a different order'}. Checkpoints and the map follow the lane's route.
+            {translate('This shipment is on the lane')} {lane.name}{translate(', but')} {offLane.length > 0
+                ? `${offLane.map((st: any) => st.location?.name || 'a stop').join(', ')} ${offLane.length === 1 ? "isn't" : "aren't"} on it`
+                : translate('its stops are in a different order')}{translate('. Checkpoints and the map follow the lane\'s route.')}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button size="sm" variant="outline" disabled={busy !== null} onClick={() => save('custom')}>
             {busy === 'custom' && <Loader2 className="h-4 w-4 animate-spin" />}
-            Switch to custom route
+            {translate('Switch to custom route')}
           </Button>
           <Button size="sm" variant="outline" disabled={busy !== null} onClick={() => save('lane')}>
             {busy === 'lane' && <Loader2 className="h-4 w-4 animate-spin" />}
-            Save as new lane
+            {translate('Save as new lane')}
           </Button>
         </div>
       </div>
@@ -1306,7 +1316,7 @@ function NotesTab({ shipmentId }: { shipmentId: string }) {
       setNoteTag(NOTE_TAGS[0].key);
       loadComments();
     } catch {
-      toast.error('Failed to post comment');
+      toast.error(translate('Failed to post comment'));
     } finally {
       setSubmitting(false);
     }
@@ -1339,7 +1349,7 @@ function NotesTab({ shipmentId }: { shipmentId: string }) {
       cancelEdit();
       loadComments();
     } catch {
-      toast.error('Failed to update comment');
+      toast.error(translate('Failed to update comment'));
     } finally {
       setBusyId(null);
     }
@@ -1357,7 +1367,7 @@ function NotesTab({ shipmentId }: { shipmentId: string }) {
       }
       loadComments();
     } catch {
-      toast.error('Failed to delete comment');
+      toast.error(translate('Failed to delete comment'));
     } finally {
       setBusyId(null);
     }
@@ -1391,12 +1401,12 @@ function NotesTab({ shipmentId }: { shipmentId: string }) {
         </div>
         <div className="flex-1">
           <div className="mb-1 flex items-center justify-between gap-2">
-            <span className="text-sm font-semibold">{c.authorName || 'Unknown user'}</span>
+            <span className="text-sm font-semibold">{c.authorName || translate('Unknown user')}</span>
             <div className="flex items-center gap-2">
               <span className="text-xs text-muted-foreground">
                 {c.createdAt ? new Date(c.createdAt).toLocaleString() : ''}
                 {c.updatedAt && c.createdAt && c.updatedAt !== c.createdAt && (
-                  <span className="ml-1 italic">(edited)</span>
+                  <span className="ml-1 italic">{translate('(edited)')}</span>
                 )}
               </span>
               {!isEditing && (canEdit || canDelete) && (
@@ -1407,7 +1417,7 @@ function NotesTab({ shipmentId }: { shipmentId: string }) {
                       onClick={() => beginEdit(c)}
                       disabled={busy}
                       className="inline-flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground hover:bg-muted/40 hover:text-foreground"
-                      title="Edit comment"
+                      title={translate('Edit comment')}
                     >
                       <Pencil className="h-3.5 w-3.5" />
                     </button>
@@ -1443,9 +1453,9 @@ function NotesTab({ shipmentId }: { shipmentId: string }) {
                   onClick={() => saveEdit(c.id)}
                   disabled={busy || !editingDraft.trim() || editingDraft === c.body}
                 >
-                  {busy ? '...' : 'Save'}
+                  {busy ? '...' : translate('Save')}
                 </Button>
-                <Button size="sm" variant="ghost" onClick={cancelEdit} disabled={busy} title="Cancel">
+                <Button size="sm" variant="ghost" onClick={cancelEdit} disabled={busy} title={translate('Cancel')}>
                   <X className="h-3.5 w-3.5" />
                 </Button>
               </div>
@@ -1490,11 +1500,11 @@ function NotesTab({ shipmentId }: { shipmentId: string }) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Add a note</CardTitle>
+          <CardTitle className="text-base">{translate('Add a note')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="space-y-2">
-            <Label>Tag</Label>
+            <Label>{translate('Tag')}</Label>
             <div className="flex flex-wrap gap-2">
               {NOTE_TAGS.map(t => (
                 <button
@@ -1515,13 +1525,13 @@ function NotesTab({ shipmentId }: { shipmentId: string }) {
           <div className="flex gap-2">
             <textarea
               className="flex w-full flex-1 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-              placeholder="Add a note..."
+              placeholder={translate('Add a note...')}
               value={newComment}
               onChange={e => setNewComment(e.target.value)}
               rows={2}
             />
             <Button variant="gradient" onClick={handleSubmit} disabled={submitting || !newComment.trim()} className="self-end">
-              {submitting ? '...' : 'Post'}
+              {submitting ? '...' : translate('Post')}
             </Button>
           </div>
         </CardContent>
@@ -1589,10 +1599,10 @@ function CarrierTrackingTab({ shipmentId }: { shipmentId: string }) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
-        <CardTitle className="text-base">Carrier Tracking Events</CardTitle>
+        <CardTitle className="text-base">{translate('Carrier Tracking Events')}</CardTitle>
         <Button variant="outline" size="sm" onClick={handlePoll} disabled={polling}>
           <RefreshCw className={cn('h-4 w-4', polling && 'animate-spin')} />
-          {polling ? 'Polling...' : 'Poll Now'}
+          {polling ? translate('Polling...') : translate('Poll Now')}
         </Button>
       </CardHeader>
       <CardContent>
@@ -1613,27 +1623,31 @@ function CarrierTrackingTab({ shipmentId }: { shipmentId: string }) {
           <div className="py-8 text-center text-muted-foreground">
             <AlertTriangle className="mx-auto h-10 w-10 opacity-40" />
             <p className="mt-2 text-sm">
-              {tracking.hasCarrier ? 'This carrier has no tracking integration configured.' : 'No carrier assigned yet.'}
+              {tracking.hasCarrier ? translate('This carrier has no tracking integration configured.') : translate('No carrier assigned yet.')}
             </p>
             <p className="text-xs">
               {tracking.hasCarrier
-                ? 'Set up a tracking integration for this carrier to see live status updates here.'
-                : 'Assign a carrier to this shipment to enable tracking.'}
+                ? translate(
+                'Set up a tracking integration for this carrier to see live status updates here.'
+              )
+                : translate('Assign a carrier to this shipment to enable tracking.')}
             </p>
           </div>
         ) : tracking && tracking.integrationStatus !== 'active' ? (
           <div className="py-8 text-center text-muted-foreground">
             <AlertTriangle className="mx-auto h-10 w-10 opacity-40" />
             <p className="mt-2 text-sm">
-              Tracking integration is {(tracking.integrationStatus || 'not active').replace(/_/g, ' ')}.
-            </p>
-            <p className="text-xs">Events will appear here once the integration is active.</p>
+              {translate('Tracking integration is')} {(tracking.integrationStatus || 'not active').replace(/_/g, ' ')}.
+                          </p>
+            <p className="text-xs">{translate('Events will appear here once the integration is active.')}</p>
           </div>
         ) : events.length === 0 ? (
           <div className="py-8 text-center text-muted-foreground">
             <SearchX className="mx-auto h-10 w-10 opacity-40" />
-            <p className="mt-2 text-sm">No carrier tracking events yet.</p>
-            <p className="text-xs">Events will appear here once the carrier's tracking API reports updates.</p>
+            <p className="mt-2 text-sm">{translate('No carrier tracking events yet.')}</p>
+            <p className="text-xs">{translate(
+              'Events will appear here once the carrier\'s tracking API reports updates.'
+            )}</p>
           </div>
         ) : (
           <ol className="relative space-y-6 border-l border-border pl-6">
@@ -1675,13 +1689,13 @@ function CarrierTrackingTab({ shipmentId }: { shipmentId: string }) {
                   {ev.signedBy && (
                     <div className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
                       <Pen className="h-3 w-3" />
-                      Signed by: {ev.signedBy}
+                      {translate('Signed by:')} {ev.signedBy}
                     </div>
                   )}
                   {ev.estimatedDelivery && (
                     <div className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
                       <Clock className="h-3 w-3" />
-                      ETA: {new Date(ev.estimatedDelivery).toLocaleString()}
+                      {translate('ETA:')} {new Date(ev.estimatedDelivery).toLocaleString()}
                     </div>
                   )}
                 </li>
@@ -1762,7 +1776,7 @@ function EventsTab({ shipmentId }: { shipmentId: string }) {
     <Card>
       <CardHeader className="space-y-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-base">Event Timeline</CardTitle>
+          <CardTitle className="text-base">{translate('Event Timeline')}</CardTitle>
           <Button
             variant={autoRefresh ? 'default' : 'outline'}
             size="sm"
@@ -1770,28 +1784,28 @@ function EventsTab({ shipmentId }: { shipmentId: string }) {
             title={autoRefresh ? 'Stop auto-refresh (30s)' : 'Start auto-refresh (30s)'}
           >
             {autoRefresh ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
-            {autoRefresh ? 'Live' : 'Auto'}
+            {autoRefresh ? translate('Live') : translate('Auto')}
           </Button>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Select value={eventType} onValueChange={setEventType}>
             <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="All event types" />
+              <SelectValue placeholder={translate('All event types')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All event types</SelectItem>
+              <SelectItem value="all">{translate('All event types')}</SelectItem>
               {SHIPMENT_EVENT_TYPES.map(t => (
                 <SelectItem key={t.type} value={t.type}>{t.label}</SelectItem>
               ))}
             </SelectContent>
           </Select>
-          <DatePicker type="date" value={fromDate} onChange={e => setFromDate(e.target.value)} aria-label="From date" className="w-[160px]" />
-          <span className="text-xs text-muted-foreground">to</span>
-          <DatePicker type="date" value={toDate} onChange={e => setToDate(e.target.value)} aria-label="To date" className="w-[160px]" />
+          <DatePicker type="date" value={fromDate} onChange={e => setFromDate(e.target.value)} aria-label={translate('From date')} className="w-[160px]" />
+          <span className="text-xs text-muted-foreground">{translate('to')}</span>
+          <DatePicker type="date" value={toDate} onChange={e => setToDate(e.target.value)} aria-label={translate('To date')} className="w-[160px]" />
           {hasFilters && (
             <Button variant="ghost" size="sm" onClick={clearFilters}>
               <X className="h-4 w-4" />
-              Clear
+              {translate('Clear')}
             </Button>
           )}
         </div>
@@ -1799,12 +1813,12 @@ function EventsTab({ shipmentId }: { shipmentId: string }) {
       <CardContent>
         {loading ? (
           <div className="flex items-center gap-2 py-8 text-sm text-muted-foreground">
-            <Loader2 className="h-4 w-4 animate-spin" /> Loading events...
+            <Loader2 className="h-4 w-4 animate-spin" /> {translate('Loading events...')}
           </div>
         ) : events.length === 0 ? (
           <div className="flex flex-col items-center gap-2 py-10 text-muted-foreground">
             <Clock className="h-8 w-8 opacity-50" />
-            <p className="text-sm">{hasFilters ? 'No events match these filters.' : 'No events recorded yet.'}</p>
+            <p className="text-sm">{hasFilters ? translate('No events match these filters.') : translate('No events recorded yet.')}</p>
           </div>
         ) : (
           <ol className="relative space-y-6 border-l border-border pl-6">
@@ -1957,7 +1971,7 @@ export default function VNextShipmentDetail() {
       setAddOrderOpen(false);
       loadShipment(false);
     } catch {
-      toast.error('Failed to add orders');
+      toast.error(translate('Failed to add orders'));
     } finally {
       setAddingOrders(false);
     }
@@ -1979,7 +1993,7 @@ export default function VNextShipmentDetail() {
       toast.success(`${orderNumber} removed from shipment`);
       loadShipment(false);
     } catch {
-      toast.error('Failed to remove order');
+      toast.error(translate('Failed to remove order'));
     } finally {
       setOrderActionBusyId(null);
     }
@@ -1998,7 +2012,7 @@ export default function VNextShipmentDetail() {
       toast.success(`${orderNumber} archived`);
       loadShipment(false);
     } catch {
-      toast.error('Failed to archive order');
+      toast.error(translate('Failed to archive order'));
     } finally {
       setOrderActionBusyId(null);
     }
@@ -2021,7 +2035,7 @@ export default function VNextShipmentDetail() {
       toast.success(`Moved to ${shipmentStatusLabel(toStatus)}`);
       loadShipment(false);
     } catch {
-      toast.error('Failed to change status');
+      toast.error(translate('Failed to change status'));
     } finally {
       setTransitioning(false);
     }
@@ -2037,10 +2051,10 @@ export default function VNextShipmentDetail() {
         toast.error(json.error || 'Failed to archive shipment', { duration: 8000 });
         return;
       }
-      toast.success('Shipment archived');
+      toast.success(translate('Shipment archived'));
       navigate('/shipments');
     } catch {
-      toast.error('Failed to archive shipment');
+      toast.error(translate('Failed to archive shipment'));
     } finally {
       setArchiving(false);
     }
@@ -2056,10 +2070,10 @@ export default function VNextShipmentDetail() {
         toast.error(json.error || 'Failed to unarchive shipment', { duration: 8000 });
         return;
       }
-      toast.success('Shipment restored');
+      toast.success(translate('Shipment restored'));
       loadShipment(false);
     } catch {
-      toast.error('Failed to unarchive shipment');
+      toast.error(translate('Failed to unarchive shipment'));
     } finally {
       setUnarchiving(false);
     }
@@ -2075,10 +2089,10 @@ export default function VNextShipmentDetail() {
         toast.error(json.error || 'Failed to delete shipment', { duration: 8000 });
         return;
       }
-      toast.success('Shipment deleted');
+      toast.success(translate('Shipment deleted'));
       navigate('/shipments');
     } catch {
-      toast.error('Failed to delete shipment');
+      toast.error(translate('Failed to delete shipment'));
     } finally {
       setDeleting(false);
       setConfirmDelete(false);
@@ -2347,18 +2361,20 @@ export default function VNextShipmentDetail() {
   if (notFound || (!error && !shipment)) {
     return (
       <div className="flex flex-col items-center justify-center gap-5 px-6 py-24 text-center">
-        <div className="flex h-28 w-28 items-center justify-center rounded-full bg-muted text-6xl" role="img" aria-label="Magnifying glass">
+        <div className="flex h-28 w-28 items-center justify-center rounded-full bg-muted text-6xl" role="img" aria-label={translate('Magnifying glass')}>
           🔍
         </div>
         <div className="space-y-1">
-          <h2 className="text-2xl font-semibold tracking-tight">Shipment not found</h2>
+          <h2 className="text-2xl font-semibold tracking-tight">{translate('Shipment not found')}</h2>
           <p className="max-w-md text-sm text-muted-foreground">
-            We couldn't find this shipment. It may have been deleted, or the link is incorrect.
+            {translate(
+              'We couldn\'t find this shipment. It may have been deleted, or the link is incorrect.'
+            )}
           </p>
         </div>
         <Button onClick={() => navigate('/shipments')}>
           <ArrowLeft className="h-4 w-4" />
-          Back to shipments
+          {translate('Back to shipments')}
         </Button>
       </div>
     );
@@ -2375,7 +2391,7 @@ export default function VNextShipmentDetail() {
     return (
       <div className="m-6 flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
         <XCircle className="h-5 w-5" />
-        Shipment not found
+        {translate('Shipment not found')}
       </div>
     );
   }
@@ -2395,21 +2411,21 @@ export default function VNextShipmentDetail() {
     : eligibleOrders;
 
   const tabs = [
-    { value: 'details', label: 'Details', Icon: Info },
-    { value: 'events', label: 'Events', Icon: Clock },
-    { value: 'notes', label: 'Notes', Icon: MessageSquare },
-    { value: 'activity', label: 'Activity', Icon: Activity },
-    { value: 'orders', label: 'Orders', Icon: Box },
-    { value: 'documents', label: 'Docs', Icon: FileText },
-    { value: 'financials', label: 'Financials', Icon: CreditCard },
-    { value: 'cargo', label: 'Cargo', Icon: Package },
-    { value: 'telemetry', label: 'Telemetry', Icon: Thermometer },
-    { value: 'sla', label: 'SLA', Icon: Timer },
-    { value: 'carrier-tracking', label: 'Carriers', Icon: Target },
+    { value: 'details', label: translate('Details'), Icon: Info },
+    { value: 'events', label: translate('Events'), Icon: Clock },
+    { value: 'notes', label: translate('Notes'), Icon: MessageSquare },
+    { value: 'activity', label: translate('Activity'), Icon: Activity },
+    { value: 'orders', label: translate('Orders'), Icon: Box },
+    { value: 'documents', label: translate('Docs'), Icon: FileText },
+    { value: 'financials', label: translate('Financials'), Icon: CreditCard },
+    { value: 'cargo', label: translate('Cargo'), Icon: Package },
+    { value: 'telemetry', label: translate('Telemetry'), Icon: Thermometer },
+    { value: 'sla', label: translate('SLA'), Icon: Timer },
+    { value: 'carrier-tracking', label: translate('Carriers'), Icon: Target },
     // Sharing is a separate grant: an operator who can edit a shipment is not automatically
     // trusted to put it in front of someone outside the organisation.
     ...(hasPermission('shipments:share')
-      ? [{ value: 'shared-links', label: 'Shared links', Icon: Share2 }]
+      ? [{ value: 'shared-links', label: translate('Shared links'), Icon: Share2 }]
       : []),
   ];
 
@@ -2418,7 +2434,7 @@ export default function VNextShipmentDetail() {
       <div>
         <Button variant="ghost" size="sm" onClick={() => navigate('/shipments')} className="-ml-3">
           <ArrowLeft className="h-4 w-4" />
-          Shipments
+          {translate('Shipments')}
         </Button>
       </div>
 
@@ -2442,14 +2458,14 @@ export default function VNextShipmentDetail() {
                       size="sm"
                       className="h-7 gap-1.5 px-2"
                       disabled={transitioning || targets.length === 0}
-                      title="Change lifecycle status"
+                      title={translate('Change lifecycle status')}
                     >
                       <Badge variant={shipmentStatusVariant(status)}>{shipmentStatusLabel(status)}</Badge>
                       <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start" className="w-72">
-                    <DropdownMenuLabel>Move shipment to</DropdownMenuLabel>
+                    <DropdownMenuLabel>{translate('Move shipment to')}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     {targets.map(to => {
                       // Forward moves into ready/in_progress/complete are gated.
@@ -2467,14 +2483,14 @@ export default function VNextShipmentDetail() {
                           <span className="font-medium">{shipmentStatusLabel(to)}</span>
                           {blocked && (
                             <span className="text-xs text-muted-foreground">
-                              Missing: {readiness.missing.map(f => SHIPMENT_FIELD_LABELS[f] ?? f).join(', ')}
+                              {translate('Missing:')} {readiness.missing.map(f => SHIPMENT_FIELD_LABELS[f] ?? f).join(', ')}
                             </span>
                           )}
                         </DropdownMenuItem>
                       );
                     })}
                     {targets.length === 0 && (
-                      <DropdownMenuItem disabled>No transitions available</DropdownMenuItem>
+                      <DropdownMenuItem disabled>{translate('No transitions available')}</DropdownMenuItem>
                     )}
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -2483,16 +2499,16 @@ export default function VNextShipmentDetail() {
             {shipment.hasException && (
               <Badge variant="destructive" className="gap-1">
                 <AlertTriangle className="h-3 w-3" />
-                Exception
+                {translate('Exception')}
               </Badge>
             )}
             {shipmentType && <Badge variant="muted">{shipmentType.name}</Badge>}
           </div>
           <p className="mt-1 text-sm text-muted-foreground">
-            {shipment.proNumber && <>PRO# {shipment.proNumber}</>}
+            {shipment.proNumber && <>{translate('PRO#')} {shipment.proNumber}</>}
             {shipment.customer?.name && <> &middot; {shipment.customer.name}</>}
             {shipment.consolidationShipment?.consolidation && (
-              <> &middot; Rides on{' '}
+              <> {translate('· Rides on')}{' '}
                 <Link to={`/consolidations/${shipment.consolidationShipment.consolidation.id}`} className="text-primary hover:underline">
                   {shipment.consolidationShipment.consolidation.reference}
                 </Link>
@@ -2503,29 +2519,29 @@ export default function VNextShipmentDetail() {
         <div className="flex flex-wrap gap-2">
           <Button variant="outline" size="sm" onClick={() => navigate(`/shipments/${id}/edit`)}>
             <Edit className="h-4 w-4" />
-            Edit
+            {translate('Edit')}
           </Button>
           {hasPermission('shipments:share') && (
             <Button variant="outline" size="sm" onClick={() => setShareDialogOpen(true)}>
               <Share2 className="h-4 w-4" />
-              Share
+              {translate('Share')}
             </Button>
           )}
           <Button variant="gradient" size="sm" onClick={() => setActiveTab('carrier-tracking')}>
             <Target className="h-4 w-4" />
-            Track
+            {translate('Track')}
           </Button>
           {hasPermission('shipments:write') && !shipment.archived && !shipment.deletedAt && (
             <Button variant="outline" size="sm" onClick={handleArchive} disabled={archiving}>
               {archiving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Archive className="h-4 w-4" />}
-              Archive
+              {translate('Archive')}
             </Button>
           )}
           {hasPermission('shipments:delete') && !shipment.deletedAt && (
             <Button variant="outline" size="sm" onClick={() => setConfirmDelete(true)} disabled={deleting}
               className="text-destructive hover:text-destructive">
               <Trash2 className="h-4 w-4" />
-              Delete
+              {translate('Delete')}
             </Button>
           )}
         </div>
@@ -2536,13 +2552,13 @@ export default function VNextShipmentDetail() {
         <div className="flex flex-wrap items-center gap-3 rounded-md border border-warning/30 bg-warning/10 p-4 text-sm">
           <Archive className="h-5 w-5 text-warning" />
           <div className="flex-1">
-            <span className="font-medium text-warning">This shipment is archived.</span>
-            <span className="ml-1 text-muted-foreground">It does not appear in active shipment lists.</span>
+            <span className="font-medium text-warning">{translate('This shipment is archived.')}</span>
+            <span className="ml-1 text-muted-foreground">{translate('It does not appear in active shipment lists.')}</span>
           </div>
           {hasPermission('shipments:delete') && (
             <Button variant="outline" size="sm" onClick={handleUnarchive} disabled={unarchiving}>
               {unarchiving ? <Loader2 className="h-4 w-4 animate-spin" /> : <ArchiveRestore className="h-4 w-4" />}
-              Unarchive
+              {translate('Unarchive')}
             </Button>
           )}
         </div>
@@ -2552,17 +2568,18 @@ export default function VNextShipmentDetail() {
       <Dialog open={confirmDelete} onOpenChange={setConfirmDelete}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete this shipment?</DialogTitle>
+            <DialogTitle>{translate('Delete this shipment?')}</DialogTitle>
             <DialogDescription>
-              {shipment.reference || id} will be removed from all views. The record is retained for audit
-              but cannot be restored from the UI. This is different from archiving.
+              {shipment.reference || id} {translate(
+                'will be removed from all views. The record is retained for audit\n              but cannot be restored from the UI. This is different from archiving.'
+              )}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setConfirmDelete(false)} disabled={deleting}>Cancel</Button>
+            <Button variant="outline" onClick={() => setConfirmDelete(false)} disabled={deleting}>{translate('Cancel')}</Button>
             <Button variant="destructive" onClick={handleSoftDelete} disabled={deleting}>
               {deleting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-              Delete shipment
+              {translate('Delete shipment')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -2572,16 +2589,18 @@ export default function VNextShipmentDetail() {
       <Dialog open={addOrderOpen} onOpenChange={setAddOrderOpen}>
         <DialogContent className="max-w-lg">
           <DialogHeader>
-            <DialogTitle>Add order to {shipment.reference || 'this shipment'}</DialogTitle>
+            <DialogTitle>{translate('Add order to')} {shipment.reference || translate('this shipment')}</DialogTitle>
             <DialogDescription>
-              Only verified orders with the same origin and customer as this shipment are eligible.
+              {translate(
+                'Only verified orders with the same origin and customer as this shipment are eligible.'
+              )}
             </DialogDescription>
           </DialogHeader>
           {eligibleOrders.length > 0 && (
             <div className="relative">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Search eligible orders..."
+                placeholder={translate('Search eligible orders...')}
                 value={eligibleSearch}
                 onChange={e => setEligibleSearch(e.target.value)}
                 className="pl-9"
@@ -2596,12 +2615,14 @@ export default function VNextShipmentDetail() {
               </div>
             ) : eligibleOrders.length === 0 ? (
               <p className="py-8 text-center text-sm text-muted-foreground">
-                No eligible orders. Orders must be validated, share this shipment's origin and customer, and not already be linked to a shipment.
+                {translate(
+                  'No eligible orders. Orders must be validated, share this shipment\'s origin and customer, and not already be linked to a shipment.'
+                )}
               </p>
             ) : filteredEligibleOrders.length === 0 ? (
               <p className="py-8 text-center text-sm text-muted-foreground">
-                No eligible orders match "{eligibleSearch}".
-              </p>
+                {translate('No eligible orders match "')}{eligibleSearch}".
+                              </p>
             ) : (
               <div className="space-y-1">
                 {filteredEligibleOrders.map(o => (
@@ -2618,7 +2639,7 @@ export default function VNextShipmentDetail() {
                     <span className="min-w-0 flex-1">
                       <span className="block font-medium">{o.orderNumber}</span>
                       <span className="block text-xs text-muted-foreground">
-                        {o.customer?.name} &middot; to {o.destination ? `${o.destination.city}, ${o.destination.state || ''}` : 'unknown destination'}
+                        {o.customer?.name} {translate('· to')} {o.destination ? `${o.destination.city}, ${o.destination.state || ''}` : translate('unknown destination')}
                       </span>
                     </span>
                   </label>
@@ -2627,10 +2648,10 @@ export default function VNextShipmentDetail() {
             )}
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setAddOrderOpen(false)} disabled={addingOrders}>Cancel</Button>
+            <Button variant="outline" onClick={() => setAddOrderOpen(false)} disabled={addingOrders}>{translate('Cancel')}</Button>
             <Button onClick={handleAddOrders} disabled={addingOrders || selectedOrderIds.size === 0}>
               {addingOrders ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
-              Add {selectedOrderIds.size > 0 ? selectedOrderIds.size : ''} order{selectedOrderIds.size === 1 ? '' : 's'}
+              {translate('Add')} {selectedOrderIds.size > 0 ? selectedOrderIds.size : ''} {translate('order')}{selectedOrderIds.size === 1 ? '' : translate('s')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -2650,15 +2671,14 @@ export default function VNextShipmentDetail() {
         >
           <AlertTriangle className="h-5 w-5 shrink-0" />
           <div>
-            <strong>Route Deviation Detected</strong>
+            <strong>{translate('Route Deviation Detected')}</strong>
             <p className="mt-1">
-              This shipment is <strong>{(routeDeviation.deviationMeters / 1000).toFixed(1)} km</strong> off
-              the planned route (corridor: {(routeDeviation.corridorMeters / 1000).toFixed(1)} km).
+              {translate('This shipment is')} <strong>{(routeDeviation.deviationMeters / 1000).toFixed(1)} {translate('km')}</strong> {translate('off\n              the planned route (corridor:')} {(routeDeviation.corridorMeters / 1000).toFixed(1)} {translate('km).')}
               {routeDeviation.severity === 'critical' && ' This is a critical deviation.'}
             </p>
             {shipment.laneId && (
               <Link to={`/lanes/${shipment.laneId}`} className="mt-1 inline-block text-xs underline">
-                View planned route
+                {translate('View planned route')}
               </Link>
             )}
           </div>
@@ -2699,7 +2719,7 @@ export default function VNextShipmentDetail() {
                   className="h-4 w-4 rounded border border-input bg-background accent-primary"
                 />
                 <span className="inline-block h-0.5 w-4 rounded-full" style={{ background: COLOR_INFO }} />
-                Lane
+                {translate('Lane')}
               </label>
               {laneRoute?.waypoints?.length > 0 && (
                 <label className="flex cursor-pointer select-none items-center gap-1.5">
@@ -2710,18 +2730,18 @@ export default function VNextShipmentDetail() {
                     className="h-4 w-4 rounded border border-input bg-background accent-primary"
                   />
                   <span className="inline-block h-0.5 w-4 rounded-full" style={{ background: COLOR_ROUTE }} />
-                  Planned route
+                  {translate('Planned route')}
                 </label>
               )}
               {hasCurrentCoords && (
                 <span className="flex items-center gap-1.5 text-muted-foreground">
                   <span className="inline-block h-2.5 w-2.5 rounded-full" style={{ background: COLOR_PRIMARY }} />
-                  Current position
+                  {translate('Current position')}
                 </span>
               )}
               {shipment.laneId && laneRoute === null && (
                 <Link to={`/lanes/${shipment.laneId}/edit`} className="ml-auto text-muted-foreground underline">
-                  Plan a route for this lane
+                  {translate('Plan a route for this lane')}
                 </Link>
               )}
             </div>
@@ -2737,10 +2757,12 @@ export default function VNextShipmentDetail() {
           </div>
         ) : (
           <div className="flex h-[220px] flex-col items-center justify-center gap-2 border-t border-dashed border-border bg-muted/30 px-6 text-center">
-            <div className="text-3xl" role="img" aria-label="Map">🗺️</div>
-            <div className="text-sm font-medium">No location data yet</div>
+            <div className="text-3xl" role="img" aria-label={translate('Map')}>🗺️</div>
+            <div className="text-sm font-medium">{translate('No location data yet')}</div>
             <div className="max-w-sm text-xs text-muted-foreground">
-              Live position appears here once a carrier-tracking integration or an assigned IoT device reports a location.
+              {translate(
+                'Live position appears here once a carrier-tracking integration or an assigned IoT device reports a location.'
+              )}
             </div>
           </div>
         )}
@@ -2759,25 +2781,25 @@ export default function VNextShipmentDetail() {
           <Card>
             <CardContent className="divide-y divide-border p-0">
               <section className="space-y-2 p-4 text-sm">
-                <Detail label="Carrier" value={shipment.carrier?.name || '-'} />
-                <Detail label="PRO Number" value={shipment.proNumber || '-'} />
-                <Detail label="Mode" value={shipment.serviceLevel || '-'} />
+                <Detail label={translate('Carrier')} value={shipment.carrier?.name || '-'} />
+                <Detail label={translate('PRO Number')} value={shipment.proNumber || '-'} />
+                <Detail label={translate('Mode')} value={shipment.serviceLevel || '-'} />
                 <Detail
-                  label="Lane"
+                  label={translate('Lane')}
                   value={
                     shipment.laneId ? (
                       <Link to={`/lanes/${shipment.laneId}`} className="text-primary hover:underline">
-                        {shipment.lane?.name || 'View Lane'}
+                        {shipment.lane?.name || translate('View Lane')}
                       </Link>
                     ) : '-'
                   }
                 />
                 {routeDeviation && (
                   <Detail
-                    label="Route Status"
+                    label={translate('Route Status')}
                     value={
                       <Badge variant={routeDeviation.severity === 'critical' ? 'destructive' : 'warning'}>
-                        {(routeDeviation.deviationMeters / 1000).toFixed(1)} km off route
+                        {(routeDeviation.deviationMeters / 1000).toFixed(1)} {translate('km off route')}
                       </Badge>
                     }
                   />
@@ -2787,7 +2809,7 @@ export default function VNextShipmentDetail() {
               {(shipment.deviceAssignments || []).length > 0 && (
                 <section className="space-y-2 p-4 text-sm">
                   <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    Assigned Devices
+                    {translate('Assigned Devices')}
                   </span>
                   <div className="flex flex-wrap gap-3">
                     {shipment.deviceAssignments.map((a: any) => (
@@ -2799,14 +2821,14 @@ export default function VNextShipmentDetail() {
                         <div>
                           <div className="flex items-center gap-2">
                             <span className="text-sm font-semibold">
-                              {a.device?.name || a.device?.externalId || 'Device'}
+                              {a.device?.name || a.device?.externalId || translate('Device')}
                             </span>
                             {a.purpose && (
                               <Badge variant="muted">{DEVICE_PURPOSE_LABELS[a.purpose] || a.purpose}</Badge>
                             )}
                           </div>
                           <div className="text-xs text-muted-foreground">
-                            Assigned {a.assignedAt ? new Date(a.assignedAt).toLocaleDateString() : '-'}
+                            {translate('Assigned')} {a.assignedAt ? new Date(a.assignedAt).toLocaleDateString() : '-'}
                           </div>
                         </div>
                       </div>
@@ -2818,34 +2840,34 @@ export default function VNextShipmentDetail() {
               {(shipment.tempControlled || shipment.hazmat || shipment.humidityControlled || shipment.requiredEquipmentType) && (
                 <section className="space-y-2 p-4 text-sm">
                   <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    Restrictions
+                    {translate('Restrictions')}
                   </span>
                   {shipment.tempControlled && (
                     <Detail
-                      label="Temperature"
+                      label={translate('Temperature')}
                       value={`${shipment.tempMinC ?? '?'}°C to ${shipment.tempMaxC ?? '?'}°C`}
                     />
                   )}
                   {shipment.humidityControlled && (
                     <Detail
-                      label="Humidity"
+                      label={translate('Humidity')}
                       value={`${shipment.humidityMinPct ?? '?'}% to ${shipment.humidityMaxPct ?? '?'}%`}
                     />
                   )}
                   {shipment.hazmat && (
                     <>
-                      <Detail label="Hazmat" value={<Badge variant="warning">Hazmat</Badge>} />
-                      {shipment.unNumber && <Detail label="UN Number" value={shipment.unNumber} />}
-                      {shipment.hazmatClass && <Detail label="Hazmat Class" value={shipment.hazmatClass} />}
-                      {shipment.packingGroup && <Detail label="Packing Group" value={shipment.packingGroup} />}
+                      <Detail label={translate('Hazmat')} value={<Badge variant="warning">{translate('Hazmat')}</Badge>} />
+                      {shipment.unNumber && <Detail label={translate('UN Number')} value={shipment.unNumber} />}
+                      {shipment.hazmatClass && <Detail label={translate('Hazmat Class')} value={shipment.hazmatClass} />}
+                      {shipment.packingGroup && <Detail label={translate('Packing Group')} value={shipment.packingGroup} />}
                       {shipment.properShippingName && (
-                        <Detail label="Proper Shipping Name" value={shipment.properShippingName} />
+                        <Detail label={translate('Proper Shipping Name')} value={shipment.properShippingName} />
                       )}
                     </>
                   )}
                   {shipment.requiredEquipmentType && (
                     <Detail
-                      label="Equipment"
+                      label={translate('Equipment')}
                       value={EQUIPMENT_TYPE_LABELS[shipment.requiredEquipmentType] || shipment.requiredEquipmentType}
                     />
                   )}
@@ -2856,14 +2878,14 @@ export default function VNextShipmentDetail() {
                 <div>
                   <div className="mb-1.5 flex items-center gap-2">
                     <span className="inline-block h-2 w-2 rounded-full bg-info" />
-                    <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Origin</span>
+                    <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{translate('Origin')}</span>
                   </div>
                   <div className="space-y-2 pl-4">
-                    <Detail label="Facility" value={origin.name || '-'} />
-                    <Detail label="Address" value={[origin.address1, origin.city, origin.state].filter(Boolean).join(', ') || '-'} />
+                    <Detail label={translate('Facility')} value={origin.name || '-'} />
+                    <Detail label={translate('Address')} value={[origin.address1, origin.city, origin.state].filter(Boolean).join(', ') || '-'} />
                     {(shipment.pickupWindowStart || shipment.pickupWindowEnd) && (
                       <Detail
-                        label="Pickup Window"
+                        label={translate('Pickup Window')}
                         value={
                           <>
                             {shipment.pickupWindowStart ? new Date(shipment.pickupWindowStart).toLocaleString() : '-'}
@@ -2889,8 +2911,8 @@ export default function VNextShipmentDetail() {
                       <div className="mb-1.5 flex items-center gap-2">
                         <span className="inline-block h-2 w-2 rounded-full bg-warning" />
                         <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                          Waypoints ({waypoints.length})
-                        </span>
+                          {translate('Waypoints (')}{waypoints.length})
+                                                  </span>
                       </div>
                       <div className="space-y-3 pl-4">
                         {waypoints.map((stop: any, i: number) => (
@@ -2912,14 +2934,14 @@ export default function VNextShipmentDetail() {
                 <div>
                   <div className="mb-1.5 flex items-center gap-2">
                     <span className="inline-block h-2 w-2 rounded-full bg-success" />
-                    <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Destination</span>
+                    <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{translate('Destination')}</span>
                   </div>
                   <div className="space-y-2 pl-4">
-                    <Detail label="Facility" value={destination.name || '-'} />
-                    <Detail label="Address" value={[destination.address1, destination.city, destination.state].filter(Boolean).join(', ') || '-'} />
+                    <Detail label={translate('Facility')} value={destination.name || '-'} />
+                    <Detail label={translate('Address')} value={[destination.address1, destination.city, destination.state].filter(Boolean).join(', ') || '-'} />
                     {(shipment.deliveryWindowStart || shipment.deliveryWindowEnd) && (
                       <Detail
-                        label="Delivery Window"
+                        label={translate('Delivery Window')}
                         value={
                           <>
                             {shipment.deliveryWindowStart ? new Date(shipment.deliveryWindowStart).toLocaleString() : '-'}
@@ -2952,19 +2974,19 @@ export default function VNextShipmentDetail() {
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <CardTitle className="text-base">Orders ({orders.length})</CardTitle>
+                    <CardTitle className="text-base">{translate('Orders (')}{orders.length})</CardTitle>
                     {shipment.serviceLevel && <Badge variant="muted">{shipment.serviceLevel}</Badge>}
                   </div>
                   {(shipment.status === 'draft' || shipment.status === 'ready') && hasPermission('orders:write') && (
                     <Button variant="outline" size="sm" onClick={openAddOrderModal}>
                       <Plus className="h-4 w-4" />
-                      Add order
+                      {translate('Add order')}
                     </Button>
                   )}
                 </CardHeader>
                 <CardContent className="space-y-1 text-sm">
                   {orders.length === 0 ? (
-                    <p className="text-muted-foreground">No orders linked to this shipment yet.</p>
+                    <p className="text-muted-foreground">{translate('No orders linked to this shipment yet.')}</p>
                   ) : (
                     orders.map((os: any) => {
                       const order = os.order || {};
@@ -2997,18 +3019,18 @@ export default function VNextShipmentDetail() {
                               )}
                               {order.pickupStop && order.pickupStop.sequenceNumber > 1 && (
                                 <span>
-                                  Picks up at stop {order.pickupStop.sequenceNumber}
+                                  {translate('Picks up at stop')} {order.pickupStop.sequenceNumber}
                                   {order.pickupStop.location?.name ? ` · ${order.pickupStop.location.name}` : ''}
                                 </span>
                               )}
                               {order.deliveryStop && (
                                 <span>
-                                  Drops at stop {order.deliveryStop.sequenceNumber}
+                                  {translate('Drops at stop')} {order.deliveryStop.sequenceNumber}
                                   {order.deliveryStop.location?.name ? ` · ${order.deliveryStop.location.name}` : ''}
                                 </span>
                               )}
                               {order.deliveryStatus === 'delivered' && order.deliveredAt && (
-                                <span>Delivered {new Date(order.deliveredAt).toLocaleString()}</span>
+                                <span>{translate('Delivered')} {new Date(order.deliveredAt).toLocaleString()}</span>
                               )}
                             </div>
                           </Link>
@@ -3018,7 +3040,7 @@ export default function VNextShipmentDetail() {
                                 type="button"
                                 disabled={busy}
                                 className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-50"
-                                title="Order actions"
+                                title={translate('Order actions')}
                               >
                                 {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <MoreVertical className="h-4 w-4" />}
                               </button>
@@ -3026,12 +3048,12 @@ export default function VNextShipmentDetail() {
                             <DropdownMenuContent align="end">
                               <DropdownMenuItem onSelect={() => navigate(`/orders/${order.id}`)}>
                                 <Eye className="h-4 w-4" />
-                                View details
+                                {translate('View details')}
                               </DropdownMenuItem>
                               {canModify && (
                                 <DropdownMenuItem onSelect={() => handleRemoveOrder(order.id, order.orderNumber)}>
                                   <X className="h-4 w-4" />
-                                  Remove from shipment
+                                  {translate('Remove from shipment')}
                                 </DropdownMenuItem>
                               )}
                               {hasPermission('orders:write') && (
@@ -3040,7 +3062,7 @@ export default function VNextShipmentDetail() {
                                   className="text-destructive focus:text-destructive"
                                 >
                                   <Archive className="h-4 w-4" />
-                                  Archive order
+                                  {translate('Archive order')}
                                 </DropdownMenuItem>
                               )}
                             </DropdownMenuContent>
@@ -3057,7 +3079,7 @@ export default function VNextShipmentDetail() {
               <Card>
                 <CardHeader className="flex flex-col gap-2 space-y-0">
                   <div className="flex flex-row items-center justify-between">
-                  <CardTitle className="text-base">Documents</CardTitle>
+                  <CardTitle className="text-base">{translate('Documents')}</CardTitle>
                   <div className="flex flex-wrap gap-2">
                     <Button
                       variant="default"
@@ -3071,7 +3093,7 @@ export default function VNextShipmentDetail() {
                       }
                     >
                       <FileText className="h-4 w-4" />
-                      {generating === 'bol' ? 'Generating...' : 'Generate BOL'}
+                      {generating === 'bol' ? translate('Generating...') : translate('Generate BOL')}
                     </Button>
                     <Button
                       variant="outline"
@@ -3085,7 +3107,7 @@ export default function VNextShipmentDetail() {
                       }
                     >
                       <Globe className="h-4 w-4" />
-                      {generating === 'customs' ? 'Generating...' : 'Customs Form'}
+                      {generating === 'customs' ? translate('Generating...') : translate('Customs Form')}
                     </Button>
                     {shipment?.carrierId && (
                       <Button
@@ -3095,7 +3117,7 @@ export default function VNextShipmentDetail() {
                         onClick={() => handleGenerateDoc('rate_confirmation')}
                       >
                         <Handshake className="h-4 w-4" />
-                        {generating === 'rate_confirmation' ? 'Generating...' : 'Rate Confirmation'}
+                        {generating === 'rate_confirmation' ? translate('Generating...') : translate('Rate Confirmation')}
                       </Button>
                     )}
                   </div>
@@ -3104,9 +3126,9 @@ export default function VNextShipmentDetail() {
                     <div className="flex items-start gap-2 rounded-md border border-warning/30 bg-warning/10 p-3 text-xs text-warning">
                       <Info className="mt-0.5 h-4 w-4 shrink-0" />
                       <div>
-                        <span className="font-medium">Bill of Lading and Customs Form not available yet.</span> Both
-                        need the shipper, consignee, and a complete description of the goods before they can be
-                        generated:
+                        <span className="font-medium">{translate('Bill of Lading and Customs Form not available yet.')}</span> {translate(
+                          'Both\n                        need the shipper, consignee, and a complete description of the goods before they can be\n                        generated:'
+                        )}
                         <ul className="mt-1 list-inside list-disc">
                           {bolReadiness.missing.map((m, i) => (
                             <li key={i}>{m}</li>
@@ -3120,16 +3142,16 @@ export default function VNextShipmentDetail() {
                   {documents.length === 0 ? (
                     <div className="py-8 text-center text-muted-foreground">
                       <Inbox className="mx-auto h-10 w-10 opacity-40" />
-                      <p className="mt-2 text-sm">No documents yet. Generate a Bill of Lading to get started.</p>
+                      <p className="mt-2 text-sm">{translate('No documents yet. Generate a Bill of Lading to get started.')}</p>
                     </div>
                   ) : (
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Document</TableHead>
-                          <TableHead>Type</TableHead>
-                          <TableHead>Created</TableHead>
-                          <TableHead>Actions</TableHead>
+                          <TableHead>{translate('Document')}</TableHead>
+                          <TableHead>{translate('Type')}</TableHead>
+                          <TableHead>{translate('Created')}</TableHead>
+                          <TableHead>{translate('Actions')}</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -3166,7 +3188,7 @@ export default function VNextShipmentDetail() {
                               <TableCell>
                                 <div className="flex gap-1">
                                   {doc.documentType === 'bol' && (
-                                    <Button asChild variant="ghost" size="icon" className="h-8 w-8" title="View BOL">
+                                    <Button asChild variant="ghost" size="icon" className="h-8 w-8" title={translate('View BOL')}>
                                       <Link to={`/documents/${doc.id}/view`}>
                                         <Eye className="h-4 w-4" />
                                       </Link>
@@ -3176,7 +3198,7 @@ export default function VNextShipmentDetail() {
                                     variant="ghost"
                                     size="icon"
                                     className="h-8 w-8"
-                                    title="Download PDF"
+                                    title={translate('Download PDF')}
                                     disabled={downloadingDocId === doc.id}
                                     onClick={() => handleDownloadDoc(doc.id, doc.fileName)}
                                   >

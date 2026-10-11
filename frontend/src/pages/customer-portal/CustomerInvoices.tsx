@@ -33,6 +33,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface Invoice {
   id: string; invoiceNumber: string; customerName: string;
   totalCents: number; paidCents: number; balanceCents: number;
@@ -111,7 +113,7 @@ export default function CustomerInvoices() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">Invoices</h1>
+      <h1 className="text-3xl font-bold tracking-tight">{t('Invoices')}</h1>
       <Card>
         <div className="flex flex-wrap items-center gap-3 p-4">
           <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -119,13 +121,13 @@ export default function CustomerInvoices() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All invoices</SelectItem>
-              <SelectItem value="outstanding">Outstanding</SelectItem>
-              <SelectItem value="sent">Sent</SelectItem>
-              <SelectItem value="partial_paid">Partially paid</SelectItem>
-              <SelectItem value="overdue">Overdue</SelectItem>
-              <SelectItem value="paid">Paid</SelectItem>
-              <SelectItem value="voided">Voided</SelectItem>
+              <SelectItem value="all">{t('All invoices')}</SelectItem>
+              <SelectItem value="outstanding">{t('Outstanding')}</SelectItem>
+              <SelectItem value="sent">{t('Sent')}</SelectItem>
+              <SelectItem value="partial_paid">{t('Partially paid')}</SelectItem>
+              <SelectItem value="overdue">{t('Overdue')}</SelectItem>
+              <SelectItem value="paid">{t('Paid')}</SelectItem>
+              <SelectItem value="voided">{t('Voided')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -133,20 +135,20 @@ export default function CustomerInvoices() {
         {loading ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <Loader2 className="h-6 w-6 animate-spin" />
-            <span className="text-sm">Loading...</span>
+            <span className="text-sm">{t('Loading...')}</span>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Invoice</TableHead>
-                <TableHead>Issue date</TableHead>
-                <TableHead>Due date</TableHead>
-                <TableHead className="text-right">Total</TableHead>
-                <TableHead className="text-right">Paid</TableHead>
-                <TableHead className="text-right">Balance</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Action</TableHead>
+                <TableHead>{t('Invoice')}</TableHead>
+                <TableHead>{t('Issue date')}</TableHead>
+                <TableHead>{t('Due date')}</TableHead>
+                <TableHead className="text-right">{t('Total')}</TableHead>
+                <TableHead className="text-right">{t('Paid')}</TableHead>
+                <TableHead className="text-right">{t('Balance')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead>{t('Action')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -173,7 +175,7 @@ export default function CustomerInvoices() {
                         size="sm"
                         onClick={() => { setDisputeId(inv.id); setDisputeReason(''); }}
                       >
-                        Dispute
+                        {t('Dispute')}
                       </Button>
                     )}
                   </TableCell>
@@ -182,7 +184,7 @@ export default function CustomerInvoices() {
               {invoices.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={8} className="py-8 text-center text-sm text-muted-foreground">
-                    No invoices
+                    {t('No invoices')}
                   </TableCell>
                 </TableRow>
               )}
@@ -194,23 +196,23 @@ export default function CustomerInvoices() {
       <Dialog open={!!disputeId} onOpenChange={open => !open && setDisputeId(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Dispute invoice</DialogTitle>
+            <DialogTitle>{t('Dispute invoice')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-2">
-            <Label htmlFor="dispute-reason">Reason for dispute</Label>
+            <Label htmlFor="dispute-reason">{t('Reason for dispute')}</Label>
             <textarea
               id="dispute-reason"
               className={TEXTAREA_CLASS}
               rows={4}
               value={disputeReason}
               onChange={e => setDisputeReason(e.target.value)}
-              placeholder="Describe the issue with this invoice..."
+              placeholder={t('Describe the issue with this invoice...')}
             />
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDisputeId(null)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setDisputeId(null)}>{t('Cancel')}</Button>
             <Button variant="gradient" onClick={handleDispute} disabled={disputing || !disputeReason.trim()}>
-              {disputing ? 'Submitting...' : 'Submit dispute'}
+              {disputing ? t('Submitting...') : t('Submit dispute')}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -14,14 +14,16 @@ import { Input } from '@/components/ui/input';
 import { triageApi, TriageReport, fmtDuration } from './triage/api';
 import { TriageLoading, TriageError, TriageEmpty, StatTile, StatGrid } from './triage/components';
 
+import { t as translate } from '@/i18n';
+
 function isoDay(d: Date): string {
   return d.toISOString().slice(0, 10);
 }
 
 const PRESETS = [
-  { label: '7 days', days: 7 },
-  { label: '30 days', days: 30 },
-  { label: '90 days', days: 90 },
+  { label: translate('7 days'), days: 7 },
+  { label: translate('30 days'), days: 30 },
+  { label: translate('90 days'), days: 90 },
 ];
 
 export default function VNextTriageReports() {
@@ -60,16 +62,16 @@ export default function VNextTriageReports() {
     <div className="grid gap-4">
       <header className="flex flex-wrap items-center gap-3">
         <BarChart3 className="h-5 w-5" aria-hidden="true" />
-        <h1 className="m-0 flex-1 text-xl font-semibold">Triage Reports</h1>
+        <h1 className="m-0 flex-1 text-xl font-semibold">{translate('Triage Reports')}</h1>
       </header>
 
       <Card className="flex flex-wrap items-end gap-3 p-3">
         <label className="grid gap-1 text-xs text-muted-foreground">
-          From
+          {translate('From')}
           <Input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="w-40" />
         </label>
         <label className="grid gap-1 text-xs text-muted-foreground">
-          To
+          {translate('To')}
           <Input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="w-40" />
         </label>
         <div className="flex gap-1">
@@ -81,50 +83,50 @@ export default function VNextTriageReports() {
         </div>
         {invalid && (
           <span className="text-sm text-destructive" role="alert">
-            The start date must be on or before the end date.
+            {translate('The start date must be on or before the end date.')}
           </span>
         )}
       </Card>
 
-      {loading && <TriageLoading label="Building report" />}
+      {loading && <TriageLoading label={translate('Building report')} />}
       {error && !loading && <TriageError message={error} onRetry={load} />}
 
       {report && !loading && !error && (
         <>
           <div aria-live="polite"><StatGrid>
-            <StatTile label="Issues raised" value={report.total} />
+            <StatTile label={translate('Issues raised')} value={report.total} />
             <StatTile
-              label="SLA breaches"
+              label={translate('SLA breaches')}
               value={report.slaBreaches}
               tone={report.slaBreaches ? 'error' : 'success'}
             />
             <StatTile
-              label="Breach rate"
+              label={translate('Breach rate')}
               value={`${report.breachRate}%`}
               tone={report.breachRate > 20 ? 'error' : report.breachRate > 5 ? 'warning' : 'success'}
             />
-            <StatTile label="Mean time to resolve" value={fmtDuration(report.avgTimeToResolutionMins)} />
-            <StatTile label="Mean first response" value={fmtDuration(report.avgTimeToFirstResponseMins)} />
+            <StatTile label={translate('Mean time to resolve')} value={fmtDuration(report.avgTimeToResolutionMins)} />
+            <StatTile label={translate('Mean first response')} value={fmtDuration(report.avgTimeToFirstResponseMins)} />
           </StatGrid></div>
 
           <Card className="p-4">
-            <h2 className="mb-3 mt-0 text-[15px] font-semibold">Daily volume</h2>
+            <h2 className="mb-3 mt-0 text-[15px] font-semibold">{translate('Daily volume')}</h2>
             {report.daily.length === 0
-              ? <TriageEmpty title="No issues in this range" />
+              ? <TriageEmpty title={translate('No issues in this range')} />
               : <DailyChart data={report.daily} />}
           </Card>
 
           <div className="grid gap-4 xl:grid-cols-2">
             <Card className="overflow-x-auto p-4">
-              <h2 className="mb-3 mt-0 text-[15px] font-semibold">By issue type</h2>
-              {report.byType.length === 0 ? <TriageEmpty title="No data" /> : (
+              <h2 className="mb-3 mt-0 text-[15px] font-semibold">{translate('By issue type')}</h2>
+              {report.byType.length === 0 ? <TriageEmpty title={translate('No data')} /> : (
                 <table className="w-full border-collapse text-sm">
                   <thead>
                     <tr className="border-b border-border text-left">
-                      <th className="p-2">Type</th>
-                      <th className="p-2">Count</th>
-                      <th className="p-2">MTTR</th>
-                      <th className="p-2">Mean confidence</th>
+                      <th className="p-2">{translate('Type')}</th>
+                      <th className="p-2">{translate('Count')}</th>
+                      <th className="p-2">{translate('MTTR')}</th>
+                      <th className="p-2">{translate('Mean confidence')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -142,16 +144,16 @@ export default function VNextTriageReports() {
             </Card>
 
             <Card className="overflow-x-auto p-4">
-              <h2 className="mb-3 mt-0 text-[15px] font-semibold">By assignee</h2>
+              <h2 className="mb-3 mt-0 text-[15px] font-semibold">{translate('By assignee')}</h2>
               {report.byAssignee.length === 0
-                ? <TriageEmpty title="Nothing assigned in this range" />
+                ? <TriageEmpty title={translate('Nothing assigned in this range')} />
                 : (
                   <table className="w-full border-collapse text-sm">
                     <thead>
                       <tr className="border-b border-border text-left">
-                        <th className="p-2">Assignee</th>
-                        <th className="p-2">Count</th>
-                        <th className="p-2">MTTR</th>
+                        <th className="p-2">{translate('Assignee')}</th>
+                        <th className="p-2">{translate('Count')}</th>
+                        <th className="p-2">{translate('MTTR')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -169,8 +171,8 @@ export default function VNextTriageReports() {
           </div>
 
           <Card className="p-4">
-            <h2 className="mb-3 mt-0 text-[15px] font-semibold">By priority</h2>
-            {report.byPriority.length === 0 ? <TriageEmpty title="No data" /> : (
+            <h2 className="mb-3 mt-0 text-[15px] font-semibold">{translate('By priority')}</h2>
+            {report.byPriority.length === 0 ? <TriageEmpty title={translate('No data')} /> : (
               <div className="flex flex-wrap gap-3">
                 {report.byPriority.map((p) => (
                   <div key={p.priority} className="rounded-md border border-border px-3.5 py-2">
@@ -224,7 +226,7 @@ function DailyChart({ data }: { data: { day: string; count: number }[] }) {
       </svg>
       <div className="mt-1 flex justify-between text-[11px] text-muted-foreground">
         <span>{data[0]?.day}</span>
-        <span>peak {max}</span>
+        <span>{translate('peak')} {max}</span>
         <span>{data[data.length - 1]?.day}</span>
       </div>
     </div>

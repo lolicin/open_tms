@@ -25,6 +25,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t as translate } from '@/i18n';
+
 interface SensorReading {
   id: string;
   temperature: number | null;
@@ -163,7 +165,7 @@ export default function VNextDeviceDetail() {
     return (
       <div className="flex items-start gap-2 rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">
         <AlertTriangle className="h-4 w-4 shrink-0" />
-        <span>Device not found</span>
+        <span>{translate('Device not found')}</span>
       </div>
     );
   }
@@ -178,7 +180,7 @@ export default function VNextDeviceDetail() {
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Button variant="ghost" size="sm" onClick={() => navigate('/devices')}>
           <ArrowLeft className="h-4 w-4" />
-          Devices
+          {translate('Devices')}
         </Button>
         <span>/</span>
         <span className="text-foreground">{device.name}</span>
@@ -206,8 +208,8 @@ export default function VNextDeviceDetail() {
         <div className="space-y-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Sensor readings</CardTitle>
-              <span className="text-sm text-muted-foreground">{readings.length} readings</span>
+              <CardTitle>{translate('Sensor readings')}</CardTitle>
+              <span className="text-sm text-muted-foreground">{readings.length} {translate('readings')}</span>
             </CardHeader>
             <CardContent>
               <TimeSeriesChart
@@ -225,13 +227,13 @@ export default function VNextDeviceDetail() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Time</TableHead>
-                    <TableHead>Temp</TableHead>
-                    <TableHead>Battery</TableHead>
-                    <TableHead>Light</TableHead>
-                    <TableHead>Impact</TableHead>
-                    <TableHead>Location</TableHead>
-                    <TableHead>Alert</TableHead>
+                    <TableHead>{translate('Time')}</TableHead>
+                    <TableHead>{translate('Temp')}</TableHead>
+                    <TableHead>{translate('Battery')}</TableHead>
+                    <TableHead>{translate('Light')}</TableHead>
+                    <TableHead>{translate('Impact')}</TableHead>
+                    <TableHead>{translate('Location')}</TableHead>
+                    <TableHead>{translate('Alert')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -247,7 +249,7 @@ export default function VNextDeviceDetail() {
                       </TableCell>
                       <TableCell>
                         {r.isAlert ? (
-                          <Badge variant="destructive">Alert</Badge>
+                          <Badge variant="destructive">{translate('Alert')}</Badge>
                         ) : (
                           <span className="text-xs text-muted-foreground">-</span>
                         )}
@@ -257,7 +259,7 @@ export default function VNextDeviceDetail() {
                   {readings.length === 0 && (
                     <TableRow>
                       <TableCell colSpan={8} className="py-6 text-center text-sm text-muted-foreground">
-                        No sensor readings yet
+                        {translate('No sensor readings yet')}
                       </TableCell>
                     </TableRow>
                   )}
@@ -268,12 +270,12 @@ export default function VNextDeviceDetail() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>Events</CardTitle>
-              <span className="text-sm text-muted-foreground">{events.length} events</span>
+              <CardTitle>{translate('Events')}</CardTitle>
+              <span className="text-sm text-muted-foreground">{events.length} {translate('events')}</span>
             </CardHeader>
             <CardContent>
               {events.length === 0 ? (
-                <p className="text-sm text-muted-foreground">No events recorded yet.</p>
+                <p className="text-sm text-muted-foreground">{translate('No events recorded yet.')}</p>
               ) : (
                 <ul className="space-y-3">
                   {events.map(ev => (
@@ -314,26 +316,26 @@ export default function VNextDeviceDetail() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Device info</CardTitle>
+              <CardTitle>{translate('Device info')}</CardTitle>
             </CardHeader>
             <CardContent>
               <dl className="space-y-2 text-sm">
-                <div className="flex justify-between"><dt className="text-muted-foreground">Name</dt><dd>{device.name}</dd></div>
-                <div className="flex justify-between"><dt className="text-muted-foreground">External ID</dt><dd className="text-right">{device.externalId}</dd></div>
-                <div className="flex justify-between"><dt className="text-muted-foreground">Display ID</dt><dd>{device.displayId}</dd></div>
-                <div className="flex justify-between"><dt className="text-muted-foreground">Model</dt><dd>{device.model}</dd></div>
-                <div className="flex justify-between"><dt className="text-muted-foreground">Firmware</dt><dd>{device.firmware || '-'}</dd></div>
-                <div className="flex justify-between"><dt className="text-muted-foreground">Provider</dt><dd>{device.provider}</dd></div>
-                <div className="flex justify-between"><dt className="text-muted-foreground">Status</dt><dd><Badge variant={statusVariant(device.status)}>{device.status}</Badge></dd></div>
+                <div className="flex justify-between"><dt className="text-muted-foreground">{translate('Name')}</dt><dd>{device.name}</dd></div>
+                <div className="flex justify-between"><dt className="text-muted-foreground">{translate('External ID')}</dt><dd className="text-right">{device.externalId}</dd></div>
+                <div className="flex justify-between"><dt className="text-muted-foreground">{translate('Display ID')}</dt><dd>{device.displayId}</dd></div>
+                <div className="flex justify-between"><dt className="text-muted-foreground">{translate('Model')}</dt><dd>{device.model}</dd></div>
+                <div className="flex justify-between"><dt className="text-muted-foreground">{translate('Firmware')}</dt><dd>{device.firmware || '-'}</dd></div>
+                <div className="flex justify-between"><dt className="text-muted-foreground">{translate('Provider')}</dt><dd>{device.provider}</dd></div>
+                <div className="flex justify-between"><dt className="text-muted-foreground">{translate('Status')}</dt><dd><Badge variant={statusVariant(device.status)}>{device.status}</Badge></dd></div>
                 <div className="flex justify-between">
-                  <dt className="text-muted-foreground">Battery</dt>
+                  <dt className="text-muted-foreground">{translate('Battery')}</dt>
                   <dd className={cn(batteryColorClass(device.batteryLevel))}>
                     {device.batteryLevel != null ? `${device.batteryLevel}%` : '-'}
                   </dd>
                 </div>
-                <div className="flex justify-between"><dt className="text-muted-foreground">Last seen</dt><dd>{relativeTime(device.lastSeenAt)}</dd></div>
+                <div className="flex justify-between"><dt className="text-muted-foreground">{translate('Last seen')}</dt><dd>{relativeTime(device.lastSeenAt)}</dd></div>
                 <div className="flex justify-between">
-                  <dt className="text-muted-foreground">Last location</dt>
+                  <dt className="text-muted-foreground">{translate('Last location')}</dt>
                   <dd className="text-xs">
                     {device.lastLat != null && device.lastLng != null
                       ? `${device.lastLat.toFixed(4)}, ${device.lastLng.toFixed(4)}`
@@ -346,14 +348,14 @@ export default function VNextDeviceDetail() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Assignment</CardTitle>
+              <CardTitle>{translate('Assignment')}</CardTitle>
             </CardHeader>
             <CardContent>
               {activeAssignment ? (
                 <dl className="space-y-2 text-sm">
                   {activeAssignment.shipmentId && (
                     <div className="flex justify-between">
-                      <dt className="text-muted-foreground">Shipment</dt>
+                      <dt className="text-muted-foreground">{translate('Shipment')}</dt>
                       <dd>
                         <Link to={`/shipments/${activeAssignment.shipmentId}`} className="font-medium text-primary hover:underline">
                           {activeAssignment.shipment?.reference || activeAssignment.shipmentId}
@@ -363,7 +365,7 @@ export default function VNextDeviceDetail() {
                   )}
                   {activeAssignment.orderId && (
                     <div className="flex justify-between">
-                      <dt className="text-muted-foreground">Order</dt>
+                      <dt className="text-muted-foreground">{translate('Order')}</dt>
                       <dd>
                         <Link to={`/orders/${activeAssignment.orderId}`} className="font-medium text-primary hover:underline">
                           {activeAssignment.order?.orderNumber || activeAssignment.orderId}
@@ -372,16 +374,16 @@ export default function VNextDeviceDetail() {
                     </div>
                   )}
                   <div className="flex justify-between">
-                    <dt className="text-muted-foreground">Assigned</dt>
+                    <dt className="text-muted-foreground">{translate('Assigned')}</dt>
                     <dd>{new Date(activeAssignment.assignedAt).toLocaleDateString()}</dd>
                   </div>
                 </dl>
               ) : (
                 <div className="space-y-3 text-center">
-                  <p className="text-sm text-muted-foreground">Unassigned</p>
+                  <p className="text-sm text-muted-foreground">{translate('Unassigned')}</p>
                   <Button variant="outline" size="sm">
                     <LinkIcon className="h-4 w-4" />
-                    Assign device
+                    {translate('Assign device')}
                   </Button>
                 </div>
               )}
@@ -390,19 +392,19 @@ export default function VNextDeviceDetail() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Assignment history</CardTitle>
+              <CardTitle>{translate('Assignment history')}</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
               {assignments.length === 0 ? (
-                <p className="p-4 text-sm text-muted-foreground">No assignment history.</p>
+                <p className="p-4 text-sm text-muted-foreground">{translate('No assignment history.')}</p>
               ) : (
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Ref</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Assigned</TableHead>
-                      <TableHead>Removed</TableHead>
+                      <TableHead>{translate('Ref')}</TableHead>
+                      <TableHead>{translate('Status')}</TableHead>
+                      <TableHead>{translate('Assigned')}</TableHead>
+                      <TableHead>{translate('Removed')}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -411,7 +413,7 @@ export default function VNextDeviceDetail() {
                         <TableCell className="text-sm">{a.shipment?.reference || a.order?.orderNumber || '-'}</TableCell>
                         <TableCell>
                           <Badge variant={a.active ? 'success' : 'secondary'}>
-                            {a.active ? 'Active' : 'Ended'}
+                            {a.active ? translate('Active') : translate('Ended')}
                           </Badge>
                         </TableCell>
                         <TableCell className="text-xs">{new Date(a.assignedAt).toLocaleDateString()}</TableCell>

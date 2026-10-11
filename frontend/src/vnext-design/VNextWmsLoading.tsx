@@ -23,6 +23,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface StagingAssignment {
   id: string;
   orderRef: string;
@@ -75,8 +77,8 @@ export default function VNextWmsLoading() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Loading</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Staging and loading for outbound shipments</p>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Loading')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t('Staging and loading for outbound shipments')}</p>
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
@@ -91,9 +93,11 @@ export default function VNextWmsLoading() {
         <Card>
           <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
             <Truck className="h-12 w-12 text-muted-foreground" />
-            <h3 className="text-base font-medium">No staged orders</h3>
+            <h3 className="text-base font-medium">{t('No staged orders')}</h3>
             <p className="text-sm text-muted-foreground">
-              Packed orders are staged in the shipping dock area before being loaded onto outbound vehicles. Orders appear here after packing is complete.
+              {t(
+                'Packed orders are staged in the shipping dock area before being loaded onto outbound vehicles. Orders appear here after packing is complete.'
+              )}
             </p>
           </CardContent>
         </Card>
@@ -102,19 +106,19 @@ export default function VNextWmsLoading() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Order</TableHead>
-                <TableHead>Shipment</TableHead>
-                <TableHead>Staging Bin</TableHead>
-                <TableHead>Load Seq</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Packed At</TableHead>
+                <TableHead>{t('Order')}</TableHead>
+                <TableHead>{t('Shipment')}</TableHead>
+                <TableHead>{t('Staging Bin')}</TableHead>
+                <TableHead>{t('Load Seq')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead>{t('Packed At')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {assignments.map(a => (
                 <TableRow key={a.id} className="cursor-pointer">
                   <TableCell className="font-mono text-sm font-semibold">{a.orderRef}</TableCell>
-                  <TableCell>{a.shipmentRef || 'Not assigned'}</TableCell>
+                  <TableCell>{a.shipmentRef || t('Not assigned')}</TableCell>
                   <TableCell>{a.stagingBinLabel}</TableCell>
                   <TableCell>{a.loadSequence ?? '-'}</TableCell>
                   <TableCell>

@@ -15,6 +15,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface Bid {
   id: string;
   rate: number;
@@ -62,33 +64,33 @@ export default function CarrierBidHistory() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">Bid history</h1>
+      <h1 className="text-3xl font-bold tracking-tight">{t('Bid history')}</h1>
       <Card>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Tender</TableHead>
-              <TableHead>Rate</TableHead>
-              <TableHead>Transit</TableHead>
-              <TableHead>Equipment</TableHead>
-              <TableHead>Source</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Tender status</TableHead>
-              <TableHead>Submitted</TableHead>
+              <TableHead>{t('Tender')}</TableHead>
+              <TableHead>{t('Rate')}</TableHead>
+              <TableHead>{t('Transit')}</TableHead>
+              <TableHead>{t('Equipment')}</TableHead>
+              <TableHead>{t('Source')}</TableHead>
+              <TableHead>{t('Status')}</TableHead>
+              <TableHead>{t('Tender status')}</TableHead>
+              <TableHead>{t('Submitted')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {bids.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={8} className="py-10 text-center text-sm text-muted-foreground">
-                  No bids submitted yet
+                  {t('No bids submitted yet')}
                 </TableCell>
               </TableRow>
             ) : bids.map(b => (

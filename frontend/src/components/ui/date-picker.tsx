@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
+import { t } from '@/i18n';
+
 type DateMode = 'date' | 'datetime-local';
 
 const FORMATS: Record<DateMode, { value: string; display: string }> = {
@@ -151,7 +153,7 @@ const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(
           {type === 'datetime-local' && (
             <div className="flex items-center gap-2 border-t border-border p-3">
               <label className="text-xs font-medium text-muted-foreground" htmlFor={`${id ?? 'dp'}-time`}>
-                Time
+                {t('Time')}
               </label>
               <input
                 id={`${id ?? 'dp'}-time`}

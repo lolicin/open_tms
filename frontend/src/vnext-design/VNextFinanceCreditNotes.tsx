@@ -21,6 +21,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface CreditNote {
   id: string;
   creditNoteNumber: string;
@@ -83,7 +85,7 @@ export default function VNextFinanceCreditNotes() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -100,8 +102,8 @@ export default function VNextFinanceCreditNotes() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Credit &amp; Debit Notes</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{notes.length} notes</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Credit & Debit Notes')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{notes.length} {t('notes')}</p>
         </div>
       </div>
 
@@ -112,7 +114,7 @@ export default function VNextFinanceCreditNotes() {
               <StickyNote className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight">{stats.total}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Total</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Total')}</div>
           </CardContent>
         </Card>
         <Card>
@@ -121,7 +123,7 @@ export default function VNextFinanceCreditNotes() {
               <MinusCircle className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight">{stats.credits}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Credits</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Credits')}</div>
           </CardContent>
         </Card>
         <Card>
@@ -130,7 +132,7 @@ export default function VNextFinanceCreditNotes() {
               <PlusCircle className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight">{stats.debits}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Debits</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Debits')}</div>
           </CardContent>
         </Card>
         <Card>
@@ -139,7 +141,7 @@ export default function VNextFinanceCreditNotes() {
               <DollarSign className="h-5 w-5" />
             </div>
             <div className="mt-3 text-2xl font-bold tracking-tight font-mono tabular-nums">{formatMoney(stats.totalAmount)}</div>
-            <div className="mt-1 text-sm text-muted-foreground">Total Value</div>
+            <div className="mt-1 text-sm text-muted-foreground">{t('Total Value')}</div>
           </CardContent>
         </Card>
       </div>
@@ -148,20 +150,20 @@ export default function VNextFinanceCreditNotes() {
         {notes.length === 0 ? (
           <div className="flex flex-col items-center gap-2 py-12 text-muted-foreground">
             <StickyNote className="h-8 w-8" />
-            <h3 className="text-base font-medium">No credit or debit notes yet</h3>
-            <p className="text-sm">Notes are generated when financial queries are resolved with adjustments</p>
+            <h3 className="text-base font-medium">{t('No credit or debit notes yet')}</h3>
+            <p className="text-sm">{t('Notes are generated when financial queries are resolved with adjustments')}</p>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Note #</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Reason</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Created</TableHead>
+                <TableHead>{t('Note #')}</TableHead>
+                <TableHead>{t('Type')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
+                <TableHead>{t('Reason')}</TableHead>
+                <TableHead className="text-right">{t('Amount')}</TableHead>
+                <TableHead>{t('Description')}</TableHead>
+                <TableHead>{t('Created')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

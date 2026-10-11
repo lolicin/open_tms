@@ -28,6 +28,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface PutawayTaskDetail {
   id: string;
   locationId: string;
@@ -159,7 +161,7 @@ export default function VNextWmsPutawayDetail() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/wms/putaway" className="hover:text-foreground">
-          <ArrowLeft className="inline h-4 w-4" /> Putaway
+          <ArrowLeft className="inline h-4 w-4" /> {t('Putaway')}
         </Link>
         <ChevronRight className="h-3 w-3" />
         <span>{task.id.slice(0, 8)}</span>
@@ -167,7 +169,7 @@ export default function VNextWmsPutawayDetail() {
 
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Putaway Task</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Putaway Task')}</h1>
           <div className="mt-2 flex flex-wrap items-center gap-2">
             <span className="font-mono text-sm font-semibold">{task.id.slice(0, 8)}</span>
             <Badge variant={statusVariant(task.status)}>{formatStatus(task.status)}</Badge>
@@ -189,7 +191,7 @@ export default function VNextWmsPutawayDetail() {
             <div className="flex items-start gap-3 rounded-md border border-warning/30 bg-warning/10 p-4 text-sm text-warning">
               <AlertTriangle className="h-5 w-5" />
               <div>
-                <strong>Deviation recorded:</strong> {completionResult.deviationReason}
+                <strong>{t('Deviation recorded:')}</strong> {completionResult.deviationReason}
               </div>
             </div>
           )}
@@ -197,7 +199,7 @@ export default function VNextWmsPutawayDetail() {
             <div className="flex items-start gap-3 rounded-md border border-warning/30 bg-warning/10 p-4 text-sm text-warning">
               <AlertTriangle className="h-5 w-5" />
               <div>
-                <strong>Constraint warnings:</strong>
+                <strong>{t('Constraint warnings:')}</strong>
                 <ul className="ml-5 mt-1 list-disc">
                   {completionResult.constraintWarnings.map((w: string, i: number) => (
                     <li key={i}>{w}</li>
@@ -209,7 +211,7 @@ export default function VNextWmsPutawayDetail() {
           {!completionResult.deviation && completionResult.constraintWarnings?.length === 0 && (
             <div className="flex items-center gap-3 rounded-md border border-success/30 bg-success/10 p-4 text-sm text-success">
               <CheckCircle2 className="h-5 w-5" />
-              Putaway completed successfully at <strong>{completionResult.actualBinLabel}</strong>
+              {t('Putaway completed successfully at')} <strong>{completionResult.actualBinLabel}</strong>
             </div>
           )}
         </div>
@@ -219,17 +221,17 @@ export default function VNextWmsPutawayDetail() {
         <div className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Direction</CardTitle>
+              <CardTitle>{t('Direction')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-6">
                 <div className="text-center">
-                  <div className="text-xs text-muted-foreground">From</div>
-                  <div className="mt-1 text-lg font-semibold">{task.sourceBin?.label || 'Dock'}</div>
+                  <div className="text-xs text-muted-foreground">{t('From')}</div>
+                  <div className="mt-1 text-lg font-semibold">{task.sourceBin?.label || t('Dock')}</div>
                 </div>
                 <ArrowRight className="h-8 w-8 text-primary" />
                 <div className="text-center">
-                  <div className="text-xs text-muted-foreground">To</div>
+                  <div className="text-xs text-muted-foreground">{t('To')}</div>
                   <div className="mt-1 text-lg font-semibold text-primary">{task.targetBin.label}</div>
                   <div className="text-xs text-muted-foreground">
                     {task.targetBin.zone.name} ({formatStatus(task.targetBin.zone.zoneType)})
@@ -247,19 +249,19 @@ export default function VNextWmsPutawayDetail() {
                 {task.targetBin.hazmatCertified && (
                   <Badge variant="warning" className="gap-1">
                     <AlertTriangle className="h-3 w-3" />
-                    Hazmat Certified
+                    {t('Hazmat Certified')}
                   </Badge>
                 )}
                 {hasTemp && (
                   <Badge variant="destructive" className="gap-1">
                     <Snowflake className="h-3 w-3" />
-                    Temp Sensitive
+                    {t('Temp Sensitive')}
                   </Badge>
                 )}
                 {hasHazmat && (
                   <Badge variant="destructive" className="gap-1">
                     <FlaskConical className="h-3 w-3" />
-                    Hazmat
+                    {t('Hazmat')}
                   </Badge>
                 )}
               </div>
@@ -269,15 +271,17 @@ export default function VNextWmsPutawayDetail() {
           {isActive && (
             <Card className="border-l-4 border-l-primary">
               <CardHeader>
-                <CardTitle>Scan to Confirm</CardTitle>
+                <CardTitle>{t('Scan to Confirm')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="mb-4 text-sm text-muted-foreground">
-                  Scan the bin barcode where you placed the unit. If different from the directed bin, a deviation will be recorded.
+                  {t(
+                    'Scan the bin barcode where you placed the unit. If different from the directed bin, a deviation will be recorded.'
+                  )}
                 </p>
                 <form onSubmit={handleComplete} className="flex items-end gap-3">
                   <div className="flex-1 space-y-2">
-                    <Label>Bin Label</Label>
+                    <Label>{t('Bin Label')}</Label>
                     <Input
                       value={scannedBinLabel}
                       onChange={e => setScannedBinLabel(e.target.value)}
@@ -287,7 +291,7 @@ export default function VNextWmsPutawayDetail() {
                     />
                   </div>
                   <Button variant="gradient" type="submit" disabled={completing}>
-                    {completing ? 'Confirming...' : 'Confirm Putaway'}
+                    {completing ? t('Confirming...') : t('Confirm Putaway')}
                   </Button>
                 </form>
               </CardContent>
@@ -296,21 +300,21 @@ export default function VNextWmsPutawayDetail() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Unit Contents</CardTitle>
+              <CardTitle>{t('Unit Contents')}</CardTitle>
             </CardHeader>
             <CardContent className="p-0">
               {unit.lineItems.length === 0 ? (
-                <p className="px-6 py-4 text-sm text-muted-foreground">No line items</p>
+                <p className="px-6 py-4 text-sm text-muted-foreground">{t('No line items')}</p>
               ) : (
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>SKU</TableHead>
-                      <TableHead>Description</TableHead>
-                      <TableHead>Qty</TableHead>
-                      <TableHead>Weight</TableHead>
-                      <TableHead>Temp</TableHead>
-                      <TableHead>Hazmat</TableHead>
+                      <TableHead>{t('SKU')}</TableHead>
+                      <TableHead>{t('Description')}</TableHead>
+                      <TableHead>{t('Qty')}</TableHead>
+                      <TableHead>{t('Weight')}</TableHead>
+                      <TableHead>{t('Temp')}</TableHead>
+                      <TableHead>{t('Hazmat')}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -320,8 +324,8 @@ export default function VNextWmsPutawayDetail() {
                         <TableCell>{li.description || '-'}</TableCell>
                         <TableCell>{li.quantity}</TableCell>
                         <TableCell>{li.weight != null ? `${li.weight} kg` : '-'}</TableCell>
-                        <TableCell>{li.temperature || 'ambient'}</TableCell>
-                        <TableCell>{li.hazmat ? <Badge variant="destructive">Yes</Badge> : 'No'}</TableCell>
+                        <TableCell>{li.temperature || t('ambient')}</TableCell>
+                        <TableCell>{li.hazmat ? <Badge variant="destructive">{t('Yes')}</Badge> : t('No')}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -334,38 +338,38 @@ export default function VNextWmsPutawayDetail() {
         <aside className="space-y-6 lg:sticky lg:top-20 lg:self-start">
           <Card>
             <CardHeader>
-              <CardTitle>Unit</CardTitle>
+              <CardTitle>{t('Unit')}</CardTitle>
             </CardHeader>
             <CardContent>
               <dl className="grid grid-cols-2 gap-3 text-sm">
                 <div>
-                  <dt className="text-xs text-muted-foreground">Identifier</dt>
+                  <dt className="text-xs text-muted-foreground">{t('Identifier')}</dt>
                   <dd className="mt-0.5 font-medium">{unit.identifier}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-muted-foreground">Type</dt>
+                  <dt className="text-xs text-muted-foreground">{t('Type')}</dt>
                   <dd className="mt-0.5">{formatStatus(unit.unitType)}</dd>
                 </div>
                 {unit.barcode && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">Barcode</dt>
+                    <dt className="text-xs text-muted-foreground">{t('Barcode')}</dt>
                     <dd className="mt-0.5 font-mono text-xs">{unit.barcode}</dd>
                   </div>
                 )}
                 {unit.lotNumber && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">Lot</dt>
+                    <dt className="text-xs text-muted-foreground">{t('Lot')}</dt>
                     <dd className="mt-0.5">{unit.lotNumber}</dd>
                   </div>
                 )}
                 {unit.expiryDate && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">Expiry</dt>
+                    <dt className="text-xs text-muted-foreground">{t('Expiry')}</dt>
                     <dd className="mt-0.5">{new Date(unit.expiryDate).toLocaleDateString()}</dd>
                   </div>
                 )}
                 <div>
-                  <dt className="text-xs text-muted-foreground">Quality</dt>
+                  <dt className="text-xs text-muted-foreground">{t('Quality')}</dt>
                   <dd className="mt-0.5">
                     <Badge variant={unit.qualityStatus === 'available' ? 'success' : 'warning'}>
                       {formatStatus(unit.qualityStatus)}
@@ -378,23 +382,23 @@ export default function VNextWmsPutawayDetail() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Task Info</CardTitle>
+              <CardTitle>{t('Task Info')}</CardTitle>
             </CardHeader>
             <CardContent>
               <dl className="grid gap-3 text-sm">
                 <div>
-                  <dt className="text-xs text-muted-foreground">Type</dt>
+                  <dt className="text-xs text-muted-foreground">{t('Type')}</dt>
                   <dd className="mt-0.5">{formatStatus(task.putawayType)}</dd>
                 </div>
                 {task.assignedToUserId && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">Assigned To</dt>
+                    <dt className="text-xs text-muted-foreground">{t('Assigned To')}</dt>
                     <dd className="mt-0.5">{task.assignedToUserId}</dd>
                   </div>
                 )}
                 {task.receivingTask && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">From Receiving</dt>
+                    <dt className="text-xs text-muted-foreground">{t('From Receiving')}</dt>
                     <dd className="mt-0.5">
                       <Button variant="outline" size="sm" onClick={() => navigate(`/wms/receiving/${task.receivingTask!.id}`)}>
                         {task.receivingTask.id.slice(0, 8)} ({task.receivingTask.receivingType})
@@ -403,7 +407,7 @@ export default function VNextWmsPutawayDetail() {
                   </div>
                 )}
                 <div>
-                  <dt className="text-xs text-muted-foreground">Created</dt>
+                  <dt className="text-xs text-muted-foreground">{t('Created')}</dt>
                   <dd className="mt-0.5">{new Date(task.createdAt).toLocaleString()}</dd>
                 </div>
               </dl>

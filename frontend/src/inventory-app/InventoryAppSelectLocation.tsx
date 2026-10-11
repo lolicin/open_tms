@@ -8,6 +8,8 @@ import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { getInventoryAppUser } from './inventory-session';
 
+import { t } from '@/i18n';
+
 export default function InventoryAppSelectLocation() {
   const navigate = useNavigate();
   const [locations, setLocations] = useState<any[]>([]);
@@ -55,9 +57,9 @@ export default function InventoryAppSelectLocation() {
       <div className="w-full max-w-md space-y-6">
         <div className="flex flex-col items-center text-center">
           <MapPin className="h-12 w-12 text-primary" />
-          <h2 className="mt-3 text-2xl font-bold tracking-tight">Select Your Site</h2>
+          <h2 className="mt-3 text-2xl font-bold tracking-tight">{t('Select Your Site')}</h2>
           <p className="mt-1 text-sm text-muted-foreground">
-            Choose the site whose inventory you want to check.
+            {t('Choose the site whose inventory you want to check.')}
           </p>
         </div>
 
@@ -70,8 +72,8 @@ export default function InventoryAppSelectLocation() {
         {!error && locations.length === 0 ? (
           <Card className="flex flex-col items-center gap-3 p-8 text-center">
             <MapPinOff className="h-10 w-10 text-muted-foreground" />
-            <p className="text-base font-semibold">No sites available</p>
-            <p className="text-sm text-muted-foreground">Ask your admin to set up locations first.</p>
+            <p className="text-base font-semibold">{t('No sites available')}</p>
+            <p className="text-sm text-muted-foreground">{t('Ask your admin to set up locations first.')}</p>
           </Card>
         ) : (
           <div className="space-y-3">
@@ -111,7 +113,7 @@ export default function InventoryAppSelectLocation() {
           disabled={!selectedId}
           onClick={handleContinue}
         >
-          Continue
+          {t('Continue')}
         </Button>
       </div>
     </div>

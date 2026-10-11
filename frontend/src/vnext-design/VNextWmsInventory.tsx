@@ -33,6 +33,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface InventoryRecord {
   id: string;
   sku: string;
@@ -118,7 +120,7 @@ export default function VNextWmsInventory() {
       const data = await res.json();
       if (data.error) { setAdjustError(data.error); }
       else { setAdjustRecord(null); loadData(); }
-    } catch { setAdjustError('Failed to adjust'); }
+    } catch { setAdjustError(t('Failed to adjust')); }
     finally { setAdjusting(false); }
   };
 
@@ -139,7 +141,7 @@ export default function VNextWmsInventory() {
       const data = await res.json();
       if (data.error) { setTransferError(data.error); }
       else { setTransferRecord(null); loadData(); }
-    } catch { setTransferError('Failed to transfer'); }
+    } catch { setTransferError(t('Failed to transfer')); }
     finally { setTransferring(false); }
   };
 
@@ -155,21 +157,21 @@ export default function VNextWmsInventory() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Inventory</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Real-time stock levels across all warehouse bins</p>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Inventory')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{t('Real-time stock levels across all warehouse bins')}</p>
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Tabs value={view} onValueChange={(v) => setView(v as 'detail' | 'summary')}>
           <TabsList>
-            <TabsTrigger value="detail">By Bin</TabsTrigger>
-            <TabsTrigger value="summary">By SKU</TabsTrigger>
+            <TabsTrigger value="detail">{t('By Bin')}</TabsTrigger>
+            <TabsTrigger value="summary">{t('By SKU')}</TabsTrigger>
           </TabsList>
         </Tabs>
         <div className="flex flex-wrap items-center gap-2">
           <FacilitySelect facilities={facilities} value={facilityId} onChange={setFacilityId} loading={facilitiesLoading} error={facilitiesError} className="w-[220px]" />
           <Input
-            placeholder="Search SKU or bin..."
+            placeholder={t('Search SKU or bin...')}
             value={search}
             onChange={e => setSearch(e.target.value)}
             className="w-[260px]"
@@ -186,8 +188,8 @@ export default function VNextWmsInventory() {
           <Card>
             <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
               <Boxes className="h-12 w-12 text-muted-foreground" />
-              <h3 className="text-base font-medium">No inventory</h3>
-              <p className="text-sm text-muted-foreground">Stock appears here after goods are received and put away.</p>
+              <h3 className="text-base font-medium">{t('No inventory')}</h3>
+              <p className="text-sm text-muted-foreground">{t('Stock appears here after goods are received and put away.')}</p>
             </CardContent>
           </Card>
         ) : (
@@ -195,13 +197,13 @@ export default function VNextWmsInventory() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>SKU</TableHead>
-                  <TableHead>UOM</TableHead>
-                  <TableHead>On Hand</TableHead>
-                  <TableHead>Allocated</TableHead>
-                  <TableHead>Available</TableHead>
-                  <TableHead>On Hold</TableHead>
-                  <TableHead>Bins</TableHead>
+                  <TableHead>{t('SKU')}</TableHead>
+                  <TableHead>{t('UOM')}</TableHead>
+                  <TableHead>{t('On Hand')}</TableHead>
+                  <TableHead>{t('Allocated')}</TableHead>
+                  <TableHead>{t('Available')}</TableHead>
+                  <TableHead>{t('On Hold')}</TableHead>
+                  <TableHead>{t('Bins')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -227,8 +229,8 @@ export default function VNextWmsInventory() {
           <Card>
             <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
               <Boxes className="h-12 w-12 text-muted-foreground" />
-              <h3 className="text-base font-medium">No inventory records</h3>
-              <p className="text-sm text-muted-foreground">Stock appears here after goods are received and put away.</p>
+              <h3 className="text-base font-medium">{t('No inventory records')}</h3>
+              <p className="text-sm text-muted-foreground">{t('Stock appears here after goods are received and put away.')}</p>
             </CardContent>
           </Card>
         ) : (
@@ -236,17 +238,17 @@ export default function VNextWmsInventory() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>SKU</TableHead>
-                  <TableHead>Bin</TableHead>
-                  <TableHead>Zone</TableHead>
-                  <TableHead>UOM</TableHead>
-                  <TableHead>On Hand</TableHead>
-                  <TableHead>Allocated</TableHead>
-                  <TableHead>Available</TableHead>
-                  <TableHead>On Hold</TableHead>
-                  <TableHead>Lot</TableHead>
-                  <TableHead>Expiry</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead>{t('SKU')}</TableHead>
+                  <TableHead>{t('Bin')}</TableHead>
+                  <TableHead>{t('Zone')}</TableHead>
+                  <TableHead>{t('UOM')}</TableHead>
+                  <TableHead>{t('On Hand')}</TableHead>
+                  <TableHead>{t('Allocated')}</TableHead>
+                  <TableHead>{t('Available')}</TableHead>
+                  <TableHead>{t('On Hold')}</TableHead>
+                  <TableHead>{t('Lot')}</TableHead>
+                  <TableHead>{t('Expiry')}</TableHead>
+                  <TableHead>{t('Actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -271,14 +273,14 @@ export default function VNextWmsInventory() {
                           size="sm"
                           onClick={() => { setAdjustRecord(r); setAdjustForm({ quantityChange: '', reasonCode: 'recount' }); setAdjustError(''); }}
                         >
-                          Adjust
+                          {t('Adjust')}
                         </Button>
                         <Button
                           variant="outline"
                           size="sm"
                           onClick={() => { setTransferRecord(r); setTransferForm({ targetBinId: '', quantity: String(r.quantityAvailable) }); setTransferError(''); }}
                         >
-                          Transfer
+                          {t('Transfer')}
                         </Button>
                       </div>
                     </TableCell>
@@ -293,7 +295,7 @@ export default function VNextWmsInventory() {
       <Dialog open={!!adjustRecord} onOpenChange={(o) => !o && setAdjustRecord(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Adjust Stock</DialogTitle>
+            <DialogTitle>{t('Adjust Stock')}</DialogTitle>
           </DialogHeader>
           {adjustRecord && (
             <form onSubmit={handleAdjust} className="space-y-4">
@@ -304,20 +306,20 @@ export default function VNextWmsInventory() {
                 </div>
               )}
               <p className="text-sm text-muted-foreground">
-                <strong>{adjustRecord.sku}</strong> at <strong>{adjustRecord.bin.label}</strong> - current: {adjustRecord.quantityOnHand}
+                <strong>{adjustRecord.sku}</strong> {t('at')} <strong>{adjustRecord.bin.label}</strong> {t('- current:')} {adjustRecord.quantityOnHand}
               </p>
               <div className="space-y-2">
-                <Label>Quantity Change *</Label>
+                <Label>{t('Quantity Change *')}</Label>
                 <Input
                   type="number"
                   value={adjustForm.quantityChange}
                   onChange={e => setAdjustForm({ ...adjustForm, quantityChange: e.target.value })}
-                  placeholder="e.g. -5 to remove, +3 to add"
+                  placeholder={t('e.g. -5 to remove, +3 to add')}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label>Reason *</Label>
+                <Label>{t('Reason *')}</Label>
                 <Select value={adjustForm.reasonCode} onValueChange={v => setAdjustForm({ ...adjustForm, reasonCode: v })}>
                   <SelectTrigger>
                     <SelectValue />
@@ -330,8 +332,8 @@ export default function VNextWmsInventory() {
                 </Select>
               </div>
               <DialogFooter>
-                <Button variant="outline" type="button" onClick={() => setAdjustRecord(null)}>Cancel</Button>
-                <Button variant="gradient" type="submit" disabled={adjusting}>{adjusting ? 'Saving...' : 'Apply Adjustment'}</Button>
+                <Button variant="outline" type="button" onClick={() => setAdjustRecord(null)}>{t('Cancel')}</Button>
+                <Button variant="gradient" type="submit" disabled={adjusting}>{adjusting ? t('Saving...') : t('Apply Adjustment')}</Button>
               </DialogFooter>
             </form>
           )}
@@ -341,7 +343,7 @@ export default function VNextWmsInventory() {
       <Dialog open={!!transferRecord} onOpenChange={(o) => !o && setTransferRecord(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Transfer Stock</DialogTitle>
+            <DialogTitle>{t('Transfer Stock')}</DialogTitle>
           </DialogHeader>
           {transferRecord && (
             <form onSubmit={handleTransfer} className="space-y-4">
@@ -352,13 +354,13 @@ export default function VNextWmsInventory() {
                 </div>
               )}
               <p className="text-sm text-muted-foreground">
-                <strong>{transferRecord.sku}</strong> from <strong>{transferRecord.bin.label}</strong> - available: {transferRecord.quantityAvailable}
+                <strong>{transferRecord.sku}</strong> {t('from')} <strong>{transferRecord.bin.label}</strong> {t('- available:')} {transferRecord.quantityAvailable}
               </p>
               <div className="space-y-2">
-                <Label>Target Bin *</Label>
+                <Label>{t('Target Bin *')}</Label>
                 <Select value={transferForm.targetBinId} onValueChange={v => setTransferForm({ ...transferForm, targetBinId: v })}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select bin..." />
+                    <SelectValue placeholder={t('Select bin...')} />
                   </SelectTrigger>
                   <SelectContent>
                     {bins.filter(b => b.id !== transferRecord.bin.id).map(b => (
@@ -368,7 +370,7 @@ export default function VNextWmsInventory() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Quantity *</Label>
+                <Label>{t('Quantity *')}</Label>
                 <Input
                   type="number"
                   min="1"
@@ -379,8 +381,8 @@ export default function VNextWmsInventory() {
                 />
               </div>
               <DialogFooter>
-                <Button variant="outline" type="button" onClick={() => setTransferRecord(null)}>Cancel</Button>
-                <Button variant="gradient" type="submit" disabled={transferring}>{transferring ? 'Transferring...' : 'Transfer'}</Button>
+                <Button variant="outline" type="button" onClick={() => setTransferRecord(null)}>{t('Cancel')}</Button>
+                <Button variant="gradient" type="submit" disabled={transferring}>{transferring ? t('Transferring...') : t('Transfer')}</Button>
               </DialogFooter>
             </form>
           )}

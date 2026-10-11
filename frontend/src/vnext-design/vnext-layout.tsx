@@ -100,6 +100,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 /* ── Theme mode ─────────────────────────────────────── */
 function useThemeMode() {
   const [mode, setMode] = useState<'light' | 'dark' | 'system'>(() => {
@@ -148,184 +150,184 @@ interface AppDef {
 
 const APPS: AppDef[] = [
   {
-    key: 'operations', icon: Truck, label: 'Operations', basePath: '/',
+    key: 'operations', icon: Truck, label: t('Operations'), basePath: '/',
     sections: [
-      { title: 'Operations', items: [
-        { to: '/', icon: LayoutDashboard, label: 'Dashboard', end: true },
-        { to: '/map', icon: MapIcon, label: 'Map View' },
-        { to: '/sla', icon: Timer, label: 'SLA Dashboard' },
-        { to: '/shipments', icon: Truck, label: 'Shipments' },
-        { to: '/orders', icon: FileText, label: 'Orders' },
-        { to: '/consolidations', icon: Container, label: 'Consolidations' },
-        { to: '/cold-chain/capa', icon: AlertTriangle, label: 'CAPA Reports' },
-        { to: '/agent-decisions', icon: Bot, label: 'Agent Decisions' },
-        { to: '/automation-rules', icon: Zap, label: 'Automation Rules' },
-        { to: '/devices', icon: Locate, label: 'Devices' },
+      { title: t('Operations'), items: [
+        { to: '/', icon: LayoutDashboard, label: t('Dashboard'), end: true },
+        { to: '/map', icon: MapIcon, label: t('Map View') },
+        { to: '/sla', icon: Timer, label: t('SLA Dashboard') },
+        { to: '/shipments', icon: Truck, label: t('Shipments') },
+        { to: '/orders', icon: FileText, label: t('Orders') },
+        { to: '/consolidations', icon: Container, label: t('Consolidations') },
+        { to: '/cold-chain/capa', icon: AlertTriangle, label: t('CAPA Reports') },
+        { to: '/agent-decisions', icon: Bot, label: t('Agent Decisions') },
+        { to: '/automation-rules', icon: Zap, label: t('Automation Rules') },
+        { to: '/devices', icon: Locate, label: t('Devices') },
       ]},
-      { title: 'Network', items: [
-        { to: '/carriers', icon: Truck, label: 'Carriers' },
-        { to: '/carrier-bidding', icon: Handshake, label: 'Carrier Bidding' },
-        { to: '/customers', icon: Users, label: 'Customers' },
-        { to: '/locations', icon: MapPin, label: 'Locations' },
-        { to: '/lanes', icon: Route, label: 'Lanes' },
+      { title: t('Network'), items: [
+        { to: '/carriers', icon: Truck, label: t('Carriers') },
+        { to: '/carrier-bidding', icon: Handshake, label: t('Carrier Bidding') },
+        { to: '/customers', icon: Users, label: t('Customers') },
+        { to: '/locations', icon: MapPin, label: t('Locations') },
+        { to: '/lanes', icon: Route, label: t('Lanes') },
       ]},
     ],
   },
   {
-    key: 'triage', icon: Siren, label: 'Triage', basePath: '/triage',
+    key: 'triage', icon: Siren, label: t('Triage'), basePath: '/triage',
     sections: [
-      { title: 'Triage Centre', items: [
-        { to: '/triage', icon: Radar, label: 'Signal Dashboard', end: true },
-        { to: '/triage/board', icon: Bug, label: 'All Issues' },
-        { to: '/triage/search', icon: Search, label: 'Search' },
-        { to: '/triage/spot-check', icon: FileSearch, label: 'Spot Check' },
-        { to: '/triage/reports', icon: BarChart3, label: 'Reports' },
+      { title: t('Triage Centre'), items: [
+        { to: '/triage', icon: Radar, label: t('Signal Dashboard'), end: true },
+        { to: '/triage/board', icon: Bug, label: t('All Issues') },
+        { to: '/triage/search', icon: Search, label: t('Search') },
+        { to: '/triage/spot-check', icon: FileSearch, label: t('Spot Check') },
+        { to: '/triage/reports', icon: BarChart3, label: t('Reports') },
       ]},
     ],
   },
   {
-    key: 'reports', icon: BarChart3, label: 'Reports', basePath: '/reports',
+    key: 'reports', icon: BarChart3, label: t('Reports'), basePath: '/reports',
     sections: [
-      { title: 'Overview', items: [
-        { to: '/reports', icon: LayoutDashboard, label: 'Dashboard', end: true },
+      { title: t('Overview'), items: [
+        { to: '/reports', icon: LayoutDashboard, label: t('Dashboard'), end: true },
       ]},
-      { title: 'Operational', items: [
-        { to: '/reports/daily', icon: Calendar, label: 'Daily Report' },
-        { to: '/reports/locations', icon: MapPin, label: 'Location Activity' },
-        { to: '/sla', icon: Timer, label: 'SLA Compliance' },
+      { title: t('Operational'), items: [
+        { to: '/reports/daily', icon: Calendar, label: t('Daily Report') },
+        { to: '/reports/locations', icon: MapPin, label: t('Location Activity') },
+        { to: '/sla', icon: Timer, label: t('SLA Compliance') },
       ]},
-      { title: 'Financial', items: [
-        { to: '/finance/margin-reports', icon: TrendingUp, label: 'Margin Reports' },
-        { to: '/finance/aging', icon: Hourglass, label: 'AR Aging' },
-        { to: '/finance/exports', icon: Download, label: 'Export to CSV' },
+      { title: t('Financial'), items: [
+        { to: '/finance/margin-reports', icon: TrendingUp, label: t('Margin Reports') },
+        { to: '/finance/aging', icon: Hourglass, label: t('AR Aging') },
+        { to: '/finance/exports', icon: Download, label: t('Export to CSV') },
       ]},
-      { title: 'Documents', items: [
-        { to: '/documents', icon: FileText, label: 'Documents' },
+      { title: t('Documents'), items: [
+        { to: '/documents', icon: FileText, label: t('Documents') },
       ]},
     ],
   },
   {
-    key: 'finance', icon: Landmark, label: 'Finance', basePath: '/finance',
+    key: 'finance', icon: Landmark, label: t('Finance'), basePath: '/finance',
     sections: [
-      { title: 'Finance', items: [
-        { to: '/finance', icon: LayoutDashboard, label: 'Dashboard', end: true },
-        { to: '/finance/quotes', icon: FileSpreadsheet, label: 'Quotes' },
-        { to: '/finance/invoices', icon: Receipt, label: 'Invoices' },
-        { to: '/finance/carrier-invoices', icon: Truck, label: 'Carrier Invoices' },
-        { to: '/finance/payments', icon: CreditCard, label: 'Record Payments' },
+      { title: t('Finance'), items: [
+        { to: '/finance', icon: LayoutDashboard, label: t('Dashboard'), end: true },
+        { to: '/finance/quotes', icon: FileSpreadsheet, label: t('Quotes') },
+        { to: '/finance/invoices', icon: Receipt, label: t('Invoices') },
+        { to: '/finance/carrier-invoices', icon: Truck, label: t('Carrier Invoices') },
+        { to: '/finance/payments', icon: CreditCard, label: t('Record Payments') },
       ]},
-      { title: 'Brokerage', items: [
-        { to: '/finance/commissions', icon: DollarSign, label: 'Commissions' },
-        { to: '/finance/margin-reports', icon: TrendingUp, label: 'Margin Reports' },
+      { title: t('Brokerage'), items: [
+        { to: '/finance/commissions', icon: DollarSign, label: t('Commissions') },
+        { to: '/finance/margin-reports', icon: TrendingUp, label: t('Margin Reports') },
       ]},
-      { title: 'Disputes', items: [
-        { to: '/finance/queries', icon: HelpCircle, label: 'Queries & Disputes' },
-        { to: '/finance/credit-notes', icon: StickyNote, label: 'Credit Notes' },
+      { title: t('Disputes'), items: [
+        { to: '/finance/queries', icon: HelpCircle, label: t('Queries & Disputes') },
+        { to: '/finance/credit-notes', icon: StickyNote, label: t('Credit Notes') },
       ]},
-      { title: 'Reports', items: [
-        { to: '/finance/aging', icon: BarChart3, label: 'AR Aging' },
-        { to: '/finance/exports', icon: Download, label: 'Export to CSV' },
+      { title: t('Reports'), items: [
+        { to: '/finance/aging', icon: BarChart3, label: t('AR Aging') },
+        { to: '/finance/exports', icon: Download, label: t('Export to CSV') },
       ]},
     ],
   },
   {
-    key: 'quality', icon: BadgeCheck, label: 'Quality', basePath: '/quality',
+    key: 'quality', icon: BadgeCheck, label: t('Quality'), basePath: '/quality',
     sections: [
-      { title: 'Quality Centre', items: [
-        { to: '/quality', icon: LayoutDashboard, label: 'Dashboard', end: true },
-        { to: '/quality/summaries', icon: BarChart3, label: 'Issue Analysis' },
-        { to: '/quality/capa', icon: AlertTriangle, label: 'CAPA Management' },
-        { to: '/quality/sop-checklists', icon: ListChecks, label: 'SOP Checklists' },
-        { to: '/quality/sop-audits', icon: ClipboardCheck, label: 'GDP Audits' },
+      { title: t('Quality Centre'), items: [
+        { to: '/quality', icon: LayoutDashboard, label: t('Dashboard'), end: true },
+        { to: '/quality/summaries', icon: BarChart3, label: t('Issue Analysis') },
+        { to: '/quality/capa', icon: AlertTriangle, label: t('CAPA Management') },
+        { to: '/quality/sop-checklists', icon: ListChecks, label: t('SOP Checklists') },
+        { to: '/quality/sop-audits', icon: ClipboardCheck, label: t('GDP Audits') },
       ]},
-      { title: 'Reports', items: [
-        { to: '/quality/carrier-scorecard', icon: Truck, label: 'Carrier Scorecard' },
-        { to: '/quality/lane-analysis', icon: Route, label: 'Lane Analysis' },
-        { to: '/quality/capa-effectiveness', icon: TrendingUp, label: 'CAPA Effectiveness' },
+      { title: t('Reports'), items: [
+        { to: '/quality/carrier-scorecard', icon: Truck, label: t('Carrier Scorecard') },
+        { to: '/quality/lane-analysis', icon: Route, label: t('Lane Analysis') },
+        { to: '/quality/capa-effectiveness', icon: TrendingUp, label: t('CAPA Effectiveness') },
       ]},
     ],
   },
   {
-    key: 'warehouse', icon: WarehouseIcon, label: 'Warehouse', basePath: '/wms',
+    key: 'warehouse', icon: WarehouseIcon, label: t('Warehouse'), basePath: '/wms',
     sections: [
-      { title: 'Warehouse', items: [
-        { to: '/wms', icon: LayoutDashboard, label: 'Dashboard', end: true },
-        { to: '/wms/operations', icon: BarChart3, label: 'Operations KPIs' },
-        { to: '/wms/zones', icon: LayoutGrid, label: 'Zones & Bins' },
-        { to: '/wms/inventory', icon: Package, label: 'Inventory' },
-        { to: '/wms/product-dimensions', icon: Ruler, label: 'Product Dimensions' },
-        { to: '/wms/carton-catalogue', icon: Package, label: 'Carton Catalogue' },
-        { to: '/wms/packaging-types', icon: Boxes, label: 'Packaging Types' },
-        { to: '/wms/cycle-counts', icon: ClipboardCheck, label: 'Cycle Counts' },
-        { to: '/wms/replenishment', icon: RefreshCcw, label: 'Replenishment' },
+      { title: t('Warehouse'), items: [
+        { to: '/wms', icon: LayoutDashboard, label: t('Dashboard'), end: true },
+        { to: '/wms/operations', icon: BarChart3, label: t('Operations KPIs') },
+        { to: '/wms/zones', icon: LayoutGrid, label: t('Zones & Bins') },
+        { to: '/wms/inventory', icon: Package, label: t('Inventory') },
+        { to: '/wms/product-dimensions', icon: Ruler, label: t('Product Dimensions') },
+        { to: '/wms/carton-catalogue', icon: Package, label: t('Carton Catalogue') },
+        { to: '/wms/packaging-types', icon: Boxes, label: t('Packaging Types') },
+        { to: '/wms/cycle-counts', icon: ClipboardCheck, label: t('Cycle Counts') },
+        { to: '/wms/replenishment', icon: RefreshCcw, label: t('Replenishment') },
       ]},
-      { title: 'Inbound', items: [
-        { to: '/wms/receiving-appointments', icon: Calendar, label: 'Appointments' },
-        { to: '/wms/receiving', icon: Inbox, label: 'Receiving' },
-        { to: '/wms/manifest', icon: Upload, label: 'Manifest Upload' },
-        { to: '/wms/putaway', icon: ArrowDownToLine, label: 'Putaway' },
+      { title: t('Inbound'), items: [
+        { to: '/wms/receiving-appointments', icon: Calendar, label: t('Appointments') },
+        { to: '/wms/receiving', icon: Inbox, label: t('Receiving') },
+        { to: '/wms/manifest', icon: Upload, label: t('Manifest Upload') },
+        { to: '/wms/putaway', icon: ArrowDownToLine, label: t('Putaway') },
       ]},
-      { title: 'Outbound', items: [
-        { to: '/wms/waves', icon: Waves, label: 'Waves' },
-        { to: '/wms/picking', icon: ShoppingCart, label: 'Picking' },
-        { to: '/wms/packing', icon: Package, label: 'Packing' },
-        { to: '/wms/pack-audits', icon: Scale, label: 'Pack Audits' },
-        { to: '/wms/loading', icon: Truck, label: 'Staging' },
-        { to: '/wms/load-plans', icon: ClipboardCheck, label: 'Load Plans' },
-        { to: '/wms/cutoff-monitor', icon: AlarmClock, label: 'Cutoff At Risk' },
-        { to: '/wms/carrier-cutoffs', icon: Clock, label: 'Carrier Cutoffs' },
+      { title: t('Outbound'), items: [
+        { to: '/wms/waves', icon: Waves, label: t('Waves') },
+        { to: '/wms/picking', icon: ShoppingCart, label: t('Picking') },
+        { to: '/wms/packing', icon: Package, label: t('Packing') },
+        { to: '/wms/pack-audits', icon: Scale, label: t('Pack Audits') },
+        { to: '/wms/loading', icon: Truck, label: t('Staging') },
+        { to: '/wms/load-plans', icon: ClipboardCheck, label: t('Load Plans') },
+        { to: '/wms/cutoff-monitor', icon: AlarmClock, label: t('Cutoff At Risk') },
+        { to: '/wms/carrier-cutoffs', icon: Clock, label: t('Carrier Cutoffs') },
       ]},
-      { title: 'Reverse Logistics', items: [
-        { to: '/wms/returns', icon: Undo2, label: 'Returns / RMA' },
-        { to: '/wms/returns/refund-review', icon: Landmark, label: 'Refund Review' },
+      { title: t('Reverse Logistics'), items: [
+        { to: '/wms/returns', icon: Undo2, label: t('Returns / RMA') },
+        { to: '/wms/returns/refund-review', icon: Landmark, label: t('Refund Review') },
       ]},
     ],
   },
   {
-    key: 'integrations', icon: Network, label: 'Integrations', basePath: '/integrations',
+    key: 'integrations', icon: Network, label: t('Integrations'), basePath: '/integrations',
     requiredAnyPermission: ['integrations:write', 'edi:write'],
     sections: [
-      { title: 'Integrations', items: [
-        { to: '/integrations', icon: LayoutDashboard, label: 'Overview', end: true },
-        { to: '/integrations/api-keys', icon: Key, label: 'API Keys' },
-        { to: '/integrations/webhook-logs', icon: Webhook, label: 'Webhook Logs' },
-        { to: '/integrations/edi', icon: Network, label: 'EDI Dashboard' },
-        { to: '/integrations/edi/partners', icon: Handshake, label: 'Trading Partners' },
-        { to: '/integrations/edi/logs', icon: ClipboardList, label: 'Transaction Log' },
-        { to: '/integrations/edi/import', icon: Upload, label: 'EDI Import' },
-        { to: '/integrations/carrier-tracking', icon: Locate, label: 'Carrier Tracking' },
+      { title: t('Integrations'), items: [
+        { to: '/integrations', icon: LayoutDashboard, label: t('Overview'), end: true },
+        { to: '/integrations/api-keys', icon: Key, label: t('API Keys') },
+        { to: '/integrations/webhook-logs', icon: Webhook, label: t('Webhook Logs') },
+        { to: '/integrations/edi', icon: Network, label: t('EDI Dashboard') },
+        { to: '/integrations/edi/partners', icon: Handshake, label: t('Trading Partners') },
+        { to: '/integrations/edi/logs', icon: ClipboardList, label: t('Transaction Log') },
+        { to: '/integrations/edi/import', icon: Upload, label: t('EDI Import') },
+        { to: '/integrations/carrier-tracking', icon: Locate, label: t('Carrier Tracking') },
       ]},
     ],
   },
   {
-    key: 'admin', icon: Shield, label: 'Admin', basePath: '/settings',
+    key: 'admin', icon: Shield, label: t('Admin'), basePath: '/settings',
     requiredAnyPermission: ['settings:write', 'users:write', 'roles:write'],
     sections: [
-      { title: 'Settings', items: [
-        { to: '/settings', icon: SettingsIcon, label: 'General', end: true },
-        { to: '/settings/theme', icon: Palette, label: 'Theme & Branding' },
-        { to: '/settings/email', icon: Mail, label: 'Email' },
-        { to: '/settings/email-templates', icon: MailCheck, label: 'Email Templates' },
-        { to: '/settings/document-templates', icon: FileText, label: 'Doc Templates' },
-        { to: '/settings/custom-fields', icon: SlidersHorizontal, label: 'Custom Fields' },
-        { to: '/settings/shipment-types', icon: Tags, label: 'Shipment Types' },
-        { to: '/settings/archives', icon: Archive, label: 'Archives' },
-        { to: '/settings/maps', icon: MapIcon, label: 'Maps & Geocoding' },
-        { to: '/settings/sla', icon: Timer, label: 'SLA Policies' },
-        { to: '/settings/llm', icon: Bot, label: 'AI / LLM' },
-        { to: '/settings/iot-vendors', icon: Radio, label: 'IoT Vendors' },
-        { to: '/settings/agents', icon: Brain, label: 'Agent Config' },
-        { to: '/settings/skills', icon: Wrench, label: 'Skills' },
-        { to: '/settings/skill-chains', icon: GitBranch, label: 'Skill Chains' },
-        { to: '/settings/roles', icon: Shield, label: 'Roles & Permissions' },
-        { to: '/settings/users', icon: Users, label: 'Users' },
-        { to: '/settings/portal-users', icon: Key, label: 'Portal Users' },
+      { title: t('Settings'), items: [
+        { to: '/settings', icon: SettingsIcon, label: t('General'), end: true },
+        { to: '/settings/theme', icon: Palette, label: t('Theme & Branding') },
+        { to: '/settings/email', icon: Mail, label: t('Email') },
+        { to: '/settings/email-templates', icon: MailCheck, label: t('Email Templates') },
+        { to: '/settings/document-templates', icon: FileText, label: t('Doc Templates') },
+        { to: '/settings/custom-fields', icon: SlidersHorizontal, label: t('Custom Fields') },
+        { to: '/settings/shipment-types', icon: Tags, label: t('Shipment Types') },
+        { to: '/settings/archives', icon: Archive, label: t('Archives') },
+        { to: '/settings/maps', icon: MapIcon, label: t('Maps & Geocoding') },
+        { to: '/settings/sla', icon: Timer, label: t('SLA Policies') },
+        { to: '/settings/llm', icon: Bot, label: t('AI / LLM') },
+        { to: '/settings/iot-vendors', icon: Radio, label: t('IoT Vendors') },
+        { to: '/settings/agents', icon: Brain, label: t('Agent Config') },
+        { to: '/settings/skills', icon: Wrench, label: t('Skills') },
+        { to: '/settings/skill-chains', icon: GitBranch, label: t('Skill Chains') },
+        { to: '/settings/roles', icon: Shield, label: t('Roles & Permissions') },
+        { to: '/settings/users', icon: Users, label: t('Users') },
+        { to: '/settings/portal-users', icon: Key, label: t('Portal Users') },
       ]},
-      { title: 'Apps', items: [
-        { to: '/warehouse', icon: WarehouseIcon, label: 'Warehouse App' },
+      { title: t('Apps'), items: [
+        { to: '/warehouse', icon: WarehouseIcon, label: t('Warehouse App') },
       ]},
-      { title: 'Development', items: [
-        { to: '/style-guide', icon: Palette, label: 'Style Guide' },
+      { title: t('Development'), items: [
+        { to: '/style-guide', icon: Palette, label: t('Style Guide') },
       ]},
     ],
   },
@@ -401,7 +403,7 @@ function GlobalSearch() {
       <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
       <Input
         type="search"
-        placeholder="Search shipments, orders, carriers..."
+        placeholder={t('Search shipments, orders, carriers...')}
         className="pl-9 pr-9"
         value={query}
         onChange={e => setQuery(e.target.value)}
@@ -417,7 +419,7 @@ function GlobalSearch() {
           type="button"
           onClick={() => setQuery('')}
           className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-          aria-label="Clear search"
+          aria-label={t('Clear search')}
         >
           <X className="h-4 w-4" />
         </button>
@@ -427,12 +429,12 @@ function GlobalSearch() {
         <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-[70vh] overflow-y-auto rounded-md border border-border bg-popover shadow-md">
           {!loading && count === 0 && (
             <div className="px-4 py-6 text-center text-sm text-muted-foreground">
-              No results for "{query.trim()}"
-            </div>
+              {t('No results for "')}{query.trim()}"
+                          </div>
           )}
 
           {results.shipments.length > 0 && (
-            <SearchGroup icon={Truck} label="Shipments">
+            <SearchGroup icon={Truck} label={t('Shipments')}>
               {results.shipments.map(s => (
                 <SearchResultRow
                   key={s.id}
@@ -446,7 +448,7 @@ function GlobalSearch() {
           )}
 
           {results.orders.length > 0 && (
-            <SearchGroup icon={FileText} label="Orders">
+            <SearchGroup icon={FileText} label={t('Orders')}>
               {results.orders.map(o => (
                 <SearchResultRow
                   key={o.id}
@@ -460,7 +462,7 @@ function GlobalSearch() {
           )}
 
           {results.carriers.length > 0 && (
-            <SearchGroup icon={Handshake} label="Carriers">
+            <SearchGroup icon={Handshake} label={t('Carriers')}>
               {results.carriers.map(c => (
                 <SearchResultRow
                   key={c.id}
@@ -474,7 +476,7 @@ function GlobalSearch() {
           )}
 
           {results.customers.length > 0 && (
-            <SearchGroup icon={Users} label="Customers">
+            <SearchGroup icon={Users} label={t('Customers')}>
               {results.customers.map(c => (
                 <SearchResultRow
                   key={c.id}
@@ -644,7 +646,7 @@ export default function VNextLayout() {
             type="button"
             onClick={() => setSidebarOpen(o => !o)}
             className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-muted/40 hover:text-foreground lg:hidden"
-            aria-label="Toggle sidebar"
+            aria-label={t('Toggle sidebar')}
           >
             <Menu className="h-5 w-5" />
           </button>
@@ -655,7 +657,7 @@ export default function VNextLayout() {
             <button
               type="button"
               className="relative inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-muted/40 hover:text-foreground"
-              aria-label="Notifications"
+              aria-label={t('Notifications')}
             >
               <Bell className="h-4 w-4" />
               <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-destructive ring-2 ring-background" />
@@ -665,8 +667,8 @@ export default function VNextLayout() {
               type="button"
               onClick={() => setAppGridOpen(true)}
               className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-muted/40 hover:text-foreground"
-              aria-label="Switch app"
-              title="Switch app"
+              aria-label={t('Switch app')}
+              title={t('Switch app')}
             >
               <Grid3x3 className="h-4 w-4" />
             </button>
@@ -705,11 +707,11 @@ export default function VNextLayout() {
                 )}
                 <DropdownMenuItem onClick={() => navigate('/settings/users')}>
                   <Users className="h-4 w-4" />
-                  Manage users
+                  {t('Manage users')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={logout}>
                   <LogOut className="h-4 w-4" />
-                  Sign out
+                  {t('Sign out')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -729,7 +731,7 @@ export default function VNextLayout() {
       <Dialog open={appGridOpen} onOpenChange={setAppGridOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Switch app</DialogTitle>
+            <DialogTitle>{t('Switch app')}</DialogTitle>
           </DialogHeader>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
             {visibleApps.map(app => {

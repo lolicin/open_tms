@@ -5,6 +5,8 @@ import { LogOut, PackageSearch, ScanLine, Warehouse as WarehouseIcon, type Lucid
 import { cn } from '@/lib/utils';
 import { clearInventoryAppSession, getInventoryAppToken, getInventoryAppUser } from './inventory-session';
 
+import { t } from '@/i18n';
+
 interface InventoryAppUser {
   email?: string;
 }
@@ -17,8 +19,8 @@ interface BottomNavItem {
 }
 
 const NAV: BottomNavItem[] = [
-  { to: '/inventory-app', icon: PackageSearch, label: 'Levels', end: true },
-  { to: '/inventory-app/scan', icon: ScanLine, label: 'Scan' },
+  { to: '/inventory-app', icon: PackageSearch, label: t('Levels'), end: true },
+  { to: '/inventory-app/scan', icon: ScanLine, label: t('Scan') },
 ];
 
 export function InventoryAppLayout() {
@@ -61,7 +63,7 @@ export function InventoryAppLayout() {
       <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-3 border-b border-border bg-background px-4">
         <div className="flex items-center gap-2 text-base font-semibold">
           <WarehouseIcon className="h-5 w-5 text-primary" />
-          <span>Inventory</span>
+          <span>{t('Inventory')}</span>
           {locationName && (
             <span className="text-xs font-normal text-muted-foreground">| {locationName}</span>
           )}
@@ -69,7 +71,7 @@ export function InventoryAppLayout() {
         <button
           type="button"
           onClick={handleLogout}
-          aria-label="Logout"
+          aria-label={t('Logout')}
           className="inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground hover:bg-muted/40 hover:text-foreground active:bg-muted/60"
         >
           <LogOut className="h-5 w-5" />

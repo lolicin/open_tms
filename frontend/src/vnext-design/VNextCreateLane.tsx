@@ -29,6 +29,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { t } from '@/i18n';
+
 interface Stop {
   id: number;
   location: string;
@@ -39,14 +41,14 @@ interface Stop {
 // Informational only — doesn't affect routing/rating, just labels what a
 // hub-and-spoke stop is for.
 const STOP_PURPOSES = [
-  { key: 'pickup', label: 'Pickup' },
-  { key: 'dropoff', label: 'Dropoff' },
-  { key: 'cross_dock', label: 'Cross-dock' },
-  { key: 'fuel', label: 'Fuel' },
-  { key: 'rest', label: 'Rest' },
-  { key: 'hub', label: 'Hub' },
-  { key: 'customs', label: 'Customs' },
-  { key: 'other', label: 'Other' },
+  { key: 'pickup', label: t('Pickup') },
+  { key: 'dropoff', label: t('Dropoff') },
+  { key: 'cross_dock', label: t('Cross-dock') },
+  { key: 'fuel', label: t('Fuel') },
+  { key: 'rest', label: t('Rest') },
+  { key: 'hub', label: t('Hub') },
+  { key: 'customs', label: t('Customs') },
+  { key: 'other', label: t('Other') },
 ];
 
 interface RouteData {
@@ -169,7 +171,7 @@ export default function VNextCreateLane() {
       } else {
         toast.success(`Lane ${label} created`, {
           action: savedLaneId
-            ? { label: 'View', onClick: () => navigate(`/lanes/${savedLaneId}`) }
+            ? { label: t('View'), onClick: () => navigate(`/lanes/${savedLaneId}`) }
             : undefined,
         });
       }
@@ -233,28 +235,28 @@ export default function VNextCreateLane() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/lanes" className="hover:text-foreground">
-          <ArrowLeft className="inline h-4 w-4" /> Lanes
+          <ArrowLeft className="inline h-4 w-4" /> {t('Lanes')}
         </Link>
         <ChevronRight className="h-3 w-3" />
-        <span>{isEdit ? 'Edit lane' : 'New lane'}</span>
+        <span>{isEdit ? t('Edit lane') : t('New lane')}</span>
       </div>
 
-      <h1 className="text-3xl font-bold tracking-tight">{isEdit ? 'Edit lane' : 'New lane'}</h1>
+      <h1 className="text-3xl font-bold tracking-tight">{isEdit ? t('Edit lane') : t('New lane')}</h1>
 
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Route className="h-4 w-4 text-primary" />
-            Route
+            {t('Route')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <Label>Origin location</Label>
+              <Label>{t('Origin location')}</Label>
               <Select value={origin} onValueChange={setOrigin}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select origin..." />
+                  <SelectValue placeholder={t('Select origin...')} />
                 </SelectTrigger>
                 <SelectContent>
                   {apiLocations.map((loc: any) => (
@@ -264,10 +266,10 @@ export default function VNextCreateLane() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>Destination location</Label>
+              <Label>{t('Destination location')}</Label>
               <Select value={destination} onValueChange={setDestination}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select destination..." />
+                  <SelectValue placeholder={t('Select destination...')} />
                 </SelectTrigger>
                 <SelectContent>
                   {apiLocations.map((loc: any) => (
@@ -282,7 +284,7 @@ export default function VNextCreateLane() {
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <div className="flex items-center gap-2">
                 <span className="h-2.5 w-2.5 rounded-full bg-success" />
-                <span className="text-sm font-medium">{originLabel || 'Origin'}</span>
+                <span className="text-sm font-medium">{originLabel || t('Origin')}</span>
               </div>
               <div className="h-px flex-1 bg-border" />
               {stops.length > 0 && stops.map((stop, i) => {
@@ -302,7 +304,7 @@ export default function VNextCreateLane() {
               })}
               <div className="flex items-center gap-2">
                 <span className="h-2.5 w-2.5 rounded-full bg-destructive" />
-                <span className="text-sm font-medium">{destLabel || 'Destination'}</span>
+                <span className="text-sm font-medium">{destLabel || t('Destination')}</span>
               </div>
             </div>
           )}
@@ -313,12 +315,14 @@ export default function VNextCreateLane() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MapIcon className="h-4 w-4 text-primary" />
-            Planned route
+            {t('Planned route')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            The planned route is used for deviation detection. Select origin and destination locations with coordinates to auto-calculate the route.
+            {t(
+              'The planned route is used for deviation detection. Select origin and destination locations with coordinates to auto-calculate the route.'
+            )}
             {originLatLng && destLatLng && ' Drag the blue route line on the map to adjust the planned path.'}
           </p>
 
@@ -335,7 +339,7 @@ export default function VNextCreateLane() {
 
           {(routeData || existingRoute) && (
             <div className="max-w-md space-y-2">
-              <Label>Deviation corridor (meters)</Label>
+              <Label>{t('Deviation corridor (meters)')}</Label>
               <div className="flex items-center gap-2">
                 <Input
                   type="number"
@@ -345,12 +349,13 @@ export default function VNextCreateLane() {
                   value={corridorMeters}
                   onChange={e => setCorridorMeters(parseInt(e.target.value) || 5000)}
                 />
-                <span className="whitespace-nowrap text-xs text-muted-foreground">
-                  ({(corridorMeters / 1000).toFixed(1)} km / {(corridorMeters / 1609.34).toFixed(1)} mi)
+                <span className="whitespace-nowrap text-xs text-muted-foreground">({(corridorMeters / 1000).toFixed(1)} {t('km /')} {(corridorMeters / 1609.34).toFixed(1)} {t('mi)')}
                 </span>
               </div>
               <p className="text-xs text-muted-foreground">
-                Alerts trigger when a shipment moves further than this distance from the planned route
+                {t(
+                  'Alerts trigger when a shipment moves further than this distance from the planned route'
+                )}
               </p>
             </div>
           )}
@@ -361,12 +366,12 @@ export default function VNextCreateLane() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Info className="h-4 w-4 text-primary" />
-            Details
+            {t('Details')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label>Distance</Label>
+            <Label>{t('Distance')}</Label>
             <div className="flex gap-2">
               <Input
                 type="number"
@@ -380,17 +385,17 @@ export default function VNextCreateLane() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="mi">mi</SelectItem>
-                  <SelectItem value="km">km</SelectItem>
+                  <SelectItem value="mi">{t('mi')}</SelectItem>
+                  <SelectItem value="km">{t('km')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             {routeData && (
-              <p className="text-xs text-success">Auto-calculated from route</p>
+              <p className="text-xs text-success">{t('Auto-calculated from route')}</p>
             )}
           </div>
           <div className="space-y-2">
-            <Label>Target rate</Label>
+            <Label>{t('Target rate')}</Label>
             <div className="flex gap-2">
               <Input
                 type="number"
@@ -404,31 +409,31 @@ export default function VNextCreateLane() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="USD">USD</SelectItem>
-                  <SelectItem value="EUR">EUR</SelectItem>
-                  <SelectItem value="GBP">GBP</SelectItem>
+                  <SelectItem value="USD">{t('USD')}</SelectItem>
+                  <SelectItem value="EUR">{t('EUR')}</SelectItem>
+                  <SelectItem value="GBP">{t('GBP')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
           <div className="space-y-2">
-            <Label>Service level</Label>
+            <Label>{t('Service level')}</Label>
             <Select value={serviceLevel} onValueChange={setServiceLevel}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="FTL">FTL</SelectItem>
-                <SelectItem value="LTL">LTL</SelectItem>
-                <SelectItem value="Both">Both</SelectItem>
+                <SelectItem value="FTL">{t('FTL')}</SelectItem>
+                <SelectItem value="LTL">{t('LTL')}</SelectItem>
+                <SelectItem value="Both">{t('Both')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2 md:col-span-2">
-            <Label>Notes</Label>
+            <Label>{t('Notes')}</Label>
             <textarea
               rows={3}
-              placeholder="Additional lane notes..."
+              placeholder={t('Additional lane notes...')}
               value={notes}
               onChange={e => setNotes(e.target.value)}
               className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -441,27 +446,29 @@ export default function VNextCreateLane() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MapPin className="h-4 w-4 text-primary" />
-            Stops (hub &amp; spoke)
+            {t('Stops (hub & spoke)')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <p className="text-sm text-muted-foreground">
-            Add intermediate stops for hub-and-spoke routing. These become waypoints in the planned route.
+            {t(
+              'Add intermediate stops for hub-and-spoke routing. These become waypoints in the planned route.'
+            )}
           </p>
 
           {stops.length === 0 && (
             <p className="text-sm text-muted-foreground">
-              No intermediate stops added. Click below to add one.
+              {t('No intermediate stops added. Click below to add one.')}
             </p>
           )}
 
           {stops.map((stop) => (
             <div key={stop.id} className="flex items-end gap-3">
               <div className="flex-1 space-y-2">
-                <Label>Location</Label>
+                <Label>{t('Location')}</Label>
                 <Select value={stop.location} onValueChange={v => updateStop(stop.id, 'location', v)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select location..." />
+                    <SelectValue placeholder={t('Select location...')} />
                   </SelectTrigger>
                   <SelectContent>
                     {apiLocations.map((loc: any) => (
@@ -471,7 +478,7 @@ export default function VNextCreateLane() {
                 </Select>
               </div>
               <div className="w-24 space-y-2">
-                <Label>Order</Label>
+                <Label>{t('Order')}</Label>
                 <Input
                   type="number"
                   min={1}
@@ -480,10 +487,10 @@ export default function VNextCreateLane() {
                 />
               </div>
               <div className="w-40 space-y-2">
-                <Label>Tag</Label>
+                <Label>{t('Tag')}</Label>
                 <Select value={stop.purpose} onValueChange={v => updateStop(stop.id, 'purpose', v)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="No tag" />
+                    <SelectValue placeholder={t('No tag')} />
                   </SelectTrigger>
                   <SelectContent>
                     {STOP_PURPOSES.map(p => (
@@ -506,7 +513,7 @@ export default function VNextCreateLane() {
           <div>
             <Button variant="outline" onClick={addStop}>
               <Plus className="h-4 w-4" />
-              Add stop
+              {t('Add stop')}
             </Button>
           </div>
         </CardContent>
@@ -521,11 +528,11 @@ export default function VNextCreateLane() {
 
       <div className="flex flex-wrap items-center justify-end gap-2">
         <Button variant="outline" asChild>
-          <Link to="/lanes">Cancel</Link>
+          <Link to="/lanes">{t('Cancel')}</Link>
         </Button>
         <Button variant="gradient" onClick={handleSubmit} disabled={submitting || savingRoute}>
           <Save className="h-4 w-4" />
-          {submitting || savingRoute ? 'Saving...' : isEdit ? 'Update lane' : 'Create lane'}
+          {submitting || savingRoute ? t('Saving...') : isEdit ? 'Update lane' : 'Create lane'}
         </Button>
       </div>
     </div>

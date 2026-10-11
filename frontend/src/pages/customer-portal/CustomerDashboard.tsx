@@ -22,6 +22,8 @@ import {
   type CustomerSessionUser,
 } from './customerSession';
 
+import { t as translate } from '@/i18n';
+
 export const getCustomerToken = _getCustomerToken;
 
 export function getCustomerUser(): Partial<CustomerSessionUser> {
@@ -95,14 +97,14 @@ export default function CustomerDashboard() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{translate('Loading...')}</h3>
       </div>
     );
   }
   if (!data) {
     return (
       <div className="rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-        Failed to load dashboard
+        {translate('Failed to load dashboard')}
       </div>
     );
   }
@@ -115,13 +117,13 @@ export default function CustomerDashboard() {
     sub?: string;
     to?: string;
   }> = [
-    { tone: 'primary', icon: Truck, label: 'Active shipments', value: data.stats.activeShipments, to: '/customer-portal/shipments?status=active' },
-    { tone: 'success', icon: CheckCircle2, label: 'Delivered', value: data.stats.recentDeliveries, to: '/customer-portal/shipments?status=delivered' },
-    { tone: 'warning', icon: Bug, label: 'Open issues', value: data.stats.openIssues, to: '/customer-portal/issues?status=open' },
+    { tone: 'primary', icon: Truck, label: translate('Active shipments'), value: data.stats.activeShipments, to: '/customer-portal/shipments?status=active' },
+    { tone: 'success', icon: CheckCircle2, label: translate('Delivered'), value: data.stats.recentDeliveries, to: '/customer-portal/shipments?status=delivered' },
+    { tone: 'warning', icon: Bug, label: translate('Open issues'), value: data.stats.openIssues, to: '/customer-portal/issues?status=open' },
     {
       tone: 'info',
       icon: Receipt,
-      label: 'Outstanding invoices',
+      label: translate('Outstanding invoices'),
       value: data.stats.outstandingInvoiceCount,
       sub: formatCents(data.stats.outstandingBalanceCents),
       to: '/customer-portal/invoices?status=outstanding',
@@ -132,7 +134,7 @@ export default function CustomerDashboard() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">
-          Welcome back{user.name ? `, ${user.name}` : ''}
+          {translate('Welcome back')}{user.name ? `, ${user.name}` : ''}
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">{user.customerName}</p>
       </div>
@@ -167,22 +169,22 @@ export default function CustomerDashboard() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Recent shipments</CardTitle>
+          <CardTitle>{translate('Recent shipments')}</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           <Separator />
           {data.recentShipments.length === 0 ? (
-            <div className="px-6 py-12 text-center text-sm text-muted-foreground">No recent shipments</div>
+            <div className="px-6 py-12 text-center text-sm text-muted-foreground">{translate('No recent shipments')}</div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Reference</TableHead>
-                  <TableHead>Route</TableHead>
-                  <TableHead>Carrier</TableHead>
-                  <TableHead>Pickup</TableHead>
-                  <TableHead>Delivery</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>{translate('Reference')}</TableHead>
+                  <TableHead>{translate('Route')}</TableHead>
+                  <TableHead>{translate('Carrier')}</TableHead>
+                  <TableHead>{translate('Pickup')}</TableHead>
+                  <TableHead>{translate('Delivery')}</TableHead>
+                  <TableHead>{translate('Status')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

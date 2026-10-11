@@ -54,6 +54,8 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 
+import { t as translate } from '@/i18n';
+
 export const NOTE_TAGS: {
   key: string;
   label: string;
@@ -61,9 +63,9 @@ export const NOTE_TAGS: {
   dotClass: string;
   activeClass: string;
 }[] = [
-  { key: '', label: 'None', dotClass: 'bg-muted-foreground', activeClass: 'border-primary/40 bg-card' },
-  { key: 'issue', label: 'Issue', variant: 'destructive', dotClass: 'bg-destructive', activeClass: 'border-destructive bg-destructive/10' },
-  { key: 'requirement', label: 'Additional requirement', variant: 'info', dotClass: 'bg-info', activeClass: 'border-info bg-info/10' },
+  { key: '', label: translate('None'), dotClass: 'bg-muted-foreground', activeClass: 'border-primary/40 bg-card' },
+  { key: 'issue', label: translate('Issue'), variant: 'destructive', dotClass: 'bg-destructive', activeClass: 'border-destructive bg-destructive/10' },
+  { key: 'requirement', label: translate('Additional requirement'), variant: 'info', dotClass: 'bg-info', activeClass: 'border-info bg-info/10' },
 ];
 
 interface ShipmentNote {
@@ -81,20 +83,20 @@ const RESTRICTION_KEYS = [
 ];
 
 const EQUIPMENT_TYPES = [
-  { key: 'dryVan', label: 'Dry van' },
-  { key: 'reefer', label: 'Reefer' },
-  { key: 'flatbed', label: 'Flatbed' },
-  { key: 'tanker', label: 'Tanker' },
-  { key: 'intermodal', label: 'Intermodal' },
+  { key: 'dryVan', label: translate('Dry van') },
+  { key: 'reefer', label: translate('Reefer') },
+  { key: 'flatbed', label: translate('Flatbed') },
+  { key: 'tanker', label: translate('Tanker') },
+  { key: 'intermodal', label: translate('Intermodal') },
 ];
 
 // Informational only — doesn't change alerting/compliance logic, just labels
 // why a device is on the shipment when there's more than one attached.
 const DEVICE_PURPOSES = [
-  { key: 'general', label: 'General' },
-  { key: 'cargo_condition', label: 'Cargo condition' },
-  { key: 'security', label: 'Security & tamper' },
-  { key: 'location', label: 'Location tracking' },
+  { key: 'general', label: translate('General') },
+  { key: 'cargo_condition', label: translate('Cargo condition') },
+  { key: 'security', label: translate('Security & tamper') },
+  { key: 'location', label: translate('Location tracking') },
 ];
 
 interface RestrictionPreset {
@@ -174,16 +176,18 @@ function RouteStopList({ rows, onChange, locations }: {
   return (
     <div className="space-y-3">
       <p className="text-xs text-muted-foreground">
-        In visiting order, between the origin and the destination. Pickups come before drops; fuel, rest, customs and the other stop types (where nothing is loaded or unloaded) can go anywhere.
+        {translate(
+          'In visiting order, between the origin and the destination. Pickups come before drops; fuel, rest, customs and the other stop types (where nothing is loaded or unloaded) can go anywhere.'
+        )}
       </p>
-      {rows.length === 0 && <p className="text-sm text-muted-foreground">No stops between the origin and the destination.</p>}
+      {rows.length === 0 && <p className="text-sm text-muted-foreground">{translate('No stops between the origin and the destination.')}</p>}
       {rows.map((row, idx) => (
         <div key={idx} className="space-y-2">
           <div className="flex items-center gap-2">
             <span className="w-5 text-xs text-muted-foreground">{idx + 1}</span>
             <Select value={row.locationId} onValueChange={(v) => update(idx, { locationId: v })}>
               <SelectTrigger>
-                <SelectValue placeholder="Select stop location..." />
+                <SelectValue placeholder={translate('Select stop location...')} />
               </SelectTrigger>
               <SelectContent>
                 {locations.map((l: any) => (
@@ -214,7 +218,7 @@ function RouteStopList({ rows, onChange, locations }: {
           {row.type === 'other' && (
             <div className="ml-7">
               <Input
-                placeholder="Name this stop"
+                placeholder={translate('Name this stop')}
                 maxLength={100}
                 value={row.label}
                 onChange={(e) => update(idx, { label: e.target.value })}
@@ -226,7 +230,7 @@ function RouteStopList({ rows, onChange, locations }: {
       ))}
       <Button type="button" variant="outline" size="sm" onClick={() => onChange([...rows, { locationId: '', type: 'drop', label: '' }])}>
         <Plus className="h-4 w-4" />
-        Add stop
+        {translate('Add stop')}
       </Button>
     </div>
   );
@@ -900,7 +904,7 @@ export default function VNextCreateShipment() {
         navigate(`/shipments/${newId}`);
       } else {
         toast.success(`Shipment ${ref} created`, {
-          action: { label: 'View', onClick: () => navigate(`/shipments/${newId}`) },
+          action: { label: translate('View'), onClick: () => navigate(`/shipments/${newId}`) },
         });
         navigate('/shipments');
       }
@@ -923,15 +927,15 @@ export default function VNextCreateShipment() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <Link to="/shipments" className="hover:text-foreground">
-          <ArrowLeft className="inline h-4 w-4" /> Shipments
+          <ArrowLeft className="inline h-4 w-4" /> {translate('Shipments')}
         </Link>
         <ChevronRight className="h-3 w-3" />
-        <span>{isEdit ? 'Edit shipment' : 'New shipment'}</span>
+        <span>{isEdit ? translate('Edit shipment') : translate('New shipment')}</span>
       </div>
 
       <div>
         <h1 className="text-3xl font-bold tracking-tight">
-          {isEdit ? 'Edit shipment' : 'New shipment'}
+          {isEdit ? translate('Edit shipment') : translate('New shipment')}
         </h1>
       </div>
 
@@ -940,20 +944,20 @@ export default function VNextCreateShipment() {
           <CardHeader className="flex flex-row items-center justify-between space-y-0">
             <CardTitle className="flex items-center gap-2">
               <Package className="h-4 w-4 text-primary" />
-              Orders
+              {translate('Orders')}
               {attachedOrders.length > 0 && <span className="text-sm font-normal text-muted-foreground">({attachedOrders.length})</span>}
             </CardTitle>
             <Popover open={orderPickerOpen} onOpenChange={openOrderPicker}>
               <PopoverTrigger asChild>
                 <Button type="button" variant="outline" size="sm">
                   <Plus className="h-4 w-4" />
-                  Add order
+                  {translate('Add order')}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-[420px] p-1" align="end">
                 <Input
                   autoFocus
-                  placeholder="Search available orders..."
+                  placeholder={translate('Search available orders...')}
                   value={orderSearch}
                   onChange={e => setOrderSearch(e.target.value)}
                   className="mb-1"
@@ -961,11 +965,11 @@ export default function VNextCreateShipment() {
                 <div className="max-h-64 overflow-y-auto">
                   {orderCandidates === null ? (
                     <div className="flex items-center gap-2 px-2 py-1.5 text-sm text-muted-foreground">
-                      <Loader2 className="h-4 w-4 animate-spin" /> Loading orders...
+                      <Loader2 className="h-4 w-4 animate-spin" /> {translate('Loading orders...')}
                     </div>
                   ) : pickableOrders.length === 0 ? (
                     <div className="px-2 py-1.5 text-sm text-muted-foreground">
-                      No available orders that can share this shipment.
+                      {translate('No available orders that can share this shipment.')}
                     </div>
                   ) : (
                     pickableOrders.map((o: any) => (
@@ -977,7 +981,7 @@ export default function VNextCreateShipment() {
                       >
                         <span className="font-medium">{o.orderNumber} <span className="font-normal text-muted-foreground">{o.customer?.name}</span></span>
                         <span className="text-xs text-muted-foreground">
-                          {o.serviceLevel} · {o.destinationId ? locationName(o.destinationId) : 'No destination'}
+                          {o.serviceLevel} · {o.destinationId ? locationName(o.destinationId) : translate('No destination')}
                         </span>
                       </button>
                     ))
@@ -989,7 +993,9 @@ export default function VNextCreateShipment() {
           <CardContent className="space-y-3">
             {attachedOrders.length === 0 ? (
               <p className="text-sm text-muted-foreground">
-                No orders attached. Add orders to fill in the shipment from them; you can still change anything they fill in.
+                {translate(
+                  'No orders attached. Add orders to fill in the shipment from them; you can still change anything they fill in.'
+                )}
               </p>
             ) : (
               <div className="space-y-1">
@@ -1029,15 +1035,15 @@ export default function VNextCreateShipment() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Info className="h-4 w-4 text-primary" />
-            Basic information
+            {translate('Basic information')}
           </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label>Customer</Label>
+            <Label>{translate('Customer')}</Label>
             <Select value={customer} onValueChange={setCustomer}>
               <SelectTrigger>
-                <SelectValue placeholder="Select customer..." />
+                <SelectValue placeholder={translate('Select customer...')} />
               </SelectTrigger>
               <SelectContent>
                 {customers.map((c: any) => (
@@ -1047,31 +1053,31 @@ export default function VNextCreateShipment() {
             </Select>
           </div>
           <div className="space-y-2">
-            <Label>Reference</Label>
+            <Label>{translate('Reference')}</Label>
             <Input
               type="text"
-              placeholder="Auto-generated if left blank"
+              placeholder={translate('Auto-generated if left blank')}
               value={reference}
               onChange={e => setReference(e.target.value)}
             />
           </div>
           <div className="space-y-2">
-            <Label>Mode</Label>
+            <Label>{translate('Mode')}</Label>
             <Select value={mode} onValueChange={setMode}>
               <SelectTrigger>
-                <SelectValue placeholder="Select mode..." />
+                <SelectValue placeholder={translate('Select mode...')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="FTL">FTL</SelectItem>
-                <SelectItem value="LTL">LTL</SelectItem>
+                <SelectItem value="FTL">{translate('FTL')}</SelectItem>
+                <SelectItem value="LTL">{translate('LTL')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2">
-            <Label>PRO number</Label>
+            <Label>{translate('PRO number')}</Label>
             <Input
               type="text"
-              placeholder="Enter PRO number"
+              placeholder={translate('Enter PRO number')}
               value={proNumber}
               onChange={e => setProNumber(e.target.value)}
             />
@@ -1089,7 +1095,7 @@ export default function VNextCreateShipment() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MapPin className="h-4 w-4 text-primary" />
-            Lane
+            {translate('Lane')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -1100,16 +1106,16 @@ export default function VNextCreateShipment() {
               onChange={e => handleToggleCustomRoute(e.target.checked)}
               className="h-4 w-4 rounded border border-input bg-background accent-primary"
             />
-            Use a custom route instead of a lane
+            {translate('Use a custom route instead of a lane')}
           </label>
 
           {useCustomRoute ? (
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>Origin</Label>
+                <Label>{translate('Origin')}</Label>
                 <Select value={originLocation} onValueChange={setOriginLocation}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select origin..." />
+                    <SelectValue placeholder={translate('Select origin...')} />
                   </SelectTrigger>
                   <SelectContent>
                     {locations.map((l: any) => (
@@ -1119,10 +1125,10 @@ export default function VNextCreateShipment() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Destination</Label>
+                <Label>{translate('Destination')}</Label>
                 <Select value={destLocation} onValueChange={setDestLocation}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select destination..." />
+                    <SelectValue placeholder={translate('Select destination...')} />
                   </SelectTrigger>
                   <SelectContent>
                     {locations.map((l: any) => (
@@ -1132,10 +1138,10 @@ export default function VNextCreateShipment() {
                 </Select>
               </div>
               <div className="space-y-2 md:col-span-2">
-                <Label>Carrier</Label>
+                <Label>{translate('Carrier')}</Label>
                 <Select value={carrierId} onValueChange={setCarrierId}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select carrier..." />
+                    <SelectValue placeholder={translate('Select carrier...')} />
                   </SelectTrigger>
                   <SelectContent>
                     {carriers.map((c: any) => (
@@ -1148,7 +1154,7 @@ export default function VNextCreateShipment() {
           ) : (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label>Lane</Label>
+                <Label>{translate('Lane')}</Label>
                 <Popover open={laneOpen} onOpenChange={setLaneOpen}>
                   <PopoverTrigger asChild>
                     <button
@@ -1158,7 +1164,7 @@ export default function VNextCreateShipment() {
                       <span className={cn('line-clamp-1', !selectedLane && 'text-muted-foreground')}>
                         {selectedLane
                           ? `${selectedLane.name} (${selectedLane.originCity} → ${selectedLane.destinationCity})`
-                          : 'Select lane...'}
+                          : translate('Select lane...')}
                       </span>
                       <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
                     </button>
@@ -1166,7 +1172,7 @@ export default function VNextCreateShipment() {
                   <PopoverContent className="w-[420px] p-1" align="start">
                     <Input
                       autoFocus
-                      placeholder="Search lanes by name or city..."
+                      placeholder={translate('Search lanes by name or city...')}
                       value={laneSearch}
                       onChange={e => setLaneSearch(e.target.value)}
                       className="mb-1"
@@ -1174,8 +1180,8 @@ export default function VNextCreateShipment() {
                     <div className="max-h-64 overflow-y-auto">
                       {filteredLanes.length === 0 ? (
                         <div className="px-2 py-1.5 text-sm text-muted-foreground">
-                          No lanes match "{laneSearch}"
-                        </div>
+                          {translate('No lanes match "')}{laneSearch}"
+                                                  </div>
                       ) : (
                         filteredLanes.map((l: any) => (
                           <button
@@ -1198,21 +1204,23 @@ export default function VNextCreateShipment() {
 
               {laneDetail && (
                 <div className="space-y-1 text-sm">
-                  <Label>Stops</Label>
+                  <Label>{translate('Stops')}</Label>
                   <ol className="space-y-1 text-muted-foreground">
                     {[laneDetail.originId, ...waypoints, laneDetail.destinationId].map((locId: string, idx: number) => (
                       <li key={`${locId}-${idx}`} className="flex items-center gap-2">
                         <span className="w-5 text-xs">{idx + 1}</span>
                         {locationName(locId)}
                         {otherStops[locId] && (
-                          <Badge variant="muted">{otherStops[locId].label.trim() || OTHER_STOP_PURPOSE_LABELS[otherStops[locId].purpose as keyof typeof OTHER_STOP_PURPOSE_LABELS] || 'Stop'}</Badge>
+                          <Badge variant="muted">{otherStops[locId].label.trim() || OTHER_STOP_PURPOSE_LABELS[otherStops[locId].purpose as keyof typeof OTHER_STOP_PURPOSE_LABELS] || translate('Stop')}</Badge>
                         )}
                       </li>
                     ))}
                   </ol>
                   {laneWaypoints(laneDetail, []).length < waypoints.length && (
                     <p className="text-xs text-warning">
-                      Some of the orders' drops aren't on this lane, so they're added as extra stops; the lane's planned route won't pass through them. Use a custom route to plan one that does.
+                      {translate(
+                        'Some of the orders\' drops aren\'t on this lane, so they\'re added as extra stops; the lane\'s planned route won\'t pass through them. Use a custom route to plan one that does.'
+                      )}
                     </p>
                   )}
                 </div>
@@ -1223,17 +1231,17 @@ export default function VNextCreateShipment() {
                   {assignedLaneCarrier && (
                     <div className="flex items-center gap-2 rounded-md border border-info/30 bg-info/10 px-3 py-2 text-sm text-info">
                       <Info className="h-4 w-4 shrink-0" />
-                      This lane's assigned carrier is {assignedLaneCarrier.carrier?.name}.
-                    </div>
+                      {translate('This lane\'s assigned carrier is')} {assignedLaneCarrier.carrier?.name}.
+                                          </div>
                   )}
                   <div className="space-y-2">
-                    <Label>Carrier</Label>
+                    <Label>{translate('Carrier')}</Label>
                     <Select
                       value={carrierId}
                       onValueChange={v => { setCarrierId(v); setSetAsLaneDefault(false); }}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Select carrier..." />
+                        <SelectValue placeholder={translate('Select carrier...')} />
                       </SelectTrigger>
                       <SelectContent>
                         {carriers.map((c: any) => (
@@ -1250,7 +1258,7 @@ export default function VNextCreateShipment() {
                         onChange={e => handleSetAsDefaultChange(e.target.checked)}
                         className="h-4 w-4 rounded border border-input bg-background accent-primary"
                       />
-                      Set as this lane's default carrier
+                      {translate('Set as this lane\'s default carrier')}
                     </label>
                   )}
                 </div>
@@ -1260,11 +1268,11 @@ export default function VNextCreateShipment() {
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <Label>Pickup date</Label>
+              <Label>{translate('Pickup date')}</Label>
               <DatePicker type="date" value={pickupDate} onChange={e => setPickupDate(e.target.value)} />
             </div>
             <div className="space-y-2">
-              <Label>Delivery date</Label>
+              <Label>{translate('Delivery date')}</Label>
               <DatePicker
                 type="date"
                 value={deliveryDate}
@@ -1286,7 +1294,7 @@ export default function VNextCreateShipment() {
                   }}
                   className="h-4 w-4 rounded border border-input bg-background accent-primary"
                 />
-                Specify pickup window
+                {translate('Specify pickup window')}
               </label>
             </div>
             <div>
@@ -1303,13 +1311,13 @@ export default function VNextCreateShipment() {
                   }}
                   className="h-4 w-4 rounded border border-input bg-background accent-primary"
                 />
-                Specify delivery window
+                {translate('Specify delivery window')}
               </label>
             </div>
             {hasPickupWindow && (
               <>
                 <div className="space-y-2">
-                  <Label>Pickup window start</Label>
+                  <Label>{translate('Pickup window start')}</Label>
                   <DatePicker
                     type="datetime-local"
                     value={pickupWindowStart}
@@ -1317,7 +1325,7 @@ export default function VNextCreateShipment() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Pickup window end</Label>
+                  <Label>{translate('Pickup window end')}</Label>
                   <DatePicker
                     type="datetime-local"
                     value={pickupWindowEnd}
@@ -1330,7 +1338,7 @@ export default function VNextCreateShipment() {
             {hasDeliveryWindow && (
               <>
                 <div className="space-y-2">
-                  <Label>Delivery window start</Label>
+                  <Label>{translate('Delivery window start')}</Label>
                   <DatePicker
                     type="datetime-local"
                     value={deliveryWindowStart}
@@ -1338,7 +1346,7 @@ export default function VNextCreateShipment() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label>Delivery window end</Label>
+                  <Label>{translate('Delivery window end')}</Label>
                   <DatePicker
                     type="datetime-local"
                     value={deliveryWindowEnd}
@@ -1357,7 +1365,7 @@ export default function VNextCreateShipment() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <MapPin className="h-4 w-4 text-primary" />
-            Stops <span className="text-xs font-normal text-muted-foreground">(optional, between origin and destination)</span>
+            {translate('Stops')} <span className="text-xs font-normal text-muted-foreground">{translate('(optional, between origin and destination)')}</span>
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-5">
@@ -1377,10 +1385,12 @@ export default function VNextCreateShipment() {
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label>
-                  Shipment type <span className="text-destructive">*</span>
+                  {translate('Shipment type')} <span className="text-destructive">*</span>
                 </Label>
                 <p className="text-xs text-muted-foreground">
-                  Pick exactly one base type. Hazmat is independent and can be combined with any of them.
+                  {translate(
+                    'Pick exactly one base type. Hazmat is independent and can be combined with any of them.'
+                  )}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {exclusiveTypes.map(t => (
@@ -1419,10 +1429,10 @@ export default function VNextCreateShipment() {
                 )}
               </div>
               <div className="space-y-2">
-                <Label>Equipment type</Label>
+                <Label>{translate('Equipment type')}</Label>
                 <Select value={equipmentType} onValueChange={setEquipmentType}>
                   <SelectTrigger>
-                    <SelectValue placeholder="No preference" />
+                    <SelectValue placeholder={translate('No preference')} />
                   </SelectTrigger>
                   <SelectContent>
                     {EQUIPMENT_TYPES.map(eq => (
@@ -1436,18 +1446,20 @@ export default function VNextCreateShipment() {
             <div className="space-y-4 rounded-md border border-border p-4">
               {!tempControlled && !hazmat && (
                 <p className="text-sm text-muted-foreground">
-                  No restrictions for this shipment type. Pick a different type above to add details.
+                  {translate(
+                    'No restrictions for this shipment type. Pick a different type above to add details.'
+                  )}
                 </p>
               )}
               {tempControlled && (
                 <div className="space-y-3">
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-2">
-                      <Label>Min temp (°C)</Label>
+                      <Label>{translate('Min temp (°C)')}</Label>
                       <Input type="number" value={tempMinC} onChange={e => setTempMinC(e.target.value)} />
                     </div>
                     <div className="space-y-2">
-                      <Label>Max temp (°C)</Label>
+                      <Label>{translate('Max temp (°C)')}</Label>
                       <Input type="number" value={tempMaxC} onChange={e => setTempMaxC(e.target.value)} />
                     </div>
                   </div>
@@ -1464,16 +1476,16 @@ export default function VNextCreateShipment() {
                       }}
                       className="h-4 w-4 rounded border border-input bg-background accent-primary"
                     />
-                    Humidity control
+                    {translate('Humidity control')}
                   </label>
                   {humidityControlled && (
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-2">
-                        <Label>Min humidity (%)</Label>
+                        <Label>{translate('Min humidity (%)')}</Label>
                         <Input type="number" min={0} max={100} value={humidityMinPct} onChange={e => setHumidityMinPct(e.target.value)} />
                       </div>
                       <div className="space-y-2">
-                        <Label>Max humidity (%)</Label>
+                        <Label>{translate('Max humidity (%)')}</Label>
                         <Input type="number" min={0} max={100} value={humidityMaxPct} onChange={e => setHumidityMaxPct(e.target.value)} />
                       </div>
                     </div>
@@ -1483,28 +1495,28 @@ export default function VNextCreateShipment() {
               {hazmat && (
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-2">
-                    <Label>UN number</Label>
-                    <Input placeholder="e.g. UN1203" value={unNumber} onChange={e => setUnNumber(e.target.value)} />
+                    <Label>{translate('UN number')}</Label>
+                    <Input placeholder={translate('e.g. UN1203')} value={unNumber} onChange={e => setUnNumber(e.target.value)} />
                   </div>
                   <div className="space-y-2">
-                    <Label>Hazmat class</Label>
-                    <Input placeholder="e.g. 3" value={hazmatClass} onChange={e => setHazmatClass(e.target.value)} />
+                    <Label>{translate('Hazmat class')}</Label>
+                    <Input placeholder={translate('e.g. 3')} value={hazmatClass} onChange={e => setHazmatClass(e.target.value)} />
                   </div>
                   <div className="space-y-2">
-                    <Label>Packing group</Label>
+                    <Label>{translate('Packing group')}</Label>
                     <Select value={packingGroup} onValueChange={setPackingGroup}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select..." />
+                        <SelectValue placeholder={translate('Select...')} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="I">I</SelectItem>
-                        <SelectItem value="II">II</SelectItem>
-                        <SelectItem value="III">III</SelectItem>
+                        <SelectItem value="I">{translate('I')}</SelectItem>
+                        <SelectItem value="II">{translate('II')}</SelectItem>
+                        <SelectItem value="III">{translate('III')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label>Proper shipping name</Label>
+                    <Label>{translate('Proper shipping name')}</Label>
                     <Input value={properShippingName} onChange={e => setProperShippingName(e.target.value)} />
                   </div>
                 </div>
@@ -1518,12 +1530,12 @@ export default function VNextCreateShipment() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Radio className="h-4 w-4 text-primary" />
-            Devices
+            {translate('Devices')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {pendingDevices.length === 0 && (
-            <p className="text-sm text-muted-foreground">No tracking devices attached yet.</p>
+            <p className="text-sm text-muted-foreground">{translate('No tracking devices attached yet.')}</p>
           )}
           {pendingDevices.length > 0 && (
             <div className="space-y-2">
@@ -1545,7 +1557,7 @@ export default function VNextCreateShipment() {
                       type="button"
                       onClick={() => handleRemoveDevice(d.deviceId)}
                       className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                      title="Remove device"
+                      title={translate('Remove device')}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>
@@ -1559,13 +1571,13 @@ export default function VNextCreateShipment() {
             <PopoverTrigger asChild>
               <Button type="button" variant="outline">
                 <Plus className="h-4 w-4" />
-                Add device
+                {translate('Add device')}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[380px] p-1" align="start">
               <Input
                 autoFocus
-                placeholder="Search devices by name or model..."
+                placeholder={translate('Search devices by name or model...')}
                 value={deviceSearch}
                 onChange={e => setDeviceSearch(e.target.value)}
                 className="mb-1"
@@ -1573,7 +1585,7 @@ export default function VNextCreateShipment() {
               <div className="max-h-64 overflow-y-auto">
                 {filteredDevices.length === 0 ? (
                   <div className="px-2 py-1.5 text-sm text-muted-foreground">
-                    {devicesList.length === 0 ? 'No devices registered.' : 'No devices match.'}
+                    {devicesList.length === 0 ? translate('No devices registered.') : translate('No devices match.')}
                   </div>
                 ) : (
                   filteredDevices.map((d: any) => {
@@ -1591,7 +1603,7 @@ export default function VNextCreateShipment() {
                             .filter(Boolean).join(' · ')}
                           {elsewhere && (
                             <span className="text-warning">
-                              {' '}· Currently on {elsewhere.shipment ? elsewhere.shipment.reference : elsewhere.order?.orderNumber}
+                              {' '}{translate('· Currently on')} {elsewhere.shipment ? elsewhere.shipment.reference : elsewhere.order?.orderNumber}
                             </span>
                           )}
                         </span>
@@ -1609,13 +1621,13 @@ export default function VNextCreateShipment() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <StickyNote className="h-4 w-4 text-primary" />
-            Notes
+            {translate('Notes')}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {notes.length === 0 && !addingNote && (
             <p className="text-sm text-muted-foreground">
-              No notes added yet.
+              {translate('No notes added yet.')}
             </p>
           )}
           {notes.length > 0 && (
@@ -1632,7 +1644,7 @@ export default function VNextCreateShipment() {
                       type="button"
                       onClick={() => handleRemoveNote(i)}
                       className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-                      title="Remove note"
+                      title={translate('Remove note')}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>
@@ -1645,7 +1657,7 @@ export default function VNextCreateShipment() {
           {addingNote ? (
             <div className="space-y-3 rounded-md border border-border p-4">
               <div className="space-y-2">
-                <Label>Tag</Label>
+                <Label>{translate('Tag')}</Label>
                 <div className="flex flex-wrap gap-2">
                   {NOTE_TAGS.map(t => (
                     <button
@@ -1664,29 +1676,29 @@ export default function VNextCreateShipment() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label>Note</Label>
+                <Label>{translate('Note')}</Label>
                 <textarea
                   className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   rows={3}
                   autoFocus
-                  placeholder="Enter note details..."
+                  placeholder={translate('Enter note details...')}
                   value={noteDraft}
                   onChange={e => setNoteDraft(e.target.value)}
                 />
               </div>
               <div className="flex justify-end gap-2">
                 <Button variant="outline" onClick={() => { setAddingNote(false); setNoteDraft(''); setNoteTag(NOTE_TAGS[0].key); }}>
-                  Cancel
+                  {translate('Cancel')}
                 </Button>
                 <Button variant="gradient" onClick={handleAddNote} disabled={!noteDraft.trim()}>
-                  Add note
+                  {translate('Add note')}
                 </Button>
               </div>
             </div>
           ) : (
             <Button variant="outline" onClick={() => setAddingNote(true)}>
               <Plus className="h-4 w-4" />
-              Add note
+              {translate('Add note')}
             </Button>
           )}
         </CardContent>
@@ -1701,12 +1713,12 @@ export default function VNextCreateShipment() {
 
       <div className="flex flex-wrap items-center justify-end gap-2">
         <Button variant="outline" asChild>
-          <Link to={isEdit && id ? `/shipments/${id}` : '/shipments'}>Cancel</Link>
+          <Link to={isEdit && id ? `/shipments/${id}` : '/shipments'}>{translate('Cancel')}</Link>
         </Button>
         <Button variant="gradient" onClick={handleSubmit} disabled={submitting || !!dateError || !!restrictionError}>
           {isEdit ? <Save className="h-4 w-4" /> : <PencilLine className="h-4 w-4" />}
           {submitting
-            ? 'Saving...'
+            ? translate('Saving...')
             : isEdit
               ? 'Update shipment'
               : 'Create shipment'}
@@ -1716,20 +1728,20 @@ export default function VNextCreateShipment() {
       <Dialog open={confirmReassign} onOpenChange={setConfirmReassign}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Change this lane's default carrier?</DialogTitle>
+            <DialogTitle>{translate('Change this lane\'s default carrier?')}</DialogTitle>
             <DialogDescription>
-              This lane is currently assigned to {assignedLaneCarrier?.carrier?.name || 'another carrier'}.
-              Setting {carriers.find(c => c.id === carrierId)?.name || 'this carrier'} as the default will apply
-              to every future shipment on this lane, not just this one.
+              {translate('This lane is currently assigned to')} {assignedLaneCarrier?.carrier?.name || translate('another carrier')}{translate('.\n              Setting')} {carriers.find(c => c.id === carrierId)?.name || translate('this carrier')} {translate(
+                'as the default will apply\n              to every future shipment on this lane, not just this one.'
+              )}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setConfirmReassign(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setConfirmReassign(false)}>{translate('Cancel')}</Button>
             <Button
               variant="default"
               onClick={() => { setSetAsLaneDefault(true); setConfirmReassign(false); }}
             >
-              Confirm
+              {translate('Confirm')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -1738,14 +1750,15 @@ export default function VNextCreateShipment() {
       <Dialog open={!!confirmStealDevice} onOpenChange={open => !open && setConfirmStealDevice(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Reassign this device?</DialogTitle>
+            <DialogTitle>{translate('Reassign this device?')}</DialogTitle>
             <DialogDescription>
-              {confirmStealDevice?.name} is currently active on {confirmStealDevice?.label}. Attaching it here will
-              automatically remove it from there — a device can only track one thing at a time.
+              {confirmStealDevice?.name} {translate('is currently active on')} {confirmStealDevice?.label}{translate(
+                '. Attaching it here will\n              automatically remove it from there — a device can only track one thing at a time.'
+              )}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setConfirmStealDevice(null)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setConfirmStealDevice(null)}>{translate('Cancel')}</Button>
             <Button
               variant="default"
               onClick={() => {
@@ -1754,7 +1767,7 @@ export default function VNextCreateShipment() {
                 setConfirmStealDevice(null);
               }}
             >
-              Confirm
+              {translate('Confirm')}
             </Button>
           </DialogFooter>
         </DialogContent>

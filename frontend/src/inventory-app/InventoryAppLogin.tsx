@@ -11,6 +11,8 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { getInventoryAppToken, getInventoryAppUser, saveInventoryAppSession } from './inventory-session';
 
+import { t } from '@/i18n';
+
 /**
  * Inventory-app login (#233): reuses the warehouse PWA's magic-link + password login
  * endpoints, requesting `scope: 'inventory'` so the backend mints the narrower session JWT
@@ -96,7 +98,7 @@ export default function InventoryAppLogin() {
         <Card className="relative w-full max-w-md border-border/50 bg-card/80 shadow-2xl backdrop-blur-xl">
           <CardContent className="flex flex-col items-center gap-3 py-12">
             <Loader2 className="h-10 w-10 animate-spin text-primary" />
-            <p className="text-sm text-muted-foreground">Signing you in...</p>
+            <p className="text-sm text-muted-foreground">{t('Signing you in...')}</p>
           </CardContent>
         </Card>
       </div>
@@ -111,9 +113,9 @@ export default function InventoryAppLogin() {
           <div className="mb-2 flex flex-col items-center gap-4">
             <Logo size="lg" showWordmark={false} />
             <h1 className="text-2xl font-bold tracking-tight">
-              Inventory <GradientText>App</GradientText>
+              {t('Inventory')} <GradientText>{t('App')}</GradientText>
             </h1>
-            <p className="text-sm text-muted-foreground">Sign in to check stock and record observations</p>
+            <p className="text-sm text-muted-foreground">{t('Sign in to check stock and record observations')}</p>
           </div>
         </CardHeader>
         <CardContent>
@@ -126,26 +128,26 @@ export default function InventoryAppLogin() {
 
           <form onSubmit={handlePasswordLogin} autoComplete="on" className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="inv-email" className="text-base">Email</Label>
+              <Label htmlFor="inv-email" className="text-base">{t('Email')}</Label>
               <Input
                 id="inv-email"
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder="you@company.com"
+                placeholder={t('you@company.com')}
                 autoComplete="email"
                 required
                 className="h-12 text-base"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="inv-password" className="text-base">Password</Label>
+              <Label htmlFor="inv-password" className="text-base">{t('Password')}</Label>
               <Input
                 id="inv-password"
                 type="password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                placeholder="Enter password"
+                placeholder={t('Enter password')}
                 autoComplete="current-password"
                 required
                 className="h-12 text-base"
@@ -159,18 +161,20 @@ export default function InventoryAppLogin() {
               disabled={loading || !email || !password}
             >
               {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-              {loading ? 'Signing in...' : 'Sign In'}
+              {loading ? t('Signing in...') : t('Sign In')}
             </Button>
           </form>
 
           <div className="mt-6 flex items-center gap-3 text-xs uppercase tracking-wider text-muted-foreground">
             <div className="h-px flex-1 bg-border" />
-            <span>or scan QR code</span>
+            <span>{t('or scan QR code')}</span>
             <div className="h-px flex-1 bg-border" />
           </div>
 
           <p className="mt-3 text-center text-sm text-muted-foreground">
-            Ask your admin for a login QR code to stick on the wall for quick access.
+            {t(
+              'Ask your admin for a login QR code to stick on the wall for quick access.'
+            )}
           </p>
         </CardContent>
       </Card>

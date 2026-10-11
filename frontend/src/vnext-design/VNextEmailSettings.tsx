@@ -14,6 +14,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { t } from '@/i18n';
+
 interface EmailSettings {
   emailProvider: string;
   smtpHost: string;
@@ -59,7 +61,7 @@ function Banner({ variant, message, onClose }: { variant: 'success' | 'error'; m
     <div className={`flex items-start justify-between gap-3 rounded-md border p-3 text-sm ${tone}`}>
       <span>{message}</span>
       {onClose && (
-        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">Dismiss</button>
+        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">{t('Dismiss')}</button>
       )}
     </div>
   );
@@ -162,8 +164,8 @@ export default function VNextEmailSettings() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Email settings</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Configure email delivery for your system</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Email settings')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Configure email delivery for your system')}</p>
         </div>
       </div>
 
@@ -171,27 +173,27 @@ export default function VNextEmailSettings() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Email provider</CardTitle>
+          <CardTitle>{t('Email provider')}</CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <Label>Provider</Label>
+            <Label>{t('Provider')}</Label>
             <Select value={settings.emailProvider} onValueChange={v => handleChange('emailProvider', v)}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="console">Console (development)</SelectItem>
-                <SelectItem value="smtp">SMTP</SelectItem>
-                <SelectItem value="sendgrid">SendGrid</SelectItem>
-                <SelectItem value="ses">Amazon SES</SelectItem>
+                <SelectItem value="console">{t('Console (development)')}</SelectItem>
+                <SelectItem value="smtp">{t('SMTP')}</SelectItem>
+                <SelectItem value="sendgrid">{t('SendGrid')}</SelectItem>
+                <SelectItem value="ses">{t('Amazon SES')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2">
-            <Label>Email enabled</Label>
+            <Label>{t('Email enabled')}</Label>
             <div className="pt-2">
-              <Switch label="Enable email delivery" checked={settings.emailEnabled} onChange={v => handleChange('emailEnabled', v)} />
+              <Switch label={t('Enable email delivery')} checked={settings.emailEnabled} onChange={v => handleChange('emailEnabled', v)} />
             </div>
           </div>
         </CardContent>
@@ -203,16 +205,16 @@ export default function VNextEmailSettings() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Server className="h-4 w-4 text-primary" />
-                Server settings
+                {t('Server settings')}
               </CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>Host</Label>
-                <Input value={settings.smtpHost} onChange={e => handleChange('smtpHost', e.target.value)} placeholder="smtp.example.com" />
+                <Label>{t('Host')}</Label>
+                <Input value={settings.smtpHost} onChange={e => handleChange('smtpHost', e.target.value)} placeholder={t('smtp.example.com')} />
               </div>
               <div className="space-y-2">
-                <Label>Port</Label>
+                <Label>{t('Port')}</Label>
                 <Input
                   type="number"
                   value={settings.smtpPort}
@@ -221,9 +223,9 @@ export default function VNextEmailSettings() {
                 />
               </div>
               <div className="space-y-2 md:col-span-2">
-                <Label>Secure (TLS)</Label>
+                <Label>{t('Secure (TLS)')}</Label>
                 <div className="pt-1">
-                  <Switch label="Use TLS connection" checked={settings.smtpSecure} onChange={v => handleChange('smtpSecure', v)} />
+                  <Switch label={t('Use TLS connection')} checked={settings.smtpSecure} onChange={v => handleChange('smtpSecure', v)} />
                 </div>
               </div>
             </CardContent>
@@ -233,23 +235,23 @@ export default function VNextEmailSettings() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Lock className="h-4 w-4 text-primary" />
-                Authentication
+                {t('Authentication')}
               </CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>Username</Label>
-                <Input value={settings.smtpUser} onChange={e => handleChange('smtpUser', e.target.value)} placeholder="user@example.com" />
+                <Label>{t('Username')}</Label>
+                <Input value={settings.smtpUser} onChange={e => handleChange('smtpUser', e.target.value)} placeholder={t('user@example.com')} />
               </div>
               <div className="space-y-2">
-                <Label>Password</Label>
+                <Label>{t('Password')}</Label>
                 <Input
                   type="password"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
-                  placeholder="Leave blank to keep existing"
+                  placeholder={t('Leave blank to keep existing')}
                 />
-                <p className="text-xs text-muted-foreground">Leave blank to keep current password</p>
+                <p className="text-xs text-muted-foreground">{t('Leave blank to keep current password')}</p>
               </div>
             </CardContent>
           </Card>
@@ -258,22 +260,22 @@ export default function VNextEmailSettings() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <User className="h-4 w-4 text-primary" />
-                Sender identity
+                {t('Sender identity')}
               </CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>From address</Label>
+                <Label>{t('From address')}</Label>
                 <Input
                   type="email"
                   value={settings.emailFromAddress}
                   onChange={e => handleChange('emailFromAddress', e.target.value)}
-                  placeholder="noreply@example.com"
+                  placeholder={t('noreply@example.com')}
                 />
               </div>
               <div className="space-y-2">
-                <Label>From name</Label>
-                <Input value={settings.emailFromName} onChange={e => handleChange('emailFromName', e.target.value)} placeholder="Open TMS" />
+                <Label>{t('From name')}</Label>
+                <Input value={settings.emailFromName} onChange={e => handleChange('emailFromName', e.target.value)} placeholder={t('Open TMS')} />
               </div>
             </CardContent>
           </Card>
@@ -281,31 +283,31 @@ export default function VNextEmailSettings() {
       )}
 
       <div className="flex justify-end gap-2">
-        <Button variant="outline" onClick={handleCancel}>Cancel</Button>
+        <Button variant="outline" onClick={handleCancel}>{t('Cancel')}</Button>
         <Button variant="gradient" onClick={handleSave} disabled={saving}>
           <Save className="h-4 w-4" />
-          {saving ? 'Saving...' : 'Save settings'}
+          {saving ? t('Saving...') : t('Save settings')}
         </Button>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Send test email</CardTitle>
+          <CardTitle>{t('Send test email')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap items-end gap-2">
             <div className="flex-1 space-y-2">
-              <Label>Recipient email</Label>
+              <Label>{t('Recipient email')}</Label>
               <Input
                 type="email"
                 value={testEmail}
                 onChange={e => setTestEmail(e.target.value)}
-                placeholder="test@example.com"
+                placeholder={t('test@example.com')}
               />
             </div>
             <Button variant="outline" onClick={handleTestEmail} disabled={sendingTest || !testEmail.trim()}>
               <Send className="h-4 w-4" />
-              {sendingTest ? 'Sending...' : 'Send test'}
+              {sendingTest ? t('Sending...') : t('Send test')}
             </Button>
           </div>
         </CardContent>

@@ -24,6 +24,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface RmaSummary {
   id: string;
   rmaNumber: string;
@@ -78,11 +80,11 @@ export default function CustomerReturns() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl font-bold tracking-tight">Returns</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Returns')}</h1>
         <Button variant="gradient" asChild>
           <Link to="/customer-portal/returns/new">
             <Plus className="h-4 w-4" />
-            Request return
+            {t('Request return')}
           </Link>
         </Button>
       </div>
@@ -94,19 +96,19 @@ export default function CustomerReturns() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All statuses</SelectItem>
-              <SelectItem value="requested">Requested</SelectItem>
-              <SelectItem value="authorized">Authorized</SelectItem>
-              <SelectItem value="in_transit">In transit</SelectItem>
-              <SelectItem value="received">Received</SelectItem>
-              <SelectItem value="inspecting">Inspecting</SelectItem>
-              <SelectItem value="dispositioning">Pending refund</SelectItem>
-              <SelectItem value="completed">Completed</SelectItem>
-              <SelectItem value="rejected">Rejected</SelectItem>
+              <SelectItem value="all">{t('All statuses')}</SelectItem>
+              <SelectItem value="requested">{t('Requested')}</SelectItem>
+              <SelectItem value="authorized">{t('Authorized')}</SelectItem>
+              <SelectItem value="in_transit">{t('In transit')}</SelectItem>
+              <SelectItem value="received">{t('Received')}</SelectItem>
+              <SelectItem value="inspecting">{t('Inspecting')}</SelectItem>
+              <SelectItem value="dispositioning">{t('Pending refund')}</SelectItem>
+              <SelectItem value="completed">{t('Completed')}</SelectItem>
+              <SelectItem value="rejected">{t('Rejected')}</SelectItem>
             </SelectContent>
           </Select>
           <div className="ml-auto text-sm text-muted-foreground">
-            {total} return{total === 1 ? '' : 's'}
+            {total} {t('return')}{total === 1 ? '' : t('s')}
           </div>
         </div>
 
@@ -115,13 +117,13 @@ export default function CustomerReturns() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>RMA number</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Reason</TableHead>
-              <TableHead>Lines</TableHead>
-              <TableHead>Refund</TableHead>
-              <TableHead>Return tracking</TableHead>
-              <TableHead>Requested</TableHead>
+              <TableHead>{t('RMA number')}</TableHead>
+              <TableHead>{t('Status')}</TableHead>
+              <TableHead>{t('Reason')}</TableHead>
+              <TableHead>{t('Lines')}</TableHead>
+              <TableHead>{t('Refund')}</TableHead>
+              <TableHead>{t('Return tracking')}</TableHead>
+              <TableHead>{t('Requested')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -135,11 +137,11 @@ export default function CustomerReturns() {
             {!loading && rmas.length === 0 && (
               <TableRow>
                 <TableCell colSpan={7} className="py-8 text-center text-sm text-muted-foreground">
-                  You have not requested any returns yet.{' '}
+                  {t('You have not requested any returns yet.')}{' '}
                   <Link to="/customer-portal/returns/new" className="text-primary hover:underline">
-                    Request one now
+                    {t('Request one now')}
                   </Link>.
-                </TableCell>
+                                  </TableCell>
               </TableRow>
             )}
             {rmas.map(r => (
@@ -157,7 +159,7 @@ export default function CustomerReturns() {
                 <TableCell className="text-sm">
                   {r.actualRefundCents != null
                     ? <strong>${(r.actualRefundCents / 100).toFixed(2)}</strong>
-                    : <span className="text-muted-foreground">${(r.suggestedRefundCents / 100).toFixed(2)} est.</span>}
+                    : <span className="text-muted-foreground">${(r.suggestedRefundCents / 100).toFixed(2)} {t('est.')}</span>}
                 </TableCell>
                 <TableCell className="text-sm text-muted-foreground">
                   {r.returnTrackingNumber || '-'}

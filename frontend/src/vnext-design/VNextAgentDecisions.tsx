@@ -36,6 +36,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface Decision {
   id: string;
   agentType: string;
@@ -89,17 +91,17 @@ function timeAgo(dateStr: string): string {
 }
 
 function outcomeBadge(status: string | null) {
-  if (!status || status === 'pending') return <Badge variant="secondary">Pending review</Badge>;
-  if (status === 'correct') return <Badge variant="success">Correct</Badge>;
-  if (status === 'incorrect') return <Badge variant="destructive">Incorrect</Badge>;
-  if (status === 'partially_correct') return <Badge variant="warning">Partial</Badge>;
+  if (!status || status === 'pending') return <Badge variant="secondary">{t('Pending review')}</Badge>;
+  if (status === 'correct') return <Badge variant="success">{t('Correct')}</Badge>;
+  if (status === 'incorrect') return <Badge variant="destructive">{t('Incorrect')}</Badge>;
+  if (status === 'partially_correct') return <Badge variant="warning">{t('Partial')}</Badge>;
   return <Badge variant="secondary">{status}</Badge>;
 }
 
 function actionBadge(actionType: string) {
-  if (actionType === 'create_issue') return <Badge variant="info">Created issue</Badge>;
-  if (actionType === 'escalate_issue') return <Badge variant="warning">Escalated</Badge>;
-  if (actionType === 'no_action') return <Badge variant="secondary">No action</Badge>;
+  if (actionType === 'create_issue') return <Badge variant="info">{t('Created issue')}</Badge>;
+  if (actionType === 'escalate_issue') return <Badge variant="warning">{t('Escalated')}</Badge>;
+  if (actionType === 'no_action') return <Badge variant="secondary">{t('No action')}</Badge>;
   return <Badge variant="secondary">{actionType}</Badge>;
 }
 
@@ -186,7 +188,7 @@ export default function VNextAgentDecisions() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading decisions...</h3>
+        <h3 className="text-lg font-medium">{t('Loading decisions...')}</h3>
       </div>
     );
   }
@@ -201,24 +203,24 @@ export default function VNextAgentDecisions() {
   }
 
   const statTiles = [
-    { label: 'Total decisions', value: stats?.totalDecisions ?? 0, icon: Bot, tone: 'bg-primary/10 text-primary' },
-    { label: 'Pending review', value: stats?.pendingReviewCount ?? 0, icon: Clock, tone: 'bg-warning/15 text-warning' },
-    { label: 'Accuracy rate', value: accuracyPct !== null ? `${accuracyPct}%` : '-', icon: BadgeCheck, tone: 'bg-success/15 text-success' },
+    { label: t('Total decisions'), value: stats?.totalDecisions ?? 0, icon: Bot, tone: 'bg-primary/10 text-primary' },
+    { label: t('Pending review'), value: stats?.pendingReviewCount ?? 0, icon: Clock, tone: 'bg-warning/15 text-warning' },
+    { label: t('Accuracy rate'), value: accuracyPct !== null ? `${accuracyPct}%` : '-', icon: BadgeCheck, tone: 'bg-success/15 text-success' },
     {
-      label: 'Avg confidence',
+      label: t('Avg confidence'),
       value: stats?.averageConfidence !== null ? `${Math.round((stats?.averageConfidence ?? 0) * 100)}%` : '-',
       icon: Gauge,
       tone: 'bg-info/15 text-info',
     },
-    { label: 'Promoted', value: stats?.promotedCount ?? 0, icon: Sparkles, tone: 'bg-primary/10 text-primary' },
-    { label: 'Total tokens', value: stats?.totalTokens ? stats.totalTokens.toLocaleString() : '0', icon: Coins, tone: 'bg-destructive/10 text-destructive' },
+    { label: t('Promoted'), value: stats?.promotedCount ?? 0, icon: Sparkles, tone: 'bg-primary/10 text-primary' },
+    { label: t('Total tokens'), value: stats?.totalTokens ? stats.totalTokens.toLocaleString() : '0', icon: Coins, tone: 'bg-destructive/10 text-destructive' },
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Agent decisions</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{total} decisions logged</p>
+        <h1 className="text-3xl font-bold tracking-tight">{t('Agent decisions')}</h1>
+        <p className="mt-1 text-sm text-muted-foreground">{total} {t('decisions logged')}</p>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
@@ -241,9 +243,9 @@ export default function VNextAgentDecisions() {
       {dailyUsage.length > 0 && (
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Usage (last 30 days)</CardTitle>
+            <CardTitle>{t('Usage (last 30 days)')}</CardTitle>
             <span className="text-sm text-muted-foreground">
-              {stats?.totalInputTokens?.toLocaleString() ?? 0} input + {stats?.totalOutputTokens?.toLocaleString() ?? 0} output tokens
+              {stats?.totalInputTokens?.toLocaleString() ?? 0} {t('input +')} {stats?.totalOutputTokens?.toLocaleString() ?? 0} {t('output tokens')}
             </span>
           </CardHeader>
           <CardContent>
@@ -264,7 +266,7 @@ export default function VNextAgentDecisions() {
             </div>
             <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
               <span>{dailyUsage[0]?.date}</span>
-              <span>Invocations per day</span>
+              <span>{t('Invocations per day')}</span>
               <span>{dailyUsage[dailyUsage.length - 1]?.date}</span>
             </div>
           </CardContent>
@@ -276,7 +278,7 @@ export default function VNextAgentDecisions() {
           <div className="relative min-w-[240px] flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search decisions..."
+              placeholder={t('Search decisions...')}
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="pl-9"
@@ -285,29 +287,29 @@ export default function VNextAgentDecisions() {
           <Select value={outcomeFilter} onValueChange={setOutcomeFilter}>
             <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All outcomes</SelectItem>
-              <SelectItem value="pending">Pending review</SelectItem>
-              <SelectItem value="correct">Correct</SelectItem>
-              <SelectItem value="incorrect">Incorrect</SelectItem>
-              <SelectItem value="partially_correct">Partially correct</SelectItem>
+              <SelectItem value="all">{t('All outcomes')}</SelectItem>
+              <SelectItem value="pending">{t('Pending review')}</SelectItem>
+              <SelectItem value="correct">{t('Correct')}</SelectItem>
+              <SelectItem value="incorrect">{t('Incorrect')}</SelectItem>
+              <SelectItem value="partially_correct">{t('Partially correct')}</SelectItem>
             </SelectContent>
           </Select>
           <Select value={actionFilter} onValueChange={setActionFilter}>
             <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All actions</SelectItem>
-              <SelectItem value="create_issue">Created issue</SelectItem>
-              <SelectItem value="escalate_issue">Escalated</SelectItem>
-              <SelectItem value="no_action">No action</SelectItem>
+              <SelectItem value="all">{t('All actions')}</SelectItem>
+              <SelectItem value="create_issue">{t('Created issue')}</SelectItem>
+              <SelectItem value="escalate_issue">{t('Escalated')}</SelectItem>
+              <SelectItem value="no_action">{t('No action')}</SelectItem>
             </SelectContent>
           </Select>
           <Select value={agentTypeFilter} onValueChange={setAgentTypeFilter}>
             <SelectTrigger className="w-[200px]"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All agents</SelectItem>
-              <SelectItem value="triage">Triage</SelectItem>
-              <SelectItem value="quality_analysis">Quality analysis</SelectItem>
-              <SelectItem value="route_optimization">Route optimization</SelectItem>
+              <SelectItem value="all">{t('All agents')}</SelectItem>
+              <SelectItem value="triage">{t('Triage')}</SelectItem>
+              <SelectItem value="quality_analysis">{t('Quality analysis')}</SelectItem>
+              <SelectItem value="route_optimization">{t('Route optimization')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -317,19 +319,19 @@ export default function VNextAgentDecisions() {
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
             <Bot className="h-10 w-10 opacity-40" />
-            <h3 className="text-base font-medium">No decisions yet</h3>
-            <p className="text-sm">Agent decisions will appear here when the triage agent processes events.</p>
+            <h3 className="text-base font-medium">{t('No decisions yet')}</h3>
+            <p className="text-sm">{t('Agent decisions will appear here when the triage agent processes events.')}</p>
           </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Decision</TableHead>
-                <TableHead>Agent</TableHead>
-                <TableHead>Action</TableHead>
-                <TableHead>Confidence</TableHead>
-                <TableHead>Outcome</TableHead>
-                <TableHead>When</TableHead>
+                <TableHead>{t('Decision')}</TableHead>
+                <TableHead>{t('Agent')}</TableHead>
+                <TableHead>{t('Action')}</TableHead>
+                <TableHead>{t('Confidence')}</TableHead>
+                <TableHead>{t('Outcome')}</TableHead>
+                <TableHead>{t('When')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

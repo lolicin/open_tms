@@ -38,6 +38,8 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface SkillDefinition {
   type: string;
   name: string;
@@ -65,8 +67,8 @@ const OPERATORS = [
   { value: 'notEquals', label: '!=' },
   { value: 'greaterThan', label: '>' },
   { value: 'lessThan', label: '<' },
-  { value: 'contains', label: 'contains' },
-  { value: 'exists', label: 'exists' },
+  { value: 'contains', label: t('contains') },
+  { value: 'exists', label: t('exists') },
 ];
 
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -127,7 +129,7 @@ function StepDisplay({ step, skills, depth = 0 }: { step: SkillChainStep; skills
       {step.branches.map((branch, bi) => (
         <div key={bi} className="ml-4">
           <div className={cn('mb-1 text-xs font-semibold', branch.matched ? 'text-success' : 'text-destructive')}>
-            {branch.matched ? 'Yes' : 'No'}: {branch.label}
+            {branch.matched ? t('Yes') : t('No')}: {branch.label}
           </div>
           {branch.steps.map((s, si) => (
             <StepDisplay key={si} step={s} skills={skills} depth={depth + 1} />
@@ -147,7 +149,7 @@ function Banner({ variant, message, onClose }: { variant: 'success' | 'error'; m
     <div className={`flex items-start justify-between gap-3 rounded-md border p-3 text-sm ${tone}`}>
       <span>{message}</span>
       {onClose && (
-        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">Dismiss</button>
+        <button onClick={onClose} className="text-xs underline opacity-70 hover:opacity-100">{t('Dismiss')}</button>
       )}
     </div>
   );
@@ -223,8 +225,8 @@ export default function VNextSkillChains() {
           question: addQuestion,
           conditions,
           branches: [
-            { label: 'Yes', matched: true, steps: addYesSkillType ? [{ type: 'skill', skillType: addYesSkillType, fields: { ...addYesFields } }] : [] },
-            { label: 'No', matched: false, steps: addNoSkillType ? [{ type: 'skill', skillType: addNoSkillType, fields: { ...addNoFields } }] : [] },
+            { label: t('Yes'), matched: true, steps: addYesSkillType ? [{ type: 'skill', skillType: addYesSkillType, fields: { ...addYesFields } }] : [] },
+            { label: t('No'), matched: false, steps: addNoSkillType ? [{ type: 'skill', skillType: addNoSkillType, fields: { ...addNoFields } }] : [] },
           ],
         },
       ]);
@@ -258,7 +260,7 @@ export default function VNextSkillChains() {
   }
 
   async function deleteChain(chainId: string) {
-    if (!confirm('Delete this skill chain?')) return;
+    if (!confirm(t('Delete this skill chain?'))) return;
     await fetch(`${API_URL}/api/v1/skill-chains/${chainId}`, { method: 'DELETE' });
     await loadData();
     setSuccessMsg('Chain deleted');
@@ -281,12 +283,12 @@ export default function VNextSkillChains() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Skill chains</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{chains.length} chains</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Skill chains')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{chains.length} {t('chains')}</p>
         </div>
         <Button variant="gradient" onClick={() => setShowCreate(true)}>
           <Plus className="h-4 w-4" />
-          Create chain
+          {t('Create chain')}
         </Button>
       </div>
 
@@ -296,8 +298,8 @@ export default function VNextSkillChains() {
       {chains.length === 0 ? (
         <div className="flex flex-col items-center gap-3 py-12 text-center text-muted-foreground">
           <GitBranch className="h-10 w-10" />
-          <h3 className="text-lg font-medium">No skill chains yet</h3>
-          <p className="text-sm">Create a chain to compose multiple skills with conditional branching.</p>
+          <h3 className="text-lg font-medium">{t('No skill chains yet')}</h3>
+          <p className="text-sm">{t('Create a chain to compose multiple skills with conditional branching.')}</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -309,7 +311,7 @@ export default function VNextSkillChains() {
                   {chain.description && <CardDescription>{chain.description}</CardDescription>}
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge variant="secondary">{chain.steps.length} steps</Badge>
+                  <Badge variant="secondary">{chain.steps.length} {t('steps')}</Badge>
                   <Button variant="ghost" size="icon" onClick={() => deleteChain(chain.id)}>
                     <Trash2 className="h-4 w-4 text-destructive" />
                   </Button>
@@ -326,19 +328,19 @@ export default function VNextSkillChains() {
       <Dialog open={showCreate} onOpenChange={setShowCreate}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>
-            <DialogTitle>Create skill chain</DialogTitle>
+            <DialogTitle>{t('Create skill chain')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label>Chain name</Label>
-              <Input value={formName} onChange={e => setFormName(e.target.value)} placeholder="e.g. Critical Delay Response" />
+              <Label>{t('Chain name')}</Label>
+              <Input value={formName} onChange={e => setFormName(e.target.value)} placeholder={t('e.g. Critical Delay Response')} />
             </div>
             <div className="space-y-2">
-              <Label>Description</Label>
-              <Input value={formDescription} onChange={e => setFormDescription(e.target.value)} placeholder="Optional" />
+              <Label>{t('Description')}</Label>
+              <Input value={formDescription} onChange={e => setFormDescription(e.target.value)} placeholder={t('Optional')} />
             </div>
 
-            <h3 className="text-sm font-semibold">Steps ({formSteps.length})</h3>
+            <h3 className="text-sm font-semibold">{t('Steps (')}{formSteps.length})</h3>
             {formSteps.map((step, i) => (
               <div key={i} className="relative">
                 <StepDisplay step={step} skills={skills} />
@@ -355,13 +357,13 @@ export default function VNextSkillChains() {
 
             <Button variant="outline" className="w-full" onClick={openAddStep}>
               <Plus className="h-4 w-4" />
-              Add step
+              {t('Add step')}
             </Button>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowCreate(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setShowCreate(false)}>{t('Cancel')}</Button>
             <Button variant="gradient" onClick={saveChain} disabled={saving || !formName || formSteps.length === 0}>
-              {saving ? 'Saving...' : 'Create chain'}
+              {saving ? t('Saving...') : t('Create chain')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -370,7 +372,7 @@ export default function VNextSkillChains() {
       <Dialog open={showAddStep} onOpenChange={setShowAddStep}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>
-            <DialogTitle>Add step</DialogTitle>
+            <DialogTitle>{t('Add step')}</DialogTitle>
           </DialogHeader>
 
           <div className="flex gap-2">
@@ -380,7 +382,7 @@ export default function VNextSkillChains() {
               onClick={() => setAddStepType('skill')}
             >
               <Wrench className="h-4 w-4" />
-              Skill
+              {t('Skill')}
             </Button>
             <Button
               variant={addStepType === 'question' ? 'default' : 'outline'}
@@ -388,14 +390,14 @@ export default function VNextSkillChains() {
               onClick={() => setAddStepType('question')}
             >
               <HelpCircle className="h-4 w-4" />
-              Question (Branch)
+              {t('Question (Branch)')}
             </Button>
           </div>
 
           {addStepType === 'skill' && (
             <div className="space-y-3">
               <div className="space-y-2">
-                <Label>Skill</Label>
+                <Label>{t('Skill')}</Label>
                 <Select value={addSkillType} onValueChange={v => { setAddSkillType(v); setAddSkillFields({}); }}>
                   <SelectTrigger>
                     <SelectValue />
@@ -423,17 +425,17 @@ export default function VNextSkillChains() {
           {addStepType === 'question' && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label>Question</Label>
-                <Input value={addQuestion} onChange={e => setAddQuestion(e.target.value)} placeholder="Is the delay greater than 60 minutes?" />
+                <Label>{t('Question')}</Label>
+                <Input value={addQuestion} onChange={e => setAddQuestion(e.target.value)} placeholder={t('Is the delay greater than 60 minutes?')} />
               </div>
 
               <div>
-                <h4 className="mb-2 text-sm font-semibold">Conditions</h4>
+                <h4 className="mb-2 text-sm font-semibold">{t('Conditions')}</h4>
                 {addConditions.map((c, i) => (
                   <div key={i} className="mb-2 grid grid-cols-[2fr_1fr_2fr] gap-2">
                     <Input
                       className="font-mono text-xs"
-                      placeholder="payload.delayMinutes"
+                      placeholder={t('payload.delayMinutes')}
                       value={c.field}
                       onChange={e => { const arr = [...addConditions]; arr[i].field = e.target.value; setAddConditions(arr); }}
                     />
@@ -459,10 +461,10 @@ export default function VNextSkillChains() {
 
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2 rounded-md border border-success/30 bg-success/5 p-3">
-                  <h4 className="text-sm font-semibold text-success">Yes branch</h4>
+                  <h4 className="text-sm font-semibold text-success">{t('Yes branch')}</h4>
                   <Select value={addYesSkillType} onValueChange={v => { setAddYesSkillType(v); setAddYesFields({}); }}>
                     <SelectTrigger>
-                      <SelectValue placeholder="No action" />
+                      <SelectValue placeholder={t('No action')} />
                     </SelectTrigger>
                     <SelectContent>
                       {skills.map(s => (
@@ -484,10 +486,10 @@ export default function VNextSkillChains() {
                 </div>
 
                 <div className="space-y-2 rounded-md border border-destructive/30 bg-destructive/5 p-3">
-                  <h4 className="text-sm font-semibold text-destructive">No branch</h4>
+                  <h4 className="text-sm font-semibold text-destructive">{t('No branch')}</h4>
                   <Select value={addNoSkillType} onValueChange={v => { setAddNoSkillType(v); setAddNoFields({}); }}>
                     <SelectTrigger>
-                      <SelectValue placeholder="No action" />
+                      <SelectValue placeholder={t('No action')} />
                     </SelectTrigger>
                     <SelectContent>
                       {skills.map(s => (
@@ -512,8 +514,8 @@ export default function VNextSkillChains() {
           )}
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowAddStep(false)}>Cancel</Button>
-            <Button variant="gradient" onClick={confirmAddStep}>Add</Button>
+            <Button variant="outline" onClick={() => setShowAddStep(false)}>{t('Cancel')}</Button>
+            <Button variant="gradient" onClick={confirmAddStep}>{t('Add')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

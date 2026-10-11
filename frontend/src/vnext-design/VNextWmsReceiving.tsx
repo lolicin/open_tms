@@ -24,6 +24,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t as translate } from '@/i18n';
+
 interface ReceivingTask {
   id: string;
   status: string;
@@ -84,12 +86,12 @@ export default function VNextWmsReceiving() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Receiving</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Inbound goods receiving and inspection</p>
+          <h1 className="text-3xl font-bold tracking-tight">{translate('Receiving')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{translate('Inbound goods receiving and inspection')}</p>
         </div>
         <Button variant="gradient" onClick={() => navigate('/wms/receiving/create')}>
           <Plus className="h-4 w-4" />
-          New Receiving Task
+          {translate('New Receiving Task')}
         </Button>
       </div>
 
@@ -100,12 +102,12 @@ export default function VNextWmsReceiving() {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Statuses</SelectItem>
-            <SelectItem value="pending">Pending</SelectItem>
-            <SelectItem value="in_progress">In Progress</SelectItem>
-            <SelectItem value="inspection">Inspection</SelectItem>
-            <SelectItem value="completed">Completed</SelectItem>
-            <SelectItem value="cancelled">Cancelled</SelectItem>
+            <SelectItem value="all">{translate('All Statuses')}</SelectItem>
+            <SelectItem value="pending">{translate('Pending')}</SelectItem>
+            <SelectItem value="in_progress">{translate('In Progress')}</SelectItem>
+            <SelectItem value="inspection">{translate('Inspection')}</SelectItem>
+            <SelectItem value="completed">{translate('Completed')}</SelectItem>
+            <SelectItem value="cancelled">{translate('Cancelled')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -118,12 +120,14 @@ export default function VNextWmsReceiving() {
         <Card>
           <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
             <PackageOpen className="h-12 w-12 text-muted-foreground" />
-            <h3 className="text-base font-medium">No receiving tasks</h3>
+            <h3 className="text-base font-medium">{translate('No receiving tasks')}</h3>
             <p className="text-sm text-muted-foreground">
-              Receiving tasks are created when inbound shipments arrive, or manually for blind receiving.
+              {translate(
+                'Receiving tasks are created when inbound shipments arrive, or manually for blind receiving.'
+              )}
             </p>
             <Button variant="gradient" onClick={() => navigate('/wms/receiving/create')}>
-              Create Receiving Task
+              {translate('Create Receiving Task')}
             </Button>
           </CardContent>
         </Card>
@@ -132,14 +136,14 @@ export default function VNextWmsReceiving() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Task</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Shipment</TableHead>
-                <TableHead>Dock</TableHead>
-                <TableHead>Progress</TableHead>
-                <TableHead>Assigned To</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Created</TableHead>
+                <TableHead>{translate('Task')}</TableHead>
+                <TableHead>{translate('Type')}</TableHead>
+                <TableHead>{translate('Shipment')}</TableHead>
+                <TableHead>{translate('Dock')}</TableHead>
+                <TableHead>{translate('Progress')}</TableHead>
+                <TableHead>{translate('Assigned To')}</TableHead>
+                <TableHead>{translate('Status')}</TableHead>
+                <TableHead>{translate('Created')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -152,14 +156,14 @@ export default function VNextWmsReceiving() {
                   <TableCell className="font-mono text-sm font-semibold">{task.id.slice(0, 8)}</TableCell>
                   <TableCell>
                     <div className="flex flex-wrap gap-1">
-                      <Badge variant="secondary">{task.receivingType === 'asn' ? 'ASN' : 'Blind'}</Badge>
-                      {task.crossDock && <Badge variant="warning">Cross-Dock</Badge>}
+                      <Badge variant="secondary">{task.receivingType === 'asn' ? translate('ASN') : translate('Blind')}</Badge>
+                      {task.crossDock && <Badge variant="warning">{translate('Cross-Dock')}</Badge>}
                     </div>
                   </TableCell>
                   <TableCell>{task.shipmentRef || '-'}</TableCell>
                   <TableCell>{task.dockDoor || '-'}</TableCell>
-                  <TableCell>{task.receivedLines}/{task.lineCount} lines</TableCell>
-                  <TableCell>{task.assignedTo || 'Unassigned'}</TableCell>
+                  <TableCell>{task.receivedLines}/{task.lineCount} {translate('lines')}</TableCell>
+                  <TableCell>{task.assignedTo || translate('Unassigned')}</TableCell>
                   <TableCell>
                     <Badge variant={statusVariant(task.status)}>{formatStatus(task.status)}</Badge>
                   </TableCell>

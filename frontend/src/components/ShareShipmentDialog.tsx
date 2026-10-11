@@ -31,11 +31,13 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 
+import { t } from '@/i18n';
+
 const DURATION_OPTIONS = [
-  { value: '7', label: '7 days' },
-  { value: '14', label: '14 days' },
-  { value: '30', label: '30 days' },
-  { value: '90', label: '90 days' },
+  { value: '7', label: t('7 days') },
+  { value: '14', label: t('14 days') },
+  { value: '30', label: t('30 days') },
+  { value: '90', label: t('90 days') },
 ];
 
 const DEFAULT_SECTIONS: ShipmentShareSection[] = ['overview', 'events'];
@@ -100,7 +102,7 @@ export function ShareShipmentDialog({
       setIssued({ url: json.data.url, accessCode: json.data.accessCode });
       onIssued?.();
     } catch {
-      toast.error('Could not create the share link');
+      toast.error(t('Could not create the share link'));
     } finally {
       setSubmitting(false);
     }
@@ -114,16 +116,17 @@ export function ShareShipmentDialog({
         ) : (
           <>
             <DialogHeader>
-              <DialogTitle>Share this shipment</DialogTitle>
+              <DialogTitle>{t('Share this shipment')}</DialogTitle>
               <DialogDescription>
-                Anyone with the link and the access code can see the sections you pick. Financials,
-                customs paperwork and internal activity are never shared.
+                {t(
+                  'Anyone with the link and the access code can see the sections you pick. Financials,\n                customs paperwork and internal activity are never shared.'
+                )}
               </DialogDescription>
             </DialogHeader>
 
             <div className="space-y-6">
               <div className="space-y-3">
-                <Label>What they can see</Label>
+                <Label>{t('What they can see')}</Label>
                 <div className="space-y-3">
                   {SHIPMENT_SHARE_SECTIONS.map((section) => (
                     <div key={section} className="flex items-start gap-3">
@@ -148,13 +151,13 @@ export function ShareShipmentDialog({
                   ))}
                 </div>
                 {sections.length === 0 && (
-                  <p className="text-xs text-destructive">Pick at least one section to share.</p>
+                  <p className="text-xs text-destructive">{t('Pick at least one section to share.')}</p>
                 )}
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="share-duration">Link expires after</Label>
+                  <Label htmlFor="share-duration">{t('Link expires after')}</Label>
                   <Select value={days} onValueChange={setDays}>
                     <SelectTrigger id="share-duration">
                       <SelectValue />
@@ -169,12 +172,12 @@ export function ShareShipmentDialog({
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="share-label">Note (optional)</Label>
+                  <Label htmlFor="share-label">{t('Note (optional)')}</Label>
                   <Input
                     id="share-label"
                     value={label}
                     maxLength={120}
-                    placeholder="Who it's for"
+                    placeholder={t('Who it\'s for')}
                     onChange={(e) => setLabel(e.target.value)}
                   />
                 </div>
@@ -183,7 +186,7 @@ export function ShareShipmentDialog({
 
             <DialogFooter>
               <Button variant="outline" onClick={() => handleOpenChange(false)}>
-                Cancel
+                {t('Cancel')}
               </Button>
               <Button onClick={handleSubmit} disabled={submitting || sections.length === 0}>
                 {submitting ? (
@@ -191,7 +194,7 @@ export function ShareShipmentDialog({
                 ) : (
                   <Link2 className="h-4 w-4" />
                 )}
-                Create link
+                {t('Create link')}
               </Button>
             </DialogFooter>
           </>
@@ -205,26 +208,28 @@ function IssuedLinkPanel({ issued, onDone }: { issued: IssuedLink; onDone: () =>
   return (
     <>
       <DialogHeader>
-        <DialogTitle>Link ready</DialogTitle>
+        <DialogTitle>{t('Link ready')}</DialogTitle>
         <DialogDescription>
-          Send the link and the access code separately. The code is shown here once and cannot be
-          looked up again.
+          {t(
+            'Send the link and the access code separately. The code is shown here once and cannot be\n          looked up again.'
+          )}
         </DialogDescription>
       </DialogHeader>
 
       <div className="space-y-4">
-        <CopyableField label="Link" value={issued.url} />
+        <CopyableField label={t('Link')} value={issued.url} />
         <Separator />
-        <CopyableField label="Access code" value={issued.accessCode} mono />
+        <CopyableField label={t('Access code')} value={issued.accessCode} mono />
         <p className="flex items-start gap-2 text-xs text-muted-foreground">
           <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-          The recipient enters their email address with the code, and every attempt is recorded on
-          the shipment.
+          {t(
+            'The recipient enters their email address with the code, and every attempt is recorded on\n          the shipment.'
+          )}
         </p>
       </div>
 
       <DialogFooter>
-        <Button onClick={onDone}>Done</Button>
+        <Button onClick={onDone}>{t('Done')}</Button>
       </DialogFooter>
     </>
   );
@@ -239,7 +244,7 @@ function CopyableField({ label, value, mono }: { label: string; value: string; m
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
-      toast.error('Could not copy to the clipboard');
+      toast.error(t('Could not copy to the clipboard'));
     }
   };
 

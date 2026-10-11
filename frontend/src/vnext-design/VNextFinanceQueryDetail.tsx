@@ -23,6 +23,8 @@ import {
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface QueryData {
   id: string;
   queryNumber: string;
@@ -127,7 +129,7 @@ export default function VNextFinanceQueryDetail() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
@@ -135,7 +137,7 @@ export default function VNextFinanceQueryDetail() {
     return (
       <div className="flex items-center gap-3 rounded-md border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
         <CircleAlert className="h-5 w-5" />
-        {error || 'Not found'}
+        {error || t('Not found')}
       </div>
     );
   }
@@ -150,7 +152,7 @@ export default function VNextFinanceQueryDetail() {
     <div className="space-y-6">
       <div className="flex items-center gap-2 text-sm">
         <Button variant="ghost" size="sm" onClick={() => navigate('/finance/queries')}>
-          <ArrowLeft className="h-4 w-4" /> Queries
+          <ArrowLeft className="h-4 w-4" /> {t('Queries')}
         </Button>
         <span className="text-muted-foreground">/ {q.queryNumber}</span>
       </div>
@@ -160,7 +162,7 @@ export default function VNextFinanceQueryDetail() {
           <h1 className="text-3xl font-bold tracking-tight">{q.queryNumber}</h1>
           <div className="mt-2 flex items-center gap-2">
             <Badge variant={q.queryType === 'customer_dispute' ? 'default' : 'warning'}>
-              {q.queryType === 'customer_dispute' ? 'Customer Dispute' : 'Carrier Dispute'}
+              {q.queryType === 'customer_dispute' ? t('Customer Dispute') : t('Carrier Dispute')}
             </Badge>
             <Badge variant={statusVariant(q.status)}>{q.status.replace(/_/g, ' ')}</Badge>
           </div>
@@ -168,7 +170,7 @@ export default function VNextFinanceQueryDetail() {
         <div className="flex gap-2">
           {isOpen && (
             <Button size="sm" onClick={() => setShowResolve(!showResolve)}>
-              <CheckCircle2 className="h-4 w-4" /> Resolve
+              <CheckCircle2 className="h-4 w-4" /> {t('Resolve')}
             </Button>
           )}
         </div>
@@ -177,22 +179,22 @@ export default function VNextFinanceQueryDetail() {
       {showResolve && (
         <Card>
           <CardContent className="p-5">
-            <h3 className="mb-4 text-base font-semibold">Resolve Query</h3>
+            <h3 className="mb-4 text-base font-semibold">{t('Resolve Query')}</h3>
             <div className="flex flex-col gap-4">
               <div className="space-y-1.5">
-                <Label>Resolution</Label>
+                <Label>{t('Resolution')}</Label>
                 <Select value={resolution} onValueChange={v => setResolution(v as 'adjusted' | 'upheld')}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="adjusted">Adjusted (issue credit/adjustment)</SelectItem>
-                    <SelectItem value="upheld">Upheld (original charge is correct)</SelectItem>
+                    <SelectItem value="adjusted">{t('Adjusted (issue credit/adjustment)')}</SelectItem>
+                    <SelectItem value="upheld">{t('Upheld (original charge is correct)')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               {resolution === 'adjusted' && (
                 <>
                   <div className="space-y-1.5">
-                    <Label htmlFor="adjustment">Adjustment Amount ($)</Label>
+                    <Label htmlFor="adjustment">{t('Adjustment Amount ($)')}</Label>
                     <Input
                       id="adjustment"
                       type="number"
@@ -209,26 +211,26 @@ export default function VNextFinanceQueryDetail() {
                       checked={createCreditNote}
                       onChange={e => setCreateCreditNote(e.target.checked)}
                     />
-                    Generate credit note automatically
+                    {t('Generate credit note automatically')}
                   </label>
                 </>
               )}
               <div className="space-y-1.5">
-                <Label htmlFor="resolution-notes">Resolution Notes</Label>
+                <Label htmlFor="resolution-notes">{t('Resolution Notes')}</Label>
                 <textarea
                   id="resolution-notes"
                   className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   rows={3}
                   value={resolutionNotes}
                   onChange={e => setResolutionNotes(e.target.value)}
-                  placeholder="Describe the resolution..."
+                  placeholder={t('Describe the resolution...')}
                 />
               </div>
               <div className="flex gap-2">
                 <Button onClick={resolve} disabled={actionLoading}>
-                  {actionLoading ? 'Resolving...' : 'Resolve Query'}
+                  {actionLoading ? t('Resolving...') : t('Resolve Query')}
                 </Button>
-                <Button variant="ghost" onClick={() => setShowResolve(false)}>Cancel</Button>
+                <Button variant="ghost" onClick={() => setShowResolve(false)}>{t('Cancel')}</Button>
               </div>
             </div>
           </CardContent>
@@ -239,7 +241,7 @@ export default function VNextFinanceQueryDetail() {
         <div className="space-y-6">
           <Card>
             <CardContent className="p-5">
-              <h3 className="mb-3 text-base font-semibold">Description</h3>
+              <h3 className="mb-3 text-base font-semibold">{t('Description')}</h3>
               <p className="text-sm leading-relaxed">{q.description}</p>
             </CardContent>
           </Card>
@@ -248,8 +250,8 @@ export default function VNextFinanceQueryDetail() {
             <div className={cn('flex items-start gap-3 rounded-md border p-4 text-sm', resolveTone)}>
               {q.status === 'resolved_adjusted' ? <CheckCircle2 className="h-5 w-5 shrink-0" /> : <Info className="h-5 w-5 shrink-0" />}
               <div>
-                <strong>Resolved - {q.status === 'resolved_adjusted' ? 'Adjusted' : 'Upheld'}</strong>
-                {q.adjustmentCents != null && <span> - Adjustment: {formatMoney(q.adjustmentCents)}</span>}
+                <strong>{t('Resolved -')} {q.status === 'resolved_adjusted' ? t('Adjusted') : t('Upheld')}</strong>
+                {q.adjustmentCents != null && <span> {t('- Adjustment:')} {formatMoney(q.adjustmentCents)}</span>}
                 {q.resolutionNotes && <p className="mt-2">{q.resolutionNotes}</p>}
               </div>
             </div>
@@ -258,9 +260,9 @@ export default function VNextFinanceQueryDetail() {
           {q.creditNoteId && (
             <Card>
               <CardContent className="p-5">
-                <h3 className="mb-2 text-base font-semibold">Credit Note</h3>
+                <h3 className="mb-2 text-base font-semibold">{t('Credit Note')}</h3>
                 <Link to={`/finance/credit-notes/${q.creditNoteId}`} className="text-primary hover:underline">
-                  View Credit Note
+                  {t('View Credit Note')}
                 </Link>
               </CardContent>
             </Card>
@@ -270,49 +272,49 @@ export default function VNextFinanceQueryDetail() {
         <aside className="space-y-6 lg:sticky lg:top-20 lg:self-start">
           <Card>
             <CardContent className="p-5">
-              <h3 className="mb-4 text-base font-semibold">Query Details</h3>
+              <h3 className="mb-4 text-base font-semibold">{t('Query Details')}</h3>
               <dl className="space-y-3 text-sm">
                 <div>
-                  <dt className="text-xs text-muted-foreground">Reason</dt>
+                  <dt className="text-xs text-muted-foreground">{t('Reason')}</dt>
                   <dd>{reasonLabel(q.reason)}</dd>
                 </div>
                 {q.disputedAmountCents != null && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">Disputed Amount</dt>
+                    <dt className="text-xs text-muted-foreground">{t('Disputed Amount')}</dt>
                     <dd className="font-semibold font-mono tabular-nums">{formatMoney(q.disputedAmountCents)}</dd>
                   </div>
                 )}
                 <div>
-                  <dt className="text-xs text-muted-foreground">Created</dt>
+                  <dt className="text-xs text-muted-foreground">{t('Created')}</dt>
                   <dd>{formatDate(q.createdAt)}</dd>
                 </div>
                 {q.resolvedAt && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">Resolved</dt>
+                    <dt className="text-xs text-muted-foreground">{t('Resolved')}</dt>
                     <dd>{formatDate(q.resolvedAt)}</dd>
                   </div>
                 )}
                 {q.shipmentId && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">Shipment</dt>
+                    <dt className="text-xs text-muted-foreground">{t('Shipment')}</dt>
                     <dd>
-                      <Link to={`/shipments/${q.shipmentId}`} className="text-primary hover:underline">View</Link>
+                      <Link to={`/shipments/${q.shipmentId}`} className="text-primary hover:underline">{t('View')}</Link>
                     </dd>
                   </div>
                 )}
                 {q.invoiceId && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">Invoice</dt>
+                    <dt className="text-xs text-muted-foreground">{t('Invoice')}</dt>
                     <dd>
-                      <Link to={`/finance/invoices/${q.invoiceId}`} className="text-primary hover:underline">View</Link>
+                      <Link to={`/finance/invoices/${q.invoiceId}`} className="text-primary hover:underline">{t('View')}</Link>
                     </dd>
                   </div>
                 )}
                 {q.carrierInvoiceId && (
                   <div>
-                    <dt className="text-xs text-muted-foreground">Carrier Invoice</dt>
+                    <dt className="text-xs text-muted-foreground">{t('Carrier Invoice')}</dt>
                     <dd>
-                      <Link to={`/finance/carrier-invoices/${q.carrierInvoiceId}`} className="text-primary hover:underline">View</Link>
+                      <Link to={`/finance/carrier-invoices/${q.carrierInvoiceId}`} className="text-primary hover:underline">{t('View')}</Link>
                     </dd>
                   </div>
                 )}

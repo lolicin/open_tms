@@ -30,6 +30,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface ProductUom {
   id: string;
   sku: string;
@@ -96,12 +98,12 @@ export default function VNextWmsProductUom() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Product Dimensions</h1>
-          <p className="mt-1 text-sm text-muted-foreground">SKU dimensions and weights for cartonization</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Product Dimensions')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('SKU dimensions and weights for cartonization')}</p>
         </div>
         <Button variant="gradient" onClick={() => setShowCreate(true)}>
           <Plus className="h-4 w-4" />
-          Add Product
+          {t('Add Product')}
         </Button>
       </div>
 
@@ -115,59 +117,59 @@ export default function VNextWmsProductUom() {
       <Dialog open={showCreate} onOpenChange={setShowCreate}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Add Product Dimensions</DialogTitle>
+            <DialogTitle>{t('Add Product Dimensions')}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleCreate} className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>SKU *</Label>
+                <Label>{t('SKU *')}</Label>
                 <Input value={form.sku} onChange={e => setForm({ ...form, sku: e.target.value })} required />
               </div>
               <div className="space-y-2">
-                <Label>UOM Code</Label>
+                <Label>{t('UOM Code')}</Label>
                 <Select value={form.uomCode} onValueChange={v => setForm({ ...form, uomCode: v })}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="EA">EA</SelectItem>
-                    <SelectItem value="INNER">INNER</SelectItem>
-                    <SelectItem value="CASE">CASE</SelectItem>
-                    <SelectItem value="PALLET">PALLET</SelectItem>
+                    <SelectItem value="EA">{t('EA')}</SelectItem>
+                    <SelectItem value="INNER">{t('INNER')}</SelectItem>
+                    <SelectItem value="CASE">{t('CASE')}</SelectItem>
+                    <SelectItem value="PALLET">{t('PALLET')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Length (mm)</Label>
+                <Label>{t('Length (mm)')}</Label>
                 <Input type="number" min="1" value={form.lengthMm} onChange={e => setForm({ ...form, lengthMm: e.target.value })} />
               </div>
               <div className="space-y-2">
-                <Label>Width (mm)</Label>
+                <Label>{t('Width (mm)')}</Label>
                 <Input type="number" min="1" value={form.widthMm} onChange={e => setForm({ ...form, widthMm: e.target.value })} />
               </div>
               <div className="space-y-2">
-                <Label>Height (mm)</Label>
+                <Label>{t('Height (mm)')}</Label>
                 <Input type="number" min="1" value={form.heightMm} onChange={e => setForm({ ...form, heightMm: e.target.value })} />
               </div>
               <div className="space-y-2">
-                <Label>Weight (g)</Label>
+                <Label>{t('Weight (g)')}</Label>
                 <Input type="number" min="1" value={form.weightGrams} onChange={e => setForm({ ...form, weightGrams: e.target.value })} />
               </div>
               <div className="space-y-2 md:col-span-2">
-                <Label>Barcode / GTIN</Label>
-                <Input value={form.barcodeGtin} onChange={e => setForm({ ...form, barcodeGtin: e.target.value })} placeholder="Optional" />
+                <Label>{t('Barcode / GTIN')}</Label>
+                <Input value={form.barcodeGtin} onChange={e => setForm({ ...form, barcodeGtin: e.target.value })} placeholder={t('Optional')} />
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" type="button" onClick={() => setShowCreate(false)}>Cancel</Button>
-              <Button variant="gradient" type="submit" disabled={creating}>{creating ? 'Saving...' : 'Save'}</Button>
+              <Button variant="outline" type="button" onClick={() => setShowCreate(false)}>{t('Cancel')}</Button>
+              <Button variant="gradient" type="submit" disabled={creating}>{creating ? t('Saving...') : t('Save')}</Button>
             </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
 
       <div className="flex flex-wrap items-center gap-2">
-        <Input placeholder="Search by SKU..." value={search} onChange={e => setSearch(e.target.value)} className="max-w-md" />
+        <Input placeholder={t('Search by SKU...')} value={search} onChange={e => setSearch(e.target.value)} className="max-w-md" />
       </div>
 
       {loading ? (
@@ -178,8 +180,10 @@ export default function VNextWmsProductUom() {
         <Card>
           <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
             <Ruler className="h-12 w-12 text-muted-foreground" />
-            <h3 className="text-base font-medium">No product dimensions</h3>
-            <p className="text-sm text-muted-foreground">Add SKU dimensions and weights to enable carton recommendations at packing.</p>
+            <h3 className="text-base font-medium">{t('No product dimensions')}</h3>
+            <p className="text-sm text-muted-foreground">{t(
+              'Add SKU dimensions and weights to enable carton recommendations at packing.'
+            )}</p>
           </CardContent>
         </Card>
       ) : (
@@ -187,14 +191,14 @@ export default function VNextWmsProductUom() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>SKU</TableHead>
-                <TableHead>UOM</TableHead>
-                <TableHead>L (mm)</TableHead>
-                <TableHead>W (mm)</TableHead>
-                <TableHead>H (mm)</TableHead>
-                <TableHead>Weight (g)</TableHead>
-                <TableHead>GTIN</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{t('SKU')}</TableHead>
+                <TableHead>{t('UOM')}</TableHead>
+                <TableHead>{t('L (mm)')}</TableHead>
+                <TableHead>{t('W (mm)')}</TableHead>
+                <TableHead>{t('H (mm)')}</TableHead>
+                <TableHead>{t('Weight (g)')}</TableHead>
+                <TableHead>{t('GTIN')}</TableHead>
+                <TableHead>{t('Status')}</TableHead>
                 <TableHead></TableHead>
               </TableRow>
             </TableHeader>
@@ -209,10 +213,10 @@ export default function VNextWmsProductUom() {
                   <TableCell>{r.weightGrams ?? '-'}</TableCell>
                   <TableCell className="text-sm text-muted-foreground">{r.barcodeGtin || '-'}</TableCell>
                   <TableCell>
-                    {hasDims(r) ? <Badge variant="success">Complete</Badge> : <Badge variant="warning">Partial</Badge>}
+                    {hasDims(r) ? <Badge variant="success">{t('Complete')}</Badge> : <Badge variant="warning">{t('Partial')}</Badge>}
                   </TableCell>
                   <TableCell>
-                    <Button variant="outline" size="sm" className="text-destructive" onClick={() => handleDelete(r.id)}>Delete</Button>
+                    <Button variant="outline" size="sm" className="text-destructive" onClick={() => handleDelete(r.id)}>{t('Delete')}</Button>
                   </TableCell>
                 </TableRow>
               ))}

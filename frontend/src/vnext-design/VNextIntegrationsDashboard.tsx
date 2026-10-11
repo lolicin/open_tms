@@ -27,6 +27,8 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 
+import { t } from '@/i18n';
+
 interface QueueStats {
   name: string;
   queued: number;
@@ -90,25 +92,25 @@ export default function VNextIntegrationsDashboard() {
     return (
       <div className="flex flex-col items-center gap-3 py-24 text-muted-foreground">
         <Loader2 className="h-8 w-8 animate-spin" />
-        <h3 className="text-lg font-medium">Loading...</h3>
+        <h3 className="text-lg font-medium">{t('Loading...')}</h3>
       </div>
     );
   }
 
   const stats = [
-    { label: 'Active integrations', value: activeIntegrations, icon: Plug, tone: 'bg-primary/10 text-primary' },
-    { label: 'API keys', value: apiKeys.length, icon: KeyRound, tone: 'bg-success/15 text-success' },
-    { label: 'Queue depth', value: totalQueueDepth, icon: ListChecks, tone: 'bg-warning/15 text-warning' },
-    { label: 'Failed', value: totalDeadLetter, icon: CircleAlert, tone: 'bg-destructive/10 text-destructive' },
-    { label: 'EDI partners', value: ediPartners.length, icon: Repeat, tone: 'bg-info/15 text-info' },
+    { label: t('Active integrations'), value: activeIntegrations, icon: Plug, tone: 'bg-primary/10 text-primary' },
+    { label: t('API keys'), value: apiKeys.length, icon: KeyRound, tone: 'bg-success/15 text-success' },
+    { label: t('Queue depth'), value: totalQueueDepth, icon: ListChecks, tone: 'bg-warning/15 text-warning' },
+    { label: t('Failed'), value: totalDeadLetter, icon: CircleAlert, tone: 'bg-destructive/10 text-destructive' },
+    { label: t('EDI partners'), value: ediPartners.length, icon: Repeat, tone: 'bg-info/15 text-info' },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Integrations</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Monitor and manage all integration channels</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Integrations')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Monitor and manage all integration channels')}</p>
         </div>
       </div>
 
@@ -138,22 +140,22 @@ export default function VNextIntegrationsDashboard() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
-          <CardHeader><CardTitle>Queue status</CardTitle></CardHeader>
+          <CardHeader><CardTitle>{t('Queue status')}</CardTitle></CardHeader>
           <Separator />
           {queues.length === 0 ? (
             <div className="flex flex-col items-center gap-3 py-12 text-muted-foreground">
               <ListChecks className="h-8 w-8" />
-              <h3 className="text-base font-medium">No queue data available</h3>
-              <p className="text-sm">Queue statistics are not currently available.</p>
+              <h3 className="text-base font-medium">{t('No queue data available')}</h3>
+              <p className="text-sm">{t('Queue statistics are not currently available.')}</p>
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Queue name</TableHead>
-                  <TableHead className="text-right">Queued</TableHead>
-                  <TableHead className="text-right">Active</TableHead>
-                  <TableHead className="text-right">Dead letter</TableHead>
+                  <TableHead>{t('Queue name')}</TableHead>
+                  <TableHead className="text-right">{t('Queued')}</TableHead>
+                  <TableHead className="text-right">{t('Active')}</TableHead>
+                  <TableHead className="text-right">{t('Dead letter')}</TableHead>
                   <TableHead></TableHead>
                 </TableRow>
               </TableHeader>
@@ -169,7 +171,7 @@ export default function VNextIntegrationsDashboard() {
                     <TableCell>
                       <Button variant="outline" size="sm">
                         <RefreshCw className="h-3 w-3" />
-                        Retry
+                        {t('Retry')}
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -180,12 +182,12 @@ export default function VNextIntegrationsDashboard() {
         </Card>
 
         <Card>
-          <CardHeader><CardTitle>Recent activity</CardTitle></CardHeader>
+          <CardHeader><CardTitle>{t('Recent activity')}</CardTitle></CardHeader>
           <CardContent>
             <div className="flex flex-col gap-3">
               {integrations.length === 0 && apiKeys.length === 0 && ediPartners.length === 0 ? (
                 <div className="py-6 text-center text-sm text-muted-foreground">
-                  No recent activity to display.
+                  {t('No recent activity to display.')}
                 </div>
               ) : (
                 <>
@@ -193,8 +195,8 @@ export default function VNextIntegrationsDashboard() {
                     <div key={`key-${k.id}`} className="flex items-start gap-3">
                       <KeyRound className="mt-0.5 h-5 w-5 text-info" />
                       <div className="flex-1">
-                        <div className="text-sm">API key &apos;{k.name}&apos; {k.active !== false ? 'active' : 'inactive'}</div>
-                        <div className="text-xs text-muted-foreground">Created {new Date(k.createdAt).toLocaleDateString()}</div>
+                        <div className="text-sm">{t('API key \'')}{k.name}&apos; {k.active !== false ? t('active') : t('inactive')}</div>
+                        <div className="text-xs text-muted-foreground">{t('Created')} {new Date(k.createdAt).toLocaleDateString()}</div>
                       </div>
                     </div>
                   ))}
@@ -206,8 +208,8 @@ export default function VNextIntegrationsDashboard() {
                         <CircleAlert className="mt-0.5 h-5 w-5 text-destructive" />
                       )}
                       <div className="flex-1">
-                        <div className="text-sm">{i.name} - {i.active !== false ? 'active' : 'inactive'}</div>
-                        <div className="text-xs text-muted-foreground">{i.type || 'Integration'}</div>
+                        <div className="text-sm">{i.name} - {i.active !== false ? t('active') : t('inactive')}</div>
+                        <div className="text-xs text-muted-foreground">{i.type || t('Integration')}</div>
                       </div>
                     </div>
                   ))}
@@ -219,31 +221,31 @@ export default function VNextIntegrationsDashboard() {
       </div>
 
       <Card>
-        <CardHeader><CardTitle>Quick actions</CardTitle></CardHeader>
+        <CardHeader><CardTitle>{t('Quick actions')}</CardTitle></CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" asChild>
               <Link to="/integrations/api-keys">
                 <KeyRound className="h-4 w-4" />
-                Manage API keys
+                {t('Manage API keys')}
               </Link>
             </Button>
             <Button variant="outline" asChild>
               <Link to="/integrations/outbound">
                 <Send className="h-4 w-4" />
-                Outbound integrations
+                {t('Outbound integrations')}
               </Link>
             </Button>
             <Button variant="outline" asChild>
               <Link to="/integrations/webhook-logs">
                 <ListChecks className="h-4 w-4" />
-                Webhook logs
+                {t('Webhook logs')}
               </Link>
             </Button>
             <Button variant="outline" asChild>
               <Link to="/integrations/edi/partners">
                 <Network className="h-4 w-4" />
-                EDI partners
+                {t('EDI partners')}
               </Link>
             </Button>
           </div>

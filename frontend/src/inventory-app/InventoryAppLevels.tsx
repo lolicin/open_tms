@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
+import { t } from '@/i18n';
+
 interface SummaryRow {
   sku: string;
   uomCode: string;
@@ -70,7 +72,7 @@ export default function InventoryAppLevels() {
     return (
       <Card className="flex flex-col items-center gap-3 p-8 text-center">
         <AlertTriangle className="h-10 w-10 text-muted-foreground" />
-        <p className="text-base font-semibold">No site selected</p>
+        <p className="text-base font-semibold">{t('No site selected')}</p>
       </Card>
     );
   }
@@ -83,7 +85,7 @@ export default function InventoryAppLevels() {
           onClick={() => setSelectedSku(null)}
           className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground"
         >
-          <ChevronLeft className="h-4 w-4" /> Back to levels
+          <ChevronLeft className="h-4 w-4" /> {t('Back to levels')}
         </button>
         <h2 className="text-lg font-bold tracking-tight">{selectedSku}</h2>
 
@@ -92,7 +94,7 @@ export default function InventoryAppLevels() {
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         ) : records.length === 0 ? (
-          <Card className="p-6 text-center text-sm text-muted-foreground">No bin-level detail found.</Card>
+          <Card className="p-6 text-center text-sm text-muted-foreground">{t('No bin-level detail found.')}</Card>
         ) : (
           <div className="space-y-2">
             {records.map(r => (
@@ -106,7 +108,7 @@ export default function InventoryAppLevels() {
                   </div>
                   <div className="text-right">
                     <div className="text-base font-bold">{r.quantityOnHand} {r.uomCode}</div>
-                    <div className="text-xs text-muted-foreground">{r.quantityAvailable} available</div>
+                    <div className="text-xs text-muted-foreground">{r.quantityAvailable} {t('available')}</div>
                   </div>
                 </div>
               </Card>
@@ -126,7 +128,7 @@ export default function InventoryAppLevels() {
         <Input
           value={search}
           onChange={e => setSearch(e.target.value)}
-          placeholder="Search SKU..."
+          placeholder={t('Search SKU...')}
           className="h-12 pl-9 text-base"
         />
       </div>
@@ -140,9 +142,9 @@ export default function InventoryAppLevels() {
       ) : filtered.length === 0 ? (
         <Card className="flex flex-col items-center gap-3 p-8 text-center">
           <PackageSearch className="h-10 w-10 text-muted-foreground" />
-          <p className="text-base font-semibold">No stock found</p>
+          <p className="text-base font-semibold">{t('No stock found')}</p>
           <p className="text-sm text-muted-foreground">
-            {summary.length === 0 ? 'This site has no inventory on hand yet.' : 'No SKU matches your search.'}
+            {summary.length === 0 ? t('This site has no inventory on hand yet.') : t('No SKU matches your search.')}
           </p>
         </Card>
       ) : (
@@ -157,11 +159,11 @@ export default function InventoryAppLevels() {
               <Card className="flex w-full items-center justify-between p-3 active:bg-muted/50">
                 <div className="text-left">
                   <div className="text-sm font-semibold">{row.sku}</div>
-                  <div className="text-xs text-muted-foreground">{row.binCount} bin{row.binCount === 1 ? '' : 's'}</div>
+                  <div className="text-xs text-muted-foreground">{row.binCount} {t('bin')}{row.binCount === 1 ? '' : t('s')}</div>
                 </div>
                 <div className="text-right">
                   <div className="text-base font-bold">{row.totalOnHand} {row.uomCode}</div>
-                  <div className="text-xs text-muted-foreground">{row.totalAvailable} available</div>
+                  <div className="text-xs text-muted-foreground">{row.totalAvailable} {t('available')}</div>
                 </div>
               </Card>
             </Button>

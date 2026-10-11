@@ -26,6 +26,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
+import { t } from '@/i18n';
+
 interface Appointment {
   id: string;
   locationId: string;
@@ -126,7 +128,7 @@ export default function VNextWmsReceivingAppointments() {
   };
 
   const handleCancel = async (id: string) => {
-    if (!confirm('Cancel this appointment?')) return;
+    if (!confirm(t('Cancel this appointment?'))) return;
     setBusy(id);
     await fetch(`${API_URL}/api/v1/receiving/appointments/${id}/cancel`, { method: 'POST' });
     setBusy(null); load();
@@ -136,12 +138,12 @@ export default function VNextWmsReceivingAppointments() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Receiving Appointments</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Dock scheduling for inbound carriers with check-in workflow.</p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('Receiving Appointments')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{t('Dock scheduling for inbound carriers with check-in workflow.')}</p>
         </div>
         <Button variant="gradient" onClick={() => setShowCreate(v => !v)}>
           <Plus className="h-4 w-4" />
-          Schedule Appointment
+          {t('Schedule Appointment')}
         </Button>
       </div>
 
@@ -162,25 +164,25 @@ export default function VNextWmsReceivingAppointments() {
       {showCreate && (
         <Card>
           <CardHeader>
-            <CardTitle>New Appointment</CardTitle>
+            <CardTitle>{t('New Appointment')}</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <Label>Scheduled start *</Label>
+              <Label>{t('Scheduled start *')}</Label>
               <DatePicker type="datetime-local" value={form.scheduledAt} onChange={e => setForm(f => ({ ...f, scheduledAt: e.target.value }))} />
             </div>
             <div className="space-y-2">
-              <Label>Scheduled end *</Label>
+              <Label>{t('Scheduled end *')}</Label>
               <DatePicker type="datetime-local" value={form.scheduledEndAt} onChange={e => setForm(f => ({ ...f, scheduledEndAt: e.target.value }))} />
             </div>
             <div className="space-y-2">
-              <Label>Dock bin</Label>
+              <Label>{t('Dock bin')}</Label>
               <Select value={form.dockBinId} onValueChange={v => setForm(f => ({ ...f, dockBinId: v }))}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="unassigned">-- unassigned --</SelectItem>
+                  <SelectItem value="unassigned">{t('-- unassigned --')}</SelectItem>
                   {bins.map(b => (
                     <SelectItem key={b.id} value={b.id}>{b.label}</SelectItem>
                   ))}
@@ -188,26 +190,26 @@ export default function VNextWmsReceivingAppointments() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>Carrier name</Label>
+              <Label>{t('Carrier name')}</Label>
               <Input value={form.carrierName} onChange={e => setForm(f => ({ ...f, carrierName: e.target.value }))} />
             </div>
             <div className="space-y-2">
-              <Label>Trailer number</Label>
+              <Label>{t('Trailer number')}</Label>
               <Input value={form.trailerNumber} onChange={e => setForm(f => ({ ...f, trailerNumber: e.target.value }))} />
             </div>
             <div className="space-y-2">
-              <Label>Seal number</Label>
+              <Label>{t('Seal number')}</Label>
               <Input value={form.sealNumber} onChange={e => setForm(f => ({ ...f, sealNumber: e.target.value }))} />
             </div>
             <div className="space-y-2 md:col-span-2">
-              <Label>ASN reference</Label>
-              <Input value={form.asnReference} onChange={e => setForm(f => ({ ...f, asnReference: e.target.value }))} placeholder="PO / BOL / ASN id" />
+              <Label>{t('ASN reference')}</Label>
+              <Input value={form.asnReference} onChange={e => setForm(f => ({ ...f, asnReference: e.target.value }))} placeholder={t('PO / BOL / ASN id')} />
             </div>
             <div className="flex gap-2 md:col-span-2">
               <Button variant="gradient" onClick={handleCreate} disabled={busy === 'create'}>
-                {busy === 'create' ? 'Scheduling...' : 'Schedule'}
+                {busy === 'create' ? t('Scheduling...') : t('Schedule')}
               </Button>
-              <Button variant="outline" onClick={() => setShowCreate(false)}>Cancel</Button>
+              <Button variant="outline" onClick={() => setShowCreate(false)}>{t('Cancel')}</Button>
             </div>
           </CardContent>
         </Card>
@@ -217,13 +219,13 @@ export default function VNextWmsReceivingAppointments() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Scheduled</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Dock</TableHead>
-              <TableHead>Carrier</TableHead>
-              <TableHead>Trailer / Seal</TableHead>
-              <TableHead>ASN Ref</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>{t('Scheduled')}</TableHead>
+              <TableHead>{t('Status')}</TableHead>
+              <TableHead>{t('Dock')}</TableHead>
+              <TableHead>{t('Carrier')}</TableHead>
+              <TableHead>{t('Trailer / Seal')}</TableHead>
+              <TableHead>{t('ASN Ref')}</TableHead>
+              <TableHead className="text-right">{t('Actions')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -237,7 +239,7 @@ export default function VNextWmsReceivingAppointments() {
             {!loading && appointments.length === 0 && (
               <TableRow>
                 <TableCell colSpan={7} className="py-12 text-center text-sm text-muted-foreground">
-                  No appointments for this day.
+                  {t('No appointments for this day.')}
                 </TableCell>
               </TableRow>
             )}
@@ -245,7 +247,7 @@ export default function VNextWmsReceivingAppointments() {
               <TableRow key={a.id}>
                 <TableCell>
                   <div className="font-semibold">{new Date(a.scheduledAt).toLocaleString()}</div>
-                  <div className="text-xs text-muted-foreground">to {new Date(a.scheduledEndAt).toLocaleTimeString()}</div>
+                  <div className="text-xs text-muted-foreground">{t('to')} {new Date(a.scheduledEndAt).toLocaleTimeString()}</div>
                 </TableCell>
                 <TableCell>
                   <Badge variant={statusVariant(a.status)}>{a.status.replace('_', ' ')}</Badge>
@@ -254,22 +256,22 @@ export default function VNextWmsReceivingAppointments() {
                 <TableCell>{a.carrierName ?? <span className="text-muted-foreground">-</span>}</TableCell>
                 <TableCell>
                   {a.trailerNumber ?? <span className="text-muted-foreground">-</span>}
-                  {a.sealNumber && <div className="text-xs text-muted-foreground">seal {a.sealNumber}</div>}
+                  {a.sealNumber && <div className="text-xs text-muted-foreground">{t('seal')} {a.sealNumber}</div>}
                 </TableCell>
                 <TableCell>{a.asnReference ?? <span className="text-muted-foreground">-</span>}</TableCell>
                 <TableCell className="text-right">
                   {a.status === 'scheduled' && (
                     <div className="inline-flex gap-2">
                       <Button variant="outline" size="sm" onClick={() => handleCheckIn(a.id)} disabled={busy === a.id}>
-                        Check in
+                        {t('Check in')}
                       </Button>
                       <Button variant="outline" size="sm" className="text-destructive" onClick={() => handleCancel(a.id)} disabled={busy === a.id}>
-                        Cancel
+                        {t('Cancel')}
                       </Button>
                     </div>
                   )}
                   {a.status === 'checked_in' && (
-                    <Badge variant="warning">ready to receive</Badge>
+                    <Badge variant="warning">{t('ready to receive')}</Badge>
                   )}
                 </TableCell>
               </TableRow>

@@ -32,6 +32,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
+import { t as translate } from '@/i18n';
+
 interface Transaction {
   id: string;
   transactionType: string;
@@ -286,12 +288,12 @@ export default function VNextTradingPartners() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Trading partners</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{partners.length} partners</p>
+          <h1 className="text-3xl font-bold tracking-tight">{translate('Trading partners')}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{partners.length} {translate('partners')}</p>
         </div>
         <Button variant="gradient" onClick={openCreate}>
           <Plus className="h-4 w-4" />
-          Add partner
+          {translate('Add partner')}
         </Button>
       </div>
 
@@ -307,14 +309,14 @@ export default function VNextTradingPartners() {
           <Select value={typeFilter} onValueChange={setTypeFilter}>
             <SelectTrigger className="w-[180px]"><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All types</SelectItem>
+              <SelectItem value="all">{translate('All types')}</SelectItem>
               {ENTITY_TYPES.map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}
             </SelectContent>
           </Select>
           <div className="relative min-w-[240px] flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search by name..."
+              placeholder={translate('Search by name...')}
               value={search}
               onChange={e => setSearch(e.target.value)}
               className="pl-9"
@@ -327,21 +329,21 @@ export default function VNextTradingPartners() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Linked to</TableHead>
-              <TableHead>Directions</TableHead>
-              <TableHead>Transactions</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Last polled</TableHead>
+              <TableHead>{translate('Name')}</TableHead>
+              <TableHead>{translate('Type')}</TableHead>
+              <TableHead>{translate('Linked to')}</TableHead>
+              <TableHead>{translate('Directions')}</TableHead>
+              <TableHead>{translate('Transactions')}</TableHead>
+              <TableHead>{translate('Status')}</TableHead>
+              <TableHead>{translate('Last polled')}</TableHead>
               <TableHead className="w-[80px]"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {loading ? (
-              <TableRow><TableCell colSpan={8} className="py-8 text-center text-muted-foreground">Loading...</TableCell></TableRow>
+              <TableRow><TableCell colSpan={8} className="py-8 text-center text-muted-foreground">{translate('Loading...')}</TableCell></TableRow>
             ) : filtered.length === 0 ? (
-              <TableRow><TableCell colSpan={8} className="py-8 text-center text-muted-foreground">No trading partners found</TableCell></TableRow>
+              <TableRow><TableCell colSpan={8} className="py-8 text-center text-muted-foreground">{translate('No trading partners found')}</TableCell></TableRow>
             ) : filtered.map(p => (
               <TableRow key={p.id}>
                 <TableCell className="font-medium">{p.name}</TableCell>
@@ -353,22 +355,22 @@ export default function VNextTradingPartners() {
                   </div>
                 </TableCell>
                 <TableCell className="text-sm text-muted-foreground">
-                  {p.transactions.filter(t => t.enabled).map(t => t.transactionType).join(', ') || 'None'}
+                  {p.transactions.filter(t => t.enabled).map(t => t.transactionType).join(', ') || translate('None')}
                 </TableCell>
                 <TableCell>
-                  <Badge variant={p.active ? 'success' : 'secondary'}>{p.active ? 'Active' : 'Inactive'}</Badge>
+                  <Badge variant={p.active ? 'success' : 'secondary'}>{p.active ? translate('Active') : translate('Inactive')}</Badge>
                 </TableCell>
                 <TableCell className="text-sm text-muted-foreground">
-                  {p.lastPolledAt ? new Date(p.lastPolledAt).toLocaleString() : 'Never'}
+                  {p.lastPolledAt ? new Date(p.lastPolledAt).toLocaleString() : translate('Never')}
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-1">
-                    <Button size="sm" variant="outline" onClick={() => openEdit(p)}>Edit</Button>
+                    <Button size="sm" variant="outline" onClick={() => openEdit(p)}>{translate('Edit')}</Button>
                     <Button
                       size="sm"
                       variant="ghost"
                       onClick={() => deletePartner(p)}
-                      title="Delete partner"
+                      title={translate('Delete partner')}
                       className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
                     >
                       <Trash2 className="h-4 w-4" />
@@ -384,17 +386,17 @@ export default function VNextTradingPartners() {
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="max-w-2xl max-h-[85vh] overflow-auto">
           <DialogHeader>
-            <DialogTitle>{editingId ? 'Edit' : 'New'} trading partner</DialogTitle>
+            <DialogTitle>{editingId ? translate('Edit') : translate('New')} {translate('trading partner')}</DialogTitle>
           </DialogHeader>
           <div className="space-y-6">
             <div className="space-y-3">
               <div className="grid gap-3 md:grid-cols-2">
                 <div className="md:col-span-2 space-y-2">
-                  <Label>Name</Label>
+                  <Label>{translate('Name')}</Label>
                   <Input value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Entity type</Label>
+                  <Label>{translate('Entity type')}</Label>
                   <Select value={form.entityType} onValueChange={v => setForm({ ...form, entityType: v })}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
@@ -403,33 +405,33 @@ export default function VNextTradingPartners() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label>Sender ID (ISA)</Label>
-                  <Input value={form.senderId} onChange={e => setForm({ ...form, senderId: e.target.value })} placeholder="ISA06" />
+                  <Label>{translate('Sender ID (ISA)')}</Label>
+                  <Input value={form.senderId} onChange={e => setForm({ ...form, senderId: e.target.value })} placeholder={translate('ISA06')} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Receiver ID (ISA)</Label>
-                  <Input value={form.receiverId} onChange={e => setForm({ ...form, receiverId: e.target.value })} placeholder="ISA08" />
+                  <Label>{translate('Receiver ID (ISA)')}</Label>
+                  <Input value={form.receiverId} onChange={e => setForm({ ...form, receiverId: e.target.value })} placeholder={translate('ISA08')} />
                 </div>
               </div>
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-base font-semibold">SFTP connection</h3>
+              <h3 className="text-base font-semibold">{translate('SFTP connection')}</h3>
               <div className="grid gap-3 md:grid-cols-3">
                 <div className="md:col-span-2 space-y-2">
-                  <Label>Host</Label>
+                  <Label>{translate('Host')}</Label>
                   <Input value={form.sftpHost} onChange={e => setForm({ ...form, sftpHost: e.target.value })} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Port</Label>
+                  <Label>{translate('Port')}</Label>
                   <Input type="number" value={form.sftpPort} onChange={e => setForm({ ...form, sftpPort: parseInt(e.target.value) || 22 })} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Username</Label>
+                  <Label>{translate('Username')}</Label>
                   <Input value={form.sftpUsername} onChange={e => setForm({ ...form, sftpUsername: e.target.value })} />
                 </div>
                 <div className="space-y-2 md:col-span-2">
-                  <Label>Password</Label>
+                  <Label>{translate('Password')}</Label>
                   <Input type="password" value={form.sftpPassword} onChange={e => setForm({ ...form, sftpPassword: e.target.value })} placeholder={editingId ? '(unchanged)' : ''} />
                 </div>
               </div>
@@ -437,7 +439,7 @@ export default function VNextTradingPartners() {
               {editingId && (
                 <div className="space-y-2">
                   <Button variant="outline" size="sm" onClick={() => testConnection(editingId)} disabled={connTestLoading}>
-                    {connTestLoading ? 'Testing...' : 'Test connection'}
+                    {connTestLoading ? translate('Testing...') : translate('Test connection')}
                   </Button>
                   {connTestResult && (
                     <div className={
@@ -454,23 +456,23 @@ export default function VNextTradingPartners() {
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-base font-semibold">Inbound (polling)</h3>
+              <h3 className="text-base font-semibold">{translate('Inbound (polling)')}</h3>
               <label className="flex items-center gap-2 text-sm">
                 <input type="checkbox" checked={form.inboundEnabled} onChange={e => setForm({ ...form, inboundEnabled: e.target.checked })} />
-                Enable inbound polling
+                {translate('Enable inbound polling')}
               </label>
               {form.inboundEnabled && (
                 <div className="grid gap-3 md:grid-cols-3">
                   <div className="space-y-2">
-                    <Label>Directory</Label>
+                    <Label>{translate('Directory')}</Label>
                     <Input value={form.inboundDir} onChange={e => setForm({ ...form, inboundDir: e.target.value })} />
                   </div>
                   <div className="space-y-2">
-                    <Label>File pattern</Label>
+                    <Label>{translate('File pattern')}</Label>
                     <Input value={form.inboundFilePattern} onChange={e => setForm({ ...form, inboundFilePattern: e.target.value })} />
                   </div>
                   <div className="space-y-2">
-                    <Label>Polling interval (sec)</Label>
+                    <Label>{translate('Polling interval (sec)')}</Label>
                     <Input type="number" value={form.pollingInterval} onChange={e => setForm({ ...form, pollingInterval: parseInt(e.target.value) || 900 })} />
                   </div>
                 </div>
@@ -478,36 +480,36 @@ export default function VNextTradingPartners() {
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-base font-semibold">Outbound (delivery)</h3>
+              <h3 className="text-base font-semibold">{translate('Outbound (delivery)')}</h3>
               <label className="flex items-center gap-2 text-sm">
                 <input type="checkbox" checked={form.outboundEnabled} onChange={e => setForm({ ...form, outboundEnabled: e.target.checked })} />
-                Enable outbound delivery
+                {translate('Enable outbound delivery')}
               </label>
               {form.outboundEnabled && (
                 <div className="grid gap-3 md:grid-cols-3">
                   <div className="space-y-2">
-                    <Label>Transport</Label>
+                    <Label>{translate('Transport')}</Label>
                     <Select value={form.outboundTransport} onValueChange={v => setForm({ ...form, outboundTransport: v })}>
                       <SelectTrigger><SelectValue /></SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="sftp">SFTP</SelectItem>
-                        <SelectItem value="http">HTTP</SelectItem>
+                        <SelectItem value="sftp">{translate('SFTP')}</SelectItem>
+                        <SelectItem value="http">{translate('HTTP')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label>Directory / URL</Label>
+                    <Label>{translate('Directory / URL')}</Label>
                     <Input value={form.outboundDir} onChange={e => setForm({ ...form, outboundDir: e.target.value })}
                       placeholder={form.outboundTransport === 'sftp' ? '/outbound' : 'https://...'} />
                   </div>
                   <div className="space-y-2">
-                    <Label>File naming</Label>
+                    <Label>{translate('File naming')}</Label>
                     <Select value={form.outboundFileNaming} onValueChange={v => setForm({ ...form, outboundFileNaming: v })}>
                       <SelectTrigger><SelectValue /></SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="reference">By reference</SelectItem>
-                        <SelectItem value="date">By date</SelectItem>
-                        <SelectItem value="sequence">By sequence</SelectItem>
+                        <SelectItem value="reference">{translate('By reference')}</SelectItem>
+                        <SelectItem value="date">{translate('By date')}</SelectItem>
+                        <SelectItem value="sequence">{translate('By sequence')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -517,14 +519,14 @@ export default function VNextTradingPartners() {
 
             {editingPartner && (
               <div className="space-y-3">
-                <h3 className="text-base font-semibold">Transaction types</h3>
+                <h3 className="text-base font-semibold">{translate('Transaction types')}</h3>
                 {editingPartner.transactions.length > 0 && (
                   <Table>
                     <TableHeader>
                       <TableRow>
-                        <TableHead>Type</TableHead>
-                        <TableHead>Direction</TableHead>
-                        <TableHead>Status</TableHead>
+                        <TableHead>{translate('Type')}</TableHead>
+                        <TableHead>{translate('Direction')}</TableHead>
+                        <TableHead>{translate('Status')}</TableHead>
                         <TableHead className="w-[80px]"></TableHead>
                       </TableRow>
                     </TableHeader>
@@ -533,7 +535,7 @@ export default function VNextTradingPartners() {
                         <TableRow key={t.id}>
                           <TableCell><strong>{t.transactionType}</strong> - {ALL_TXN_TYPES.find(a => a.code === t.transactionType)?.name || ''}</TableCell>
                           <TableCell>{t.direction}</TableCell>
-                          <TableCell><Badge variant={t.enabled ? 'success' : 'secondary'}>{t.enabled ? 'Enabled' : 'Disabled'}</Badge></TableCell>
+                          <TableCell><Badge variant={t.enabled ? 'success' : 'secondary'}>{t.enabled ? translate('Enabled') : translate('Disabled')}</Badge></TableCell>
                           <TableCell>
                             <Button size="sm" variant="destructive" onClick={() => removeTransaction(editingPartner.id, t.id)}>
                               <Trash2 className="h-3 w-3" />
@@ -554,18 +556,18 @@ export default function VNextTradingPartners() {
                   <Select value={newTxnDirection} onValueChange={setNewTxnDirection}>
                     <SelectTrigger className="w-[140px]"><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="inbound">Inbound</SelectItem>
-                      <SelectItem value="outbound">Outbound</SelectItem>
+                      <SelectItem value="inbound">{translate('Inbound')}</SelectItem>
+                      <SelectItem value="outbound">{translate('Outbound')}</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Button onClick={() => addTransaction(editingPartner.id)}>Add</Button>
+                  <Button onClick={() => addTransaction(editingPartner.id)}>{translate('Add')}</Button>
                 </div>
               </div>
             )}
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowForm(false)}>Cancel</Button>
-            <Button variant="gradient" onClick={savePartner}>{editingId ? 'Save changes' : 'Create partner'}</Button>
+            <Button variant="outline" onClick={() => setShowForm(false)}>{translate('Cancel')}</Button>
+            <Button variant="gradient" onClick={savePartner}>{editingId ? translate('Save changes') : translate('Create partner')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
